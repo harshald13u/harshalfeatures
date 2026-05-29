@@ -1516,3 +1516,29 @@ $('btn-disconnect').onclick = async () => {
   await clearHandle().catch(() => {});
   USING_PERSISTENT_FILE = false;
   document.body.classList.remove('dynamic-loaded');
+  const input = $('file-input');
+  if (input) input.value = '';
+  $('empty').style.display = 'block';
+  $('dashboard').style.display = 'none';
+  $('btn-refresh').style.display = 'none';
+  $('btn-disconnect').style.display = 'none';
+  setupAccessMode();
+  setStatus('Disconnected. Click Connect to choose a file again.');
+};
+
+(async () => {
+  if (renderEmbeddedSnapshot()) return;
+  if (!HAS_PERSISTENT_FILE_PICKER) return;
+  try {
+    const h = await getHandle();
+    if (h && h.queryPermission) {
+      setStatus('Loading from saved file…');
+      await loadFromHandle(h);
+    }
+  } catch (e) {
+    console.warn('Could not auto-load:', e);
+  }
+})();
+</script>
+</body>
+</html>
