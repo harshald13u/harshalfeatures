@@ -219,7 +219,16 @@ body::after {
 .feat-item.first { background: rgba(45,212,191,0.12); }
 .feat-item.first:hover { background: rgba(45,212,191,0.18); }
 .feat-date { font-size: 11px; color: var(--txt-mut); font-weight: 500; }
+.feat-pub-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.feat-favicon { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0;
+                background: rgba(255,255,255,0.08); object-fit: contain; padding: 1px;
+                box-shadow: 0 0 0 1px rgba(255,255,255,0.08); }
+.feat-favicon.fallback { display: inline-flex; align-items: center; justify-content: center;
+                         font-size: 10px; font-weight: 700; color: var(--txt);
+                         background: linear-gradient(135deg, var(--blue), var(--purple)); padding: 0; }
 .feat-pub { font-size: 11px; color: var(--teal); font-weight: 600; white-space: nowrap;
+            display: flex; align-items: center; gap: 6px;
+
             overflow: hidden; text-overflow: ellipsis; }
 .feat-title { font-size: 13px; color: var(--txt); font-weight: 500; line-height: 1.4;
               overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2;
@@ -1330,54 +1339,24 @@ function renderLatestEntry(unique) {
     const attrs = isLink
       ? `href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(url)}"`
       : 'title="(no link)"';
+    const fav = favIconFor(url, pub);
+    const favHtml = fav
+      ? `<img class="feat-favicon" src="${escapeHtml(fav)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'feat-favicon fallback',textContent:'${escapeHtml(pub.charAt(0).toUpperCase())}'}))">`
+      : `<span class="feat-favicon fallback">${escapeHtml(pub.charAt(0).toUpperCase())}</span>`;
     return `<${tag} class="feat-item${i === 0 ? ' first' : ''}" ${attrs}>
       <div class="feat-date">${date}</div>
-      <div class="feat-pub">${escapeHtml(pub)}</div>
+      <div class="feat-pub">${favHtml}<span class="feat-pub-name">${escapeHtml(pub)}</span></div>
       <div class="feat-title">${escapeHtml(heading)}</div>
       <div class="feat-arrow">${isLink ? '→' : ''}</div>
     </${tag}>`;
   }).join('');
 }
 
-function render(rows, file) {
-  // Dedupe by canonical link
-  const seen = new Set();
-  const unique = [];
-  for (const r of rows) {
-    const c = canonical(r.Link);
-    if (c && !seen.has(c)) {
-      seen.add(c);
-      unique.push(r);
-    }
+function favIconFor(url, pub) {
+  let host = '';
+  if (url && typeof url === 'string' && url.toLowerCase().startsWith('http')) {
+    try { host = new URL(url).hostname.toLowerCase().replace(/^www\.|^m\.|^amp\./, ''); } catch (_) {}
   }
-  const dupes = rows.length - unique.length;
-
-  UNIQUE_ROWS = unique;
-  RAW_ROWS = rows;
-  CURRENT_FILE = file;
-
-  $('kpi-unique').textContent = unique.length;
-  $('kpi-sub').textContent = `${rows.length} raw rows; ${dupes} repeats collapsed`;
-  $('kpi-master').textContent = rows.length;
-
-  renderRecentTiles();
-  renderPanels();
-
-  // Compute date range for meta line
-  const sortedByDate = [...unique].filter(r => r.Date instanceof Date && !isNaN(r.Date))
-                                  .sort((a, b) => b.Date - a.Date);
-
-  // Meta info
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-  const minDate = sortedByDate.length ? fmtDate(sortedByDate[sortedByDate.length - 1].Date) : '';
-  const maxDate = sortedByDate.length ? fmtDate(sortedByDate[0].Date) : '';
-
-  // Average features per day since day 1
-  if (sortedByDate.length) {
-    const first = sortedByDate[sortedByDate.length - 1].Date;
-    const today0 = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-    const days = Math.max(1, Math.floor((today0 - first) / 86400000) + 1);
-    const avg = unique.length / days;
-    $('kpi-avg-day').textContent = avg.toFixed(2);
-    const 
+  // Manual overrides for publications whose URL doesn't represent the brand well
+  const overrides = {
+    'Bizz Buzz': 'bizzbuzz.news',
