@@ -818,8 +818,20 @@ function renderEmbeddedSnapshot() {
   const rows = embeddedRowsForRender();
   if (!rows.length) return false;
   render(rows, { name: 'WhatsApp_Features_Articles.xlsx' });
-  setStatus('✓ Loaded embedded Excel snapshot. Use Connect Excel file to refresh from the workbook.', 'ok');
-  if ($('btn-refresh')) $('btn-refresh').style.display = 'none';
+  // On the deployed (hosted) URL or any non-desktop / touch device, hide the entire toolbar — Connect Excel is meaningless there.
+  const isHosted = window.location.protocol !== 'file:';
+  const isMobile = window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
+  const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints || 0) > 0;
+  const hideToolbar = isHosted || isMobile || isTouch || !HAS_PERSISTENT_FILE_PICKER;
+  if (hideToolbar) {
+    const tb = document.querySelector('.toolbar');
+    if (tb) tb.style.display = 'none';
+    setStatus('', 'ok');
+  } else {
+    setStatus('✓ Latest data loaded. Click Connect Excel only if you want to read your local .xlsx file directly.', 'ok');
+  }
+  if ($('btn-pick'))       $('btn-pick').style.display = 'none';
+  if ($('btn-refresh'))    $('btn-refresh').style.display = 'none';
   if ($('btn-disconnect')) $('btn-disconnect').style.display = 'none';
   return true;
 }
@@ -1343,20 +1355,4 @@ function renderLatestEntry(unique) {
     const favHtml = fav
       ? `<img class="feat-favicon" src="${escapeHtml(fav)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'feat-favicon fallback',textContent:'${escapeHtml(pub.charAt(0).toUpperCase())}'}))">`
       : `<span class="feat-favicon fallback">${escapeHtml(pub.charAt(0).toUpperCase())}</span>`;
-    return `<${tag} class="feat-item${i === 0 ? ' first' : ''}" ${attrs}>
-      <div class="feat-date">${date}</div>
-      <div class="feat-pub">${favHtml}<span class="feat-pub-name">${escapeHtml(pub)}</span></div>
-      <div class="feat-title">${escapeHtml(heading)}</div>
-      <div class="feat-arrow">${isLink ? '→' : ''}</div>
-    </${tag}>`;
-  }).join('');
-}
-
-function favIconFor(url, pub) {
-  let host = '';
-  if (url && typeof url === 'string' && url.toLowerCase().startsWith('http')) {
-    try { host = new URL(url).hostname.toLowerCase().replace(/^www\.|^m\.|^amp\./, ''); } catch (_) {}
-  }
-  // Manual overrides for publications whose URL doesn't represent the brand well
-  const overrides = {
-    'Bizz Buzz': 'bizzbuzz.news',
+    return `<${tag} class="feat-item${i === 0 ? ' first' 
