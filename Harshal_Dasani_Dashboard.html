@@ -315,23 +315,71 @@ body::after {
 #drill-clear:hover { background: rgba(91,155,255,0.25); }
 @media (max-width: 640px) {
   body { padding: 10px; background-attachment: scroll; }
-  .wrap { max-width: 520px; }
-  .header { flex-direction: column; align-items: stretch; padding: 18px; border-radius: 10px 10px 0 0; }
-  .header h1 { font-size: 18px; line-height: 1.3; }
-  .header .right { text-align: left; max-width: none; }
-  .header-side { align-items: flex-start; }
-  .toolbar { padding: 12px; align-items: stretch; }
-  .toolbar button { width: 100%; }
-  .toolbar .status { width: 100%; margin-left: 0; line-height: 1.45; border-radius: 10px; }
-  .empty-state { padding: 34px 14px; }
-  .kpis { grid-template-columns: 1fr; max-width: none; }
-  .tile.big .num { font-size: 46px; }
-  .recent { grid-template-columns: repeat(2, 1fr); }
-  .panels { grid-template-columns: 1fr; }
-  .feat-item { grid-template-columns: 1fr 18px; gap: 6px 10px; }
-  .feat-date, .feat-pub { grid-column: 1 / 2; }
-  .feat-title { grid-column: 1 / 2; }
-  .feat-arrow { grid-column: 2 / 3; grid-row: 1 / span 3; align-self: center; }
+  .wrap { max-width: 100%; }
+  .header { flex-direction: column; align-items: stretch; padding: 16px; border-radius: 12px 12px 0 0; gap: 10px; }
+  .header h1 { font-size: 17px; line-height: 1.3; }
+  .header .meta { font-size: 10px; }
+  .header .right, .header-side { text-align: left; max-width: none; align-items: flex-start; }
+
+  .toolbar { padding: 10px 12px; align-items: stretch; gap: 8px; border-radius: 0; }
+  .toolbar button { width: 100%; padding: 12px 14px; font-size: 13px; min-height: 44px; }
+  .toolbar .status { width: 100%; margin-left: 0; line-height: 1.45; padding: 8px 12px; border-radius: 8px; background: rgba(255,255,255,0.04); }
+
+  .empty-state { padding: 28px 14px; }
+
+  /* KPI tiles — single column, more compact */
+  .kpis { grid-template-columns: 1fr; max-width: none; gap: 8px; padding: 12px 0; }
+  .tile { padding: 14px; border-radius: 10px; }
+  .tile.big { gap: 14px; padding: 16px; }
+  .tile.big .num { font-size: 44px; }
+  .tile.big .info .label { font-size: 12px; }
+  .tile.kpi { padding-left: 18px; padding-top: 12px; padding-bottom: 12px; }
+  .tile.kpi .num { font-size: 24px; }
+  .tile.kpi .label { font-size: 10px; }
+
+  /* Recent-activity strip — 3x2 grid */
+  .recent { grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px 0 0; }
+  .recent .r-tile { padding: 10px 8px; border-radius: 8px; min-height: 60px; }
+  .recent .r-tile .r-label { font-size: 9px; letter-spacing: 0.3px; }
+  .recent .r-tile .r-num { font-size: 17px; }
+  .recent .r-tile .r-sub { font-size: 8px; }
+
+  /* Panels — single column, charts shorter */
+  .panels { grid-template-columns: 1fr; gap: 10px; }
+  .panel { padding: 14px; border-radius: 10px; margin-bottom: 8px; }
+  .panel h3 { font-size: 12px; margin-bottom: 12px; }
+  #cumulative { height: 180px; }
+  .monthly { height: 200px; }
+  .panel .note { font-size: 9px; margin-top: 10px; }
+
+  /* Bar rows — tighter columns, label wraps */
+  .bar-row { grid-template-columns: 78px 1fr 56px; gap: 6px; margin-bottom: 6px; align-items: center; }
+  .bar-label { font-size: 10px; line-height: 1.2; }
+  .bar-label.small { font-size: 9px; }
+  .bar-value { font-size: 9px; }
+  .bar-track { height: 10px; }
+
+  /* Clickable bars — bigger touch target */
+  .bar-row.clickable { padding: 6px 4px; margin: 0 -4px 4px; min-height: 36px; }
+
+  /* Filter caption */
+  .filter-caption { font-size: 10px; padding: 10px 0 4px; }
+
+  /* Search box — touch-friendly */
+  #feat-search { padding: 12px 14px; font-size: 14px; border-radius: 10px; }
+
+  /* Latest features list — stacked layout */
+  .latest { padding: 16px 14px; border-radius: 10px; }
+  .latest h3 { font-size: 13px; margin-bottom: 12px; }
+  .feat-item { padding: 14px 12px; grid-template-columns: 1fr 18px; gap: 4px 10px; }
+  .feat-date { grid-column: 1; font-size: 10px; }
+  .feat-pub { grid-column: 1; font-size: 11px; }
+  .feat-title { grid-column: 1; font-size: 13px; line-height: 1.45; -webkit-line-clamp: 3; }
+  .feat-arrow { grid-column: 2; grid-row: 1 / span 3; align-self: center; font-size: 16px; }
+
+  /* Footer */
+  .footer { flex-direction: column; gap: 4px; padding: 12px 4px; font-size: 9px; }
+
   body:not(.dynamic-loaded) .toolbar,
   body:not(.dynamic-loaded) #empty { display: none; }
   body:not(.dynamic-loaded) .header { border-radius: 14px; margin-bottom: 0; }
@@ -340,6 +388,17 @@ body::after {
   body.can-pick-file:not(.dynamic-loaded) .mobile-file-action { display: block; }
   body.dynamic-loaded .static-mobile { display: none; }
 }
+
+/* Extra-small phones */
+@media (max-width: 380px) {
+  .header h1 { font-size: 15px; }
+  .recent { grid-template-columns: repeat(2, 1fr); }
+  .tile.big .num { font-size: 38px; }
+  .bar-row { grid-template-columns: 70px 1fr 48px; }
+  .bar-label { font-size: 9px; }
+  .feat-title { font-size: 12px; }
+}
+
 @media (min-width: 641px) {
   body { overflow-x: auto; }
   .wrap { min-width: 1180px; }
@@ -1321,69 +1380,4 @@ function render(rows, file) {
     const days = Math.max(1, Math.floor((today0 - first) / 86400000) + 1);
     const avg = unique.length / days;
     $('kpi-avg-day').textContent = avg.toFixed(2);
-    const firstNice = first.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-    $('kpi-avg-day-label').innerHTML = `avg features / day<br><span style="font-size:10px;color:#9CA3AF">since ${firstNice} · ${days} days</span>`;
-  } else {
-    $('kpi-avg-day').textContent = '—';
-  }
-
-  $('meta-line').textContent = `${minDate} to ${maxDate}  |  loaded from ${file.name}  |  refreshed ${dateStr} ${now.toTimeString().slice(0,5)}`;
-  $('footer-generated').textContent = `Last refreshed: ${now.toLocaleString()}`;
-  $('footer-source').textContent = USING_PERSISTENT_FILE ? `Source: ${file.name} (live read)` : `Source: ${file.name} (selected on this device)`;
-
-  // Show dashboard (use 'block' explicitly — empty string falls back to CSS default which is 'none')
-  document.body.classList.add('dynamic-loaded');
-  $('empty').style.display = 'none';
-  $('dashboard').style.display = 'block';
-}
-
-// ===== Bootstrap on load =====
-try { initMobileSnapshotChart(); } catch (e) { console.warn('Mobile chart init failed:', e); }
-try { setupAccessMode(); } catch (e) { console.warn('Access mode init failed:', e); }
-$('btn-pick').onclick = pickFile;
-$('file-input').onchange = async e => {
-  const file = e.target.files && e.target.files[0];
-  if (file) await processFile(file, { persistentHandle: false });
-};
-const mobilePick = $('mobile-pick');
-if (mobilePick) mobilePick.onclick = pickFileFallback;
-$('btn-refresh').onclick = async () => {
-  if (USING_PERSISTENT_FILE) {
-    const h = await getHandle().catch(() => null);
-    if (h && h.queryPermission) {
-      await loadFromHandle(h);
-      return;
-    }
-  }
-  await pickFileFallback();
-};
-$('btn-disconnect').onclick = async () => {
-  await clearHandle().catch(() => {});
-  USING_PERSISTENT_FILE = false;
-  document.body.classList.remove('dynamic-loaded');
-  const input = $('file-input');
-  if (input) input.value = '';
-  $('empty').style.display = 'block';
-  $('dashboard').style.display = 'none';
-  $('btn-refresh').style.display = 'none';
-  $('btn-disconnect').style.display = 'none';
-  setupAccessMode();
-  setStatus('Disconnected. Click Connect to choose a file again.');
-};
-
-(async () => {
-  if (renderEmbeddedSnapshot()) return;
-  if (!HAS_PERSISTENT_FILE_PICKER) return;
-  try {
-    const h = await getHandle();
-    if (h && h.queryPermission) {
-      setStatus('Loading from saved file…');
-      await loadFromHandle(h);
-    }
-  } catch (e) {
-    console.warn('Could not auto-load:', e);
-  }
-})();
-</script>
-</body>
-</html>
+    const 
