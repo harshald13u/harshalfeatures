@@ -516,46 +516,6 @@ body::after {
   .static-mobile { display: none !important; }
 }
 .static-mobile { display: none !important; }
-/* Quote library */
-.quotes-section { background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-                  border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.25);
-                  padding: 22px; margin-top: 16px; }
-.quotes-section h3 { font-size: 13px; font-weight: 700; color: var(--txt); margin-bottom: 12px;
-                     display: flex; align-items: center; gap: 8px; }
-.quotes-section h3::before { content: ''; display: inline-block; width: 4px; height: 16px;
-                             background: var(--gold); border-radius: 2px; box-shadow: 0 0 10px var(--gold); }
-.quotes-section h3 .h-count { font-size: 10px; font-weight: 500; color: var(--txt-mut);
-                              background: rgba(255,255,255,0.07); padding: 2px 8px; border-radius: 10px; }
-#quote-search { width: 100%; box-sizing: border-box; padding: 10px 14px; margin-bottom: 14px;
-                border: 1px solid var(--line); border-radius: 8px; font-size: 13px; color: var(--txt);
-                background: rgba(255,255,255,0.04); outline: none; }
-#quote-search:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(229,168,46,0.18); }
-.quote-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
-.quote-card { background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-              border: 1px solid var(--line); border-radius: 12px; padding: 22px 18px 16px;
-              position: relative; transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
-              text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 12px; }
-.quote-card:hover { transform: translateY(-3px);
-                    box-shadow: 0 8px 24px rgba(229,168,46,0.20);
-                    border-color: rgba(229,168,46,0.4); }
-.quote-mark { position: absolute; top: 4px; left: 12px; font-size: 56px; line-height: 1;
-              color: var(--gold); opacity: 0.35; font-family: Georgia, serif; pointer-events: none; }
-.quote-text { font-family: Georgia, 'Times New Roman', serif; font-style: italic;
-              font-size: 14px; color: var(--txt); line-height: 1.55; padding-top: 14px; flex: 1; }
-.quote-meta { display: flex; justify-content: space-between; align-items: center;
-              border-top: 1px solid var(--line-soft); padding-top: 10px; gap: 8px; }
-.quote-meta-left { display: flex; align-items: center; gap: 6px; min-width: 0; }
-.quote-meta-pub { font-size: 11px; color: var(--gold); font-weight: 700;
-                  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.quote-meta-date { font-size: 10px; color: var(--txt-mut); white-space: nowrap; }
-.quote-empty { padding: 24px; text-align: center; color: var(--txt-faint); font-size: 12px;
-               grid-column: 1 / -1; }
-@media (max-width: 640px) {
-  .quotes-section { padding: 16px 14px; }
-  .quote-grid { grid-template-columns: 1fr; gap: 10px; }
-  .quote-card { padding: 20px 16px 14px; }
-  .quote-text { font-size: 13px; }
-}
 </style>
 </head>
 <body>
@@ -753,13 +713,6 @@ body::after {
       <h3>Latest features <span class="h-count" id="latest-window">all time</span></h3>
       <input type="text" id="feat-search" placeholder="🔍  Search all features by keyword, publication or language…" autocomplete="off" />
       <div class="feat-list" id="latest-list"></div>
-    </div>
-
-    
-    <div class="quotes-section" id="quotes-section">
-      <h3>Quote library <span class="h-count" id="quote-count">21 verified quotes</span></h3>
-      <input type="text" id="quote-search" placeholder="🔍  Search quotes, publications, or stocks…" autocomplete="off">
-      <div class="quote-grid" id="quote-grid"></div>
     </div>
     <div class="footer">
       <div id="footer-source">Source: live read from WhatsApp_Features_Articles.xlsx</div>
@@ -1617,45 +1570,6 @@ function render(rows, file) {
   $('dashboard').style.display = 'block';
 }
 
-
-// ===== Quote Library =====
-const QUOTES_DATA = [{"d":"2026-05-27","p":"Business Today","h":"Stock Market LIVE: Sensex up 100 pts, Nifty tops 23900; CG Power at 52-wk high","q":"CG Power and Industrial Solutions' move to a 52-week high is being driven by fundamentals, not just market enthusiasm. The power systems business is in a supportive cycle, with transmission, distribution, industrial capex and transformer demand giving the company strong operating visibility.","l":"https://www.business-standard.com/markets/news/stock-market-live-may-27-nse-bse-sensex-today-nifty-gift-nifty-us-iran-tension-ipo-q4-results-126052700097_1.html"},{"d":"2026-05-27","p":"Business Today","h":"Gold, silver prices rise again","q":"Gold ETFs remain a more stable allocation among precious metals because they act as macroeconomic insurance and portfolio protection. Gold benefits from central-bank buying, currency uncertainty, inflation risks and periods when confidence in financial assets weakens.","l":"https://www.businesstoday.in/personal-finance/investment/story/gold-silver-prices-rise-again-should-investors-stay-invested-in-etfs-or-book-profits-533577-2026-05-27"},{"d":"2026-05-27","p":"Business Today","h":"Gold, silver prices rise again","q":"Silver ETFs are a higher-beta version of the precious-metals trade because they tend to move more sharply when liquidity improves and investor risk appetite rises.","l":"https://www.businesstoday.in/personal-finance/investment/story/gold-silver-prices-rise-again-should-investors-stay-invested-in-etfs-or-book-profits-533577-2026-05-27"},{"d":"2026-05-27","p":"Business Today","h":"Gold, silver prices rise again","q":"The rupee trading near record lows against the US dollar provides an additional boost to domestic gold prices even when international prices pause.","l":"https://www.businesstoday.in/personal-finance/investment/story/gold-silver-prices-rise-again-should-investors-stay-invested-in-etfs-or-book-profits-533577-2026-05-27"},{"d":"2026-05-26","p":"Economic Times","h":"HFCL shares rally 22% in just 5 sessions; here's what technical charts indicate","q":"HFCL is a strong chart, not a low-risk chart.","l":"https://economictimes.indiatimes.com/markets/stocks/news/hfcl-shares-rally-22-in-just-5-sessions-heres-what-technical-charts-indicate/articleshow/131323052.cms?from=mdr"},{"d":"2026-05-25","p":"Bizz Buzz","h":"HFCL shares skyrocket, rally 172% in less than four months","q":"HFCL has broken above its previous 52-week high zone, signalling strong bullish sentiment. The stock has transitioned from a base breakout into a momentum extension.","l":"https://www.bizzbuzz.news/markets/stock-market/hfcl-shares-skyrocket-rally-172-in-less-than-four-months-1391947"},{"d":"2026-05-25","p":"News Directory 3","h":"HFCL Stock Surges Past 52-Week High: Momentum Shift or Short-Term Rally?","q":"The stock has transitioned from a 'base breakout' into a 'momentum extension'.","l":"https://www.newsdirectory3.com/hfcl-stock-surges-past-52-week-high-momentum-shift-or-short-term-rally/"},{"d":"2026-05-15","p":"The Daily Pioneer","h":"Rupee Falls Past 96 Against Dollar To Hit Record Low","q":"The rupee's fall reflects a repricing of India's macroeconomic risk premium due to multiple global pressures.","l":"https://dailypioneer.com/news/rupee-falls-past-96-against-dollar-to-hit-record-low"},{"d":"2026-05-14","p":"Business Today","h":"Robert Kiyosaki says silver is a top investment in 2026; Is it time to increase exposure?","q":"Silver is benefiting from simultaneous monetary and industrial demand.","l":"https://www.businesstoday.in/personal-finance/investment/story/robert-kiyosaki-says-silver-is-a-top-investment-in-2026-is-it-time-to-increase-exposure-531365-2026-05-14"},{"d":"2026-04-30","p":"Outlook Business","h":"Vedanta's 62% Fall Explained: Brokerages Call It Value Shift, Not Loss","q":"Investors should not interpret the lower stock price as an immediate buying opportunity. Instead, the focus should be on evaluating the intrinsic value of the residual business, factoring in debt levels, earnings visibility, and dividend prospects.","l":"https://www.outlookbusiness.com/markets/vedantas-62-fall-explained-brokerages-call-it-value-shift-not-loss"},{"d":"2026-04-30","p":"BigGo Finance","h":"Vedanta Begins Trading Ex-Demerger in Landmark Five-Way Split","q":"The Special Pre-Open Session on April 30 is the moment Vedanta's three-year-old demerger story finally meets the market's price-discovery machinery.","l":"https://finance.biggo.com/news/tLiC3J0BpwxG186ND3WP"},{"d":"2026-04-18","p":"Business Today","h":"Gold surges Rs 5,000 in 2 weeks: Should you buy on Akshaya Tritiya for gains by Dhanteras?","q":"Investors looking to benefit by Dhanteras should start building exposure now rather than waiting for a sharp correction that may never come.","l":"https://www.businesstoday.in/personal-finance/investment/story/gold-surges-rs-5000-in-2-weeks-should-you-buy-on-akshaya-tritiya-for-gains-by-dhanteras-526316-2026-04-18"},{"d":"2026-04-08","p":"Business Today","h":"BT Explainer: Why SEBI gave more time to IPO-bound companies","q":"It helps preserve the IPO pipeline, lowers compliance costs and allows companies to time their fundraises more strategically in line with market conditions.","l":"https://www.businesstoday.in/markets/ipo-corner/story/bt-explainer-why-sebi-gave-more-time-to-ipo-bound-companies-check-upcoming-issues-524607-2026-04-08"},{"d":"2026-04-02","p":"Business Today","h":"Gold, silver crash drags ETFs down","q":"The recent correction in gold ETF-linked stocks appears sentiment-driven rather than fundamental.","l":"https://www.businesstoday.in/personal-finance/investment/story/gold-silver-crash-drags-etfs-down-heres-how-gold-silver-etf-prices-work-523815-2026-04-02"},{"d":"2026-03-27","p":"Business Today","h":"SpaceX IPO: Why Elon Musk's 'universal' dream may trigger space-tech investing cycle","q":"SpaceX is an extraordinary company, and Elon Musk appears to be eyeing a shift toward going 'universal' after the world has already gone 'global'. SpaceX will be the first company from this sector to list publicly and may unlock doors for potential interest in space-tech related investments.","l":"https://www.businesstoday.in/markets/ipo-corner/story/spacex-ipo-why-elon-musks-universal-dream-may-trigger-space-tech-investing-cycle-522707-2026-03-27"},{"d":"2026-03-26","p":"Business Today","h":"Zerodha ups trading fee, others may follow; discount brokers going Eternal way?","q":"The fee hikes from Zerodha, with expectations of others following the suit, comes after a meaningful fall in F&O volumes, which has dented the business of discount brokers.","l":"https://www.businesstoday.in/markets/stocks/story/explainer-zerodha-ups-trading-fee-others-may-follow-discount-brokers-going-eternal-way-522486-2026-03-26"},{"d":"2026-03-03","p":"Business Today","h":"Iran-US War impact: Latest GMPs hint at weak listing for PNGS Reva, SEDEMAC Omnitech IPO","q":"Investors are no longer willing to reward IPOs purely on growth narratives or sector positioning. Earnings visibility, margin sustainability, order book strength and realistic pricing are becoming critical filters.","l":"https://www.businesstoday.in/markets/ipo-corner/story/iran-us-war-impact-latest-gmps-hint-weak-listing-for-pngs-reva-sedemac-omnitech-ipo-518968-2026-03-03"},{"d":"2026-02-25","p":"Business Today","h":"Silver price today: Silver jumps 2% on MCX, surges above Rs 2.65 lakh","q":"Silver is entering a sensitive phase where physical fundamentals and paper positioning are sharply out of sync.","l":"https://www.businesstoday.in/personal-finance/investment/story/silver-price-today-silver-jumps-2-on-mcx-surges-above-rs-265-lakh-key-resistance-at-rs-272-lakh-517915-2026-02-25"},{"d":"2026-02-24","p":"Business Today","h":"Anthropic AI tool buzz: Are cybersecurity stocks next after IT rout?","q":"Quick Heal Technologies remains one of the few product-led cybersecurity companies on the mainboard, while SME-listed TAC InfoSec has positioned itself as a niche specialist.","l":"https://www.businesstoday.in/markets/stocks/story/anthropic-ai-tool-buzz-are-cybersecurity-stocks-next-after-it-rout-analysts-views-amid-global-cues-517775-2026-02-24"},{"d":"2026-02-17","p":"Business Today","h":"Infy share price: AI boon or bane for Infosys?","q":"The collaboration between Infosys and Anthropic signals a decisive shift in the Indian IT sector's AI strategy — from experimentation to enterprise-scale deployment.","l":"https://www.businesstoday.in/markets/stocks/story/infy-share-price-ai-boon-or-bane-for-infosys-whats-ahead-after-anthropic-collaboration-516430-2026-02-17"},{"d":"2026-01-08","p":"Business Upturn","h":"Why are Hindustan Zinc shares falling 5% today?","q":"The recent softness across metal stocks reflects paper-market cooling and short-term unwinding. Commodity cycles rarely move in straight lines and often see sharp pauses after steep moves.","l":"https://www.businessupturn.com/finance/stock-market/why-are-hindustan-zinc-shares-falling-5-today-heres-whats-dragging-the-stock/"}];
-function renderQuotes(term) {
-  const grid = document.getElementById('quote-grid');
-  if (!grid) return;
-  const t = (term || '').trim().toLowerCase();
-  const filtered = QUOTES_DATA.filter(q => !t ||
-    q.q.toLowerCase().includes(t) ||
-    q.p.toLowerCase().includes(t) ||
-    q.h.toLowerCase().includes(t));
-  document.getElementById('quote-count').textContent = `${filtered.length} of ${QUOTES_DATA.length} verified quotes`;
-  if (!filtered.length) {
-    grid.innerHTML = '<div class="quote-empty">No quotes match your search.</div>';
-    return;
-  }
-  grid.innerHTML = filtered.map(q => {
-    const d = new Date(q.d + 'T00:00:00Z');
-    const nice = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-    return `<a class="quote-card" href="${escapeHtml(q.l)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(q.h)}">
-      <span class="quote-mark">"</span>
-      <div class="quote-text">${escapeHtml(q.q)}</div>
-      <div class="quote-meta">
-        <div class="quote-meta-left"><span class="quote-meta-pub">${escapeHtml(q.p)}</span></div>
-        <span class="quote-meta-date">${nice}</span>
-      </div>
-    </a>`;
-  }).join('');
-}
-document.addEventListener('DOMContentLoaded', () => {
-  const inp = document.getElementById('quote-search');
-  if (inp) {
-    let t; inp.addEventListener('input', e => {
-      clearTimeout(t); t = setTimeout(() => renderQuotes(e.target.value), 120);
-    });
-  }
-  // initial render once DOM exists (and again after dashboard renders, in case fonts shift)
-  renderQuotes('');
-});
 
 // ===== Bootstrap on load =====
 try { initMobileSnapshotChart(); } catch (e) { console.warn('Mobile chart init failed:', e); }
