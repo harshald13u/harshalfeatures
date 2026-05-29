@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- mount-sync-test marker -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1347,4 +1348,179 @@ function renderLatestEntry(unique) {
       if (DRILL.type === 'pub')   return (r.Publication || 'Unknown') === DRILL.value;
       return true;
     });
-    const tlabel = DRILL.typ
+    const tlabel = DRILL.type === 'topic' ? 'Topic' : DRILL.type === 'lang' ? 'Language' : 'Publication';
+    $('latest-window').innerHTML = `${tlabel}: ${escapeHtml(DRILL.value)} — ${sortedByDate.length} article${sortedByDate.length===1?'':'s'} &nbsp;<span id="drill-clear">✕ clear</span>`;
+  } else {
+    $('latest-window').textContent = windowLabel(CURRENT_WINDOW);
+  }
+  if (!sortedByDate.length) {
+    $('latest-list').innerHTML = `<div class="feat-empty">${term || drillActive ? 'No matching features.' : 'No entries in this window.'}</div>`;
+    return;
+  }
+  const top5 = (term || drillActive) ? sortedByDate.slice(0, 300) : sortedByDate.slice(0, 10);
+  $('latest-list').innerHTML = top5.map((r, i) => {
+    const url = r.Link || '';
+    const heading = r['Heading Of The Article'] || '';
+    const pub = r.Publication || '';
+    const date = fmtDateNice(r.Date);
+    const isLink = typeof url === 'string' && url.toLowerCase().startsWith('http');
+    const tag = isLink ? 'a' : 'div';
+    const attrs = isLink
+      ? `href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(url)}"`
+      : 'title="(no link)"';
+    const fav = favIconFor(url, pub);
+    const favHtml = fav
+      ? `<img class="feat-favicon" src="${escapeHtml(fav)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'feat-favicon fallback',textContent:'${escapeHtml(pub.charAt(0).toUpperCase())}'}))">`
+      : `<span class="feat-favicon fallback">${escapeHtml(pub.charAt(0).toUpperCase())}</span>`;
+    return `<${tag} class="feat-item${i === 0 ? ' first' : ''}" ${attrs}>
+      <div class="feat-date">${date}</div>
+      <div class="feat-pub">${favHtml}<span class="feat-pub-name">${escapeHtml(pub)}</span></div>
+      <div class="feat-title">${escapeHtml(heading)}</div>
+      <div class="feat-arrow">${isLink ? '→' : ''}</div>
+    </${tag}>`;
+  }).join('');
+}
+
+function favIconFor(url, pub) {
+  let host = '';
+  if (url && typeof url === 'string' && url.toLowerCase().startsWith('http')) {
+    try { host = new URL(url).hostname.toLowerCase().replace(/^www\.|^m\.|^amp\./, ''); } catch (_) {}
+  }
+  // Manual overrides for publications whose URL doesn't represent the brand well
+  const overrides = {
+    'Bizz Buzz': 'bizzbuzz.news',
+    'Goodreturns Hindi': 'goodreturns.in',
+    'News Directory 3': 'newsdirectory3.com',
+    'Multibagg AI': 'multibagg.ai',
+    'Hindi Economic Times': 'hindi.economictimes.com',
+    'Live Mint': 'livemint.com',
+    'Economic Times': 'economictimes.indiatimes.com',
+    'Business Today': 'businesstoday.in',
+    'Business Standard': 'business-standard.com',
+    'NDTV Profit': 'ndtvprofit.com',
+    'Moneycontrol': 'moneycontrol.com',
+    'Sun Media': 'sunmedia.tw',
+    'NetDania Mint': 'netdania.com',
+    'Goodreturns': 'goodreturns.in',
+    'Outlook Business': 'outlookbusiness.com',
+    'Daily Pioneer': 'dailypioneer.com',
+    'BusinessWorld': 'businessworld.in',
+    'News18': 'news18.com',
+    'IndiaIPO': 'indiaipo.in',
+    'Live Hindustan': 'livehindustan.com',
+    'Times Now': 'timesnownews.com',
+    'Hindu Business Line': 'thehindubusinessline.com',
+    'CNBC TV18 Hindi': 'hindi.cnbctv18.com'
+  };
+  if (pub && overrides[pub]) host = overrides[pub];
+  if (!host) return '';
+  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64`;
+}
+
+function render(rows, file) {
+  // Dedupe by canonical link
+  const seen = new Set();
+  const unique = [];
+  for (const r of rows) {
+    const c = canonical(r.Link);
+    if (c && !seen.has(c)) {
+      seen.add(c);
+      unique.push(r);
+    }
+  }
+  const dupes = rows.length - unique.length;
+
+  UNIQUE_ROWS = unique;
+  RAW_ROWS = rows;
+  CURRENT_FILE = file;
+
+  $('kpi-unique').textContent = unique.length;
+  $('kpi-sub').textContent = `${rows.length} raw rows; ${dupes} repeats collapsed`;
+  $('kpi-master').textContent = rows.length;
+
+  renderRecentTiles();
+  renderPanels();
+
+  // Compute date range for meta line
+  const sortedByDate = [...unique].filter(r => r.Date instanceof Date && !isNaN(r.Date))
+                                  .sort((a, b) => b.Date - a.Date);
+
+  // Meta info
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  const minDate = sortedByDate.length ? fmtDate(sortedByDate[sortedByDate.length - 1].Date) : '';
+  const maxDate = sortedByDate.length ? fmtDate(sortedByDate[0].Date) : '';
+
+  // Average features per day since day 1
+  if (sortedByDate.length) {
+    const first = sortedByDate[sortedByDate.length - 1].Date;
+    const today0 = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    const days = Math.max(1, Math.floor((today0 - first) / 86400000) + 1);
+    const avg = unique.length / days;
+    $('kpi-avg-day').textContent = avg.toFixed(2);
+    const firstNice = first.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    $('kpi-avg-day-label').innerHTML = `avg features / day<br><span style="font-size:10px;color:#9CA3AF">since ${firstNice} · ${days} days</span>`;
+  } else {
+    $('kpi-avg-day').textContent = '—';
+  }
+
+  $('meta-line').textContent = `${minDate} to ${maxDate}  |  loaded from ${file.name}  |  refreshed ${dateStr} ${now.toTimeString().slice(0,5)}`;
+  $('footer-generated').textContent = `Last refreshed: ${now.toLocaleString()}`;
+  $('footer-source').textContent = USING_PERSISTENT_FILE ? `Source: ${file.name} (live read)` : `Source: ${file.name} (selected on this device)`;
+
+  // Show dashboard
+  document.body.classList.add('dynamic-loaded');
+  $('empty').style.display = 'none';
+  $('dashboard').style.display = 'block';
+}
+
+// ===== Bootstrap on load =====
+try { initMobileSnapshotChart(); } catch (e) { console.warn('Mobile chart init failed:', e); }
+try { setupAccessMode(); } catch (e) { console.warn('Access mode init failed:', e); }
+$('btn-pick').onclick = pickFile;
+$('file-input').onchange = async e => {
+  const file = e.target.files && e.target.files[0];
+  if (file) await processFile(file, { persistentHandle: false });
+};
+const mobilePick = $('mobile-pick');
+if (mobilePick) mobilePick.onclick = pickFileFallback;
+$('btn-refresh').onclick = async () => {
+  if (USING_PERSISTENT_FILE) {
+    const h = await getHandle().catch(() => null);
+    if (h && h.queryPermission) {
+      await loadFromHandle(h);
+      return;
+    }
+  }
+  await pickFileFallback();
+};
+$('btn-disconnect').onclick = async () => {
+  await clearHandle().catch(() => {});
+  USING_PERSISTENT_FILE = false;
+  document.body.classList.remove('dynamic-loaded');
+  const input = $('file-input');
+  if (input) input.value = '';
+  $('empty').style.display = 'block';
+  $('dashboard').style.display = 'none';
+  $('btn-refresh').style.display = 'none';
+  $('btn-disconnect').style.display = 'none';
+  setupAccessMode();
+  setStatus('Disconnected. Click Connect to choose a file again.');
+};
+
+(async () => {
+  if (renderEmbeddedSnapshot()) return;
+  if (!HAS_PERSISTENT_FILE_PICKER) return;
+  try {
+    const h = await getHandle();
+    if (h && h.queryPermission) {
+      setStatus('Loading from saved file…');
+      await loadFromHandle(h);
+    }
+  } catch (e) {
+    console.warn('Could not auto-load:', e);
+  }
+})();
+</script>
+</body>
+</html>
