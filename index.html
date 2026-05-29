@@ -1482,7 +1482,7 @@ function render(rows, file) {
     $('kpi-avg-day').textContent = '—';
   }
 
-  $('meta-line').textContent = `${minDate} to ${maxDate}  |  loaded from ${file.name}  |  refreshed ${dateStr} ${now.toTimeString().slice(0,5)}`;
+  $('meta-line').textContent = `${minDate} to ${maxDate}`;
   $('footer-generated').textContent = `Last refreshed: ${now.toLocaleString()}`;
   $('footer-source').textContent = USING_PERSISTENT_FILE ? `Source: ${file.name} (live read)` : `Source: ${file.name} (selected on this device)`;
 
@@ -1542,3 +1542,4 @@ $('btn-disconnect').onclick = async () => {
 </script>
 </body>
 </html>
+                                                                                       
