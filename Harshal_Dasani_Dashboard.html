@@ -143,7 +143,7 @@ body::after {
 .empty-state button { margin-top: 16px; padding: 12px 24px; background: linear-gradient(135deg, var(--blue), #4076E0);
                       color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;
                       box-shadow: 0 2px 14px rgba(91,155,255,0.35); }
-.kpis { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 20px 0; max-width: 900px; }
+.kpis { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 20px 0; max-width: none; }
 .tile { background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
         border: 1px solid var(--line); border-radius: 12px; padding: 18px;
         position: relative; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
@@ -412,6 +412,13 @@ body::after {
   /* Footer */
   .footer { flex-direction: column; gap: 4px; padding: 12px 4px; font-size: 9px; }
 
+  /* Audit fixes: prevent SVG fallback overflow + widen bar value column */
+  .cum-svg { height: 180px; }
+  .bar-row { grid-template-columns: 92px 1fr 64px; }
+  #feat-search { min-height: 44px; padding: 14px 14px; }
+  .header-meta-bar { padding: 8px 14px; font-size: 10px; }
+  .header-meta-bar .meta-value { font-size: 10px; }
+
   body:not(.dynamic-loaded) .toolbar,
   body:not(.dynamic-loaded) #empty { display: none; }
   body:not(.dynamic-loaded) .header { border-radius: 14px; margin-bottom: 0; }
@@ -431,7 +438,70 @@ body::after {
   .feat-title { font-size: 12px; }
 }
 
-@media (min-width: 641px) {
+/* TABLET — 641px..1180px (iPad portrait/landscape, Android tablets, Surface Go) */
+@media (min-width: 641px) and (max-width: 1180px) {
+  body { overflow-x: hidden; padding: 18px; background-attachment: scroll; }
+  .wrap { min-width: 0; max-width: 100%; }
+  .static-mobile { display: none !important; }
+
+  .header { padding: 20px 22px 18px; gap: 18px; }
+  .header h1 { font-size: 26px; }
+  .header-subtitle { font-size: 12px; }
+  .header-meta-bar { padding: 10px 16px; font-size: 10px; }
+  .header-meta-bar .meta-label { font-size: 9px; }
+
+  .toolbar { padding: 12px 16px; }
+  .toolbar button { padding: 10px 14px; font-size: 12px; min-height: 40px; }
+
+  .kpis { grid-template-columns: 1fr 1fr 1fr; gap: 10px; max-width: none; padding: 16px 0; }
+  .tile { padding: 16px; }
+  .tile.big { gap: 14px; padding: 16px; }
+  .tile.big .num { font-size: 46px; }
+  .tile.big .info .label { font-size: 12px; }
+  .tile.kpi .num { font-size: 26px; }
+  .tile.kpi .label { font-size: 10px; }
+
+  .recent { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px 0 0; }
+  .recent .r-tile { padding: 12px 12px; }
+  .recent .r-tile .r-num { font-size: 20px; }
+  .recent .r-tile .r-label { font-size: 9px; letter-spacing: 0.3px; }
+  .recent .r-tile .r-sub { font-size: 9px; }
+
+  .panels { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .panels > .panel:nth-child(3) { grid-column: 1 / -1; }
+  .panel { padding: 16px; }
+  .panel h3 { font-size: 12px; margin-bottom: 12px; }
+
+  .bar-row { grid-template-columns: 70px 1fr 64px; gap: 8px; margin-bottom: 6px; }
+  .bar-label { font-size: 10px; }
+  .bar-label.small { font-size: 9px; }
+  .bar-value { font-size: 9px; }
+  .bar-track { height: 11px; }
+  .bar-row.clickable { min-height: 40px; padding: 6px 5px; margin: 0 -5px 5px; }
+
+  .monthly { height: 210px; }
+  #cumulative { height: 200px; }
+  .cum-svg { height: 200px; }
+
+  .filter-caption { font-size: 10px; padding: 10px 0 4px; }
+
+  .latest { padding: 16px 18px; }
+  .feat-item { grid-template-columns: 80px 110px 1fr 16px; gap: 12px; padding: 12px 12px; }
+  .feat-date { font-size: 10px; }
+  .feat-pub { font-size: 10px; }
+  .feat-title { font-size: 12px; }
+
+  #feat-search { padding: 11px 14px; font-size: 13px; }
+  .footer { padding: 14px 4px; font-size: 9px; }
+}
+
+/* Extra: at narrower tablets (<=820px) stack panels to single column for breathing room */
+@media (min-width: 641px) and (max-width: 820px) {
+  .panels { grid-template-columns: 1fr; }
+  .panels > .panel:nth-child(3) { grid-column: auto; }
+}
+
+@media (min-width: 1181px) {
   body { overflow-x: auto; }
   .wrap { min-width: 1180px; }
   .static-mobile { display: none !important; }
