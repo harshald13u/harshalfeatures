@@ -143,7 +143,7 @@ body::after {
 .empty-state button { margin-top: 16px; padding: 12px 24px; background: linear-gradient(135deg, var(--blue), #4076E0);
                       color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;
                       box-shadow: 0 2px 14px rgba(91,155,255,0.35); }
-.kpis { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 20px 0; max-width: none; }
+.kpis { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; padding: 20px 0; max-width: none; }
 .tile { background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
         border: 1px solid var(--line); border-radius: 12px; padding: 18px;
         position: relative; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
@@ -453,7 +453,7 @@ body::after {
   .toolbar { padding: 12px 16px; }
   .toolbar button { padding: 10px 14px; font-size: 12px; min-height: 40px; }
 
-  .kpis { grid-template-columns: 1fr 1fr 1fr; gap: 10px; max-width: none; padding: 16px 0; }
+  .kpis { grid-template-columns: 2fr 1fr; gap: 10px; max-width: none; padding: 16px 0; }
   .tile { padding: 16px; }
   .tile.big { gap: 14px; padding: 16px; }
   .tile.big .num { font-size: 46px; }
@@ -665,7 +665,6 @@ body::after {
           <div class="sub" id="kpi-sub">—</div>
         </div>
       </div>
-      <div class="tile kpi blue"><div class="num" id="kpi-master">—</div><div class="label">total rows in Excel</div></div>
       <div class="tile kpi teal"><div class="num" id="kpi-avg-day">—</div><div class="label" id="kpi-avg-day-label">avg features / day</div></div>
     </div>
 
@@ -1526,7 +1525,6 @@ function render(rows, file) {
 
   $('kpi-unique').textContent = unique.length;
   $('kpi-sub').textContent = `${rows.length} raw rows; ${dupes} repeats collapsed`;
-  $('kpi-master').textContent = rows.length;
 
   renderRecentTiles();
   renderPanels();
