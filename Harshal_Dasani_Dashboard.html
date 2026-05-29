@@ -239,12 +239,16 @@ body::after {
 .feat-item.first:hover { background: rgba(45,212,191,0.18); }
 .feat-date { font-size: 11px; color: var(--txt-mut); font-weight: 500; }
 .feat-pub-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-.feat-favicon { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0;
-                background: rgba(255,255,255,0.08); object-fit: contain; padding: 1px;
-                box-shadow: 0 0 0 1px rgba(255,255,255,0.08); }
-.feat-favicon.fallback { display: inline-flex; align-items: center; justify-content: center;
-                         font-size: 10px; font-weight: 700; color: var(--txt);
-                         background: linear-gradient(135deg, var(--blue), var(--purple)); padding: 0; }
+.feat-favicon { display: inline-flex; align-items: center; justify-content: center;
+                width: 22px; height: 22px; border-radius: 5px; flex-shrink: 0;
+                font-size: 11px; font-weight: 800; color: #fff;
+                background-color: #2D7AD9;
+                background-image: linear-gradient(135deg, #5B9BFF, #A78BFA);
+                background-position: center; background-size: 80% 80%; background-repeat: no-repeat;
+                box-shadow: 0 0 0 1px rgba(255,255,255,0.12); text-transform: uppercase;
+                letter-spacing: 0; }
+.feat-favicon[data-loaded="1"] { background-image: var(--icon-url); background-size: 80% 80%;
+                                  color: transparent; background-color: rgba(255,255,255,0.06); }
 .feat-pub { font-size: 11px; color: var(--teal); font-weight: 600; white-space: nowrap;
             display: flex; align-items: center; gap: 6px;
 
@@ -1369,9 +1373,11 @@ function renderLatestEntry(unique) {
       ? `href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(url)}"`
       : 'title="(no link)"';
     const fav = favIconFor(url, pub);
+    const letter = escapeHtml((pub || '?').charAt(0).toUpperCase());
+    // Render letter badge by default; image preloads in background and "upgrades" the badge on success.
     const favHtml = fav
-      ? `<img class="feat-favicon" src="${escapeHtml(fav)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'feat-favicon fallback',textContent:'${escapeHtml(pub.charAt(0).toUpperCase())}'}))">`
-      : `<span class="feat-favicon fallback">${escapeHtml(pub.charAt(0).toUpperCase())}</span>`;
+      ? `<span class="feat-favicon" data-fav="${escapeHtml(fav)}">${letter}</span>`
+      : `<span class="feat-favicon">${letter}</span>`;
     return `<${tag} class="feat-item${i === 0 ? ' first' : ''}" ${attrs}>
       <div class="feat-date">${date}</div>
       <div class="feat-pub">${favHtml}<span class="feat-pub-name">${escapeHtml(pub)}</span></div>
@@ -1379,6 +1385,18 @@ function renderLatestEntry(unique) {
       <div class="feat-arrow">${isLink ? '→' : ''}</div>
     </${tag}>`;
   }).join('');
+  // Preload favicons; on success, upgrade badge to show the icon
+  document.querySelectorAll('#latest-list .feat-favicon[data-fav]').forEach(el => {
+    const url = el.getAttribute('data-fav');
+    if (!url) return;
+    const img = new Image();
+    img.onload = () => {
+      el.style.setProperty('--icon-url', `url('${url}')`);
+      el.setAttribute('data-loaded', '1');
+    };
+    img.onerror = () => {}; // keep letter badge
+    img.src = url;
+  });
 }
 
 function favIconFor(url, pub) {
@@ -1498,29 +1516,3 @@ $('btn-disconnect').onclick = async () => {
   await clearHandle().catch(() => {});
   USING_PERSISTENT_FILE = false;
   document.body.classList.remove('dynamic-loaded');
-  const input = $('file-input');
-  if (input) input.value = '';
-  $('empty').style.display = 'block';
-  $('dashboard').style.display = 'none';
-  $('btn-refresh').style.display = 'none';
-  $('btn-disconnect').style.display = 'none';
-  setupAccessMode();
-  setStatus('Disconnected. Click Connect to choose a file again.');
-};
-
-(async () => {
-  if (renderEmbeddedSnapshot()) return;
-  if (!HAS_PERSISTENT_FILE_PICKER) return;
-  try {
-    const h = await getHandle();
-    if (h && h.queryPermission) {
-      setStatus('Loading from saved file…');
-      await loadFromHandle(h);
-    }
-  } catch (e) {
-    console.warn('Could not auto-load:', e);
-  }
-})();
-</script>
-</body>
-</html>
