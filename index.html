@@ -436,6 +436,7 @@ body::after {
   .wrap { min-width: 1180px; }
   .static-mobile { display: none !important; }
 }
+.static-mobile { display: none !important; }
 </style>
 </head>
 <body>
@@ -831,7 +832,8 @@ function embeddedRowsForRender() {
 }
 
 function shouldAutoRenderEmbeddedSnapshot() {
-  return window.matchMedia && window.matchMedia('(min-width: 641px)').matches;
+  // Always render the embedded snapshot — works on phone, tablet, and desktop.
+  return Array.isArray(EMBEDDED_SNAPSHOT_ROWS) && EMBEDDED_SNAPSHOT_ROWS.length > 0;
 }
 
 function renderEmbeddedSnapshot() {
@@ -1542,4 +1544,3 @@ $('btn-disconnect').onclick = async () => {
 </script>
 </body>
 </html>
-                                                                                       
