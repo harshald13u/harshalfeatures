@@ -78,6 +78,22 @@ body::after {
 .header-main { min-width: 0; text-align: center; flex: 1; }
 .header-main .header-kicker, .header-main h1, .header-main .meta { display: block; margin-left: auto; margin-right: auto; }
 .header { justify-content: center; }
+.header-meta-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+                   background: linear-gradient(135deg, rgba(30,22,70,0.7), rgba(14,12,38,0.7));
+                   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+                   border-left: 1px solid var(--line); border-right: 1px solid var(--line);
+                   padding: 10px 22px; font-size: 11px; color: var(--txt-mut); flex-wrap: wrap; }
+.header-meta-bar .meta-label { color: var(--txt-faint); margin-right: 6px; text-transform: uppercase;
+                               letter-spacing: 0.5px; font-size: 9px; font-weight: 700; }
+.header-meta-bar .meta-value { color: var(--txt); }
+.header-meta-left { flex: 1; min-width: 0; }
+.header-meta-right { flex-shrink: 0; }
+.header-meta-bar .live-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
+                              background: rgba(45,212,191,0.18); color: var(--teal); font-size: 10px; font-weight: 700;
+                              letter-spacing: 1px; text-transform: uppercase; border: 1px solid rgba(45,212,191,0.35); }
+.header-meta-bar .live-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
+                                      box-shadow: 0 0 8px var(--teal); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 .header-kicker { font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
                  color: var(--teal); margin-bottom: 10px; }
 .header h1 { font-size: 30px; font-weight: 850; margin-bottom: 5px; letter-spacing: 0; line-height: 1.08;
@@ -425,13 +441,11 @@ body::after {
       <div class="header-kicker">Media Intelligence Dashboard</div>
       <h1><span class="title-main">Harshal Dasani</span></h1>
       <div class="header-subtitle">Media Features · Consolidated Tracker</div>
-      <div class="meta" id="meta-line">Snapshot: 2025-04-15 to 2026-05-28</div>
     </div>
-    <div class="right header-side" id="access-copy">
-      <span class="live-pill">Snapshot Ready</span>
-      <span>Embedded Excel snapshot loads instantly.</span>
-      <span>Connect Excel to refresh from workbook.</span>
-    </div>
+  </div>
+  <div class="header-meta-bar">
+    <div class="header-meta-left"><span class="meta-label">Last updated</span><span class="meta-value" id="meta-line">—</span></div>
+    <div class="header-meta-right"><span class="live-pill">LIVE</span></div>
   </div>
   <div class="accent-strip"></div>
 
@@ -1333,26 +1347,4 @@ function renderLatestEntry(unique) {
       if (DRILL.type === 'pub')   return (r.Publication || 'Unknown') === DRILL.value;
       return true;
     });
-    const tlabel = DRILL.type === 'topic' ? 'Topic' : DRILL.type === 'lang' ? 'Language' : 'Publication';
-    $('latest-window').innerHTML = `${tlabel}: ${escapeHtml(DRILL.value)} — ${sortedByDate.length} article${sortedByDate.length===1?'':'s'} &nbsp;<span id="drill-clear">✕ clear</span>`;
-  } else {
-    $('latest-window').textContent = windowLabel(CURRENT_WINDOW);
-  }
-  if (!sortedByDate.length) {
-    $('latest-list').innerHTML = `<div class="feat-empty">${term || drillActive ? 'No matching features.' : 'No entries in this window.'}</div>`;
-    return;
-  }
-  const top5 = (term || drillActive) ? sortedByDate.slice(0, 300) : sortedByDate.slice(0, 10);
-  $('latest-list').innerHTML = top5.map((r, i) => {
-    const url = r.Link || '';
-    const heading = r['Heading Of The Article'] || '';
-    const pub = r.Publication || '';
-    const date = fmtDateNice(r.Date);
-    const isLink = typeof url === 'string' && url.toLowerCase().startsWith('http');
-    const tag = isLink ? 'a' : 'div';
-    const attrs = isLink
-      ? `href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(url)}"`
-      : 'title="(no link)"';
-    const fav = favIconFor(url, pub);
-    const favHtml = fav
-      ? `<img class="feat-favicon" src="${escapeHtml(fav)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'feat-favicon fallback',textContent:'${escapeHtml(p
+    const tlabel = DRILL.typ
