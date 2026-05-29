@@ -75,7 +75,9 @@ body::after {
                     linear-gradient(90deg, rgba(77,141,255,0.12), transparent 32%, transparent 68%, rgba(36,209,194,0.09));
                   opacity: 0.78; }
 .header-main, .header-side { position: relative; z-index: 1; }
-.header-main { min-width: 0; }
+.header-main { min-width: 0; text-align: center; flex: 1; }
+.header-main .header-kicker, .header-main h1, .header-main .meta { display: block; margin-left: auto; margin-right: auto; }
+.header { justify-content: center; }
 .header-kicker { font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase;
                  color: var(--teal); margin-bottom: 10px; }
 .header h1 { font-size: 30px; font-weight: 850; margin-bottom: 5px; letter-spacing: 0; line-height: 1.08;
@@ -1353,6 +1355,4 @@ function renderLatestEntry(unique) {
       : 'title="(no link)"';
     const fav = favIconFor(url, pub);
     const favHtml = fav
-      ? `<img class="feat-favicon" src="${escapeHtml(fav)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'feat-favicon fallback',textContent:'${escapeHtml(pub.charAt(0).toUpperCase())}'}))">`
-      : `<span class="feat-favicon fallback">${escapeHtml(pub.charAt(0).toUpperCase())}</span>`;
-    return `<${tag} class="feat-item${i === 0 ? ' first' 
+      ? `<img class="feat-favicon" src="${escapeHtml(fav)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'feat-favicon fallback',textContent:'${escapeHtml(p
