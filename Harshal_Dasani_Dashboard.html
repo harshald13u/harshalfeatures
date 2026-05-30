@@ -816,6 +816,7 @@ body::after {
       </div>
       <div class="panel">
         <h3>Top outlet families</h3>
+        <input type="text" id="pub-search" placeholder="🔍 Search publications…" autocomplete="off" style="width:100%;box-sizing:border-box;padding:8px 12px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--txt);background:rgba(255,255,255,0.04);outline:none;">
         <div id="pub-bars"></div>
       </div>
     </div>
@@ -1214,6 +1215,18 @@ document.addEventListener('DOMContentLoaded', () => {
       t = setTimeout(rerenderLatest, 150);
     });
   }
+  // Top-outlets publication search
+  const pinp = document.getElementById('pub-search');
+  if (pinp) {
+    let pt;
+    pinp.addEventListener('input', e => {
+      PUB_SEARCH = e.target.value;
+      clearTimeout(pt);
+      pt = setTimeout(() => {
+        if (UNIQUE_ROWS.length) renderPublicationPanel(filterByWindow(UNIQUE_ROWS, CURRENT_WINDOW));
+      }, 120);
+    });
+  }
   // Delegated click handler for drill-down bars
   document.addEventListener('click', e => {
     const row = e.target.closest('.bar-row.clickable');
@@ -1510,6 +1523,7 @@ function renderMonthlyPanel(unique) {
 }
 
 let PUB_PANEL_EXPANDED = false;
+let PUB_SEARCH = '';
 function renderPublicationPanel(unique) {
   if (!unique.length) { $('pub-bars').innerHTML = '<div style="font-size:11px;color:#9CA3AF;padding:20px 0">No entries in this window.</div>'; return; }
   const pubCounts = {};
@@ -1517,9 +1531,15 @@ function renderPublicationPanel(unique) {
     const p = r.Publication || 'Unknown';
     pubCounts[p] = (pubCounts[p] || 0) + 1;
   }
-  const allPubs = Object.entries(pubCounts).sort((a, b) => b[1] - a[1]);
+  const allPubsRaw = Object.entries(pubCounts).sort((a, b) => b[1] - a[1]);
+  const term = (PUB_SEARCH || '').trim().toLowerCase();
+  const allPubs = term ? allPubsRaw.filter(([p]) => p.toLowerCase().includes(term)) : allPubsRaw;
+  if (!allPubs.length) {
+    $('pub-bars').innerHTML = `<div style="font-size:11px;color:var(--txt-faint);padding:20px 0;text-align:center">No publications match "${escapeHtml(term)}"</div>`;
+    return;
+  }
   const defaultN = 10;
-  const pubList = PUB_PANEL_EXPANDED ? allPubs : allPubs.slice(0, defaultN);
+  const pubList = (term || PUB_PANEL_EXPANDED) ? allPubs : allPubs.slice(0, defaultN);
   // Gradient palette so even publications past #3 stay visually meaningful
   const palette = ['#E5A82E','#1FA08C','#A9CBFF','#A78BFA','#F472B6','#FFB8A0','#3FA796','#C77DCA','#FFC857','#C2DCFF'];
   const greyPalette = ['#B8C0D8','#A8B0C8','#98A0B8','#888EAA','#7A809E'];
