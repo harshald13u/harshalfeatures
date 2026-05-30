@@ -495,13 +495,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
        background-color: #03020a; }
 /* Real NASA James Webb deep-space photograph as background layer */
 body::before { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Webb%27s_First_Deep_Field.jpg/1920px-Webb%27s_First_Deep_Field.jpg');
+  background-image: url('galaxy-bg.jpg');
   background-size: cover; background-position: center; background-attachment: fixed;
-  filter: brightness(0.55) saturate(1.15);
+  filter: brightness(0.85) saturate(1.08);
   animation: none; }
 /* Subtle dark gradient overlay so content stays readable */
 body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(3,2,10,0.30), rgba(3,2,10,0.80) 90%);
+  background: radial-gradient(ellipse 100% 80% at 50% 50%, rgba(3,2,10,0.15), rgba(3,2,10,0.55) 95%);
   animation: none; }
 </style>
 </head>
