@@ -37,34 +37,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
          radial-gradient(circle at 50% 38%, #07101F 0%, #030712 54%, #010207 100%);
        background-attachment: fixed; }
 /* Starfield layers */
-body::before, body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-body::before {
-  background-image:
-    radial-gradient(1.4px 1.4px at 12% 18%, rgba(255,255,255,0.95), transparent),
-    radial-gradient(1px 1px at 27% 62%, rgba(255,255,255,0.9), transparent),
-    radial-gradient(1.4px 1.4px at 41% 31%, rgba(216,235,255,0.9), transparent),
-    radial-gradient(1px 1px at 55% 78%, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1.3px 1.3px at 63% 12%, rgba(255,255,255,0.9), transparent),
-    radial-gradient(1px 1px at 72% 48%, rgba(255,255,255,0.85), transparent),
-    radial-gradient(1.5px 1.5px at 84% 71%, #fff, transparent),
-    radial-gradient(1px 1px at 91% 27%, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1px 1px at 8% 84%, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1.5px 1.5px at 35% 91%, #fff, transparent),
-    radial-gradient(1px 1px at 48% 8%, rgba(255,255,255,0.8), transparent),
-    radial-gradient(1px 1px at 78% 88%, rgba(255,255,255,0.75), transparent),
-    radial-gradient(1.5px 1.5px at 96% 58%, #fff, transparent),
-    radial-gradient(1px 1px at 20% 44%, rgba(255,255,255,0.7), transparent);
-  opacity: 0.78; animation: twinkle 6s ease-in-out infinite alternate; }
-body::after {
-  background-image:
-    radial-gradient(1px 1px at 15% 50%, rgba(160,210,255,0.64), transparent),
-    radial-gradient(1px 1px at 33% 22%, rgba(255,225,176,0.62), transparent),
-    radial-gradient(1px 1px at 59% 60%, rgba(170,225,255,0.52), transparent),
-    radial-gradient(1px 1px at 88% 40%, rgba(255,255,255,0.6), transparent),
-    radial-gradient(1px 1px at 68% 30%, rgba(180,255,240,0.6), transparent),
-    radial-gradient(1px 1px at 45% 70%, rgba(255,255,255,0.6), transparent);
-  animation: twinkle 4.5s ease-in-out infinite alternate-reverse; }
-@keyframes twinkle { from { opacity: 0.55; } to { opacity: 1; } }
+
 .wrap { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
 .headboard { border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
              background: rgba(2,5,13,0.66);
@@ -517,129 +490,23 @@ body::after {
 }
 .static-mobile { display: none !important; }
 
-/* === Cosmic celestial background: moon + planets === */
-:root {
-  --pastel-blue:   #B8D4FF;
-  --pastel-coral:  #FFB8A8;
-  --pastel-gold:   #FFE0A8;
-  --pastel-mint:   #B8EAD8;
-  --pastel-lavender:#D6C8F8;
-  --pastel-pink:   #FFC8DC;
-  --pastel-cyan:   #B8E8F0;
-  --pastel-rose:   #FFB8C8;
-  --pastel-sage:   #C8E6C0;
-  --pastel-peach:  #FFD5B8;
-}
-.celestial-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-.celestial-bg svg.body { position: absolute; opacity: 0.55; }
-.celestial-bg .saturn { width: 320px; height: 320px; top: -60px; right: -60px;
-  filter: drop-shadow(0 0 50px rgba(255,210,160,0.25)); }
-.celestial-bg .moon   { width: 220px; height: 220px; bottom: 8%; left: -50px;
-  filter: drop-shadow(0 0 60px rgba(220,225,240,0.30)); opacity: 0.6; }
-.celestial-bg .mars   { width: 110px; height: 110px; top: 38%; right: 6%;
-  filter: drop-shadow(0 0 24px rgba(255,140,100,0.25)); opacity: 0.5; }
-.celestial-bg .earth  { width: 130px; height: 130px; bottom: 22%; left: 7%;
-  filter: drop-shadow(0 0 30px rgba(120,170,255,0.30)); opacity: 0.5; }
-.celestial-bg .neptune{ width: 150px; height: 150px; top: 60%; right: 35%;
-  filter: drop-shadow(0 0 32px rgba(120,160,230,0.30)); opacity: 0.35; }
-.celestial-bg .comet  { position: absolute; top: 18%; left: 60%; width: 4px; height: 4px;
-  background: #fff; border-radius: 50%; box-shadow: 0 0 12px 3px rgba(255,255,255,0.8);
-  opacity: 0.65; }
-.celestial-bg .comet::after { content: ''; position: absolute; top: 1px; right: 4px;
-  width: 180px; height: 1.5px; background: linear-gradient(to left, rgba(255,255,255,0.7), transparent);
-  transform: rotate(-22deg); transform-origin: right center; }
-@keyframes orbit-saturn { from {transform: rotate(-3deg);} to {transform: rotate(3deg);} }
-.celestial-bg .saturn { animation: orbit-saturn 18s ease-in-out infinite alternate; }
-@media (max-width: 640px) {
-  .celestial-bg .saturn { width: 200px; height: 200px; top: -40px; right: -40px; }
-  .celestial-bg .moon   { width: 130px; height: 130px; bottom: 4%; left: -30px; }
-  .celestial-bg .mars   { width: 70px; height: 70px; }
-  .celestial-bg .earth  { width: 80px; height: 80px; }
-  .celestial-bg .neptune{ display: none; }
-}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+       color: var(--txt); padding: 24px; position: relative; z-index: 0;
+       background-color: #03020a; }
+/* Real NASA James Webb deep-space photograph as background layer */
+body::before { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Webb%27s_First_Deep_Field.jpg/1920px-Webb%27s_First_Deep_Field.jpg');
+  background-size: cover; background-position: center; background-attachment: fixed;
+  filter: brightness(0.55) saturate(1.15);
+  animation: none; }
+/* Subtle dark gradient overlay so content stays readable */
+body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(3,2,10,0.30), rgba(3,2,10,0.80) 90%);
+  animation: none; }
 </style>
 </head>
 <body>
 
-<div class="celestial-bg" aria-hidden="true">
-  <svg class="body saturn" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <radialGradient id="g-sat" cx="35%" cy="35%" r="70%">
-        <stop offset="0%" stop-color="#FFE3B5"/>
-        <stop offset="55%" stop-color="#E8B070"/>
-        <stop offset="100%" stop-color="#7C4A20"/>
-      </radialGradient>
-      <radialGradient id="g-sat-ring" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="rgba(255,230,180,0.0)"/>
-        <stop offset="50%" stop-color="rgba(255,230,180,0.7)"/>
-        <stop offset="100%" stop-color="rgba(255,230,180,0.0)"/>
-      </radialGradient>
-    </defs>
-    <ellipse cx="160" cy="160" rx="155" ry="22" fill="none" stroke="url(#g-sat-ring)" stroke-width="4" transform="rotate(-18 160 160)"/>
-    <ellipse cx="160" cy="160" rx="165" ry="26" fill="none" stroke="rgba(255,210,170,0.35)" stroke-width="2" transform="rotate(-18 160 160)"/>
-    <circle cx="160" cy="160" r="78" fill="url(#g-sat)"/>
-    <ellipse cx="160" cy="160" rx="76" ry="3" fill="rgba(120,70,30,0.25)"/>
-    <ellipse cx="160" cy="148" rx="76" ry="2" fill="rgba(120,70,30,0.18)"/>
-    <ellipse cx="160" cy="172" rx="76" ry="2" fill="rgba(120,70,30,0.18)"/>
-    <ellipse cx="160" cy="160" rx="155" ry="22" fill="none" stroke="rgba(255,230,180,0.55)" stroke-width="1.5" transform="rotate(-18 160 160)" stroke-dasharray="0 0"/>
-  </svg>
-
-  <svg class="body moon" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <radialGradient id="g-moon" cx="38%" cy="35%" r="70%">
-        <stop offset="0%" stop-color="#F8F4E8"/>
-        <stop offset="60%" stop-color="#D5D0C0"/>
-        <stop offset="100%" stop-color="#6E6E80"/>
-      </radialGradient>
-    </defs>
-    <circle cx="110" cy="110" r="95" fill="url(#g-moon)"/>
-    <circle cx="80"  cy="85"  r="10" fill="rgba(80,80,90,0.20)"/>
-    <circle cx="138" cy="105" r="14" fill="rgba(80,80,90,0.22)"/>
-    <circle cx="108" cy="140" r="8"  fill="rgba(80,80,90,0.18)"/>
-    <circle cx="160" cy="145" r="6"  fill="rgba(80,80,90,0.16)"/>
-    <circle cx="65"  cy="120" r="5"  fill="rgba(80,80,90,0.14)"/>
-  </svg>
-
-  <svg class="body mars" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <radialGradient id="g-mars" cx="35%" cy="35%" r="70%">
-        <stop offset="0%" stop-color="#FFB098"/>
-        <stop offset="60%" stop-color="#D26840"/>
-        <stop offset="100%" stop-color="#5C2410"/>
-      </radialGradient>
-    </defs>
-    <circle cx="55" cy="55" r="50" fill="url(#g-mars)"/>
-    <ellipse cx="42" cy="48" rx="8" ry="3" fill="rgba(60,20,10,0.25)"/>
-    <ellipse cx="65" cy="65" rx="6" ry="2" fill="rgba(60,20,10,0.20)"/>
-  </svg>
-
-  <svg class="body earth" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <radialGradient id="g-earth" cx="35%" cy="35%" r="70%">
-        <stop offset="0%" stop-color="#A8D8FF"/>
-        <stop offset="55%" stop-color="#4078D0"/>
-        <stop offset="100%" stop-color="#0A2A60"/>
-      </radialGradient>
-    </defs>
-    <circle cx="65" cy="65" r="58" fill="url(#g-earth)"/>
-    <path d="M 30 60 Q 50 50 60 65 Q 70 80 90 70 Q 85 88 65 85 Q 45 80 30 60 Z" fill="rgba(60,160,90,0.45)"/>
-    <path d="M 70 38 Q 85 35 95 50 Q 90 60 78 55 Q 70 48 70 38 Z" fill="rgba(60,160,90,0.40)"/>
-  </svg>
-
-  <svg class="body neptune" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <radialGradient id="g-nep" cx="35%" cy="35%" r="70%">
-        <stop offset="0%" stop-color="#9DC8F8"/>
-        <stop offset="60%" stop-color="#3A6FC8"/>
-        <stop offset="100%" stop-color="#10256B"/>
-      </radialGradient>
-    </defs>
-    <circle cx="75" cy="75" r="68" fill="url(#g-nep)"/>
-    <ellipse cx="75" cy="70" rx="65" ry="4" fill="rgba(255,255,255,0.10)"/>
-    <ellipse cx="75" cy="85" rx="60" ry="3" fill="rgba(255,255,255,0.08)"/>
-  </svg>
-
-  <div class="comet"></div>
 </div>
 
 <div class="wrap">
