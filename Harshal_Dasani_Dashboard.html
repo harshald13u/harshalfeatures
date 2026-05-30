@@ -1386,6 +1386,7 @@ function renderMonthlyPanel(unique) {
   $('month-note').textContent = `Peak: ${MONTHS[+peakYM[1]-1]} '${peakYM[0].slice(2)} (${monthsSorted[peakIdx][1]} features). Average ${avg} per month across ${monthsSorted.length} months.`;
 }
 
+let PUB_PANEL_EXPANDED = false;
 function renderPublicationPanel(unique) {
   if (!unique.length) { $('pub-bars').innerHTML = '<div style="font-size:11px;color:#9CA3AF;padding:20px 0">No entries in this window.</div>'; return; }
   const pubCounts = {};
@@ -1393,17 +1394,38 @@ function renderPublicationPanel(unique) {
     const p = r.Publication || 'Unknown';
     pubCounts[p] = (pubCounts[p] || 0) + 1;
   }
-  const pubList = Object.entries(pubCounts).sort((a, b) => b[1] - a[1]).slice(0, 9);
-  const pc = ['#E5A82E', '#1FA08C', '#2D7AD9', '#9CA3AF', '#9CA3AF', '#9CA3AF', '#9CA3AF', '#9CA3AF', '#9CA3AF'];
+  const allPubs = Object.entries(pubCounts).sort((a, b) => b[1] - a[1]);
+  const defaultN = 10;
+  const pubList = PUB_PANEL_EXPANDED ? allPubs : allPubs.slice(0, defaultN);
+  // Gradient palette so even publications past #3 stay visually meaningful
+  const palette = ['#E5A82E','#1FA08C','#5B9BFF','#A78BFA','#F472B6','#FF7A59','#3FA796','#C77DCA','#FFC857','#7FB6FF'];
+  const greyPalette = ['#8891B5','#7884A8','#6877A0','#5C6C98','#52638E'];
   const maxP = pubList[0][1];
+  const total = unique.length;
   $('pub-bars').innerHTML = pubList.map(([pub, count], i) => {
     const w = count / maxP * 100;
+    const pct = (count/total*100).toFixed(1);
+    const color = i < palette.length ? palette[i] : greyPalette[(i - palette.length) % greyPalette.length];
     return `<div class="bar-row clickable" data-drill="pub" data-val="${escapeHtml(pub)}">
       <div class="bar-label small">${escapeHtml(pub)}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${pc[i]}"></div></div>
-      <div class="bar-value">${count}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${color}"></div></div>
+      <div class="bar-value">${count} | ${pct}%</div>
     </div>`;
   }).join('');
+  // Toggle button
+  if (allPubs.length > defaultN) {
+    const moreCount = allPubs.length - defaultN;
+    const btnLabel = PUB_PANEL_EXPANDED
+      ? `▴  Show top ${defaultN} only`
+      : `▾  Show all ${allPubs.length} publications (${moreCount} more)`;
+    $('pub-bars').innerHTML += `<div id="pub-toggle" style="text-align:center;margin-top:10px;padding:6px 12px;cursor:pointer;font-size:10px;font-weight:600;color:var(--blue);background:rgba(91,155,255,0.10);border-radius:8px;transition:background 0.15s;">${btnLabel}</div>`;
+    const tg = document.getElementById('pub-toggle');
+    if (tg) {
+      tg.onmouseenter = () => tg.style.background = 'rgba(91,155,255,0.20)';
+      tg.onmouseleave = () => tg.style.background = 'rgba(91,155,255,0.10)';
+      tg.onclick = () => { PUB_PANEL_EXPANDED = !PUB_PANEL_EXPANDED; renderPublicationPanel(unique); };
+    }
+  }
 }
 
 function escapeHtml(s) {
@@ -1581,7 +1603,8 @@ function render(rows, file) {
 // ===== Bootstrap on load =====
 try { initMobileSnapshotChart(); } catch (e) { console.warn('Mobile chart init failed:', e); }
 try { setupAccessMode(); } catch (e) { console.warn('Access mode init failed:', e); }
-$('btn-pick').onclick = pickFile;
+$('btn-pick').onclick = pickFile
+.onclick = pickFile;
 $('file-input').onchange = async e => {
   const file = e.target.files && e.target.files[0];
   if (file) await processFile(file, { persistentHandle: false });
@@ -1618,7 +1641,7 @@ $('btn-disconnect').onclick = async () => {
   try {
     const h = await getHandle();
     if (h && h.queryPermission) {
-      setStatus('Loading from saved file…');
+      setStatus('Loading from saved file...');
       await loadFromHandle(h);
     }
   } catch (e) {
