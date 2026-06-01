@@ -689,7 +689,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
     </div>
 
     <div class="panel" style="margin-bottom:12px">
-      <h3>Cumulative coverage growth</h3>
+      <h3 id="cumulative-title">Cumulative coverage growth</h3>
       <div id="cumulative"></div>
       <div class="note" id="cumulative-note"></div>
     </div>
@@ -1260,21 +1260,96 @@ function renderFallbackCumulativeChart(el, labels, data, perMonth) {
 
 function renderCumulativePanel(unique) {
   const el = $('cumulative');
-  const dated = unique.filter(r => r.Date instanceof Date && !isNaN(r.Date)).sort((a,b)=>a.Date-b.Date);
   if (cumChart) { cumChart.destroy(); cumChart = null; }
-  if (dated.length < 2) { el.innerHTML = '<div style="font-size:11px;color:var(--txt-faint);padding:20px 0">Not enough data in this window.</div>'; $('cumulative-note').textContent=''; return; }
+  const dated = unique.filter(r => r.Date instanceof Date && !isNaN(r.Date)).sort((a,b)=>a.Date-b.Date);
+  if (dated.length < 1) { el.innerHTML = '<div style="font-size:11px;color:var(--txt-faint);padding:20px 0">Not enough data in this window.</div>'; $('cumulative-note').textContent=''; return; }
+
+  // Adaptive granularity (matches feature-flow chart)
+  let gran = 'month';
+  if (CURRENT_WINDOW === '1d' || CURRENT_WINDOW === '7d' || CURRENT_WINDOW === '30d') gran = 'day';
+  else if (CURRENT_WINDOW === '90d') gran = 'week';
+
+  const titleEl = $('cumulative-title');
+  if (titleEl) titleEl.textContent = gran === 'day' ? 'Daily cumulative growth' :
+                                     gran === 'week' ? 'Weekly cumulative growth' :
+                                                       'Cumulative coverage growth';
+
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const byMonth = {};
-  for (const r of dated) { const ym = r.Date.getFullYear()+'-'+String(r.Date.getMonth()+1).padStart(2,'0'); byMonth[ym]=(byMonth[ym]||0)+1; }
-  const months = Object.keys(byMonth).sort();
+  const utcDate = d => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const keyFor = (d) => {
+    if (gran === 'day') return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0');
+    if (gran === 'week') {
+      const dt = utcDate(d);
+      const wd = dt.getUTCDay();
+      const diff = (wd === 0 ? -6 : 1 - wd);
+      dt.setUTCDate(dt.getUTCDate() + diff);
+      return dt.toISOString().slice(0,10);
+    }
+    return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');
+  };
+  const labelFor = (key) => {
+    if (gran === 'day') {
+      const [y,m,d] = key.split('-').map(Number);
+      return `${d} ${MONTHS[m-1]}`;
+    }
+    if (gran === 'week') {
+      const [y,m,d] = key.split('-').map(Number);
+      const start = new Date(Date.UTC(y,m-1,d));
+      const end = new Date(start); end.setUTCDate(end.getUTCDate()+6);
+      return `${start.getUTCDate()} ${MONTHS[start.getUTCMonth()]}–${end.getUTCDate()}${start.getUTCMonth()!==end.getUTCMonth() ? ' '+MONTHS[end.getUTCMonth()] : ''}`;
+    }
+    const [y,m] = key.split('-'); return MONTHS[+m-1] + " '" + y.slice(2);
+  };
+
+  // Count by bucket
+  const counts = {};
+  for (const r of dated) {
+    const k = keyFor(r.Date);
+    counts[k] = (counts[k] || 0) + 1;
+  }
+
+  // Build continuous bucket list for the active window
+  const today = new Date();
+  const todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+  const startUTC = (() => {
+    if (CURRENT_WINDOW === '1d')  { const d=new Date(todayUTC); return d; }
+    if (CURRENT_WINDOW === '7d')  { const d=new Date(todayUTC); d.setUTCDate(d.getUTCDate()-6); return d; }
+    if (CURRENT_WINDOW === '30d') { const d=new Date(todayUTC); d.setUTCDate(d.getUTCDate()-29); return d; }
+    if (CURRENT_WINDOW === '90d') { const d=new Date(todayUTC); d.setUTCDate(d.getUTCDate()-89); return d; }
+    if (CURRENT_WINDOW === 'ytd') { return new Date(Date.UTC(today.getFullYear(),0,1)); }
+    const ts = dated.map(r=>r.Date.getTime());
+    return ts.length ? new Date(Math.min(...ts)) : todayUTC;
+  })();
+
+  let cur = new Date(startUTC);
+  if (gran === 'week') {
+    const wd = cur.getUTCDay();
+    const diff = (wd === 0 ? -6 : 1 - wd);
+    cur.setUTCDate(cur.getUTCDate() + diff);
+  } else if (gran === 'month') {
+    cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth(), 1));
+  }
+  const bucketKeys = [];
+  while (cur <= todayUTC) {
+    bucketKeys.push(keyFor(cur));
+    if (gran === 'day') cur.setUTCDate(cur.getUTCDate()+1);
+    else if (gran === 'week') cur.setUTCDate(cur.getUTCDate()+7);
+    else cur.setUTCMonth(cur.getUTCMonth()+1);
+  }
+  const setKeys = new Set(bucketKeys);
+  Object.keys(counts).forEach(k => { if (!setKeys.has(k)) bucketKeys.push(k); });
+  bucketKeys.sort();
+
+  // Cumulative running total
   let running = 0;
-  const data = months.map(ym => { running += byMonth[ym]; return running; });
-  const perMonth = months.map(ym => byMonth[ym]);
-  const labels = months.map(ym => { const [y,m]=ym.split('-'); return MONTHS[+m-1]+" '"+y.slice(2); });
+  const data = bucketKeys.map(k => { running += (counts[k]||0); return running; });
+  const perBucket = bucketKeys.map(k => counts[k]||0);
+  const labels = bucketKeys.map(labelFor);
+  const unitName = gran === 'day' ? 'day' : gran === 'week' ? 'week' : 'month';
+
   if (FORCE_BUILTIN_CHARTS || !window.Chart) {
-    renderFallbackCumulativeChart(el, labels, data, perMonth);
-    const last = months[months.length-1].split('-');
-    $('cumulative-note').textContent = `Running total reached ${data[data.length-1]} features by ${MONTHS[+last[1]-1]} '${last[0].slice(2)}. Tap any point for that month's add.`;
+    renderFallbackCumulativeChart(el, labels, data, perBucket);
+    $('cumulative-note').textContent = `Running total reached ${data[data.length-1]} features by ${labels[labels.length-1]}. Tap any point for that ${unitName}'s add.`;
     return;
   }
   el.innerHTML = '<canvas></canvas>';
@@ -1285,18 +1360,19 @@ function renderCumulativePanel(unique) {
     type: 'line',
     data: { labels, datasets: [{ label:'Cumulative features', data, fill:true, backgroundColor:grad,
       borderColor:'#C2DCFF', borderWidth:2.5, tension:0.35,
-      pointRadius:3, pointHoverRadius:6, pointBackgroundColor:'#BFE0FF', pointBorderColor:'#C2DCFF',
-      pointHoverBackgroundColor:'#fff', _perMonth:perMonth }] },
+      pointRadius: bucketKeys.length > 60 ? 1.5 : 3, pointHoverRadius:6,
+      pointBackgroundColor:'#BFE0FF', pointBorderColor:'#C2DCFF',
+      pointHoverBackgroundColor:'#fff', _perBucket:perBucket, _unit: unitName }] },
     options: { responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
       plugins:{ legend:{display:false},
         tooltip:{ backgroundColor:'rgba(12,10,36,0.95)', borderColor:'rgba(127,182,255,0.4)', borderWidth:1,
           titleColor:'#fff', bodyColor:'#C9D4F5', padding:10, displayColors:false,
-          callbacks:{ label:(c)=>`Total: ${c.parsed.y}  (+${c.dataset._perMonth[c.dataIndex]} this month)` } } },
-      scales:{ x:{ grid:{color:GRID_CLR}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:10} },
+          callbacks:{ label:(c)=>`Total: ${c.parsed.y}  (+${c.dataset._perBucket[c.dataIndex]} this ${c.dataset._unit})` } } },
+      scales:{ x:{ grid:{color:GRID_CLR}, ticks:{maxRotation: gran==='day'?45:0, autoSkip:true,
+                  maxTicksLimit: gran==='day'?14:(gran==='week'?12:10)} },
                y:{ beginAtZero:true, grid:{color:GRID_CLR}, ticks:{precision:0} } } }
   });
-  const last = months[months.length-1].split('-');
-  $('cumulative-note').textContent = `Running total reached ${data[data.length-1]} features by ${MONTHS[+last[1]-1]} '${last[0].slice(2)}. Hover any point for that month's add.`;
+  $('cumulative-note').textContent = `Running total reached ${data[data.length-1]} features by ${labels[labels.length-1]}. Hover any point to see that ${unitName}'s add.`;
 }
 
 function renderTopicPanel(unique) {
