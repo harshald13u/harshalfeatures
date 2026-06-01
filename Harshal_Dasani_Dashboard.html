@@ -207,6 +207,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
   border: 1px solid var(--line); border-radius: 6px; outline: none; font-family: inherit;
   color-scheme: dark; cursor: pointer;
 }
+/* The native dropdown popup uses OS colors — force readable dark theme on options */
+.feat-filters select option {
+  background-color: #0c0a24;
+  color: #E8EAF6;
+  padding: 6px;
+}
+.feat-filters select option:checked,
+.feat-filters select option:hover {
+  background-color: #2D7AD9;
+  color: #fff;
+}
 .feat-filters input[type=date]:focus, .feat-filters select:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(91,155,255,0.15); }
 .feat-filters select { min-width: 180px; max-width: 240px; }
 .feat-filters button#feat-clear { padding: 6px 12px; font-size: 11px; color: var(--blue); background: rgba(91,155,255,0.12);
