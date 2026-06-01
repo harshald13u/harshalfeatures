@@ -199,6 +199,26 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
              display: flex; align-items: center; gap: 8px; }
 .latest h3::before { content: ''; display: inline-block; width: 4px; height: 16px;
                      background: var(--teal); border-radius: 2px; box-shadow: 0 0 10px var(--teal); }
+.feat-filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: -2px 0 14px; padding: 10px 12px;
+                background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 8px; }
+.feat-filters label { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--txt-mut); font-weight: 600; }
+.feat-filters input[type=date], .feat-filters select {
+  padding: 6px 10px; font-size: 12px; color: var(--txt); background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line); border-radius: 6px; outline: none; font-family: inherit;
+  color-scheme: dark; cursor: pointer;
+}
+.feat-filters input[type=date]:focus, .feat-filters select:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(91,155,255,0.15); }
+.feat-filters select { min-width: 180px; max-width: 240px; }
+.feat-filters button#feat-clear { padding: 6px 12px; font-size: 11px; color: var(--blue); background: rgba(91,155,255,0.12);
+  border: 1px solid rgba(91,155,255,0.25); border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.15s; }
+.feat-filters button#feat-clear:hover { background: rgba(91,155,255,0.22); }
+@media (max-width: 640px) {
+  .feat-filters { padding: 8px; gap: 8px; }
+  .feat-filters label { font-size: 10px; flex: 1 1 100%; }
+  .feat-filters select { min-width: 0; max-width: none; flex: 1; }
+  .feat-filters input[type=date], .feat-filters select { width: 100%; }
+  .feat-filters button#feat-clear { flex: 1 1 100%; padding: 10px; }
+}
 #feat-search { width: 100%; box-sizing: border-box; padding: 10px 14px; margin-bottom: 12px;
               border: 1px solid var(--line); border-radius: 8px; font-size: 13px; color: var(--txt);
               background: rgba(255,255,255,0.04); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
@@ -703,6 +723,14 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
     <div class="latest">
       <h3>Latest features <span class="h-count" id="latest-window">all time</span></h3>
       <input type="text" id="feat-search" placeholder="🔍  Search all features by keyword, publication or language…" autocomplete="off" />
+      <div id="feat-filters" class="feat-filters">
+        <label>From <input type="date" id="feat-from"></label>
+        <label>To <input type="date" id="feat-to"></label>
+        <label>Publication
+          <select id="feat-pub"><option value="">All publications</option></select>
+        </label>
+        <button id="feat-clear" type="button">Clear</button>
+      </div>
       <div class="feat-list" id="latest-list"></div>
     </div>
     <div class="footer">
@@ -1042,6 +1070,7 @@ let CURRENT_FILE = null;
 let CURRENT_WINDOW = 'all'; // 'all', '1d', '7d', '30d', '90d', 'ytd'
 let SEARCH_TERM = '';
 let DRILL = null; // {type:'topic'|'lang'|'pub', value:'…'}
+let FEAT_FROM = '', FEAT_TO = '', FEAT_PUB = '';
 let cumChart = null, monthChart = null;
 let USING_PERSISTENT_FILE = false;
 const HAS_PERSISTENT_FILE_PICKER = !!window.showOpenFilePicker;
@@ -1094,6 +1123,21 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 120);
     });
   }
+  // Latest-features date-range + publication filter
+  const ff = document.getElementById('feat-from');
+  const ft = document.getElementById('feat-to');
+  const fp = document.getElementById('feat-pub');
+  const fc = document.getElementById('feat-clear');
+  if (ff) ff.addEventListener('change', e => { FEAT_FROM = e.target.value; rerenderLatest(); });
+  if (ft) ft.addEventListener('change', e => { FEAT_TO   = e.target.value; rerenderLatest(); });
+  if (fp) fp.addEventListener('change', e => { FEAT_PUB  = e.target.value; rerenderLatest(); });
+  if (fc) fc.addEventListener('click', () => {
+    FEAT_FROM=''; FEAT_TO=''; FEAT_PUB='';
+    if (ff) ff.value=''; if (ft) ft.value=''; if (fp) fp.value='';
+    SEARCH_TERM=''; DRILL=null;
+    const s = document.getElementById('feat-search'); if (s) s.value='';
+    rerenderLatest();
+  });
   // Delegated click handler for drill-down bars
   document.addEventListener('click', e => {
     const row = e.target.closest('.bar-row.clickable');
@@ -1614,6 +1658,19 @@ function renderLatestEntry(unique) {
       // Same date - newer entries (added later, higher rowIndex) first
       return (b._rowIndex || 0) - (a._rowIndex || 0);
     });
+  // Manual date-range + publication filters (apply BEFORE search/drill so they layer)
+  const fromDt = FEAT_FROM ? new Date(FEAT_FROM + 'T00:00:00Z') : null;
+  const toDt   = FEAT_TO   ? new Date(FEAT_TO   + 'T00:00:00Z') : null;
+  const manualFilterActive = !!(FEAT_FROM || FEAT_TO || FEAT_PUB);
+  if (manualFilterActive) {
+    sortedByDate = sortedByDate.filter(r => {
+      if (fromDt && r.Date < fromDt) return false;
+      if (toDt)   { const t = new Date(toDt); t.setUTCHours(23,59,59,999); if (r.Date > t) return false; }
+      if (FEAT_PUB && (r.Publication || 'Unknown') !== FEAT_PUB) return false;
+      return true;
+    });
+  }
+
   const term = (SEARCH_TERM || '').trim().toLowerCase();
   let drillActive = false;
   if (term) {
@@ -1622,7 +1679,7 @@ function renderLatestEntry(unique) {
       String(r.Publication || '').toLowerCase().includes(term) ||
       String(r.Language || '').toLowerCase().includes(term)
     );
-    $('latest-window').innerHTML = `${sortedByDate.length} match${sortedByDate.length===1?'':'es'} for “${escapeHtml(term)}” &nbsp;<span id="drill-clear">✕ clear</span>`;
+    $('latest-window').innerHTML = `${sortedByDate.length} match${sortedByDate.length===1?'':'es'} for "${escapeHtml(term)}" &nbsp;<span id="drill-clear">✕ clear</span>`;
   } else if (DRILL) {
     drillActive = true;
     sortedByDate = sortedByDate.filter(r => {
@@ -1633,6 +1690,12 @@ function renderLatestEntry(unique) {
     });
     const tlabel = DRILL.type === 'topic' ? 'Topic' : DRILL.type === 'lang' ? 'Language' : 'Publication';
     $('latest-window').innerHTML = `${tlabel}: ${escapeHtml(DRILL.value)} — ${sortedByDate.length} article${sortedByDate.length===1?'':'s'} &nbsp;<span id="drill-clear">✕ clear</span>`;
+  } else if (manualFilterActive) {
+    const parts = [];
+    if (FEAT_FROM) parts.push('from ' + FEAT_FROM);
+    if (FEAT_TO)   parts.push('to ' + FEAT_TO);
+    if (FEAT_PUB)  parts.push('pub: ' + FEAT_PUB);
+    $('latest-window').innerHTML = `${sortedByDate.length} match${sortedByDate.length===1?'':'es'} (${parts.join(', ')})`;
   } else {
     $('latest-window').textContent = windowLabel(CURRENT_WINDOW);
   }
@@ -1640,7 +1703,7 @@ function renderLatestEntry(unique) {
     $('latest-list').innerHTML = `<div class="feat-empty">${term || drillActive ? 'No matching features.' : 'No entries in this window.'}</div>`;
     return;
   }
-  const top5 = (term || drillActive) ? sortedByDate.slice(0, 300) : sortedByDate.slice(0, 10);
+  const top5 = (term || drillActive || manualFilterActive) ? sortedByDate.slice(0, 300) : sortedByDate.slice(0, 10);
   $('latest-list').innerHTML = top5.map((r, i) => {
     const url = r.Link || '';
     const heading = r['Heading Of The Article'] || '';
@@ -1710,7 +1773,7 @@ function favIconFor(url, pub) {
     'CNBC TV18 Hindi': 'hindi.cnbctv18.com'
   };
   if (pub && overrides[pub]) host = overrides[pub];
-  if (!host) return '';
+  if (!host)return '';
   return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64`;
 }
 
@@ -1764,6 +1827,19 @@ function render(rows, file) {
   document.body.classList.add('dynamic-loaded');
   $('empty').style.display = 'none';
   $('dashboard').style.display = 'block';
+
+  // Populate publication dropdown + set date bounds on the manual filter row
+  const pubSelect = document.getElementById('feat-pub');
+  if (pubSelect) {
+    const pubs = Array.from(new Set(unique.map(r => r.Publication || 'Unknown'))).sort((a,b) => a.localeCompare(b));
+    const cur = pubSelect.value;
+    pubSelect.innerHTML = '<option value="">All publications</option>' +
+      pubs.map(p => `<option value="${escapeHtml(p)}"${p === cur ? ' selected' : ''}>${escapeHtml(p)}</option>`).join('');
+  }
+  const fromInput = document.getElementById('feat-from');
+  const toInput   = document.getElementById('feat-to');
+  if (fromInput) { fromInput.min = minDate; fromInput.max = maxDate; }
+  if (toInput)   { toInput.min   = minDate; toInput.max   = maxDate; }
 }
 
 // ===== Bootstrap on load =====
