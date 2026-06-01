@@ -610,7 +610,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
     </section>
 
     <section class="snap-card snap-panel">
-      <h3>Monthly feature flow</h3>
+      <h3 id="monthly-title">Monthly feature flow</h3>
       <div class="snap-months">
         <div class="snap-month"><div class="snap-month-bar" style="height:18px"></div><div class="snap-month-label">Jun<br>18</div></div>
         <div class="snap-month"><div class="snap-month-bar" style="height:71px"></div><div class="snap-month-label">Jul<br>75</div></div>
@@ -677,7 +677,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
         <div class="note" id="lang-note"></div>
       </div>
       <div class="panel">
-        <h3>Monthly feature flow</h3>
+        <h3 id="monthly-title">Monthly feature flow</h3>
         <div class="monthly" id="monthly"></div>
         <div class="note" id="month-note"></div>
       </div>
@@ -1348,28 +1348,107 @@ function renderMonthlyPanel(unique) {
   const el = $('monthly');
   if (monthChart) { monthChart.destroy(); monthChart = null; }
   if (!unique.length) { el.innerHTML = ''; $('month-note').textContent = 'No data in this window.'; return; }
-  const monthCounts = {};
+
+  // Decide bucket granularity from CURRENT_WINDOW
+  let gran = 'month';
+  if (CURRENT_WINDOW === '1d' || CURRENT_WINDOW === '7d' || CURRENT_WINDOW === '30d') gran = 'day';
+  else if (CURRENT_WINDOW === '90d') gran = 'week';
+
+  const titleEl = $('monthly-title');
+  if (titleEl) titleEl.textContent = gran === 'day' ? 'Daily feature flow' :
+                                     gran === 'week' ? 'Weekly feature flow' :
+                                                       'Monthly feature flow';
+
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const utcDate = d => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const keyFor = (d) => {
+    if (gran === 'day') {
+      return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0');
+    }
+    if (gran === 'week') {
+      // Week starts Monday (ISO). Compute Monday-of-week.
+      const dt = utcDate(d);
+      const wd = dt.getUTCDay(); // 0=Sun..6=Sat
+      const diff = (wd === 0 ? -6 : 1 - wd); // shift to Monday
+      dt.setUTCDate(dt.getUTCDate() + diff);
+      return dt.toISOString().slice(0,10);
+    }
+    return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0');
+  };
+  const labelFor = (key) => {
+    if (gran === 'day') {
+      const [y,m,d] = key.split('-').map(Number);
+      return `${d} ${MONTHS[m-1]}`;
+    }
+    if (gran === 'week') {
+      const [y,m,d] = key.split('-').map(Number);
+      const start = new Date(Date.UTC(y,m-1,d));
+      const end = new Date(start); end.setUTCDate(end.getUTCDate()+6);
+      const sLbl = `${start.getUTCDate()} ${MONTHS[start.getUTCMonth()]}`;
+      const eLbl = `${end.getUTCDate()} ${MONTHS[end.getUTCMonth()]}`;
+      return sLbl + '–' + eLbl.split(' ')[0] + (start.getUTCMonth()!==end.getUTCMonth() ? ' '+MONTHS[end.getUTCMonth()] : '');
+    }
+    const [y,m] = key.split('-');
+    return MONTHS[+m-1] + " '" + y.slice(2);
+  };
+
+  // Count by bucket. Also build a full calendar of buckets in the active window so empty days/weeks show as zero.
+  const counts = {};
   for (const r of unique) {
     if (r.Date instanceof Date && !isNaN(r.Date)) {
-      const ym = r.Date.getFullYear() + '-' + String(r.Date.getMonth() + 1).padStart(2, '0');
-      monthCounts[ym] = (monthCounts[ym] || 0) + 1;
+      const k = keyFor(r.Date);
+      counts[k] = (counts[k] || 0) + 1;
     }
   }
-  const monthsSorted = Object.entries(monthCounts).sort();
-  if (!monthsSorted.length) { el.innerHTML = ''; $('month-note').textContent = ''; return; }
-  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const maxMonth = Math.max(...monthsSorted.map(([, c]) => c));
-  const peakIdx = monthsSorted.findIndex(([, c]) => c === maxMonth);
-  const labels = monthsSorted.map(([ym]) => { const [y,m]=ym.split('-'); return MONTHS[+m-1]+" '"+y.slice(2); });
-  const data = monthsSorted.map(([,c]) => c);
-  const colors = monthsSorted.map((_,i)=> i===peakIdx ? '#FFB8A0' : '#A9CBFF');
-  const hovers = monthsSorted.map((_,i)=> i===peakIdx ? '#FFCAB5' : '#C2DCFF');
-  const peakYM = monthsSorted[peakIdx][0].split('-');
-  const total = monthsSorted.reduce((a, [, c]) => a + c, 0);
-  const avg = (total / monthsSorted.length).toFixed(1);
+
+  // Generate the full continuous list of buckets in the window (so we see zero days/weeks too)
+  const today = new Date();
+  const todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
+  const startUTC = (() => {
+    if (CURRENT_WINDOW === '1d')  { const d=new Date(todayUTC); d.setUTCDate(d.getUTCDate()-0); return d; }
+    if (CURRENT_WINDOW === '7d')  { const d=new Date(todayUTC); d.setUTCDate(d.getUTCDate()-6); return d; }
+    if (CURRENT_WINDOW === '30d') { const d=new Date(todayUTC); d.setUTCDate(d.getUTCDate()-29); return d; }
+    if (CURRENT_WINDOW === '90d') { const d=new Date(todayUTC); d.setUTCDate(d.getUTCDate()-89); return d; }
+    if (CURRENT_WINDOW === 'ytd') { return new Date(Date.UTC(today.getFullYear(),0,1)); }
+    // all: just use earliest data point
+    const dates = unique.filter(r=>r.Date instanceof Date).map(r=>r.Date.getTime());
+    return dates.length ? new Date(Math.min(...dates)) : todayUTC;
+  })();
+  const bucketKeys = [];
+  let cur = new Date(startUTC);
+  if (gran === 'week') {
+    // align start to Monday of its week
+    const wd = cur.getUTCDay();
+    const diff = (wd === 0 ? -6 : 1 - wd);
+    cur.setUTCDate(cur.getUTCDate() + diff);
+  } else if (gran === 'month') {
+    cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth(), 1));
+  }
+  while (cur <= todayUTC) {
+    bucketKeys.push(keyFor(cur));
+    if (gran === 'day') cur.setUTCDate(cur.getUTCDate()+1);
+    else if (gran === 'week') cur.setUTCDate(cur.getUTCDate()+7);
+    else cur.setUTCMonth(cur.getUTCMonth()+1);
+  }
+  // Dedup and ensure all data buckets are present
+  const setKeys = new Set(bucketKeys);
+  Object.keys(counts).forEach(k => { if (!setKeys.has(k)) bucketKeys.push(k); });
+  bucketKeys.sort();
+
+  const labels = bucketKeys.map(labelFor);
+  const data   = bucketKeys.map(k => counts[k] || 0);
+  const maxVal = Math.max(...data);
+  const peakIdx = data.indexOf(maxVal);
+  const colors = data.map((_,i)=> i===peakIdx ? '#FFB8A0' : '#A9CBFF');
+  const hovers = data.map((_,i)=> i===peakIdx ? '#FFCAB5' : '#C2DCFF');
+  const total = data.reduce((a,b)=>a+b,0);
+  const nonZero = data.filter(v=>v>0).length || 1;
+  const avg = (total / bucketKeys.length).toFixed(1);
+  const unitName = gran === 'day' ? 'day' : gran === 'week' ? 'week' : 'month';
+
   if (FORCE_BUILTIN_CHARTS || !window.Chart) {
     renderFallbackMonthlyChart(el, labels, data, peakIdx);
-    $('month-note').textContent = `Peak: ${MONTHS[+peakYM[1]-1]} '${peakYM[0].slice(2)} (${monthsSorted[peakIdx][1]} features). Average ${avg} per month across ${monthsSorted.length} months. Tap any bar for details.`;
+    $('month-note').textContent = `Peak: ${labels[peakIdx]} (${maxVal} features). Average ${avg} per ${unitName} across ${bucketKeys.length} ${unitName}s.`;
     return;
   }
   el.innerHTML = '<canvas></canvas>';
@@ -1377,16 +1456,21 @@ function renderMonthlyPanel(unique) {
   monthChart = new Chart(ctx, {
     type: 'bar',
     data: { labels, datasets:[{ label:'Features', data, backgroundColor:colors, hoverBackgroundColor:hovers,
-      borderRadius:4, maxBarThickness:38 }] },
+      borderRadius:4, maxBarThickness: gran==='month' ? 38 : (gran==='week' ? 30 : 18) }] },
     options: { responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
       plugins:{ legend:{display:false},
         tooltip:{ backgroundColor:'rgba(12,10,36,0.95)', borderColor:'rgba(127,182,255,0.4)', borderWidth:1,
           titleColor:'#fff', bodyColor:'#C9D4F5', padding:10, displayColors:false,
           callbacks:{ label:(c)=>`${c.parsed.y} feature${c.parsed.y===1?'':'s'}` } } },
-      scales:{ x:{ grid:{display:false}, ticks:{maxRotation:0, autoSkip:true, maxTicksLimit:12} },
+      scales:{ x:{ grid:{display:false}, ticks:{maxRotation: gran==='day'?45:0, autoSkip:true,
+                   maxTicksLimit: gran==='day'?14:(gran==='week'?12:14)} },
                y:{ beginAtZero:true, grid:{color:GRID_CLR}, ticks:{precision:0} } } }
   });
-  $('month-note').textContent = `Peak: ${MONTHS[+peakYM[1]-1]} '${peakYM[0].slice(2)} (${monthsSorted[peakIdx][1]} features). Average ${avg} per month across ${monthsSorted.length} months.`;
+  if (total) {
+    $('month-note').textContent = `Peak: ${labels[peakIdx]} (${maxVal} features). Average ${avg} per ${unitName} across ${bucketKeys.length} ${unitName}s.`;
+  } else {
+    $('month-note').textContent = `No features in this window.`;
+  }
 }
 
 let PUB_PANEL_EXPANDED = false;
@@ -1577,17 +1661,14 @@ function render(rows, file) {
   renderRecentTiles();
   renderPanels();
 
-  // Compute date range for meta line
   const sortedByDate = [...unique].filter(r => r.Date instanceof Date && !isNaN(r.Date))
                                   .sort((a, b) => b.Date - a.Date);
 
-  // Meta info
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
   const minDate = sortedByDate.length ? fmtDate(sortedByDate[sortedByDate.length - 1].Date) : '';
   const maxDate = sortedByDate.length ? fmtDate(sortedByDate[0].Date) : '';
 
-  // Average features per day since day 1
   if (sortedByDate.length) {
     const first = sortedByDate[sortedByDate.length - 1].Date;
     const today0 = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
@@ -1595,16 +1676,15 @@ function render(rows, file) {
     const avg = unique.length / days;
     $('kpi-avg-day').textContent = avg.toFixed(2);
     const firstNice = first.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-    $('kpi-avg-day-label').innerHTML = `avg features / day<br><span style="font-size:10px;color:#9CA3AF">since ${firstNice} · ${days} days</span>`;
+    $('kpi-avg-day-label').innerHTML = `avg features / day<br><span style="font-size:10px;color:#9CA3AF">since ${firstNice} . ${days} days</span>`;
   } else {
-    $('kpi-avg-day').textContent = '—';
+    $('kpi-avg-day').textContent = '-';
   }
 
   $('meta-line').textContent = `${minDate} to ${maxDate}`;
   $('footer-generated').textContent = `Last refreshed: ${now.toLocaleString()}`;
   $('footer-source').textContent = USING_PERSISTENT_FILE ? `Source: ${file.name} (live read)` : `Source: ${file.name} (selected on this device)`;
 
-  // Show dashboard
   document.body.classList.add('dynamic-loaded');
   $('empty').style.display = 'none';
   $('dashboard').style.display = 'block';
@@ -1613,8 +1693,7 @@ function render(rows, file) {
 // ===== Bootstrap on load =====
 try { initMobileSnapshotChart(); } catch (e) { console.warn('Mobile chart init failed:', e); }
 try { setupAccessMode(); } catch (e) { console.warn('Access mode init failed:', e); }
-$('btn-pick').onclick = pickFile
-.onclick = pickFile;
+$('btn-pick').onclick = pickFile;
 $('file-input').onchange = async e => {
   const file = e.target.files && e.target.files[0];
   if (file) await processFile(file, { persistentHandle: false });
