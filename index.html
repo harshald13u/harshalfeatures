@@ -1285,13 +1285,16 @@ const SPECIAL_FEATURES = [
 ];
 
 function renderSpecialFeatures() {
-  const el = document.getElementById('special-features-list');
-  if (!el) return;
-  if (!SPECIAL_FEATURES.length) {
-    el.innerHTML = '<div style="font-size:10px;color:var(--txt-mut);padding:6px 0;">No special features yet</div>';
+  const countEl = document.getElementById('sf-count');
+  const listEl = document.getElementById('sf-modal-list');
+  const n = SPECIAL_FEATURES.length;
+  if (countEl) countEl.textContent = n;
+  if (!listEl) return;
+  if (!n) {
+    listEl.innerHTML = '<div style="font-size:12px;color:var(--txt-mut);padding:14px;text-align:center;">No special features yet</div>';
     return;
   }
-  el.innerHTML = SPECIAL_FEATURES.map(f => `
+  listEl.innerHTML = SPECIAL_FEATURES.map(f => `
     <a class="sf-card" href="${f.url}" target="_blank" rel="noopener">
       <div class="sf-meta">
         <div class="sf-pub">${f.pub}</div>
@@ -1302,6 +1305,18 @@ function renderSpecialFeatures() {
     </a>
   `).join('');
 }
+
+function openSpecialFeaturesModal() {
+  const m = document.getElementById('sf-modal');
+  if (m) m.classList.add('open');
+}
+function closeSpecialFeaturesModal() {
+  const m = document.getElementById('sf-modal');
+  if (m) m.classList.remove('open');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSpecialFeaturesModal();
+});
 
 // ===== Topic classification =====
 const TOPIC_RULES = [
