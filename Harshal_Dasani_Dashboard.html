@@ -128,7 +128,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
 .empty-state button { margin-top: 16px; padding: 12px 24px; background: linear-gradient(135deg, var(--blue), #4076E0);
                       color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;
                       box-shadow: 0 2px 14px rgba(91,155,255,0.35); }
-.kpis { display: grid; grid-template-columns: 1.1fr 1.6fr 1fr; gap: 12px; padding: 20px 0; max-width: none; }
+.kpis { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; padding: 20px 0; max-width: none; }
 .tile { background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
         border: 1px solid var(--line); border-radius: 12px; padding: 18px;
         position: relative; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
@@ -141,6 +141,41 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
 .tile.big .info .sub { font-size: 10px; color: var(--txt-mut); }
 .tile.kpi { padding-left: 22px; }
 
+/* Download buttons (next to LIVE pill in header) */
+.dl-group { display: inline-flex; gap: 6px; align-items: center; margin-right: 10px; }
+.dl-btn { display: inline-flex; align-items: center; gap: 5px;
+          background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+          color: var(--txt); padding: 6px 11px; border-radius: 7px;
+          font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+          text-decoration: none; cursor: pointer; font-family: inherit;
+          transition: all 0.15s ease; }
+.dl-btn:hover { background: rgba(96,176,255,0.18); border-color: rgba(96,176,255,0.45);
+                transform: translateY(-1px); }
+.dl-btn .dl-ico { font-size: 11px; line-height: 1; }
+.dl-btn.dl-excel:hover { background: rgba(34,197,94,0.18); border-color: rgba(34,197,94,0.5); }
+.dl-btn.dl-pdf:hover { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.5); }
+.dl-btn.dl-connect:hover { background: rgba(167,139,250,0.20); border-color: rgba(167,139,250,0.5); }
+
+.panels { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 12px; }
+.panel { background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+         border: 1px solid var(--line); border-radius: 12px; padding: 18px;
+         box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
+.panel h3 { font-size: 13px; font-weight: 700; color: var(--txt); margin-bottom: 16px; letter-spacing: 0.3px; }
+.bar-row { display: grid; grid-template-columns: 80px 1fr 88px; align-items: center;
+           gap: 8px; margin-bottom: 8px; }
+.bar-label { font-size: 11px; font-weight: 600; color: var(--txt); text-align: right; }
+.bar-label.small { font-size: 10px; }
+.bar-track { height: 12px; background: rgba(255,255,255,0.07); border-radius: 6px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 6px; transition: width 0.4s ease; box-shadow: 0 0 10px rgba(255,255,255,0.15); }
+.bar-value { font-size: 10px; color: var(--txt-mut); }
+.panel .note { font-size: 10px; font-style: italic; color: var(--txt-faint); margin-top: 14px; line-height: 1.4; }
+.monthly { position: relative; height: 260px; padding: 4px 0 0 0; }
+#cumulative { position: relative; height: 240px; }
+
+@media (max-width: 640px) {
+  .dl-group { margin-right: 6px; gap: 4px; }
+  .dl-btn { padding: 5px 8px; font-size: 10px; }
+}
 
 @media (max-width: 640px) {
   .feat-filters { padding: 8px; gap: 8px; }
@@ -665,30 +700,6 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
         <h3>Top outlet families</h3>
         <input type="text" id="pub-search" placeholder="🔍 Search publications…" autocomplete="off" style="width:100%;box-sizing:border-box;padding:8px 12px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--txt);background:rgba(255,255,255,0.04);outline:none;">
         <div id="pub-bars"></div>
-      </div>
-    </div>
-
-    <div class="panel" style="margin-bottom:12px">
-      <h3>Special Features <span style="color:#F59E0B;font-size:12px;font-weight:600;letter-spacing:0.5px;">★</span></h3>
-      <div class="sf-gallery">
-        <a class="sf-img-card" href="https://www.livemint.com/market/stock-market-news/gold-prices-at-6-000-silver-rate-at-150-why-harshal-dasani-remains-bullish-on-precious-metals-despite-meltdown-11770370001942.html" target="_blank" rel="noopener">
-          <div class="sf-img-wrap">
-            <img src="special-features-assets/livemint-gold-silver-feb2026.jpg" alt="Live Mint - Gold at $6,000, silver at $150" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'sf-img-placeholder\'>Image not yet uploaded:<br><code>special-features-assets/livemint-gold-silver-feb2026.jpg</code></div>';">
-          </div>
-          <div class="sf-img-caption">
-            <div class="sf-img-pub">Live Mint · 7 Feb 2026</div>
-            <div class="sf-img-title">Gold at $6,000, silver at $150: Why Harshal Dasani of INVasset PMS remains bullish on precious metals despite meltdown</div>
-          </div>
-        </a>
-        <a class="sf-img-card" href="https://earthenconnect.com/wp-content/uploads/2025/12/Outlook-Business-Issue-December-2025-PDF-Double-Spread-2.pdf" target="_blank" rel="noopener">
-          <div class="sf-img-wrap">
-            <img src="special-features-assets/outlook-business-outliers-dec2025.jpg" alt="Outlook Business The Outliers - Harshal Dasani on Manipal" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\'sf-img-placeholder\'>Image not yet uploaded:<br><code>special-features-assets/outlook-business-outliers-dec2025.jpg</code></div>';">
-          </div>
-          <div class="sf-img-caption">
-            <div class="sf-img-pub">Outlook Business · Dec 2025</div>
-            <div class="sf-img-title">"The Outliers" — Harshal Dasani on Ranjan Pai building Manipal as India's first hospital chain</div>
-          </div>
-        </a>
       </div>
     </div>
 
