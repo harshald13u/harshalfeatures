@@ -2404,11 +2404,16 @@ async function downloadDashboardPDF() {
       margin: { left: 28, right: 28, top: 60, bottom: 30 },
       pageBreak: 'auto',
       rowPageBreak: 'avoid',
-      didParseCell: (data) => {
-        if (data.section !== 'body') return;
+      willDrawCell: (data) => {
+        // Set the right font for this cell's script before autoTable draws the text
         const txt = String(data.cell.raw == null ? '' : data.cell.raw);
         const f = _fontForText(txt, _loadedFonts);
-        if (f) data.cell.styles.font = f;
+        if (f) {
+          doc.setFont(f, 'normal');
+          if (data.cell.styles) data.cell.styles.font = f;
+        } else {
+          doc.setFont('helvetica', data.section === 'head' ? 'bold' : 'normal');
+        }
       },
       didDrawPage: (data) => {
         const pgNum = doc.internal.getCurrentPageInfo().pageNumber;
