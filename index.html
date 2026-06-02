@@ -978,6 +978,7 @@ const _FONT_SOURCES = {
   NotoDevanagari: 'https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@main/fonts/NotoSansDevanagari/hinted/ttf/NotoSansDevanagari-Regular.ttf',
   NotoTamil:      'https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@main/fonts/NotoSansTamil/hinted/ttf/NotoSansTamil-Regular.ttf',
   NotoTelugu:     'https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@main/fonts/NotoSansTelugu/hinted/ttf/NotoSansTelugu-Regular.ttf',
+  NotoSansSC:     'special-features-assets/NotoSansSC-Subset.ttf',
 };
 const _FONT_CACHE = {};
 async function _loadFontIntoPdf(doc, name) {
@@ -1012,11 +1013,13 @@ async function _loadAllIndicFonts(doc) {
     _loadFontIntoPdf(doc, 'NotoDevanagari'),
     _loadFontIntoPdf(doc, 'NotoTamil'),
     _loadFontIntoPdf(doc, 'NotoTelugu'),
+    _loadFontIntoPdf(doc, 'NotoSansSC'),
   ]);
   return {
     devanagari: results[0],
     tamil:      results[1],
     telugu:     results[2],
+    chinese:    results[3],
   };
 }
 function _fontForText(text, loaded) {
@@ -1024,6 +1027,7 @@ function _fontForText(text, loaded) {
   if (loaded.devanagari && /[\u0900-\u097F]/.test(text)) return 'NotoDevanagari';
   if (loaded.tamil      && /[\u0B80-\u0BFF]/.test(text)) return 'NotoTamil';
   if (loaded.telugu     && /[\u0C00-\u0C7F]/.test(text)) return 'NotoTelugu';
+  if (loaded.chinese    && /[\u3000-\u303F\u3400-\u4DBF\u4E00-\u9FFF\uFF00-\uFFEF]/.test(text)) return 'NotoSansSC';
   return null;
 }
 </script>
