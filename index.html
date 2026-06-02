@@ -125,18 +125,43 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
 .empty-state button { margin-top: 16px; padding: 12px 24px; background: linear-gradient(135deg, var(--blue), #4076E0);
                       color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;
                       box-shadow: 0 2px 14px rgba(91,155,255,0.35); }
-.kpis { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; padding: 20px 0; max-width: none; }
+.kpis { display: grid; grid-template-columns: 1.1fr 1.6fr 1fr; gap: 12px; padding: 20px 0; max-width: none; }
 .tile { background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
         border: 1px solid var(--line); border-radius: 12px; padding: 18px;
         position: relative; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
-.tile.big { display: flex; align-items: center; gap: 20px; }
-.tile.big .num { font-size: 56px; font-weight: 800; line-height: 1;
+.tile.big { display: flex; align-items: center; gap: 16px; }
+.tile.big .num { font-size: 44px; font-weight: 800; line-height: 1;
                  background: linear-gradient(135deg, #fff, #9ED5FF); -webkit-background-clip: text;
                  background-clip: text; -webkit-text-fill-color: transparent;
                  filter: drop-shadow(0 0 14px rgba(92,168,255,0.45)); }
-.tile.big .info .label { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 6px; }
-.tile.big .info .sub { font-size: 11px; color: var(--txt-mut); }
+.tile.big .info .label { font-size: 12px; font-weight: 600; color: var(--txt); margin-bottom: 5px; }
+.tile.big .info .sub { font-size: 10px; color: var(--txt-mut); }
 .tile.kpi { padding-left: 22px; }
+.tile.special { padding: 14px 16px; display: flex; flex-direction: column; gap: 6px;
+                background: linear-gradient(135deg, rgba(245,158,11,0.10), rgba(217,119,6,0.05));
+                border-color: rgba(245,158,11,0.35); }
+.tile.special::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+                         background: linear-gradient(180deg, #F59E0B, #D97706);
+                         box-shadow: 0 0 14px rgba(245,158,11,0.6); }
+.tile.special .sf-head-label { font-size: 10px; font-weight: 700; color: #F59E0B;
+                               letter-spacing: 1.1px; text-transform: uppercase;
+                               display: flex; align-items: center; gap: 6px; }
+.tile.special .sf-head-label::before { content: '\2605'; font-size: 11px; }
+.tile.special .sf-card { display: flex; gap: 10px; align-items: flex-start;
+                         padding: 8px 10px; border-radius: 8px; text-decoration: none;
+                         background: rgba(255,255,255,0.04); border: 1px solid rgba(245,158,11,0.18);
+                         transition: all 0.15s ease; cursor: pointer; }
+.tile.special .sf-card:hover { background: rgba(245,158,11,0.08);
+                               border-color: rgba(245,158,11,0.45); transform: translateY(-1px); }
+.tile.special .sf-meta { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.tile.special .sf-pub { font-size: 10px; font-weight: 700; color: #FCD34D;
+                        letter-spacing: 0.4px; text-transform: uppercase; }
+.tile.special .sf-title { font-size: 12px; font-weight: 600; color: var(--txt);
+                          line-height: 1.35; overflow: hidden;
+                          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.tile.special .sf-sub { font-size: 9.5px; color: var(--txt-mut); line-height: 1.3; }
+.tile.special .sf-arrow { color: #F59E0B; font-size: 14px; flex-shrink: 0;
+                          align-self: center; opacity: 0.7; }
 .tile.kpi::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; box-shadow: 0 0 14px currentColor; }
 .tile.kpi.blue::before { background: var(--blue); color: var(--blue); }
 .tile.kpi.teal::before { background: var(--teal); color: var(--teal); }
@@ -376,11 +401,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
   .kpis { grid-template-columns: 1fr; max-width: none; gap: 8px; padding: 12px 0; }
   .tile { padding: 14px; border-radius: 10px; }
   .tile.big { gap: 14px; padding: 16px; }
-  .tile.big .num { font-size: 44px; }
+  .tile.big .num { font-size: 38px; }
   .tile.big .info .label { font-size: 12px; }
   .tile.kpi { padding-left: 18px; padding-top: 12px; padding-bottom: 12px; }
   .tile.kpi .num { font-size: 24px; }
   .tile.kpi .label { font-size: 10px; }
+  .tile.special { padding: 12px 14px; }
+  .tile.special .sf-head-label { font-size: 9px; }
+  .tile.special .sf-card { padding: 8px 10px; }
+  .tile.special .sf-pub { font-size: 9px; }
+  .tile.special .sf-title { font-size: 11px; -webkit-line-clamp: 3; }
+  .tile.special .sf-sub { font-size: 9px; }
 
   /* Recent-activity strip — 3x2 grid */
   .recent { grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 8px 0 0; }
@@ -466,13 +497,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
   .toolbar { padding: 12px 16px; }
   .toolbar button { padding: 10px 14px; font-size: 12px; min-height: 40px; }
 
-  .kpis { grid-template-columns: 2fr 1fr; gap: 10px; max-width: none; padding: 16px 0; }
+  .kpis { grid-template-columns: 1fr 1.4fr 1fr; gap: 10px; max-width: none; padding: 16px 0; }
   .tile { padding: 16px; }
-  .tile.big { gap: 14px; padding: 16px; }
-  .tile.big .num { font-size: 46px; }
-  .tile.big .info .label { font-size: 12px; }
-  .tile.kpi .num { font-size: 26px; }
+  .tile.big { gap: 12px; padding: 14px; }
+  .tile.big .num { font-size: 36px; }
+  .tile.big .info .label { font-size: 11px; }
+  .tile.kpi .num { font-size: 24px; }
   .tile.kpi .label { font-size: 10px; }
+  .tile.special { padding: 12px 14px; }
+  .tile.special .sf-title { font-size: 11px; }
+  .tile.special .sf-sub { font-size: 9px; }
 
   .recent { grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px 0 0; }
   .recent .r-tile { padding: 12px 12px; }
@@ -694,6 +728,10 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
           <div class="label">unique feature links</div>
           <div class="sub" id="kpi-sub">—</div>
         </div>
+      </div>
+      <div class="tile special" id="special-features-tile">
+        <div class="sf-head-label">Special Features</div>
+        <div id="special-features-list"></div>
       </div>
       <div class="tile kpi teal"><div class="num" id="kpi-avg-day">—</div><div class="label" id="kpi-avg-day-label">avg features / day</div></div>
     </div>
@@ -1112,6 +1150,7 @@ function setDrill(type, value) {
 }
 // Wire up the search box (debounced) + bar drill-down once the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+  renderSpecialFeatures();
   const inp = document.getElementById('feat-search');
   if (inp) {
     let t;
@@ -1227,6 +1266,35 @@ function renderPanels() {
   document.querySelectorAll('.bar-row.clickable').forEach(el => {
     el.classList.toggle('active', !!(DRILL && el.dataset.drill === DRILL.type && el.dataset.val === DRILL.value));
   });
+}
+
+// ===== Special Features (curated print/magazine highlights) =====
+const SPECIAL_FEATURES = [
+  {
+    pub: 'Outlook Business \u00b7 Dec 2025',
+    title: '"The Outliers" \u2014 Harshal Dasani on Ranjan Pai building Manipal as India\'s first hospital chain',
+    sub: 'Featured quote with photo \u00b7 double-spread cover story',
+    url: 'https://earthenconnect.com/wp-content/uploads/2025/12/Outlook-Business-Issue-December-2025-PDF-Double-Spread-2.pdf'
+  }
+];
+
+function renderSpecialFeatures() {
+  const el = document.getElementById('special-features-list');
+  if (!el) return;
+  if (!SPECIAL_FEATURES.length) {
+    el.innerHTML = '<div style="font-size:10px;color:var(--txt-mut);padding:6px 0;">No special features yet</div>';
+    return;
+  }
+  el.innerHTML = SPECIAL_FEATURES.map(f => `
+    <a class="sf-card" href="${f.url}" target="_blank" rel="noopener">
+      <div class="sf-meta">
+        <div class="sf-pub">${f.pub}</div>
+        <div class="sf-title">${f.title}</div>
+        <div class="sf-sub">${f.sub}</div>
+      </div>
+      <div class="sf-arrow">\u2197</div>
+    </a>
+  `).join('');
 }
 
 // ===== Topic classification =====
