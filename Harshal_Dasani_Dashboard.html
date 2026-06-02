@@ -1473,9 +1473,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (ff) ff.addEventListener('change', e => { FEAT_FROM = e.target.value; rerenderLatest(); });
   if (ft) ft.addEventListener('change', e => { FEAT_TO   = e.target.value; rerenderLatest(); });
   if (fp) fp.addEventListener('change', e => { FEAT_PUB  = e.target.value; rerenderLatest(); });
+  const fj = document.getElementById('feat-journalist');
+  if (fj) fj.addEventListener('change', e => { FEAT_JOURNALIST = e.target.value; rerenderLatest(); });
   if (fc) fc.addEventListener('click', () => {
     FEAT_FROM=''; FEAT_TO=''; FEAT_PUB=''; FEAT_JOURNALIST = "";
-    if (ff) ff.value=''; if (ft) ft.value=''; if (fp) fp.value='';
+    if (ff) ff.value=''; if (ft) ft.value=''; if (fp) fp.value=''; var _fj = document.getElementById('feat-journalist'); if (_fj) _fj.value='';
     SEARCH_TERM=''; DRILL=null;
     const s = document.getElementById('feat-search'); if (s) s.value='';
     rerenderLatest();
@@ -2303,6 +2305,13 @@ function render(rows, file) {
     const cur = pubSelect.value;
     pubSelect.innerHTML = '<option value="">All publications</option>' +
       pubs.map(p => `<option value="${escapeHtml(p)}"${p === cur ? ' selected' : ''}>${escapeHtml(p)}</option>`).join('');
+  }
+  const jrnSelect = document.getElementById('feat-journalist');
+  if (jrnSelect) {
+    const journalists = Array.from(new Set(unique.map(r => (r.Journalist || '').trim()).filter(j => j))).sort((a,b) => a.localeCompare(b));
+    const cur = jrnSelect.value;
+    jrnSelect.innerHTML = '<option value="">All journalists</option>' +
+      journalists.map(j => `<option value="${escapeHtml(j)}"${j === cur ? ' selected' : ''}>${escapeHtml(j)}</option>`).join('');
   }
   const fromInput = document.getElementById('feat-from');
   const toInput   = document.getElementById('feat-to');
