@@ -175,6 +175,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
 .dl-btn .dl-ico { font-size: 11px; line-height: 1; }
 .dl-btn.dl-excel:hover { background: rgba(34,197,94,0.18); border-color: rgba(34,197,94,0.5); }
 .dl-btn.dl-pdf:hover { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.5); }
+.dl-btn.dl-connect:hover { background: rgba(167,139,250,0.20); border-color: rgba(167,139,250,0.5); }
 @media (max-width: 640px) {
   .dl-group { margin-right: 6px; gap: 4px; }
   .dl-btn { padding: 5px 8px; font-size: 10px; }
@@ -713,6 +714,9 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
     <div class="header-meta-left"><span class="meta-label">Last updated</span><span class="meta-value" id="meta-line">—</span></div>
     <div class="header-meta-right">
         <span class="dl-group">
+          <button class="dl-btn dl-connect" onclick="headerConnectExcel()" title="Load a local Excel file (works on phone and desktop)">
+            <span class="dl-ico">📂</span>Connect
+          </button>
           <a class="dl-btn dl-excel" href="WhatsApp_Features_Articles.xlsx" download title="Download master Excel (same format as source)">
             <span class="dl-ico">⬇</span>Excel
           </a>
@@ -1245,6 +1249,33 @@ function renderEmbeddedSnapshot() {
   if ($('btn-disconnect')) $('btn-disconnect').style.display = 'none';
   return true;
 }
+
+// ===== Header Connect Excel — universal entry point (mobile + desktop) =====
+window.headerConnectExcel = async function() {
+  // Make sure the toolbar/status area is visible if user wants feedback
+  try {
+    // Try persistent File System Access first (Chrome/Edge desktop)
+    if (typeof HAS_PERSISTENT_FILE_PICKER !== 'undefined' && HAS_PERSISTENT_FILE_PICKER) {
+      const [handle] = await window.showOpenFilePicker({
+        types: [{ description: 'Excel file', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
+      });
+      if (typeof setHandle === 'function') await setHandle(handle);
+      await loadFromHandle(handle);
+      return;
+    }
+  } catch (err) {
+    if (err && err.name === 'AbortError') return;
+    // fall through to fallback
+  }
+  // Mobile / Safari / Firefox: use a one-shot <input type="file">
+  const input = document.getElementById('file-input');
+  if (!input) {
+    alert('File chooser not available on this browser.');
+    return;
+  }
+  input.value = '';
+  input.click();
+};
 
 // ===== File pick + read =====
 async function pickFile() {
