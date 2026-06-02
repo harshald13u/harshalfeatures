@@ -2203,7 +2203,7 @@ async function downloadDashboardPDF() {
     dated.forEach(r => {
       const p = (r.Publication || 'Unknown').trim();
       pubCounts[p] = (pubCounts[p] || 0) + 1;
-      const t = classifyTopic ? classifyTopic(r) : (r.Topic || 'Other');
+      const t = (typeof getTopic === 'function') ? getTopic(r.Heading) : (r.Topic || 'Other');
       topicCounts[t] = (topicCounts[t] || 0) + 1;
       const l = (r.Language || 'Unknown').trim();
       langCounts[l] = (langCounts[l] || 0) + 1;
@@ -2318,7 +2318,7 @@ async function downloadDashboardPDF() {
         const head = (r.Heading || '').toString();
         const lang = (r.Language || '').toString();
         const pub = (r.Publication || '').toString();
-        const topic = classifyTopic ? classifyTopic(r) : (r.Topic || '');
+        const topic = (typeof getTopic === 'function') ? getTopic(r.Heading) : (r.Topic || '');
         return [ds, head, lang, pub, topic];
       }),
       theme: 'striped',
