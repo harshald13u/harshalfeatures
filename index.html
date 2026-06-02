@@ -972,6 +972,60 @@ function _loadPdfLibs() {
     document.head.appendChild(s1);
   });
 }
+
+// Lazy-load Indic fonts (Noto Sans, SIL OFL) and register with jsPDF
+const _FONT_SOURCES = {
+  NotoDevanagari: 'https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@main/fonts/NotoSansDevanagari/hinted/ttf/NotoSansDevanagari-Regular.ttf',
+  NotoTamil:      'https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@main/fonts/NotoSansTamil/hinted/ttf/NotoSansTamil-Regular.ttf',
+  NotoTelugu:     'https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@main/fonts/NotoSansTelugu/hinted/ttf/NotoSansTelugu-Regular.ttf',
+};
+const _FONT_CACHE = {};
+async function _loadFontIntoPdf(doc, name) {
+  const url = _FONT_SOURCES[name];
+  if (!url) return false;
+  let b64 = _FONT_CACHE[name];
+  if (!b64) {
+    try {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('font fetch ' + r.status);
+      const buf = await r.arrayBuffer();
+      const u8 = new Uint8Array(buf);
+      let bin = '';
+      const chunk = 0x8000;
+      for (let i = 0; i < u8.length; i += chunk) {
+        bin += String.fromCharCode.apply(null, u8.subarray(i, i + chunk));
+      }
+      b64 = btoa(bin);
+      _FONT_CACHE[name] = b64;
+    } catch (e) {
+      console.warn('Font load failed for ' + name + ':', e);
+      return false;
+    }
+  }
+  const fname = name + '.ttf';
+  doc.addFileToVFS(fname, b64);
+  doc.addFont(fname, name, 'normal');
+  return true;
+}
+async function _loadAllIndicFonts(doc) {
+  const results = await Promise.all([
+    _loadFontIntoPdf(doc, 'NotoDevanagari'),
+    _loadFontIntoPdf(doc, 'NotoTamil'),
+    _loadFontIntoPdf(doc, 'NotoTelugu'),
+  ]);
+  return {
+    devanagari: results[0],
+    tamil:      results[1],
+    telugu:     results[2],
+  };
+}
+function _fontForText(text, loaded) {
+  if (!text) return null;
+  if (loaded.devanagari && /[\u0900-\u097F]/.test(text)) return 'NotoDevanagari';
+  if (loaded.tamil      && /[\u0B80-\u0BFF]/.test(text)) return 'NotoTamil';
+  if (loaded.telugu     && /[\u0C00-\u0C7F]/.test(text)) return 'NotoTelugu';
+  return null;
+}
 </script>
 <script>
 // ===== IndexedDB for persisting file handle =====
@@ -2197,6 +2251,8 @@ async function downloadDashboardPDF() {
     await _loadPdfLibs();
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+    // Load Indic fonts (Devanagari/Tamil/Telugu) and register with this doc
+    const _loadedFonts = await _loadAllIndicFonts(doc);
     const W = doc.internal.pageSize.getWidth();
     const H = doc.internal.pageSize.getHeight();
 
@@ -2344,6 +2400,12 @@ async function downloadDashboardPDF() {
       margin: { left: 28, right: 28, top: 60, bottom: 30 },
       pageBreak: 'auto',
       rowPageBreak: 'avoid',
+      didParseCell: (data) => {
+        if (data.section !== 'body') return;
+        const txt = String(data.cell.raw == null ? '' : data.cell.raw);
+        const f = _fontForText(txt, _loadedFonts);
+        if (f) data.cell.styles.font = f;
+      },
       didDrawPage: (data) => {
         const pgNum = doc.internal.getCurrentPageInfo().pageNumber;
         doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,165,180);
