@@ -158,6 +158,24 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
 .tile.special .sf-hint { font-size: 10.5px; color: rgba(252,211,77,0.75); font-weight: 500; }
 .tile.special .sf-chevron { color: #F59E0B; font-size: 22px; flex-shrink: 0; opacity: 0.75;
                             transition: transform 0.15s ease; line-height: 1; }
+
+/* Download buttons (next to LIVE pill in header) */
+.dl-group { display: inline-flex; gap: 6px; align-items: center; margin-right: 10px; }
+.dl-btn { display: inline-flex; align-items: center; gap: 5px;
+          background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+          color: var(--txt); padding: 6px 11px; border-radius: 7px;
+          font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+          text-decoration: none; cursor: pointer;
+          transition: all 0.15s ease; }
+.dl-btn:hover { background: rgba(96,176,255,0.18); border-color: rgba(96,176,255,0.45);
+                transform: translateY(-1px); }
+.dl-btn .dl-ico { font-size: 11px; line-height: 1; }
+.dl-btn.dl-excel:hover { background: rgba(34,197,94,0.18); border-color: rgba(34,197,94,0.5); }
+.dl-btn.dl-pdf:hover { background: rgba(239,68,68,0.18); border-color: rgba(239,68,68,0.5); }
+@media (max-width: 640px) {
+  .dl-group { margin-right: 6px; gap: 4px; }
+  .dl-btn { padding: 5px 8px; font-size: 10px; }
+}
 .tile.special:hover .sf-chevron { transform: translateX(4px); opacity: 1; }
 
 /* Special Features Modal */
@@ -690,7 +708,17 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
   </div>
   <div class="header-meta-bar">
     <div class="header-meta-left"><span class="meta-label">Last updated</span><span class="meta-value" id="meta-line">—</span></div>
-    <div class="header-meta-right"><span class="live-pill">LIVE</span></div>
+    <div class="header-meta-right">
+        <span class="dl-group">
+          <a class="dl-btn dl-excel" href="WhatsApp_Features_Articles.xlsx" download title="Download master Excel (same format as source)">
+            <span class="dl-ico">⬇</span>Excel
+          </a>
+          <button class="dl-btn dl-pdf" onclick="downloadDashboardPDF()" title="Download PDF report (summary + table)">
+            <span class="dl-ico">⬇</span>PDF
+          </button>
+        </span>
+        <span class="live-pill">LIVE</span>
+      </div>
   </div>
   <div class="accent-strip"></div>
 
@@ -922,6 +950,26 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
   </div>
 </div>
 
+<!-- PDF generation libs (loaded only when user clicks Download PDF) -->
+<script>
+let _PDF_LOADED = false;
+function _loadPdfLibs() {
+  return new Promise((resolve, reject) => {
+    if (_PDF_LOADED && window.jspdf) return resolve();
+    const s1 = document.createElement('script');
+    s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s1.onload = () => {
+      const s2 = document.createElement('script');
+      s2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.0/jspdf.plugin.autotable.min.js';
+      s2.onload = () => { _PDF_LOADED = true; resolve(); };
+      s2.onerror = reject;
+      document.head.appendChild(s2);
+    };
+    s1.onerror = reject;
+    document.head.appendChild(s1);
+  });
+}
+</script>
 <script>
 // ===== IndexedDB for persisting file handle =====
 const DB_NAME = 'dashboard_db';
@@ -2125,6 +2173,185 @@ $('btn-disconnect').onclick = async () => {
     console.warn('Could not auto-load:', e);
   }
 })();
+
+
+// ===== Download Dashboard as PDF =====
+async function downloadDashboardPDF() {
+  const btn = document.querySelector('.dl-btn.dl-pdf');
+  const orig = btn ? btn.innerHTML : '';
+  if (btn) btn.innerHTML = '<span class="dl-ico">⏳</span>Generating...';
+  try {
+    await _loadPdfLibs();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+    const W = doc.internal.pageSize.getWidth();
+    const H = doc.internal.pageSize.getHeight();
+
+    // Build data from RAW_ROWS (or EMBEDDED_SNAPSHOT_ROWS)
+    const rows = (typeof RAW_ROWS !== 'undefined' && RAW_ROWS.length) ? RAW_ROWS : (EMBEDDED_SNAPSHOT_ROWS || []);
+    const dated = rows.map(r => {
+      const d = r.Date instanceof Date ? r.Date : new Date(r.Date);
+      return { ...r, _d: d };
+    }).filter(r => r._d && !isNaN(r._d));
+    dated.sort((a,b) => b._d - a._d);
+    
+    // Compute stats
+    const total = dated.length;
+    const pubCounts = {};
+    const topicCounts = {};
+    const langCounts = {};
+    dated.forEach(r => {
+      const p = (r.Publication || 'Unknown').trim();
+      pubCounts[p] = (pubCounts[p] || 0) + 1;
+      const t = classifyTopic ? classifyTopic(r) : (r.Topic || 'Other');
+      topicCounts[t] = (topicCounts[t] || 0) + 1;
+      const l = (r.Language || 'Unknown').trim();
+      langCounts[l] = (langCounts[l] || 0) + 1;
+    });
+    const top10 = (o) => Object.entries(o).sort((a,b) => b[1]-a[1]).slice(0,10);
+    const topPubs = top10(pubCounts);
+    const topTopics = top10(topicCounts);
+    const topLangs = Object.entries(langCounts).sort((a,b) => b[1]-a[1]);
+    const firstDate = dated[dated.length-1]._d;
+    const lastDate = dated[0]._d;
+    const days = Math.max(1, Math.round((lastDate - firstDate) / 86400000));
+    const avg = (total / days).toFixed(2);
+    const fmtD = d => d.toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'});
+
+    // ============ PAGE 1: SUMMARY ============
+    let y = 40;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(22); doc.setTextColor(20, 20, 40);
+    doc.text('Harshal Dasani', 40, y);
+    y += 18;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(120,120,140);
+    doc.text('Media Intelligence Dashboard — Consolidated Tracker', 40, y);
+    y += 14;
+    doc.setFontSize(9); doc.setTextColor(150,150,170);
+    doc.text(`Generated ${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})} · Coverage: ${fmtD(firstDate)} → ${fmtD(lastDate)}`, 40, y);
+    y += 24;
+
+    // Big stat cards
+    const cards = [
+      { num: total.toLocaleString(), label: 'TOTAL FEATURES', color: [96,176,255] },
+      { num: Object.keys(pubCounts).length, label: 'PUBLICATIONS', color: [245,158,11] },
+      { num: Object.keys(langCounts).length, label: 'LANGUAGES', color: [34,197,94] },
+      { num: avg, label: 'AVG / DAY', color: [167,139,250] }
+    ];
+    const cardW = (W - 80 - 24) / 4;
+    cards.forEach((c, i) => {
+      const x = 40 + i * (cardW + 8);
+      doc.setFillColor(248, 249, 252);
+      doc.setDrawColor(220, 225, 235);
+      doc.roundedRect(x, y, cardW, 60, 6, 6, 'FD');
+      doc.setFillColor(c.color[0], c.color[1], c.color[2]);
+      doc.rect(x, y, 4, 60, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(30,30,50);
+      doc.text(String(c.num), x + 14, y + 28);
+      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(120,120,140);
+      doc.text(c.label, x + 14, y + 46);
+    });
+    y += 80;
+
+    // TOP PUBLICATIONS
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(20,20,40);
+    doc.text('Top Publications', 40, y);
+    y += 6;
+    doc.autoTable({
+      startY: y,
+      head: [['#','Publication','Features']],
+      body: topPubs.map((p,i) => [i+1, p[0], p[1]]),
+      theme: 'striped', styles: {fontSize: 9, cellPadding: 4},
+      headStyles: {fillColor: [40,50,80], textColor: 255, fontStyle:'bold'},
+      margin: {left: 40, right: W/2 + 6},
+      columnStyles: {0:{cellWidth:24, halign:'center'}, 2:{halign:'right', cellWidth:50}}
+    });
+    const yAfterPubs = doc.lastAutoTable.finalY;
+
+    // TOP TOPICS (right column, same y)
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(20,20,40);
+    doc.text('Top Topics', W/2 + 6, y);
+    doc.autoTable({
+      startY: y + 6,
+      head: [['#','Topic','Features']],
+      body: topTopics.map((t,i) => [i+1, t[0], t[1]]),
+      theme: 'striped', styles: {fontSize: 9, cellPadding: 4},
+      headStyles: {fillColor: [40,50,80], textColor: 255, fontStyle:'bold'},
+      margin: {left: W/2 + 6, right: 40},
+      columnStyles: {0:{cellWidth:24, halign:'center'}, 2:{halign:'right', cellWidth:50}}
+    });
+    y = Math.max(yAfterPubs, doc.lastAutoTable.finalY) + 20;
+
+    // LANGUAGES
+    if (y > H - 100) { doc.addPage(); y = 40; }
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(20,20,40);
+    doc.text('Language Distribution', 40, y);
+    y += 6;
+    doc.autoTable({
+      startY: y,
+      head: [['Language','Features','%']],
+      body: topLangs.map(l => [l[0], l[1], ((l[1]*100)/total).toFixed(1)+'%']),
+      theme: 'striped', styles: {fontSize: 9, cellPadding: 4},
+      headStyles: {fillColor: [40,50,80], textColor: 255, fontStyle:'bold'},
+      margin: {left: 40, right: 40},
+      columnStyles: {1:{halign:'right',cellWidth:80}, 2:{halign:'right',cellWidth:60}}
+    });
+    y = doc.lastAutoTable.finalY + 16;
+
+    // Footer on page 1
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(160,160,180);
+    doc.text('Source: WhatsApp_Features_Articles.xlsx · Dashboard: harshald13u.github.io/harshalfeatures',
+             W/2, H - 24, {align: 'center'});
+
+    // ============ PAGE 2+: FULL TABLE (Excel format) ============
+    doc.addPage();
+    doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(20,20,40);
+    doc.text('All Features — Excel-format table', 40, 30);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(140,140,160);
+    doc.text(`${total} entries · Date, Heading, Language, Publication, Topic`, 40, 44);
+
+    doc.autoTable({
+      startY: 56,
+      head: [['Date', 'Heading', 'Lang', 'Publication', 'Topic']],
+      body: dated.map(r => {
+        const d = r._d;
+        const ds = `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`;
+        const head = (r.Heading || '').toString();
+        const lang = (r.Language || '').toString();
+        const pub = (r.Publication || '').toString();
+        const topic = classifyTopic ? classifyTopic(r) : (r.Topic || '');
+        return [ds, head, lang, pub, topic];
+      }),
+      theme: 'striped',
+      styles: { fontSize: 7, cellPadding: 3, overflow: 'linebreak', valign: 'top' },
+      headStyles: { fillColor: [40,50,80], textColor: 255, fontStyle:'bold', fontSize: 8 },
+      alternateRowStyles: { fillColor: [248, 249, 252] },
+      columnStyles: {
+        0: { cellWidth: 56, halign:'left' },
+        1: { cellWidth: 'auto' },
+        2: { cellWidth: 36 },
+        3: { cellWidth: 78 },
+        4: { cellWidth: 70 }
+      },
+      margin: { left: 30, right: 30, top: 40, bottom: 30 },
+      didDrawPage: (data) => {
+        // Page number footer
+        const pgNum = doc.internal.getCurrentPageInfo().pageNumber;
+        const pgCount = doc.internal.getNumberOfPages();
+        doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,160,180);
+        doc.text(`Page ${pgNum} of ${pgCount}`, W - 30, H - 14, {align:'right'});
+        doc.text('Harshal Dasani — Media Intelligence Dashboard', 30, H - 14);
+      }
+    });
+
+    const fname = `Harshal_Dasani_Media_Features_${new Date().toISOString().slice(0,10)}.pdf`;
+    doc.save(fname);
+  } catch (e) {
+    console.error('PDF generation failed:', e);
+    alert('PDF generation failed: ' + (e.message || e));
+  } finally {
+    if (btn) btn.innerHTML = orig;
+  }
+}
 </script>
 
 <!-- Special Features modal -->
