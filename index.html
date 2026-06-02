@@ -199,6 +199,29 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
 #sf-modal .sf-sub { font-size: 11px; color: var(--txt-mut); line-height: 1.3; }
 #sf-modal .sf-arrow { color: #F59E0B; font-size: 18px; flex-shrink: 0;
                       align-self: center; opacity: 0.7; }
+#sf-modal .sf-logo { display: inline-flex; align-items: center; gap: 6px;
+                     background: #fff; padding: 5px 12px; border-radius: 5px;
+                     margin-bottom: 10px; align-self: flex-start;
+                     box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+#sf-modal .sf-logo-mint .lm-mint { color: #FF6F00; font-family: Georgia, 'Times New Roman', serif;
+                                    font-weight: 900; font-style: italic; font-size: 22px;
+                                    line-height: 1; letter-spacing: -0.5px; }
+#sf-modal .sf-logo-mint .lm-sep { color: #d0d0d0; font-size: 22px; font-weight: 300;
+                                   line-height: 1; margin: 0 1px; }
+#sf-modal .sf-logo-mint .lm-bars { display: inline-flex; align-items: flex-end; gap: 1.5px;
+                                    height: 14px; margin-right: 2px; }
+#sf-modal .sf-logo-mint .lm-bars span { width: 2.5px; border-radius: 1px; }
+#sf-modal .sf-logo-mint .lm-bars span:nth-child(1) { height: 50%; background: #62B843; }
+#sf-modal .sf-logo-mint .lm-bars span:nth-child(2) { height: 75%; background: #FF6F00; }
+#sf-modal .sf-logo-mint .lm-bars span:nth-child(3) { height: 100%; background: #62B843; }
+#sf-modal .sf-logo-mint .lm-markets { color: #1a1a1a; font-weight: 700; font-size: 15px;
+                                       font-family: Arial, sans-serif; letter-spacing: -0.2px; }
+#sf-modal .sf-logo-outlook { background: #1B2540; padding: 6px 14px; }
+#sf-modal .sf-logo-outlook .ol-outlook { color: #FFD700; font-family: 'Times New Roman', serif;
+                                          font-weight: 900; font-size: 18px; letter-spacing: 1.5px; }
+#sf-modal .sf-logo-outlook .ol-business { color: #fff; font-family: 'Times New Roman', serif;
+                                           font-weight: 400; font-size: 11px;
+                                           letter-spacing: 2px; margin-left: 4px; }
 .tile.kpi::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; box-shadow: 0 0 14px currentColor; }
 .tile.kpi.blue::before { background: var(--blue); color: var(--blue); }
 .tile.kpi.teal::before { background: var(--teal); color: var(--teal); }
@@ -1315,13 +1338,15 @@ const SPECIAL_FEATURES = [
     pub: 'Outlook Business \u00b7 Dec 2025',
     title: '"The Outliers" \u2014 Harshal Dasani on Ranjan Pai building Manipal as India\'s first hospital chain',
     sub: 'Featured quote with photo \u00b7 double-spread cover story',
-    url: 'https://earthenconnect.com/wp-content/uploads/2025/12/Outlook-Business-Issue-December-2025-PDF-Double-Spread-2.pdf'
+    url: 'https://earthenconnect.com/wp-content/uploads/2025/12/Outlook-Business-Issue-December-2025-PDF-Double-Spread-2.pdf',
+    logo: '<div class="sf-logo sf-logo-outlook"><span class="ol-outlook">OUTLOOK</span><span class="ol-business">BUSINESS</span></div>'
   },
   {
     pub: 'Live Mint \u00b7 7 Feb 2026',
     title: 'Gold at $6,000, silver at $150 \u2014 Why Harshal Dasani remains bullish on precious metals despite meltdown',
     sub: 'Authored / featured analyst piece in Mint',
-    url: 'https://www.livemint.com/market/stock-market-news/gold-prices-at-6-000-silver-rate-at-150-why-harshal-dasani-remains-bullish-on-precious-metals-despite-meltdown-11770370001942.html'
+    url: 'https://www.livemint.com/market/stock-market-news/gold-prices-at-6-000-silver-rate-at-150-why-harshal-dasani-remains-bullish-on-precious-metals-despite-meltdown-11770370001942.html',
+    logo: '<div class="sf-logo sf-logo-mint"><span class="lm-mint">mint</span><span class="lm-sep">|</span><span class="lm-bars"><span></span><span></span><span></span></span><span class="lm-markets">Markets</span></div>'
   }
 ];
 
@@ -1338,6 +1363,7 @@ function renderSpecialFeatures() {
   listEl.innerHTML = SPECIAL_FEATURES.map(f => `
     <a class="sf-card" href="${f.url}" target="_blank" rel="noopener">
       <div class="sf-meta">
+        ${f.logo || ''}
         <div class="sf-pub">${f.pub}</div>
         <div class="sf-title">${f.title}</div>
         <div class="sf-sub">${f.sub}</div>
