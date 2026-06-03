@@ -366,12 +366,10 @@ body::before {
   flex-wrap: nowrap;
   width: max-content;
   animation: pressScroll 28s linear infinite;
-  animation-play-state: paused;
 }
-.press.is-active .press-track,
 .press:hover .press-track,
 .press:focus-within .press-track {
-  animation-play-state: running;
+  animation-play-state: paused;
 }
 .press-set {
   display: flex;
