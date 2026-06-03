@@ -418,7 +418,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .bar-fill { height: 100%; border-radius: 6px; transition: width 0.4s ease; box-shadow: 0 0 10px rgba(255,255,255,0.15); }
 .bar-value { font-size: 10px; color: var(--txt-mut); }
 .panel .note { font-size: 10px; font-style: italic; color: var(--txt-faint); margin-top: 14px; line-height: 1.4; }
-.monthly { position: relative; height: 260px; padding: 4px 0 0 0; }
+.monthly { position: relative; height: 260px; padding: 4px 0 40px 0; }
 #cumulative { position: relative; height: 240px; }
 .m-yaxis { display: flex; flex-direction: column; justify-content: space-between;
            font-size: 9px; color: var(--txt-faint); text-align: right;
@@ -662,7 +662,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
   .panel { padding: 14px; border-radius: 10px; margin-bottom: 8px; }
   .panel h3 { font-size: 12px; margin-bottom: 12px; }
   #cumulative { height: 180px; }
-  .monthly { height: 200px; }
+  .monthly { height: 200px; padding-bottom: 36px; }
   .panel .note { font-size: 9px; margin-top: 10px; }
 
   /* Bar rows — tighter columns, label wraps */
@@ -771,7 +771,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
   .bar-track { height: 11px; }
   .bar-row.clickable { min-height: 40px; padding: 6px 5px; margin: 0 -5px 5px; }
 
-  .monthly { height: 210px; }
+  .monthly { height: 210px; padding-bottom: 36px; }
   #cumulative { height: 200px; }
   .cum-svg { height: 200px; }
 
@@ -1886,7 +1886,6 @@ function renderFallbackMonthlyChart(el, labels, data, peakIdx) {
     const height = Math.max(8, count / max * 100);
     const peak = i === peakIdx ? ' peak' : '';
     return `<div class="m-col">
-      <div class="m-label">${count}</div>
       <div class="m-bar${peak}" data-idx="${i}" data-count="${labels[i]}: ${count} feature${count === 1 ? '' : 's'}" style="height:${height}%"></div>
       <div class="m-name">${escapeHtml(labels[i])}</div>
     </div>`;
