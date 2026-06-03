@@ -858,7 +858,7 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .press-track { animation: none; }
+  /* press-track stays paused by default at .press-track rule above; hover still triggers slide */
   .name .ch, .door, .door::after, .door-arrow, .soc, .hero-photo img {
     transition: none !important;
     animation: none !important;
@@ -1013,5 +1013,4 @@ body::before {
       <span class="soc-t"><span class="soc-name">X / Twitter</span><span class="soc-meta">Daily takes</span></span>
     </a>
     <a class="soc" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener">
-      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 12 .05 12s0 3 .45 4.9a3.02 3.02 0 0 0 2.13 2.14c1.9.46 9.37.46 9.37.46s7.47 0 9.37-.46a3.02 3.02 0 0 0 2.13-2.14c.45-1.9.45-4.9.45-4.9s0-3-.45-4.9zM9.75 15.5v-7L15.8 12l-6.05 3.5z"/></svg></span>
-      <span class="so
+      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 12 .05 12s0 3 .45 4.9a3.02 3.02 0 0 0 2.13 2.14c1.9.46 9.37.46 9.37.46s7.47 0 9.37-.46a3.02 3.02 0 0 0 2.13-2.14c.45-1.9.45-4.9.45-4.9s0-3-.45-4.9zM9.75 1
