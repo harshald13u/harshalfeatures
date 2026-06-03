@@ -324,72 +324,70 @@ body::before {
 }
 .hero-photo:hover img { filter: contrast(1.07) saturate(1); }
 
-/* ticker — recent features rotate */
-.ticker {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 14px 18px;
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  background: rgba(21,17,13,0.55);
-  font-size: 12.5px;
+/* press marquee — As Featured On, warm brown band, white wordmarks scrolling */
+.press {
+  grid-column: 1 / -1;
+  position: relative;
+  margin: 8px 0 0;
+  padding: 28px 0;
+  background: linear-gradient(180deg, #2b1d12 0%, #241810 100%);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.40);
   overflow: hidden;
 }
-.ticker-tag {
-  font-size: 10px;
-  letter-spacing: 1.8px;
+.press-label {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5px;
+  letter-spacing: 2.2px;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--accent);
-  white-space: nowrap;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 18px;
+}
+.press-track {
+  display: flex;
+  width: max-content;
+  animation: pressScroll 38s linear infinite;
+}
+.press-track:hover { animation-play-state: paused; }
+.press-set {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 56px;
+  padding-right: 56px;
 }
-.ticker-tag::before {
+.press-mark {
+  white-space: nowrap;
+  color: #fff;
+  opacity: 0.72;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: opacity 0.3s ease;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.press-mark:hover { opacity: 1; }
+.press-mark.is-italic { font-style: italic; }
+.press-mark.is-sans { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: -0.2px; }
+.press-mark.is-uppercase { text-transform: uppercase; letter-spacing: 1.5px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 18px; }
+.press-mark.is-smallcaps { font-variant: small-caps; letter-spacing: 1px; }
+
+@keyframes pressScroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* edge fade so marks emerge/disappear softly */
+.press::before, .press::after {
   content: '';
-  width: 6px; height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
-  animation: pulse 1.4s ease-in-out infinite;
+  position: absolute; top: 0; bottom: 0; width: 80px;
+  pointer-events: none; z-index: 2;
 }
-.ticker-rail {
-  flex: 1;
-  position: relative;
-  height: 18px;
-  overflow: hidden;
-  min-width: 0;
-}
-.ticker-item {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  font-family: 'Inter', sans-serif;
-  color: var(--ink-2);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.ticker-item.is-on {
-  opacity: 1;
-  transform: translateY(0);
-}
-.ticker-item b {
-  font-weight: 600;
-  color: var(--ink);
-  margin-right: 8px;
-}
-.ticker-item span {
-  color: var(--muted);
-  margin-left: 8px;
-  font-size: 11px;
-  letter-spacing: 0.4px;
-}
+.press::before { left: 0;  background: linear-gradient(90deg, #241810, transparent); }
+.press::after  { right: 0; background: linear-gradient(270deg, #241810, transparent); }
 
 /* ============================================================
    ABOUT — compact, two-column on desktop
@@ -794,9 +792,12 @@ body::before {
   .role-line { font-size: 17px; }
   .tagline { font-size: 18px; margin-bottom: 28px; }
   .hero-photo { margin-bottom: 0; }
-  .ticker { padding: 11px 14px; font-size: 12px; gap: 12px; }
-  .ticker-rail { height: 16px; }
-  .ticker-item { font-size: 12px; }
+  .press { padding: 22px 0; margin-top: 4px; }
+  .press-label { font-size: 9.5px; letter-spacing: 1.8px; margin-bottom: 14px; }
+  .press-set { gap: 36px; padding-right: 36px; }
+  .press-mark { font-size: 17px; }
+  .press-mark.is-uppercase { font-size: 14px; }
+  .press::before, .press::after { width: 40px; }
 
   .about {
     padding: 32px 0 36px;
@@ -841,7 +842,8 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .name .ch, .door, .door::after, .door-arrow, .soc, .hero-photo img, .ticker-item {
+  .press-track { animation: none; }
+  .name .ch, .door, .door::after, .door-arrow, .soc, .hero-photo img {
     transition: none !important;
     animation: none !important;
     opacity: 1 !important;
@@ -876,16 +878,43 @@ body::before {
       <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="1000" height="516" loading="eager" decoding="async">
     </figure>
 
-    <div class="ticker" aria-label="Recent media features">
-      <div class="ticker-tag">In the press</div>
-      <div class="ticker-rail" id="tickerRail">
-        <div class="ticker-item is-on"><b>TCS shares crash 9%</b> Economic Times <span>Quoted</span></div>
-        <div class="ticker-item"><b>Sensex hits record</b> Moneycontrol <span>Quoted</span></div>
-        <div class="ticker-item"><b>FII outflows in October</b> Mint <span>Interviewed</span></div>
-        <div class="ticker-item"><b>RBI policy outlook</b> Business Standard <span>Op-ed</span></div>
-        <div class="ticker-item"><b>Markets with Harshal</b> CNBC Bajar Gujarati <span>On air</span></div>
+    <section class="press" aria-label="As featured on">
+      <div class="press-label">As Featured On</div>
+      <div class="press-track">
+        <div class="press-set">
+          <span class="press-mark is-sans">The Economic Times</span>
+          <span class="press-mark is-italic">Mint</span>
+          <span class="press-mark is-smallcaps">moneycontrol</span>
+          <span class="press-mark is-uppercase">Business Standard</span>
+          <span class="press-mark is-sans">Financial Express</span>
+          <span class="press-mark">Business Today</span>
+          <span class="press-mark is-italic">Outlook</span>
+          <span class="press-mark is-smallcaps">Times of India</span>
+          <span class="press-mark is-uppercase">Forbes</span>
+          <span class="press-mark is-uppercase">Reuters</span>
+          <span class="press-mark is-sans">NDTV Profit</span>
+          <span class="press-mark is-sans">CNBC</span>
+          <span class="press-mark">Good Returns</span>
+          <span class="press-mark is-uppercase">PTI</span>
+        </div>
+        <div class="press-set" aria-hidden="true">
+          <span class="press-mark is-sans">The Economic Times</span>
+          <span class="press-mark is-italic">Mint</span>
+          <span class="press-mark is-smallcaps">moneycontrol</span>
+          <span class="press-mark is-uppercase">Business Standard</span>
+          <span class="press-mark is-sans">Financial Express</span>
+          <span class="press-mark">Business Today</span>
+          <span class="press-mark is-italic">Outlook</span>
+          <span class="press-mark is-smallcaps">Times of India</span>
+          <span class="press-mark is-uppercase">Forbes</span>
+          <span class="press-mark is-uppercase">Reuters</span>
+          <span class="press-mark is-sans">NDTV Profit</span>
+          <span class="press-mark is-sans">CNBC</span>
+          <span class="press-mark">Good Returns</span>
+          <span class="press-mark is-uppercase">PTI</span>
+        </div>
       </div>
-    </div>
+    </section>
   </section>
 
   <section class="about" aria-labelledby="aboutLabel">
@@ -1013,71 +1042,4 @@ body::before {
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){
-        if (e.isIntersecting) {
-          e.target.classList.add('is-in');
-          if (e.target.querySelector('#trackerCount')) animateCount(counter);
-          io.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.2 });
-    doors.forEach(function(d){ io.observe(d); });
-  } else {
-    doors.forEach(function(d){ d.classList.add('is-in'); });
-    animateCount(counter);
-  }
-
-  if (!reduced) {
-    doors.forEach(function(d){
-      d.addEventListener('mousemove', function(e){
-        var r = d.getBoundingClientRect();
-        d.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
-        d.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
-      });
-    });
-  }
-
-  var photo = document.getElementById('heroPhoto');
-  if (photo && !reduced && window.matchMedia('(hover: hover)').matches) {
-    var img = photo.querySelector('img');
-    photo.addEventListener('mousemove', function(e){
-      var r = photo.getBoundingClientRect();
-      var dx = (e.clientX-r.left)/r.width - 0.5;
-      var dy = (e.clientY-r.top)/r.height - 0.5;
-      img.style.setProperty('--ry', (dx*2.4)+'deg');
-      img.style.setProperty('--rx', (-dy*1.8)+'deg');
-    });
-    photo.addEventListener('mouseleave', function(){
-      img.style.setProperty('--ry','0deg');
-      img.style.setProperty('--rx','0deg');
-    });
-    var ticking = false;
-    function onScroll(){
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(function(){
-        var r = photo.getBoundingClientRect();
-        var vh = window.innerHeight || 1;
-        var rel = (r.top + r.height/2 - vh/2)/vh;
-        var py = Math.max(-14, Math.min(14, -rel*18));
-        img.style.setProperty('--py', py+'px');
-        ticking = false;
-      });
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  }
-
-  var items = document.querySelectorAll('#tickerRail .ticker-item');
-  if (items.length > 1 && !reduced) {
-    var idx = 0;
-    setInterval(function(){
-      items[idx].classList.remove('is-on');
-      idx = (idx+1) % items.length;
-      items[idx].classList.add('is-on');
-    }, 3200);
-  }
-})();
-</script>
-</body>
-</html>
-                                           
+    
