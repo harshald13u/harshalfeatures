@@ -242,13 +242,18 @@ body::before {
   gap: 0 0.22em;
 }
 .name .word { display: inline-flex; }
+.name {
+  transition: color 0.5s cubic-bezier(.4, 0, .2, 1);
+}
+.name:hover .ch {
+  color: var(--accent);
+}
 .name .ch {
   display: inline-block;
-  transition: transform 0.45s cubic-bezier(.2,.7,.2,1), color 0.3s ease;
+  transition: transform 0.45s cubic-bezier(.2,.7,.2,1), color 0.5s cubic-bezier(.4, 0, .2, 1);
   will-change: transform;
 }
 .name .ch:hover {
-  color: var(--accent);
   transform: translateY(-6px);
 }
 
@@ -1014,4 +1019,4 @@ body::before {
       <span class="soc-t"><span class="soc-name">X / Twitter</span><span class="soc-meta">Daily takes</span></span>
     </a>
     <a class="soc" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener">
-      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 1
+      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5
