@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Notes — Harshal Dasani</title>
+<meta name="description" content="Harshal Dasani — long-form notes on Indian equity markets, commodities, macros and geopolitics. Business Head at INVasset PMS.">
+<meta name="keywords" content="Harshal Dasani blog, Harshal Dasani notes, Indian markets blog, INVasset PMS, stock market analysis, commodities, macros, geopolitics">
+<meta name="author" content="Harshal Dasani">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="googlebot" content="index, follow">
+<meta name="bingbot" content="index, follow">
+
+<link rel="canonical" href="https://harshald13u.github.io/harshalfeatures/blog/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Harshal Dasani — Notes">
+<meta property="og:title" content="Notes — Harshal Dasani">
+<meta property="og:description" content="Long-form notes on markets, commodities, macros and geopolitics.">
+<meta property="og:url" content="https://harshald13u.github.io/harshalfeatures/blog/">
+<meta property="og:image" content="https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="516">
+<meta property="og:locale" content="en_IN">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@HarshalDasanii">
+<meta name="twitter:creator" content="@HarshalDasanii">
+<meta name="twitter:title" content="Notes — Harshal Dasani">
+<meta name="twitter:description" content="Long-form notes on markets, commodities, macros and geopolitics.">
+<meta name="twitter:image" content="https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg">
+
+<meta name="theme-color" content="#0e0c0a">
+
+<link rel="manifest" href="../manifest.json">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="../icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../icon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0e0c0a;
+  --bg-2: #15110d;
+  --ink: #ece4d3;
+  --ink-2: #c9c0ad;
+  --muted: #8a8273;
+  --faint: #5a5447;
+  --rule: rgba(236,228,211,0.10);
+  --rule-soft: rgba(236,228,211,0.06);
+  --accent: #d4a64a;
+  --accent-soft: rgba(212,166,74,0.08);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: var(--bg); }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg); color: var(--ink-2);
+  min-height: 100vh; line-height: 1.55;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-text-size-adjust: 100%; overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(1200px 700px at 85% -10%, rgba(212,166,74,0.045), transparent 60%),
+    radial-gradient(900px 600px at -5% 105%, rgba(212,166,74,0.025), transparent 60%);
+}
+a { color: inherit; text-decoration: none; }
+
+.page {
+  position: relative; z-index: 1;
+  max-width: 1120px; margin: 0 auto;
+  padding: max(28px, env(safe-area-inset-top)) max(56px, env(safe-area-inset-right)) 72px max(56px, env(safe-area-inset-left));
+}
+
+/* MASTHEAD — same as landing */
+.masthead {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 18px; border-bottom: 1px solid var(--rule);
+  margin-bottom: 48px;
+}
+.mast-socials { display: flex; align-items: center; gap: 10px; }
+.mast-socials a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--rule);
+  color: var(--ink-2); transition: all 0.2s ease;
+}
+.mast-socials a svg { width: 15px; height: 15px; }
+.mast-socials a:hover {
+  color: var(--accent); border-color: var(--accent);
+  background: rgba(212,166,74,0.08); transform: translateY(-1px);
+}
+.mast-meta {
+  font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
+  color: var(--muted); font-weight: 500;
+}
+.mast-meta a { color: var(--muted); transition: color 0.2s ease; }
+.mast-meta a:hover { color: var(--accent); }
+
+/* HERO */
+.blog-hero { margin-bottom: 36px; }
+.blog-title {
+  font-family: 'Inter', sans-serif; font-weight: 800;
+  font-size: clamp(48px, 7vw, 88px);
+  line-height: 0.95; letter-spacing: -0.04em;
+  margin: 0 0 16px; color: var(--ink);
+}
+.blog-sub {
+  font-size: 16px; color: var(--ink-2); max-width: 640px;
+  line-height: 1.5; margin: 0;
+}
+
+/* TOPIC TABS */
+.blog-tabs {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin: 32px 0 36px;
+  padding-bottom: 24px; border-bottom: 1px solid var(--rule);
+}
+.blog-tabs a {
+  display: inline-flex; align-items: center;
+  padding: 9px 16px; border: 1px solid var(--rule);
+  border-radius: 999px; font-size: 11px; font-weight: 600;
+  letter-spacing: 1.3px; text-transform: uppercase;
+  color: var(--ink-2); transition: all 0.2s ease; cursor: pointer;
+}
+.blog-tabs a:hover {
+  color: var(--accent); border-color: var(--accent);
+  background: rgba(212,166,74,0.08); transform: translateY(-1px);
+}
+.blog-tabs a.is-active {
+  color: var(--bg); border-color: var(--accent);
+  background: var(--accent); font-weight: 700;
+}
+
+/* GRID */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.post-card {
+  display: flex; flex-direction: column;
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.post-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(212,166,74,0.35);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+}
+.post-cover {
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, #1a1612 0%, #2a201a 100%);
+  position: relative; overflow: hidden;
+}
+.post-cover img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.post-card:hover .post-cover img { transform: scale(1.04); }
+.post-cover-fallback {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(212,166,74,0.25);
+  font-family: 'Inter', sans-serif; font-weight: 800;
+  font-size: 64px; letter-spacing: -0.04em;
+}
+.post-body {
+  padding: 20px 22px 22px;
+  display: flex; flex-direction: column;
+  flex: 1; gap: 10px;
+}
+.post-topic {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--accent);
+}
+.post-title {
+  font-family: 'Inter', sans-serif; font-weight: 700;
+  font-size: 19px; line-height: 1.28; letter-spacing: -0.015em;
+  color: var(--ink); margin: 0;
+}
+.post-excerpt {
+  font-size: 14px; line-height: 1.55; color: var(--ink-2);
+  margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.post-meta {
+  margin-top: auto; padding-top: 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 0.6px;
+}
+.post-meta .post-date { text-transform: uppercase; }
+.post-meta .post-arrow { color: var(--accent); transition: transform 0.2s ease; }
+.post-card:hover .post-arrow { transform: translateX(3px); }
+
+/* EMPTY STATE */
+.blog-empty {
+  padding: 80px 32px;
+  text-align: center;
+  border: 1px dashed var(--rule);
+  border-radius: 12px;
+  background: rgba(21,17,13,0.5);
+}
+.blog-empty-title {
+  font-family: 'Inter', sans-serif; font-weight: 700;
+  font-size: 22px; color: var(--ink); margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+.blog-empty-sub {
+  font-size: 14px; color: var(--ink-2); max-width: 420px; margin: 0 auto;
+}
+
+/* FOOTER */
+.blog-footer {
+  margin-top: 80px; padding-top: 28px;
+  border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 11px; color: var(--muted);
+  letter-spacing: 0.4px;
+}
+.blog-footer a { color: var(--muted); transition: color 0.2s ease; }
+.blog-footer a:hover { color: var(--accent); }
+
+/* TABLET */
+@media (max-width: 960px) {
+  .page { padding: 24px 32px 64px; }
+  .posts-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+}
+/* MOBILE */
+@media (max-width: 640px) {
+  .page { padding: 18px 20px 52px; }
+  .masthead { padding-bottom: 14px; margin-bottom: 32px; }
+  .mast-socials a { width: 28px; height: 28px; }
+  .mast-socials a svg { width: 13px; height: 13px; }
+  .mast-meta { font-size: 9.5px; letter-spacing: 1.3px; }
+  .blog-title { font-size: clamp(40px, 11vw, 60px); }
+  .blog-sub { font-size: 15px; }
+  .blog-tabs { gap: 6px; margin: 24px 0 28px; padding-bottom: 18px; }
+  .blog-tabs a { padding: 8px 12px; font-size: 10px; letter-spacing: 1.1px; }
+  .posts-grid { grid-template-columns: 1fr; gap: 14px; }
+  .post-title { font-size: 17px; }
+  .post-body { padding: 18px 18px 20px; }
+}
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="masthead">
+    <div class="mast-socials">
+      <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg></a>
+      <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg></a>
+      <a href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 12 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+    </div>
+    <div class="mast-meta"><a href="../">&larr; Back to home</a></div>
+  </header>
+
+  <section class="blog-hero">
+    <h1 class="blog-title">Notes.</h1>
+    <p class="blog-sub">Long-form thinking on what's moving markets, commodities, macros and the geopolitics behind the prices.</p>
+  </section>
+
+  <nav class="blog-tabs" aria-label="Filter by topic">
+    <a href="./" data-topic="all">All</a>
+    <a href="?topic=stock-market" data-topic="stock-market">Stock Market</a>
+    <a href="?topic=commodities" data-topic="commodities">Commodities</a>
+    <a href="?topic=macros" data-topic="macros">Macros</a>
+    <a href="?topic=geopolitics" data-topic="geopolitics">Geopolitics</a>
+  </nav>
+
+  <div class="posts-grid" id="postsGrid">
+    <div class="blog-empty">
+      <h2 class="blog-empty-title">Loading posts&hellip;</h2>
+    </div>
+  </div>
+
+  <footer class="blog-footer">
+    <div>&copy; 2026 Harshal Dasani</div>
+    <div><a href="../">harshald13u.github.io/harshalfeatures</a></div>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  var TOPIC_LABELS = {
+    "stock-market": "Stock Market",
+    "commodities": "Commodities",
+    "macros": "Macros",
+    "geopolitics": "Geopolitics"
+  };
+  var url = new URL(window.location.href);
+  var activeTopic = (url.searchParams.get('topic') || 'all').toLowerCase();
+  if (!TOPIC_LABELS[activeTopic] && activeTopic !== 'all') activeTopic = 'all';
+
+  // Highlight active tab
+  document.querySelectorAll('.blog-tabs a').forEach(function(a){
+    if ((a.getAttribute('data-topic') || '').toLowerCase() === activeTopic) {
+      a.classList.add('is-active');
+    }
+  });
+
+  function fmtDate(s){
+    try {
+      var d = new Date(s);
+      if (isNaN(d)) return s;
+      return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch(e) { return s; }
+  }
+
+  function escapeHTML(str){
+    return String(str || '').replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
+  function postCardHTML(post){
+    var slug = encodeURIComponent(post.slug || '');
+    var img = post.image ? '<img src="'+escapeHTML(post.image)+'" alt="'+escapeHTML(post.title)+'" loading="lazy">' :
+              '<div class="post-cover-fallback">'+escapeHTML((post.title||'·').slice(0,1).toUpperCase())+'</div>';
+    var topicLbl = TOPIC_LABELS[post.topic] || post.topic || '';
+    return '<a class="post-card" href="posts/'+slug+'/">' +
+      '<div class="post-cover">'+img+'</div>' +
+      '<div class="post-body">' +
+        '<div class="post-topic">'+escapeHTML(topicLbl)+'</div>' +
+        '<h2 class="post-title">'+escapeHTML(post.title || 'Untitled')+'</h2>' +
+        '<p class="post-excerpt">'+escapeHTML(post.excerpt || '')+'</p>' +
+        '<div class="post-meta">' +
+          '<span class="post-date">'+escapeHTML(fmtDate(post.date))+'</span>' +
+          '<span class="post-arrow">Read &rarr;</span>' +
+        '</div>' +
+      '</div>' +
+    '</a>';
+  }
+
+  fetch('posts.json?nc=' + Date.now())
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var posts = (data && data.posts) || [];
+      // Sort: newest first by date
+      posts.sort(function(a,b){
+        return new Date(b.date||0) - new Date(a.date||0);
+      });
+      // Filter by topic
+      if (activeTopic !== 'all') {
+        posts = posts.filter(function(p){ return (p.topic||'').toLowerCase() === activeTopic; });
+      }
+      var grid = document.getElementById('postsGrid');
+      if (!posts.length) {
+        var label = activeTopic === 'all' ? 'No posts yet' : 'No posts on ' + (TOPIC_LABELS[activeTopic] || activeTopic) + ' yet';
+        grid.innerHTML = '<div class="blog-empty"><h2 class="blog-empty-title">'+label+'</h2><p class="blog-empty-sub">Check back as I publish &mdash; new pieces drop here whenever I have something to say.</p></div>';
+        return;
+      }
+      grid.innerHTML = posts.map(postCardHTML).join('');
+    })
+    .catch(function(){
+      document.getElementById('postsGrid').innerHTML =
+        '<div class="blog-empty"><h2 class="blog-empty-title">Couldn’t load posts</h2><p class="blog-empty-sub">Refresh the page or check the manifest at <code>posts.json</code>.</p></div>';
+    });
+})();
+</script>
+</body>
+</html>
