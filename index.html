@@ -286,12 +286,16 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
-  margin-top: auto;
-  margin-bottom: 36px;
-  padding-top: 22px;
+  margin-top: 0;
+  padding-top: 16px;
   width: 100%;
   margin-left: 0;
   margin-right: 0;
+}
+/* Lift the right column up to align chips with line 2 of the tagline */
+.hero-right {
+  align-self: end;
+  padding-bottom: 56px;
 }
 .hero-tags a {
   display: inline-flex;
