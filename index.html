@@ -20,8 +20,8 @@
 <meta property="og:description" content="Markets professional, writer, Business Head at INVasset PMS. CFA candidate, CA Level II. Featured across ET, Mint, Moneycontrol &amp; CNBC.">
 <meta property="og:url" content="https://harshald13u.github.io/harshalfeatures/">
 <meta property="og:image" content="https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg">
-<meta property="og:image:width" content="540">
-<meta property="og:image:height" content="720">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="563">
 <meta property="og:locale" content="en_IN">
 <meta property="profile:first_name" content="Harshal">
 <meta property="profile:last_name" content="Dasani">
@@ -144,8 +144,8 @@ body::before {
 /* ====== HERO — SIDE BY SIDE ====== */
 .hd-hero {
   display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 56px;
+  grid-template-columns: 1fr 480px;
+  gap: 48px;
   align-items: center;
   margin-bottom: 64px;
 }
@@ -195,19 +195,19 @@ body::before {
 /* Photo on right */
 .hd-photo {
   width: 100%;
-  aspect-ratio: 3 / 4;
-  border-radius: 22px;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
   overflow: hidden;
   position: relative;
   background: linear-gradient(135deg, #0c1730 0%, #1a2a55 50%, #122042 100%);
   border: 1px solid rgba(243,199,102,0.28);
   box-shadow:
-    0 30px 70px rgba(0,0,0,0.55),
-    0 0 60px rgba(36,209,194,0.12);
+    0 24px 60px rgba(0,0,0,0.55),
+    0 0 50px rgba(36,209,194,0.12);
 }
 .hd-photo img {
   width: 100%; height: 100%;
-  object-fit: cover; object-position: center top;
+  object-fit: cover; object-position: center center;
   display: block;
 }
 .hd-photo::after {
@@ -336,8 +336,8 @@ body::before {
 
 /* ====== TABLET ====== */
 @media (max-width: 960px) {
-  .hd-hero { grid-template-columns: 1fr 300px; gap: 36px; }
-  .hd-name { font-size: 44px; }
+  .hd-hero { grid-template-columns: 1fr 360px; gap: 32px; }
+  .hd-name { font-size: 42px; }
 }
 
 /* ====== MOBILE ====== */
@@ -354,7 +354,7 @@ body::before {
     margin-bottom: 40px;
   }
   .hd-hero-text { order: 2; }
-  .hd-photo { order: 1; max-width: 280px; margin: 0 auto; }
+  .hd-photo { order: 1; max-width: 100%; margin: 0 auto; }
   .hd-name { font-size: 38px; }
   .hd-role { font-size: 15px; }
   .hd-tagline { font-size: 14.5px; }
