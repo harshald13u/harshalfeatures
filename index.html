@@ -20,8 +20,8 @@
 <meta property="og:description" content="Markets professional, writer, Business Head at INVasset PMS. CFA candidate, CA Level II. Featured across ET, Mint, Moneycontrol &amp; CNBC.">
 <meta property="og:url" content="https://harshald13u.github.io/harshalfeatures/">
 <meta property="og:image" content="https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg">
-<meta property="og:image:width" content="1000">
-<meta property="og:image:height" content="563">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
 <meta property="og:locale" content="en_IN">
 <meta property="profile:first_name" content="Harshal">
 <meta property="profile:last_name" content="Dasani">
@@ -96,16 +96,15 @@
 
 <style>
 :root {
-  /* warm near-black, not cool tech-black */
   --bg: #0e0c0a;
   --bg-2: #15110d;
-  --ink: #ece4d3;       /* warm bone — primary text */
-  --ink-2: #c9c0ad;     /* secondary body */
-  --muted: #8a8273;     /* labels, meta */
-  --faint: #5a5447;     /* numerals, rules */
+  --ink: #ece4d3;
+  --ink-2: #c9c0ad;
+  --muted: #8a8273;
+  --faint: #5a5447;
   --rule: rgba(236,228,211,0.10);
   --rule-soft: rgba(236,228,211,0.06);
-  --accent: #d4a64a;    /* warm gold — single accent */
+  --accent: #d4a64a;
   --accent-soft: rgba(212,166,74,0.08);
 }
 
@@ -121,9 +120,9 @@ body {
   line-height: 1.55;
   font-feature-settings: "ss01", "cv11";
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
 }
 
-/* very subtle warm radial — gives depth without "glow" */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -136,19 +135,19 @@ body::before {
   position: relative; z-index: 1;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 36px 56px 80px;
+  padding: 28px 56px 72px;
 }
 
 /* ============================================================
-   MASTHEAD — small FT-style top rule
+   MASTHEAD
    ============================================================ */
 .masthead {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 22px;
+  padding-bottom: 18px;
   border-bottom: 1px solid var(--rule);
-  margin-bottom: 96px;
+  margin-bottom: 56px;
 }
 .mast-mark {
   font-family: 'Fraunces', Georgia, serif;
@@ -166,6 +165,11 @@ body::before {
   border-radius: 50%;
   margin-right: 10px;
   vertical-align: 2px;
+  animation: pulse 2.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(0.85); }
 }
 .mast-meta {
   font-size: 11px;
@@ -185,40 +189,19 @@ body::before {
 }
 
 /* ============================================================
-   HERO — name is the visual now. Single column, big.
+   HERO — header + landscape photo + ticker
    ============================================================ */
 .hero {
-  margin-bottom: 112px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 72px;
-  align-items: end;
-}
-.hero-text { min-width: 0; }
-.hero-portrait {
-  margin: 0;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border-radius: 4px;
-  background: #1a1612;
+  margin-bottom: 64px;
   position: relative;
-  margin-bottom: 6px;
 }
-.hero-portrait img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center 25%;
-  display: block;
-  filter: contrast(1.04) saturate(0.92);
-}
-
 .eyebrow {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 36px;
+  margin-bottom: 28px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -234,22 +217,35 @@ body::before {
 .name {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 400;
-  font-size: clamp(54px, 8.4vw, 104px);
-  line-height: 0.92;
+  font-size: clamp(54px, 9.2vw, 116px);
+  line-height: 0.9;
   letter-spacing: -0.04em;
-  margin: 0 0 40px;
+  margin: 0 0 32px;
   color: var(--ink);
   font-variation-settings: "opsz" 144;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.22em;
+}
+.name .word { display: inline-flex; }
+.name .ch {
+  display: inline-block;
+  transition: transform 0.45s cubic-bezier(.2,.7,.2,1), color 0.3s ease;
+  will-change: transform;
+}
+.name .ch:hover {
+  color: var(--accent);
+  transform: translateY(-6px);
 }
 
 .role-block {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 18px 22px;
-  padding-bottom: 28px;
+  gap: 14px 22px;
+  padding-bottom: 24px;
   border-bottom: 1px solid var(--rule);
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
 .role-line {
   font-family: 'Fraunces', Georgia, serif;
@@ -272,100 +268,236 @@ body::before {
   color: var(--muted);
   font-weight: 500;
 }
+.loc-line::before {
+  content: '';
+  display: inline-block;
+  width: 4px; height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: 2px;
+}
 
 .tagline {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 400;
-  font-size: clamp(20px, 2.4vw, 26px);
+  font-size: clamp(19px, 2.1vw, 24px);
   line-height: 1.45;
   color: var(--ink-2);
-  max-width: 720px;
+  max-width: 760px;
   letter-spacing: -0.008em;
   font-style: italic;
-  margin: 0;
+  margin: 0 0 40px;
+}
+
+/* landscape photo */
+.hero-photo {
+  margin: 0 0 28px;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #1a1612;
+  perspective: 900px;
+}
+.hero-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 32%;
+  display: block;
+  filter: contrast(1.04) saturate(0.92);
+  transform: translate3d(0, var(--py, 0), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.3s cubic-bezier(.2,.7,.2,1), filter 0.4s ease;
+  will-change: transform;
+}
+.hero-photo:hover img { filter: contrast(1.06) saturate(1); }
+.hero-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(14,12,10,0.55) 100%);
+  pointer-events: none;
+}
+.hero-photo-cap {
+  position: absolute;
+  left: 22px; bottom: 16px;
+  font-size: 10.5px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 500;
+  z-index: 2;
+  opacity: 0.85;
+}
+.hero-photo-cap::before {
+  content: '';
+  display: inline-block;
+  width: 18px; height: 1px;
+  background: var(--accent);
+  margin-right: 10px;
+  vertical-align: 3px;
+}
+
+/* ticker — recent features rotate */
+.ticker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 18px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: rgba(21,17,13,0.55);
+  font-size: 12.5px;
+  overflow: hidden;
+}
+.ticker-tag {
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ticker-tag::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+.ticker-rail {
+  flex: 1;
+  position: relative;
+  height: 18px;
+  overflow: hidden;
+  min-width: 0;
+}
+.ticker-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.ticker-item.is-on {
+  opacity: 1;
+  transform: translateY(0);
+}
+.ticker-item b {
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: 8px;
+}
+.ticker-item span {
+  color: var(--muted);
+  margin-left: 8px;
+  font-size: 11px;
+  letter-spacing: 0.4px;
 }
 
 /* ============================================================
-   ESSAY — the bio reads like a piece, not a marketing block
+   ABOUT — compact, two-column on desktop
    ============================================================ */
-.essay {
+.about {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: 72px;
-  padding: 72px 0;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 56px;
+  padding: 52px 0 56px;
   border-top: 1px solid var(--rule);
-  margin-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 72px;
 }
-.essay-side {
-  position: sticky;
-  top: 32px;
-  align-self: start;
-}
-.essay-side-label {
+.about-side-label {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
-.essay-side-title {
+.about-side-title {
   font-family: 'Fraunces', Georgia, serif;
   font-style: italic;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.4;
   color: var(--muted);
 }
-
-.essay-body {
+.about-body {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 400;
-  font-size: 20px;
-  line-height: 1.72;
+  font-size: 16.5px;
+  line-height: 1.62;
   color: var(--ink-2);
-  max-width: 660px;
-  letter-spacing: -0.003em;
+  letter-spacing: -0.002em;
+  column-count: 2;
+  column-gap: 40px;
 }
-.essay-body p {
-  margin: 0 0 26px;
+.about-body p {
+  margin: 0 0 16px;
+  break-inside: avoid;
 }
-.essay-body p:last-child { margin-bottom: 0; }
-.essay-body p:first-child::first-letter {
-  font-family: 'Fraunces', Georgia, serif;
-  font-weight: 500;
-  font-size: 74px;
-  line-height: 0.85;
-  float: left;
-  margin: 8px 14px 0 -2px;
-  color: var(--accent);
-}
-.essay-body strong {
+.about-body p:last-child { margin-bottom: 0; }
+.about-body strong {
   font-weight: 500;
   color: var(--ink);
 }
-.essay-body .brand {
+.about-body .brand {
   font-style: italic;
   color: var(--ink);
 }
+.about-stats {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 28px;
+  font-family: 'Inter', sans-serif;
+  break-inside: avoid;
+  -webkit-column-break-before: always;
+  break-before: column;
+}
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.about-stat-n {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--accent);
+  line-height: 1;
+}
+.about-stat-l {
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
 
 /* ============================================================
-   ELSEWHERE — quiet text list, no cards
+   PRIMARY — Blog + Tracker as two big doors
    ============================================================ */
-.elsewhere {
-  border-top: 1px solid var(--rule);
-  padding-top: 64px;
-  margin-top: 24px;
-}
-.elsewhere-head {
+.primary-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 36px;
   gap: 24px;
   flex-wrap: wrap;
+  margin-bottom: 28px;
 }
-.elsewhere-title {
+.primary-title {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 400;
   font-style: italic;
@@ -374,7 +506,7 @@ body::before {
   color: var(--ink);
   margin: 0;
 }
-.elsewhere-sub {
+.primary-sub {
   font-size: 11px;
   letter-spacing: 1.6px;
   text-transform: uppercase;
@@ -382,84 +514,225 @@ body::before {
   font-weight: 500;
 }
 
-.links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--rule-soft);
-}
-.link-item {
-  border-bottom: 1px solid var(--rule-soft);
-}
-.link-row {
+.doors {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1.2fr) minmax(0, 2fr) auto;
-  gap: 32px;
-  align-items: center;
-  padding: 28px 4px;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 56px;
+}
+.door {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+  padding: 32px 32px 28px;
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
   text-decoration: none;
   color: var(--ink);
-  transition: padding 0.28s ease, color 0.2s ease, background 0.28s ease;
-  position: relative;
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(.2,.7,.2,1), border-color 0.3s ease, background 0.3s ease;
+  opacity: 0;
+  transform: translateY(24px);
+  will-change: transform;
 }
-.link-row:hover {
-  padding-left: 14px;
-  background: var(--accent-soft);
+.door.is-in {
+  opacity: 1;
+  transform: translateY(0);
 }
-.link-row:hover .link-name { color: var(--accent); }
-
-.link-num {
-  font-family: 'Fraunces', Georgia, serif;
-  font-style: italic;
-  font-size: 13px;
-  color: var(--faint);
-  font-weight: 400;
+.door:hover {
+  border-color: rgba(212,166,74,0.45);
+  background: #181410;
 }
-.link-name {
-  font-family: 'Fraunces', Georgia, serif;
-  font-weight: 500;
-  font-size: 28px;
-  letter-spacing: -0.018em;
-  line-height: 1.1;
-  color: var(--ink);
-  transition: color 0.2s ease;
+.door::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: radial-gradient(280px 200px at var(--mx, 50%) var(--my, 50%), rgba(212,166,74,0.10), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
-.link-name em {
-  font-style: italic;
-  font-weight: 400;
-  color: var(--muted);
-  font-size: 11px;
-  margin-left: 10px;
+.door:hover::before { opacity: 1; }
+.door::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; height: 100%; width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.45s cubic-bezier(.2,.7,.2,1);
+}
+.door:hover::after, .door:focus-visible::after { transform: scaleY(1); }
+.door-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.door-kicker {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+}
+.door-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  vertical-align: 5px;
-  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 3px 9px;
+  border-radius: 999px;
 }
-.link-desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 13.5px;
-  color: var(--muted);
-  line-height: 1.55;
+.door-badge.soft {
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid rgba(212,166,74,0.45);
+}
+.door-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(36px, 4.5vw, 52px);
   font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  margin: 0 0 14px;
+  color: var(--ink);
 }
-.link-arrow {
+.door-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0 0 28px;
+  max-width: 380px;
+}
+.door-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  position: relative;
+  z-index: 1;
+}
+.door-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: 'Fraunces', Georgia, serif;
+}
+.door-stat-n {
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.door-stat-l {
+  font-family: 'Inter', sans-serif;
+  font-size: 10.5px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+.door-arrow {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 22px;
-  color: var(--faint);
-  transition: transform 0.28s ease, color 0.2s ease;
-  font-weight: 400;
+  color: var(--ink);
+  transition: transform 0.35s cubic-bezier(.2,.7,.2,1), color 0.2s ease;
 }
-.link-row:hover .link-arrow {
+.door:hover .door-arrow {
   color: var(--accent);
   transform: translateX(8px);
+}
+
+/* ============================================================
+   SOCIAL — secondary row
+   ============================================================ */
+.social-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.social-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.social-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.social {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 80px;
+}
+.soc {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  text-decoration: none;
+  color: var(--ink-2);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: transparent;
+  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+.soc:hover {
+  border-color: rgba(212,166,74,0.5);
+  background: var(--accent-soft);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+.soc-ic {
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.soc-ic svg { width: 100%; height: 100%; display: block; }
+.soc-t {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.soc-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: var(--ink);
+}
+.soc-meta {
+  font-size: 10.5px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  margin-top: 2px;
 }
 
 /* ============================================================
    COLOPHON
    ============================================================ */
 .colophon {
-  margin-top: 112px;
-  padding-top: 24px;
+  padding-top: 22px;
   border-top: 1px solid var(--rule);
   display: flex;
   align-items: center;
@@ -480,203 +753,96 @@ body::before {
   font-weight: 500;
 }
 
-/* selection */
 ::selection { background: var(--accent); color: var(--bg); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
 
 /* ============================================================
    TABLET
    ============================================================ */
 @media (max-width: 960px) {
-  .page { padding: 28px 36px 72px; }
-  .masthead { margin-bottom: 64px; }
+  .page { padding: 24px 36px 64px; }
+  .masthead { margin-bottom: 40px; }
+  .hero { margin-bottom: 48px; }
+  .name { margin-bottom: 24px; }
+  .role-block { gap: 10px 18px; padding-bottom: 20px; margin-bottom: 22px; }
+  .tagline { margin-bottom: 32px; }
 
-  .hero { margin-bottom: 80px; grid-template-columns: 1fr; gap: 36px; align-items: start; }
-  .hero-portrait { max-width: 340px; order: -1; }
-  .name { margin-bottom: 32px; }
-  .role-block { gap: 12px 18px; padding-bottom: 24px; margin-bottom: 24px; }
-
-  .essay {
+  .about {
     grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 56px 0;
+    gap: 22px;
+    padding: 40px 0 44px;
+    margin-bottom: 56px;
   }
-  .essay-side { position: static; }
-  .essay-side-title { font-size: 16px; }
+  .about-body { column-count: 2; column-gap: 32px; font-size: 16px; }
 
-  .link-row {
-    grid-template-columns: 22px minmax(0, 1fr) auto;
-    gap: 20px;
-    padding: 24px 4px;
-  }
-  .link-desc {
-    grid-column: 2 / 4;
-    margin-top: -8px;
-    padding-left: 0;
-  }
+  .doors { gap: 18px; margin-bottom: 48px; }
+  .door { min-height: 240px; padding: 26px 26px 24px; }
 }
 
 /* ============================================================
    MOBILE
    ============================================================ */
 @media (max-width: 640px) {
-  .hero { gap: 28px; }
-  .hero-portrait { max-width: 280px; }
-
-  .page { padding: 22px 22px 56px; }
+  .page { padding: 20px 22px 52px; }
   .masthead {
-    padding-bottom: 16px;
-    margin-bottom: 48px;
+    padding-bottom: 14px;
+    margin-bottom: 32px;
   }
   .mast-mark { font-size: 15px; }
   .mast-meta { font-size: 10px; letter-spacing: 1.4px; }
   .mast-meta span + span::before { margin: 0 8px 3px; }
 
-  .hero { margin-bottom: 64px; }
-  .eyebrow { font-size: 10px; margin-bottom: 22px; letter-spacing: 1.8px; }
+  .hero { margin-bottom: 40px; }
+  .eyebrow { font-size: 10px; margin-bottom: 18px; letter-spacing: 1.8px; }
   .eyebrow::after { max-width: 48px; }
   .name {
-    font-size: clamp(46px, 14vw, 72px);
-    margin-bottom: 26px;
+    font-size: clamp(46px, 13.5vw, 76px);
+    margin-bottom: 22px;
   }
   .role-line { font-size: 17px; }
-  .tagline { font-size: 18px; }
+  .tagline { font-size: 18px; margin-bottom: 28px; }
+  .hero-photo { aspect-ratio: 4 / 3; margin-bottom: 20px; border-radius: 4px; }
+  .hero-photo-cap { left: 14px; bottom: 12px; font-size: 9.5px; letter-spacing: 1.5px; }
+  .ticker { padding: 11px 14px; font-size: 12px; gap: 12px; }
+  .ticker-rail { height: 16px; }
+  .ticker-item { font-size: 12px; }
 
-  .essay { padding: 44px 0; gap: 22px; }
-  .essay-body {
-    font-size: 17.5px;
-    line-height: 1.68;
+  .about {
+    padding: 32px 0 36px;
+    gap: 18px;
+    margin-bottom: 44px;
   }
-  .essay-body p:first-child::first-letter {
-    font-size: 58px;
-    margin: 6px 11px 0 -1px;
+  .about-body {
+    column-count: 1;
+    font-size: 16px;
+    line-height: 1.6;
   }
+  .about-stats { gap: 14px 22px; margin-top: 18px; }
+  .about-stat-n { font-size: 20px; }
 
-  .elsewhere { padding-top: 44px; }
-  .elsewhere-title { font-size: 26px; }
-  .link-name { font-size: 22px; }
-  .link-name em {
-    display: block;
-    margin: 8px 0 0;
-    vertical-align: baseline;
-    font-size: 10.5px;
+  .primary-title { font-size: 25px; }
+  .doors {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 40px;
   }
-  .link-row {
-    grid-template-columns: 20px minmax(0, 1fr) auto;
-    gap: 16px;
-    padding: 22px 2px;
+  .door {
+    min-height: 0;
+    padding: 22px 22px 20px;
   }
-  .link-row:hover { padding-left: 8px; }
-  .link-desc {
-    font-size: 13px;
-    grid-column: 2 / 4;
-    margin-top: -6px;
+  .door-name { font-size: 32px; line-height: 1.04; margin-bottom: 12px; }
+  .door-desc { font-size: 13.5px; margin-bottom: 22px; }
+  .door-foot { padding-top: 14px; }
+  .door-stat-n { font-size: 22px; }
+
+  .social {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 56px;
   }
-  .colophon { margin-top: 72px; }
-}
-
-@media (max-width: 380px) {
-  .name { font-size: 42px; }
-  .link-name { font-size: 20px; }
-  .tagline { font-size: 17px; }
-}
-
-/* respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .link-row, .link-arrow {
-    transition: none;
-  }
-}
-</style>
-</head>
-<body>
-
-<main class="page">
-
-  <!-- HERO — name + portrait, side by side -->
-  <section class="hero">
-    <div class="hero-text">
-      <h1 class="name">Harshal Dasani</h1>
-      <div class="role-block">
-        <div class="role-line">
-          <strong>Business Head</strong>, INVasset PMS &amp; AIF
-        </div>
-        <div class="loc-line">Mumbai, India</div>
-      </div>
-      <p class="tagline">
-        Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.
-      </p>
-    </div>
-    <figure class="hero-portrait">
-      <img src="harshal-dasani.jpg" alt="Harshal Dasani" width="576" height="720" loading="eager">
-    </figure>
-  </section>
-
-  <!-- ESSAY / ABOUT -->
-  <section class="essay">
-    <aside class="essay-side">
-      <div class="essay-side-label">About</div>
-      <div class="essay-side-title">A reader of cycles, psychology, and time.</div>
-    </aside>
-    <div class="essay-body">
-      <p>I&apos;m Harshal Dasani &mdash; Business Head at <strong>INVasset PMS</strong>, with over ten years of experience in Indian equity markets.</p>
-      <p>I spend most of my days trying to make sense of how the world&apos;s biggest forces &mdash; central banks, geopolitics, capital flows, human behavior &mdash; show up in stock prices. I&apos;ve come to believe that the best investors aren&apos;t the loudest forecasters; they&apos;re the most disciplined readers of cycles, psychology, and time.</p>
-      <p>My approach is part numbers, part narrative. Fundamental analysis tells me what a business is worth. Technical and macro lenses tell me when the market is willing to listen. Behavioral finance reminds me that everyone &mdash; including me &mdash; is more biased than they think. I try to hold all three in mind at once.</p>
-      <p>I&apos;m a <strong>CFA candidate</strong> and have cleared <strong>Level II of the Chartered Accountancy program</strong> &mdash; credentials that have taught me as much about how to think as what to know.</p>
-      <p>Outside the desk, you&apos;ll find me sharing views across India&apos;s leading financial publications &mdash; <span class="brand">The Economic Times, Mint, Moneycontrol, Business Standard, Financial Express, Business Today, Outlook Money, Times of India, Forbes, PTI, and Reuters</span> &mdash; and on television via <span class="brand">Good Returns, CNBC Bajar Gujarati, and Moneycontrol</span>. I also publish long-form market commentary on YouTube and X as <strong>Markets with Harshal</strong>.</p>
-    </div>
-  </section>
-
-  <!-- ELSEWHERE -->
-  <section class="elsewhere">
-    <div class="elsewhere-head">
-      <h2 class="elsewhere-title">Elsewhere</h2>
-      <div class="elsewhere-sub">Four places to find me</div>
-    </div>
-
-    <ul class="links" aria-label="Where to find Harshal Dasani">
-      <li class="link-item">
-        <a class="link-row" href="tracker/">
-          <span class="link-num">01</span>
-          <span class="link-name">Media Tracker <em>Live</em></span>
-          <span class="link-desc">Every feature, quote, and interview &mdash; 1,041 articles across 150+ publications in 8 languages.</span>
-          <span class="link-arrow" aria-hidden="true">&rarr;</span>
-        </a>
-      </li>
-      <li class="link-item">
-        <a class="link-row" href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener">
-          <span class="link-num">02</span>
-          <span class="link-name">LinkedIn <em>Professional</em></span>
-          <span class="link-desc">Notes, posts, and where I&apos;m thinking about Indian markets right now.</span>
-          <span class="link-arrow" aria-hidden="true">&#8599;</span>
-        </a>
-      </li>
-      <li class="link-item">
-        <a class="link-row" href="https://x.com/HarshalDasanii" target="_blank" rel="noopener">
-          <span class="link-num">03</span>
-          <span class="link-name">X / Twitter <em>Daily</em></span>
-          <span class="link-desc">Real-time takes on Indian equities, macro, IPOs, and global markets.</span>
-          <span class="link-arrow" aria-hidden="true">&#8599;</span>
-        </a>
-      </li>
-      <li class="link-item">
-        <a class="link-row" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener">
-          <span class="link-num">04</span>
-          <span class="link-name">YouTube <em>Markets with Harshal</em></span>
-          <span class="link-desc">Long-form market explainers, sector deep-dives, and earnings-season takes.</span>
-          <span class="link-arrow" aria-hidden="true">&#8599;</span>
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <!-- COLOPHON -->
-  <footer class="colophon">
-    <div class="colophon-left">&copy; 2026 Harshal Dasani</div>
-    <div class="colophon-right">Set in Fraunces &amp; Inter</div>
-  </footer>
-
-</main>
-
-</body>
-</html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+  .soc { padding:
