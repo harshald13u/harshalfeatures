@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0c0a24">
+<meta name="theme-color" content="#15110d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Harshal Features">
@@ -216,27 +216,27 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
            padding: 14px 20px; border: 0; border-top: 1px solid var(--line-soft);
            display: flex; gap: 12px; align-items: center; flex-wrap: wrap; box-shadow: none; }
-.toolbar button { padding: 10px 18px; background: linear-gradient(135deg, #b8852b, #1EBAC1); color: #fff;
-                  border: 1px solid rgba(122,185,255,0.30); border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer;
+.toolbar button { padding: 10px 18px; background: linear-gradient(135deg, #b8852b, #b8852b); color: #fff;
+                  border: 1px solid rgba(212,166,74,0.30); border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer;
                   box-shadow: 0 7px 20px rgba(184,133,43,0.24); transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s; }
 .toolbar button:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(184,133,43,0.26); border-color: rgba(184,133,43,0.46); }
-.toolbar button.secondary { background: rgba(255,255,255,0.045); color: #D9E4F7; border: 1px solid rgba(236,228,211,0.18); box-shadow: none; }
+.toolbar button.secondary { background: rgba(255,255,255,0.045); color: #c9c0ad; border: 1px solid rgba(236,228,211,0.18); box-shadow: none; }
 .toolbar button.secondary:hover { background: rgba(212,166,74,0.10); border-color: rgba(212,166,74,0.38); }
 .toolbar .status { margin-left: auto; font-size: 11px; color: var(--txt-mut); border: 1px solid rgba(236,228,211,0.12);
                    background: rgba(255,255,255,0.035); padding: 8px 11px; border-radius: 999px; }
 .toolbar .status.ok { color: #d4a64a; font-weight: 800; border-color: rgba(184,133,43,0.28); background: rgba(184,133,43,0.075); }
-.toolbar .status.error { color: #c97a3a; font-weight: 800; border-color: rgba(255,107,107,0.28); background: rgba(255,107,107,0.08); }
+.toolbar .status.error { color: #c97a3a; font-weight: 800; border-color: rgba(201,122,58,0.28); background: rgba(201,122,58,0.08); }
 .file-input { position: fixed; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .native-file-button { display: inline-flex; align-items: center; justify-content: center; margin-top: 18px;
-                      padding: 11px 18px; background: linear-gradient(135deg, var(--blue), #4076E0); color: #fff;
+                      padding: 11px 18px; background: linear-gradient(135deg, var(--blue), #b8852b); color: #fff;
                       border-radius: 7px; font-size: 13px; font-weight: 700; cursor: pointer;
-                      box-shadow: 0 2px 14px rgba(91,155,255,0.35); }
+                      box-shadow: 0 2px 14px rgba(212,166,74,0.35); }
 .device-note { margin-top: 10px; line-height: 1.5; }
 .empty-state { text-align: center; padding: 60px 20px; color: var(--txt-mut); }
 .empty-state h2 { font-size: 18px; color: var(--txt); margin-bottom: 12px; }
-.empty-state button { margin-top: 16px; padding: 12px 24px; background: linear-gradient(135deg, var(--blue), #4076E0);
+.empty-state button { margin-top: 16px; padding: 12px 24px; background: linear-gradient(135deg, var(--blue), #b8852b);
                       color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;
-                      box-shadow: 0 2px 14px rgba(91,155,255,0.35); }
+                      box-shadow: 0 2px 14px rgba(212,166,74,0.35); }
 .kpis { display: grid; grid-template-columns: 1.1fr 1.6fr 1fr; gap: 12px; padding: 20px 0; max-width: none; }
 .tile { background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
         border: 1px solid var(--line); border-radius: 12px; padding: 18px;
@@ -279,7 +279,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
           font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
           text-decoration: none; cursor: pointer;
           transition: all 0.15s ease; }
-.dl-btn:hover { background: rgba(96,176,255,0.18); border-color: rgba(96,176,255,0.45);
+.dl-btn:hover { background: rgba(212,166,74,0.18); border-color: rgba(212,166,74,0.45);
                 transform: translateY(-1px); }
 .dl-btn .dl-ico { font-size: 11px; line-height: 1; }
 .dl-btn.dl-excel:hover { background: rgba(34,197,94,0.18); border-color: rgba(34,197,94,0.5); }
@@ -392,8 +392,8 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 #sf-modal .sf-logo-mint .lm-bars span:nth-child(3) { height: 100%; background: #62B843; }
 #sf-modal .sf-logo-mint .lm-markets { color: #1a1a1a; font-weight: 700; font-size: 15px;
                                        font-family: Arial, sans-serif; letter-spacing: -0.2px; }
-#sf-modal .sf-logo-outlook { background: #1B2540; padding: 6px 14px; }
-#sf-modal .sf-logo-outlook .ol-outlook { color: #FFD700; font-family: 'Times New Roman', serif;
+#sf-modal .sf-logo-outlook { background: #15110d; padding: 6px 14px; }
+#sf-modal .sf-logo-outlook .ol-outlook { color: #d4a64a; font-family: 'Times New Roman', serif;
                                           font-weight: 900; font-size: 18px; letter-spacing: 1.5px; }
 #sf-modal .sf-logo-outlook .ol-business { color: #fff; font-family: 'Times New Roman', serif;
                                            font-weight: 400; font-size: 11px;
@@ -437,15 +437,15 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
          height: 100%; position: relative; min-width: 0; }
 .m-label { font-size: 10px; color: var(--gold); font-weight: 700; height: 14px; line-height: 14px;
            white-space: nowrap; text-shadow: 0 0 8px rgba(232,194,126,0.6); }
-.m-bar { width: 80%; background: linear-gradient(to top, #3D6FD9, #6FA8FF);
+.m-bar { width: 80%; background: linear-gradient(to top, #b8852b, #d4a64a);
          border-radius: 4px 4px 0 0; margin-top: auto;
          transition: opacity 0.15s, height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-         box-shadow: 0 0 12px rgba(91,155,255,0.5); cursor: default; position: relative; }
+         box-shadow: 0 0 12px rgba(212,166,74,0.5); cursor: default; position: relative; }
 .m-bar.peak { background: linear-gradient(to top, #c97a3a, #d4a64a);
               box-shadow: 0 0 16px rgba(201,122,58,0.6); }
 .m-bar:hover { opacity: 0.85; }
 .m-bar:hover::after { content: attr(data-count); position: absolute; bottom: 100%;
-                      left: 50%; transform: translateX(-50%); background: #0c0a24; color: #fff;
+                      left: 50%; transform: translateX(-50%); background: #15110d; color: #fff;
                       border: 1px solid var(--line);
                       padding: 3px 7px; border-radius: 4px; font-size: 10px; white-space: nowrap;
                       margin-bottom: 4px; pointer-events: none; z-index: 10; }
@@ -470,7 +470,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 }
 /* The native dropdown popup uses OS colors — force readable dark theme on options */
 .feat-filters select option {
-  background-color: #0c0a24;
+  background-color: #15110d;
   color: #E8EAF6;
   padding: 6px;
 }
@@ -479,11 +479,11 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
   background-color: #2D7AD9;
   color: #fff;
 }
-.feat-filters input[type=date]:focus, .feat-filters select:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(91,155,255,0.15); }
+.feat-filters input[type=date]:focus, .feat-filters select:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(212,166,74,0.15); }
 .feat-filters select { min-width: 180px; max-width: 240px; }
-.feat-filters button#feat-clear { padding: 6px 12px; font-size: 11px; color: var(--blue); background: rgba(91,155,255,0.12);
-  border: 1px solid rgba(91,155,255,0.25); border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.15s; }
-.feat-filters button#feat-clear:hover { background: rgba(91,155,255,0.22); }
+.feat-filters button#feat-clear { padding: 6px 12px; font-size: 11px; color: var(--blue); background: rgba(212,166,74,0.12);
+  border: 1px solid rgba(212,166,74,0.25); border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.15s; }
+.feat-filters button#feat-clear:hover { background: rgba(212,166,74,0.22); }
 @media (max-width: 640px) {
   .feat-filters { padding: 8px; gap: 8px; }
   .feat-filters label { font-size: 10px; flex: 1 1 100%; }
@@ -495,12 +495,12 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
               border: 1px solid var(--line); border-radius: 8px; font-size: 13px; color: var(--txt);
               background: rgba(255,255,255,0.04); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
 #feat-search::placeholder { color: var(--txt-faint); }
-#feat-search:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,155,255,0.18); background: rgba(255,255,255,0.07); }
+#feat-search:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(212,166,74,0.18); background: rgba(255,255,255,0.07); }
 .cum-svg { width: 100%; height: 220px; display: block; }
-.cum-dot { fill: #d4a64a; filter: drop-shadow(0 0 4px rgba(91,155,255,0.9)); }
+.cum-dot { fill: #d4a64a; filter: drop-shadow(0 0 4px rgba(212,166,74,0.9)); }
 .cum-area { fill: url(#cumGrad); }
 .cum-line { fill: none; stroke: #d4a64a; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round;
-            filter: drop-shadow(0 0 6px rgba(91,155,255,0.8)); }
+            filter: drop-shadow(0 0 6px rgba(212,166,74,0.8)); }
 .latest h3 .h-count { font-size: 10px; font-weight: 500; color: var(--txt-mut);
                       background: rgba(255,255,255,0.07); padding: 2px 8px; border-radius: 10px; }
 .feat-list { display: flex; flex-direction: column; gap: 1px; background: var(--line-soft);
@@ -508,7 +508,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .feat-item { background: rgba(255,255,255,0.03); padding: 12px 14px; display: grid;
              grid-template-columns: 90px 130px 1fr 18px; gap: 14px; align-items: center;
              text-decoration: none; color: inherit; transition: background 0.12s; }
-.feat-item:hover { background: rgba(91,155,255,0.10); }
+.feat-item:hover { background: rgba(212,166,74,0.10); }
 .feat-item.first { background: rgba(45,212,191,0.12); }
 .feat-item.first:hover { background: rgba(45,212,191,0.18); }
 .feat-date { font-size: 11px; color: var(--txt-mut); font-weight: 500; }
@@ -517,7 +517,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
                 width: 22px; height: 22px; border-radius: 5px; flex-shrink: 0;
                 font-size: 11px; font-weight: 800; color: #fff;
                 background-color: #2D7AD9;
-                background-image: linear-gradient(135deg, #5B9BFF, #d4a64a);
+                background-image: linear-gradient(135deg, #b8852b, #d4a64a);
                 background-position: center; background-size: 80% 80%; background-repeat: no-repeat;
                 box-shadow: 0 0 0 1px rgba(255,255,255,0.12); text-transform: uppercase;
                 letter-spacing: 0; }
@@ -565,7 +565,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .snap-val { font-size: 10px; color: var(--txt-mut); text-align: right; }
 .snap-months { display: flex; gap: 8px; align-items: end; overflow-x: auto; padding: 10px 2px 2px; min-height: 160px; }
 .snap-month { min-width: 42px; height: 130px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 5px; }
-.snap-month-bar { width: 28px; min-height: 3px; border-radius: 6px 6px 2px 2px; background: linear-gradient(to top, #3D6FD9, #6FA8FF); }
+.snap-month-bar { width: 28px; min-height: 3px; border-radius: 6px 6px 2px 2px; background: linear-gradient(to top, #b8852b, #d4a64a); }
 .snap-month-label { font-size: 9px; color: var(--txt-mut); text-align: center; line-height: 1.2; }
 .snap-latest { display: flex; flex-direction: column; gap: 1px; overflow: hidden; border: 1px solid var(--line-soft); border-radius: 10px; }
 .snap-feature { display: grid; grid-template-columns: 76px 1fr; gap: 10px; padding: 11px 12px;
@@ -575,21 +575,21 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .snap-feature .pub { font-size: 10px; color: var(--teal); font-weight: 700; margin-bottom: 3px; }
 .snap-feature .headline { font-size: 12px; line-height: 1.35; color: var(--txt); }
 .mobile-file-action { display: none; width: 100%; padding: 12px 14px; margin-top: 12px; border: 0; border-radius: 9px;
-                      background: linear-gradient(135deg, var(--blue), #4076E0); color: #fff; font-weight: 800;
-                      box-shadow: 0 2px 14px rgba(91,155,255,0.35); }
+                      background: linear-gradient(135deg, var(--blue), #b8852b); color: #fff; font-weight: 800;
+                      box-shadow: 0 2px 14px rgba(212,166,74,0.35); }
 .mobile-chart-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 14px; }
 .mobile-chart-tab { border: 1px solid var(--line); border-radius: 9px; padding: 10px 8px;
                     color: var(--txt-mut); background: rgba(255,255,255,0.045);
                     font-size: 11px; font-weight: 800; cursor: pointer; }
-.mobile-chart-tab.active { color: #fff; border-color: rgba(91,155,255,0.6);
-                           background: linear-gradient(135deg, rgba(91,155,255,0.35), rgba(45,212,191,0.16)); }
+.mobile-chart-tab.active { color: #fff; border-color: rgba(212,166,74,0.6);
+                           background: linear-gradient(135deg, rgba(212,166,74,0.35), rgba(45,212,191,0.16)); }
 .mobile-chart { display: flex; align-items: flex-end; gap: 9px; min-height: 210px; overflow-x: auto;
                 padding: 12px 2px 8px; border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
 .mobile-chart-bar { min-width: 42px; height: 180px; display: flex; flex-direction: column; align-items: center;
                     justify-content: flex-end; gap: 6px; border: 0; background: transparent; color: inherit; cursor: pointer; padding: 0; }
 .mobile-chart-fill { width: 30px; min-height: 4px; border-radius: 8px 8px 3px 3px;
-                     background: linear-gradient(to top, #3D6FD9, #6FA8FF);
-                     box-shadow: 0 0 12px rgba(91,155,255,0.38); transition: transform 0.15s, opacity 0.15s; }
+                     background: linear-gradient(to top, #b8852b, #d4a64a);
+                     box-shadow: 0 0 12px rgba(212,166,74,0.38); transition: transform 0.15s, opacity 0.15s; }
 .mobile-chart-bar.active .mobile-chart-fill { background: linear-gradient(to top, #c97a3a, #d4a64a);
                                               box-shadow: 0 0 16px rgba(201,122,58,0.55); transform: scaleX(1.12); }
 .mobile-chart-label { font-size: 9px; color: var(--txt-mut); line-height: 1.15; text-align: center; max-width: 52px; }
@@ -604,8 +604,8 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
                   border: 1px solid var(--line); border-radius: 10px;
                   padding: 12px 14px; cursor: pointer; transition: all 0.15s;
                   border-top: 3px solid transparent; }
-.recent .r-tile:hover { box-shadow: 0 4px 20px rgba(91,155,255,0.2); transform: translateY(-2px); border-color: rgba(91,155,255,0.4); }
-.recent .r-tile.active { border-top-color: var(--blue); background: rgba(91,155,255,0.14); box-shadow: 0 0 18px rgba(91,155,255,0.25); }
+.recent .r-tile:hover { box-shadow: 0 4px 20px rgba(212,166,74,0.2); transform: translateY(-2px); border-color: rgba(212,166,74,0.4); }
+.recent .r-tile.active { border-top-color: var(--blue); background: rgba(212,166,74,0.14); box-shadow: 0 0 18px rgba(212,166,74,0.25); }
 .recent .r-tile .r-label { font-size: 10px; color: var(--txt-mut); text-transform: uppercase;
                            letter-spacing: 0.5px; font-weight: 600; }
 .recent .r-tile .r-num { font-size: 22px; font-weight: 700; color: var(--txt); line-height: 1.2; margin-top: 2px; }
@@ -616,10 +616,10 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 /* Drill-down clickable bars */
 .bar-row.clickable { cursor: pointer; border-radius: 6px; padding: 3px 5px; margin: 0 -5px 6px; transition: background 0.12s; }
 .bar-row.clickable:hover { background: rgba(255,255,255,0.07); }
-.bar-row.clickable.active { background: rgba(91,155,255,0.18); box-shadow: inset 0 0 0 1px rgba(91,155,255,0.4); }
-#drill-clear { cursor: pointer; color: var(--blue); background: rgba(91,155,255,0.12); padding: 2px 8px;
+.bar-row.clickable.active { background: rgba(212,166,74,0.18); box-shadow: inset 0 0 0 1px rgba(212,166,74,0.4); }
+#drill-clear { cursor: pointer; color: var(--blue); background: rgba(212,166,74,0.12); padding: 2px 8px;
                border-radius: 10px; font-weight: 600; }
-#drill-clear:hover { background: rgba(91,155,255,0.25); }
+#drill-clear:hover { background: rgba(212,166,74,0.25); }
 @media (max-width: 640px) {
   body { padding: 10px; background-attachment: scroll; }
   .wrap { max-width: 100%; }
@@ -2312,11 +2312,11 @@ function renderPublicationPanel(unique) {
     const btnLabel = PUB_PANEL_EXPANDED
       ? `▴  Show top ${defaultN} only`
       : `▾  Show all ${allPubs.length} publications (${moreCount} more)`;
-    $('pub-bars').innerHTML += `<div id="pub-toggle" style="text-align:center;margin-top:10px;padding:6px 12px;cursor:pointer;font-size:10px;font-weight:600;color:var(--blue);background:rgba(91,155,255,0.10);border-radius:8px;transition:background 0.15s;">${btnLabel}</div>`;
+    $('pub-bars').innerHTML += `<div id="pub-toggle" style="text-align:center;margin-top:10px;padding:6px 12px;cursor:pointer;font-size:10px;font-weight:600;color:var(--blue);background:rgba(212,166,74,0.10);border-radius:8px;transition:background 0.15s;">${btnLabel}</div>`;
     const tg = document.getElementById('pub-toggle');
     if (tg) {
-      tg.onmouseenter = () => tg.style.background = 'rgba(91,155,255,0.20)';
-      tg.onmouseleave = () => tg.style.background = 'rgba(91,155,255,0.10)';
+      tg.onmouseenter = () => tg.style.background = 'rgba(212,166,74,0.20)';
+      tg.onmouseleave = () => tg.style.background = 'rgba(212,166,74,0.10)';
       tg.onclick = () => { PUB_PANEL_EXPANDED = !PUB_PANEL_EXPANDED; renderPublicationPanel(unique); };
     }
   }
@@ -2648,10 +2648,10 @@ async function downloadDashboardPDF() {
 
     // Stat cards
     const cards = [
-      { num: total.toLocaleString(), label: 'TOTAL FEATURES', color: [96,176,255] },
-      { num: Object.keys(pubCounts).length, label: 'PUBLICATIONS', color: [245,158,11] },
-      { num: Object.keys(langCounts).length, label: 'LANGUAGES', color: [34,197,94] },
-      { num: avg, label: 'AVG / DAY', color: [167,139,250] }
+      { num: total.toLocaleString(), label: 'TOTAL FEATURES', color: [212,166,74] },
+      { num: Object.keys(pubCounts).length, label: 'PUBLICATIONS', color: [184,133,43] },
+      { num: Object.keys(langCounts).length, label: 'LANGUAGES', color: [201,192,173] },
+      { num: avg, label: 'AVG / DAY', color: [201,122,58] }
     ];
     const cardW = (W - 80 - 24) / 4;
     cards.forEach((c, i) => {
