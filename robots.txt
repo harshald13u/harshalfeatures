@@ -1,0 +1,8 @@
+# Robots policy for the Harshal Dasani Media Features Dashboard
+# Allow all reputable crawlers full access; point them at the sitemap.
+
+User-agent: *
+Allow: /
+Disallow:
+
+Sitemap: https://harshald13u.github.io/harshalfeatures/sitemap.xml
