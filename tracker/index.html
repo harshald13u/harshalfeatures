@@ -1584,7 +1584,17 @@ function canonical(url) {
   u = u.replace(/^www\.|^m\.|^amp\./, '');
   u = u.replace(/\/+$/, '');
   u = u.replace(/\.+$/, '');
-  u = u.split('?')[0].split('#')[0];
+  // Strip only tracking-style query params; keep article-id params like Pictureid.
+  // Drop fragment.
+  u = u.split('#')[0];
+  if (u.includes('?')) {
+    const [base, qs] = u.split('?');
+    const keep = qs.split('&').filter(p => {
+      const k = p.split('=')[0];
+      return !/^(utm_|fb_|gclid|ref|src|share|source|cm_|mc_|igshid|wt_)/.test(k);
+    }).join('&');
+    u = keep ? base + '?' + keep : base;
+  }
   return u;
 }
 
