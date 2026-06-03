@@ -148,10 +148,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
 .header-main, .header-side { position: relative; z-index: 1; }
 .header-main { min-width: 0; text-align: center; flex: 1; }
 .header-main .header-kicker, .header-main h1, .header-main .meta { display: block; margin-left: auto; margin-right: auto; }
-.header { justify-content: center; align-items: center; flex-direction: column; gap: 16px; }
+.header { justify-content: center; align-items: center; flex-direction: row; gap: 0; }
 
 /* Header right zone — social icons */
-.header-right { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 14px; flex-shrink: 0; margin-top: 4px; }
+.header-right { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); z-index: 2; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 .social-link { display: inline-flex; align-items: center; justify-content: center;
                width: 48px; height: 48px; border-radius: 50%;
                background: rgba(255,255,255,0.05); border: 1px solid rgba(142,174,223,0.28);
@@ -167,8 +167,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
 
 /* Mobile collapse */
 @media (max-width: 720px) {
-  .header { gap: 12px; padding: 20px 16px 18px; }
-  .header-right { gap: 12px; margin-top: 6px; }
+  .header { flex-direction: column; gap: 14px; padding: 20px 16px 18px; }
+  .header-right { position: static; transform: none; gap: 14px; margin-top: 4px; justify-content: center; }
   .social-link { width: 44px; height: 44px; }
   .social-link svg { width: 22px; height: 22px; }
 }
