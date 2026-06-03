@@ -994,9 +994,8 @@ html[data-theme="light"] .hero-tags a {
   }
   .mast-socials a { width: 28px; height: 28px; }
   .mast-socials a svg { width: 13px; height: 13px; }
-  /* Hide the 4 topic chips on phone — they're already shown as buttons in the hero */
+  /* Hide the 4 topic chip text on phone — they're shown as buttons in the hero anyway */
   .mast-meta span { display: none; }
-  /* Keep theme toggle visible and align to the right of socials */
   .mast-meta { font-size: 9.5px; letter-spacing: 1.3px; display: flex; align-items: center; }
   .theme-toggle { margin-right: 0; margin-left: 4px; }
 
@@ -1360,4 +1359,33 @@ function toggleTheme(){
   // ===== JS-driven press marquee — bulletproof on iOS Safari =====
   (function(){
     var track = document.querySelector('.press-track');
-    var stage = document.getEl
+    var stage = document.getElementById('pressMarquee');
+    if (!track || !stage) return;
+    var trackWidth = 0, halfWidth = 0;
+    function recalc(){
+      trackWidth = track.scrollWidth;
+      halfWidth = trackWidth / 2; // since content is duplicated
+    }
+    recalc();
+    window.addEventListener('resize', recalc, { passive: true });
+    var x = 0;
+    var speed = 50; // px per second
+    var last = performance.now();
+    var paused = false;
+    stage.addEventListener('pointerenter', function(){ paused = true; });
+    stage.addEventListener('pointerleave', function(){ paused = false; });
+    function step(t){
+      var dt = (t - last) / 1000; last = t;
+      if (!paused) {
+        x -= speed * dt;
+        if (-x >= halfWidth) x += halfWidth; // seamless loop
+        track.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+      }
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
+})();
+</script>
+</body>
+</html>
