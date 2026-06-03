@@ -966,6 +966,10 @@ html[data-theme="light"] .hero-tags a {
   .door { min-height: 240px; padding: 26px 26px 24px; }
 }
 
+@media (max-width: 820px) {
+  .hero-tags { grid-template-columns: 1fr 1fr; max-width: 380px; }
+  .hero-tags a { font-size: 12px; padding: 9px 12px; letter-spacing: 1.1px; }
+}
 @media (max-width: 960px) {
   .page { padding: max(24px, env(safe-area-inset-top)) max(32px, env(safe-area-inset-right)) 64px max(32px, env(safe-area-inset-left)); }
   .masthead { margin-bottom: 40px; }
