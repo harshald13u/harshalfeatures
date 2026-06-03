@@ -845,4 +845,252 @@ body::before {
     gap: 10px;
     margin-bottom: 56px;
   }
-  .soc { padding:
+  .soc { padding: 14px 16px; }
+}
+
+@media (max-width: 380px) {
+  .name { font-size: 44px; }
+  .door-name { font-size: 28px; }
+  .tagline { font-size: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .name .ch, .door, .door::after, .door-arrow, .soc, .hero-photo img, .ticker-item {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .mast-mark::before { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="masthead">
+    <div class="mast-mark">Harshal Dasani</div>
+    <div class="mast-meta">
+      <span>Mumbai</span><span>Markets &amp; Macro</span><span>Live</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">A Personal Page</div>
+    <h1 class="name" id="name" aria-label="Harshal Dasani"></h1>
+    <div class="role-block">
+      <div class="role-line"><strong>Business Head</strong>, INVasset PMS &amp; AIF</div>
+      <div class="loc-line">Mumbai, India</div>
+    </div>
+    <p class="tagline">Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.</p>
+
+    <figure class="hero-photo" id="heroPhoto">
+      <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="1200" height="675" loading="eager" decoding="async">
+      <figcaption class="hero-photo-cap">Mumbai &middot; 2026</figcaption>
+    </figure>
+
+    <div class="ticker" aria-label="Recent media features">
+      <div class="ticker-tag">In the press</div>
+      <div class="ticker-rail" id="tickerRail">
+        <div class="ticker-item is-on"><b>TCS shares crash 9%</b> Economic Times <span>Quoted</span></div>
+        <div class="ticker-item"><b>Sensex hits record</b> Moneycontrol <span>Quoted</span></div>
+        <div class="ticker-item"><b>FII outflows in October</b> Mint <span>Interviewed</span></div>
+        <div class="ticker-item"><b>RBI policy outlook</b> Business Standard <span>Op-ed</span></div>
+        <div class="ticker-item"><b>Markets with Harshal</b> CNBC Bajar Gujarati <span>On air</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" aria-labelledby="aboutLabel">
+    <aside>
+      <div class="about-side-label" id="aboutLabel">About</div>
+      <div class="about-side-title">A reader of cycles, psychology, and time.</div>
+    </aside>
+    <div>
+      <div class="about-body">
+        <p>I&apos;m Harshal Dasani &mdash; <strong>Business Head at INVasset PMS</strong>, with over ten years in Indian equity markets. I spend most days trying to make sense of how the world&apos;s biggest forces &mdash; central banks, geopolitics, capital flows, human behavior &mdash; show up in stock prices.</p>
+        <p>My approach is part numbers, part narrative. Fundamentals tell me what a business is worth; technical and macro lenses tell me when the market is willing to listen; behavioral finance reminds me that everyone &mdash; including me &mdash; is more biased than they think. I&apos;m a <strong>CFA candidate</strong> and have cleared <strong>Level II of CA</strong>.</p>
+        <p>Outside the desk, you&apos;ll find me sharing views across <span class="brand">The Economic Times, Mint, Moneycontrol, Business Standard, Financial Express, Business Today, Outlook Money, Times of India, Forbes, PTI and Reuters</span> &mdash; and on television via <span class="brand">Good Returns, CNBC Bajar Gujarati and Moneycontrol</span>. I publish long-form commentary on YouTube and X as <strong>Markets with Harshal</strong>.</p>
+      </div>
+      <div class="about-stats">
+        <div class="about-stat"><div class="about-stat-n">10+</div><div class="about-stat-l">Years in markets</div></div>
+        <div class="about-stat"><div class="about-stat-n">150+</div><div class="about-stat-l">Publications</div></div>
+        <div class="about-stat"><div class="about-stat-n">8</div><div class="about-stat-l">Languages</div></div>
+        <div class="about-stat"><div class="about-stat-n">CFA &middot; CA-II</div><div class="about-stat-l">Credentials</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="primary-head">
+    <h2 class="primary-title">Two places worth your time</h2>
+    <div class="primary-sub">The Highlights</div>
+  </div>
+
+  <div class="doors">
+    <!-- TODO: replace href with actual blog URL when provided -->
+    <a class="door" href="/blog/" data-door>
+      <div>
+        <div class="door-top">
+          <span class="door-kicker">01 &nbsp;Blog</span>
+          <span class="door-badge soft">Coming soon</span>
+        </div>
+        <h3 class="door-name">Notes &amp; Essays</h3>
+        <p class="door-desc">Long-form pieces on markets, behavior, and the questions I keep coming back to.</p>
+      </div>
+      <div class="door-foot">
+        <div class="door-stat">
+          <div class="door-stat-n">New</div>
+          <div class="door-stat-l">Launching 2026</div>
+        </div>
+        <span class="door-arrow" aria-hidden="true">&rarr;</span>
+      </div>
+    </a>
+
+    <a class="door" href="tracker/" data-door>
+      <div>
+        <div class="door-top">
+          <span class="door-kicker">02 &nbsp;Media Tracker</span>
+          <span class="door-badge">Live</span>
+        </div>
+        <h3 class="door-name">Every feature, quote &amp; interview</h3>
+        <p class="door-desc">Across 150+ publications in 8 languages &mdash; print, e-paper, web, broadcast.</p>
+      </div>
+      <div class="door-foot">
+        <div class="door-stat">
+          <div class="door-stat-n" id="trackerCount" data-target="1041">0</div>
+          <div class="door-stat-l">Articles tracked</div>
+        </div>
+        <span class="door-arrow" aria-hidden="true">&rarr;</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="social-head">
+    <span class="social-label">Also on</span>
+    <span class="social-rule"></span>
+  </div>
+  <nav class="social" aria-label="Social profiles">
+    <a class="soc" href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener">
+      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.001 2.5 2.5 0 0 1 0-5.001zM3 9.5h4v11H3v-11zM10 9.5h3.8v1.55h.05a4.16 4.16 0 0 1 3.75-2.06c4.01 0 4.75 2.64 4.75 6.07v5.94h-4v-5.27c0-1.26-.02-2.88-1.76-2.88-1.76 0-2.03 1.37-2.03 2.79v5.36h-3.96v-11z"/></svg></span>
+      <span class="soc-t"><span class="soc-name">LinkedIn</span><span class="soc-meta">Professional</span></span>
+    </a>
+    <a class="soc" href="https://x.com/HarshalDasanii" target="_blank" rel="noopener">
+      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21.5l-7.5 8.57L23 22h-6.844l-5.357-7.005L4.6 22H1.34l8.022-9.166L1 2h7.014l4.84 6.4L18.244 2zm-1.197 18h1.83L7.05 4H5.11l11.937 16z"/></svg></span>
+      <span class="soc-t"><span class="soc-name">X / Twitter</span><span class="soc-meta">Daily takes</span></span>
+    </a>
+    <a class="soc" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener">
+      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 12 .05 12s0 3 .45 4.9a3.02 3.02 0 0 0 2.13 2.14c1.9.46 9.37.46 9.37.46s7.47 0 9.37-.46a3.02 3.02 0 0 0 2.13-2.14c.45-1.9.45-4.9.45-4.9s0-3-.45-4.9zM9.75 15.5v-7L15.8 12l-6.05 3.5z"/></svg></span>
+      <span class="soc-t"><span class="soc-name">YouTube</span><span class="soc-meta">Markets with Harshal</span></span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <div class="colophon-left">&copy; 2026 Harshal Dasani</div>
+    <div class="colophon-right">Set in Fraunces &amp; Inter</div>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var nameEl = document.getElementById('name');
+  if (nameEl) {
+    var html = '';
+    'Harshal Dasani'.split(' ').forEach(function(word){
+      html += '<span class="word">';
+      word.split('').forEach(function(c){ html += '<span class="ch" aria-hidden="true">'+c+'</span>'; });
+      html += '</span>';
+    });
+    nameEl.innerHTML = html;
+  }
+
+  var counter = document.getElementById('trackerCount');
+  function animateCount(el){
+    if (!el || el.dataset.done) return;
+    el.dataset.done = '1';
+    var target = parseInt(el.getAttribute('data-target')||'0',10);
+    if (reduced) { el.textContent = target.toLocaleString('en-IN'); return; }
+    var start = performance.now(), dur = 1600;
+    function step(t){
+      var p = Math.min(1, (t-start)/dur);
+      var eased = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.round(target*eased).toLocaleString('en-IN');
+      if (p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  var doors = document.querySelectorAll('[data-door]');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          if (e.target.querySelector('#trackerCount')) animateCount(counter);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    doors.forEach(function(d){ io.observe(d); });
+  } else {
+    doors.forEach(function(d){ d.classList.add('is-in'); });
+    animateCount(counter);
+  }
+
+  if (!reduced) {
+    doors.forEach(function(d){
+      d.addEventListener('mousemove', function(e){
+        var r = d.getBoundingClientRect();
+        d.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+        d.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+      });
+    });
+  }
+
+  var photo = document.getElementById('heroPhoto');
+  if (photo && !reduced && window.matchMedia('(hover: hover)').matches) {
+    var img = photo.querySelector('img');
+    photo.addEventListener('mousemove', function(e){
+      var r = photo.getBoundingClientRect();
+      var dx = (e.clientX-r.left)/r.width - 0.5;
+      var dy = (e.clientY-r.top)/r.height - 0.5;
+      img.style.setProperty('--ry', (dx*2.4)+'deg');
+      img.style.setProperty('--rx', (-dy*1.8)+'deg');
+    });
+    photo.addEventListener('mouseleave', function(){
+      img.style.setProperty('--ry','0deg');
+      img.style.setProperty('--rx','0deg');
+    });
+    var ticking = false;
+    function onScroll(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        var r = photo.getBoundingClientRect();
+        var vh = window.innerHeight || 1;
+        var rel = (r.top + r.height/2 - vh/2)/vh;
+        var py = Math.max(-14, Math.min(14, -rel*18));
+        img.style.setProperty('--py', py+'px');
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  var items = document.querySelectorAll('#tickerRail .ticker-item');
+  if (items.length > 1 && !reduced) {
+    var idx = 0;
+    setInterval(function(){
+      items[idx].classList.remove('is-on');
+      idx = (idx+1) % items.length;
+      items[idx].classList.add('is-on');
+    }, 3200);
+  }
+})();
+</script>
+</body>
+</html>
