@@ -162,12 +162,13 @@ body::before {
   background: var(--teal); box-shadow: 0 0 10px var(--teal);
 }
 .hd-name {
-  font-size: 56px; font-weight: 900;
-  letter-spacing: -1.2px; line-height: 1.02;
+  font-size: 52px; font-weight: 900;
+  letter-spacing: -1.2px; line-height: 1.05;
   margin: 0 0 14px;
   background: linear-gradient(90deg, #FFFFFF 0%, #B9DDFF 65%, #F3C766 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
+  white-space: nowrap;
 }
 .hd-role {
   font-size: 17px; font-weight: 700;
@@ -335,8 +336,8 @@ body::before {
 
 /* ====== TABLET ====== */
 @media (max-width: 960px) {
-  .hd-hero { grid-template-columns: 1fr 320px; gap: 40px; }
-  .hd-name { font-size: 48px; }
+  .hd-hero { grid-template-columns: 1fr 300px; gap: 36px; }
+  .hd-name { font-size: 44px; }
 }
 
 /* ====== MOBILE ====== */
@@ -394,7 +395,6 @@ body::before {
   <!-- HERO — side by side -->
   <section class="hd-hero">
     <div class="hd-hero-text">
-      <div class="hd-kicker">Markets professional &amp; writer</div>
       <h1 class="hd-name">Harshal Dasani</h1>
       <div class="hd-role">Business Head &middot; INVasset PMS &amp; AIF</div>
       <div class="hd-location">Mumbai, India</div>
