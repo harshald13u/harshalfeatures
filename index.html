@@ -33,6 +33,8 @@
 <meta name="twitter:description" content="Markets professional, writer, Business Head at INVasset PMS. CFA candidate, CA Level II. Featured across ET, Mint, Moneycontrol &amp; CNBC.">
 <meta name="twitter:image" content="https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg">
 
+<meta name="theme-color" content="#f5f1ea">
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -88,413 +90,618 @@
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root {
-  --bg: #03060e;
-  --line: rgba(142,174,223,0.16);
-  --line-soft: rgba(142,174,223,0.10);
-  --teal: #24d1c2;
-  --gold: #f3c766;
-  --blue: #4d8dff;
-  --txt: #e9eef9;
-  --txt-mut: #98a4bc;
-  --txt-faint: #6c7790;
+  --paper: #f4efe6;
+  --paper-2: #ede6d8;
+  --ink: #1a1814;
+  --ink-2: #2c2924;
+  --muted: #5a544a;
+  --faint: #8a8275;
+  --rule: rgba(26,24,20,0.14);
+  --rule-soft: rgba(26,24,20,0.08);
+  --accent: #7a1f24;
+  --accent-soft: rgba(122,31,36,0.10);
 }
+
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: var(--bg) url('galaxy-bg.jpg') center / cover no-repeat fixed;
-  color: var(--txt);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
   min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-  line-height: 1.5;
+  line-height: 1.55;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-text-size-adjust: 100%;
 }
+
+/* faint paper grain — very subtle */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(77,141,255,0.18), transparent 60%),
-    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(36,209,194,0.13), transparent 60%),
-    linear-gradient(180deg, rgba(3,6,14,0.65), rgba(3,6,14,0.92));
+    radial-gradient(1200px 600px at 90% -10%, rgba(122,31,36,0.04), transparent 60%),
+    radial-gradient(900px 500px at -5% 100%, rgba(26,24,20,0.04), transparent 60%);
 }
-.hd-landing {
+
+.page {
   position: relative; z-index: 1;
-  max-width: 1080px; margin: 0 auto;
-  padding: 56px 28px 80px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 36px 56px 80px;
 }
 
-/* ====== TOP BAR ====== */
-.hd-topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 48px;
-}
-.hd-brand { font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); }
-.hd-topbar-socials { display: flex; gap: 10px; align-items: center; }
-.hd-topbar-socials a {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(142,174,223,0.22);
-  color: #C8D6EB; text-decoration: none; transition: all 0.18s ease;
-}
-.hd-topbar-socials a svg { width: 16px; height: 16px; }
-.hd-topbar-socials a:hover { transform: translateY(-2px); color: var(--teal); border-color: var(--teal); }
-
-/* ====== HERO — SIDE BY SIDE ====== */
-.hd-hero {
-  display: grid;
-  grid-template-columns: 1fr 480px;
-  gap: 48px;
+/* ============================================================
+   MASTHEAD — small, FT-style top rule
+   ============================================================ */
+.masthead {
+  display: flex;
   align-items: center;
-  margin-bottom: 64px;
+  justify-content: space-between;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 84px;
 }
-.hd-hero-text { min-width: 0; }
-.hd-kicker {
-  font-size: 11px; font-weight: 800;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 14px;
-  display: inline-flex; align-items: center; gap: 8px;
+.mast-mark {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+  font-style: italic;
 }
-.hd-kicker::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-  background: var(--teal); box-shadow: 0 0 10px var(--teal);
+.mast-mark::before {
+  content: '';
+  display: inline-block;
+  width: 7px; height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: 2px;
 }
-.hd-name {
-  font-size: 52px; font-weight: 900;
-  letter-spacing: -1.2px; line-height: 1.05;
-  margin: 0 0 14px;
-  background: linear-gradient(90deg, #FFFFFF 0%, #B9DDFF 65%, #F3C766 100%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
-  white-space: nowrap;
-}
-.hd-role {
-  font-size: 17px; font-weight: 700;
-  color: #C8D6EB;
-  margin-bottom: 4px;
-}
-.hd-location {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 11px; font-weight: 800;
-  color: var(--txt-mut);
-  text-transform: uppercase; letter-spacing: 1px;
-  margin-bottom: 24px;
-}
-.hd-location::after {
-  content: '·'; margin-left: 8px; color: var(--gold);
-}
-.hd-tagline {
-  font-size: 16px; line-height: 1.65;
-  color: #DCE7F7;
-  font-weight: 400;
-  margin: 0;
-}
-.hd-tagline-box {
-  margin-top: 8px;
-  padding: 20px 22px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(0,0,0,0.78), rgba(4,4,8,0.72));
-  border: 1px solid rgba(36,209,194,0.22);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-}
-.hd-tagline-label {
-  font-size: 10px; font-weight: 800;
-  color: var(--teal);
-  letter-spacing: 1.4px; text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-/* Photo on right */
-.hd-photo {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 18px;
-  overflow: hidden;
-  position: relative;
-  background: linear-gradient(135deg, #0c1730 0%, #1a2a55 50%, #122042 100%);
-  border: 1px solid rgba(243,199,102,0.28);
-  box-shadow:
-    0 24px 60px rgba(0,0,0,0.55),
-    0 0 50px rgba(36,209,194,0.12);
-}
-.hd-photo img {
-  width: 100%; height: 100%;
-  object-fit: cover; object-position: center center;
-  display: block;
-}
-.hd-photo::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 55%, rgba(3,6,14,0.55) 100%);
-  pointer-events: none;
-}
-
-/* ====== ABOUT SECTION ====== */
-.hd-about {
-  margin-bottom: 56px;
-  padding: 40px 42px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, rgba(0,0,0,0.82), rgba(4,4,8,0.78));
-  border: 1px solid rgba(243,199,102,0.20);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 50px rgba(36,209,194,0.06);
-}
-.hd-about-label {
-  font-size: 12px; font-weight: 800;
-  color: var(--gold);
-  letter-spacing: 2.2px; text-transform: uppercase;
-  margin-bottom: 18px;
-}
-.hd-about p {
-  margin: 0 0 18px;
-  font-size: 17.5px; line-height: 1.82;
-  color: #DEE8FB;
-}
-.hd-about p:last-child { margin-bottom: 0; }
-.hd-about strong { color: var(--gold); font-weight: 700; }
-.hd-about em.brand { color: #B9DDFF; font-style: normal; font-weight: 600; }
-
-/* ====== DESTINATION GRID ====== */
-.hd-section-label {
-  font-size: 11px; font-weight: 800;
-  color: var(--teal); letter-spacing: 2px; text-transform: uppercase;
-  margin-bottom: 18px; padding-left: 4px;
-}
-.hd-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-.hd-card {
-  display: block;
-  padding: 26px 26px 24px;
-  border-radius: 18px;
-  text-decoration: none;
-  background: linear-gradient(135deg, rgba(0,0,0,0.82), rgba(4,4,8,0.78));
-  border: 1px solid rgba(142,174,223,0.20);
-  position: relative; overflow: hidden;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-}
-.hd-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--teal), transparent);
-  opacity: 0; transition: opacity 0.25s ease;
-}
-.hd-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(36,209,194,0.45);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.45), 0 0 30px rgba(36,209,194,0.15);
-}
-.hd-card:hover::before { opacity: 1; }
-.hd-card-ico {
-  width: 48px; height: 48px;
-  border-radius: 13px;
-  display: inline-flex; align-items: center; justify-content: center;
-  margin-bottom: 16px;
-  transition: all 0.25s ease;
-}
-.hd-card-ico svg { width: 24px; height: 24px; }
-.hd-card-tracker .hd-card-ico {
-  background: linear-gradient(135deg, rgba(77,141,255,0.22), rgba(36,209,194,0.22));
-  border: 1px solid rgba(77,141,255,0.38);
-  color: #82B8FF;
-}
-.hd-card-linkedin .hd-card-ico { background: rgba(10,102,194,0.20); border: 1px solid rgba(10,102,194,0.45); color: #4DA3E8; }
-.hd-card-x .hd-card-ico { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.20); color: #fff; }
-.hd-card-youtube .hd-card-ico { background: rgba(255,0,0,0.18); border: 1px solid rgba(255,0,0,0.40); color: #FF5252; }
-.hd-card:hover .hd-card-ico { transform: scale(1.05); }
-.hd-card-label {
-  font-size: 10px; font-weight: 800;
-  color: var(--teal);
-  letter-spacing: 1.4px; text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.hd-card-title {
-  font-size: 21px; font-weight: 800;
-  color: #F7FBFF;
-  margin: 0 0 8px;
-  letter-spacing: -0.3px;
-}
-.hd-card-sub {
-  font-size: 13px; line-height: 1.5;
-  color: var(--txt-mut);
+.mast-meta {
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
   font-weight: 500;
 }
-.hd-card-arrow {
-  position: absolute; top: 24px; right: 24px;
-  width: 26px; height: 26px;
+.mast-meta span + span::before {
+  content: '';
+  display: inline-block;
+  width: 3px; height: 3px;
+  background: var(--faint);
   border-radius: 50%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(142,174,223,0.18);
-  display: inline-flex; align-items: center; justify-content: center;
-  color: var(--txt-mut);
-  transition: all 0.25s ease;
-}
-.hd-card:hover .hd-card-arrow {
-  background: var(--teal); color: #03060e; border-color: var(--teal);
-  transform: translate(4px, -4px);
+  margin: 0 12px 3px;
+  vertical-align: middle;
 }
 
-/* ====== FOOTER ====== */
-.hd-footer {
-  margin-top: 56px;
-  text-align: center;
-  font-size: 12px; color: var(--txt-faint);
-  padding-top: 28px;
-  border-top: 1px solid var(--line-soft);
+/* ============================================================
+   HERO — name as editorial headline, photo as right column
+   ============================================================ */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 72px;
+  align-items: end;
+  margin-bottom: 96px;
 }
-.hd-footer a { color: var(--teal); text-decoration: none; font-weight: 700; }
-.hd-footer a:hover { text-decoration: underline; }
+.hero-text { min-width: 0; }
 
-/* ====== TABLET ====== */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.eyebrow::after {
+  content: '';
+  flex: 1; max-width: 64px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.45;
+}
+
+.name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(54px, 8vw, 104px);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  margin: 0 0 28px;
+  color: var(--ink);
+  font-variation-settings: "opsz" 144;
+}
+.name em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.role-line {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 19px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+.role-line strong {
+  font-style: normal;
+  font-weight: 500;
+}
+.loc-line {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.tagline {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 480px;
+  letter-spacing: -0.005em;
+}
+
+/* Portrait — clean editorial cut, slight inner shadow */
+.portrait {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper-2);
+  box-shadow:
+    0 1px 0 rgba(26,24,20,0.06),
+    0 30px 60px -30px rgba(26,24,20,0.25);
+}
+.portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
+  filter: saturate(0.92) contrast(1.02);
+}
+.portrait-caption {
+  position: absolute;
+  bottom: -28px;
+  right: 0;
+  font-size: 10.5px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 500;
+}
+
+/* ============================================================
+   ESSAY — the bio reads like a piece, not a marketing block
+   ============================================================ */
+.essay {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 64px;
+  padding: 64px 0;
+  border-top: 1px solid var(--rule);
+  margin-bottom: 16px;
+}
+.essay-side {
+  position: sticky;
+  top: 32px;
+  align-self: start;
+}
+.essay-side-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.essay-side-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.essay-body {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.72;
+  color: var(--ink-2);
+  max-width: 640px;
+  letter-spacing: -0.003em;
+}
+.essay-body p {
+  margin: 0 0 24px;
+}
+.essay-body p:last-child { margin-bottom: 0; }
+.essay-body p:first-child::first-letter {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: 66px;
+  line-height: 0.85;
+  float: left;
+  margin: 6px 12px 0 -2px;
+  color: var(--accent);
+}
+.essay-body strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+.essay-body .brand {
+  font-style: italic;
+  color: var(--ink-2);
+}
+
+/* ============================================================
+   ELSEWHERE — quiet text list, no cards
+   ============================================================ */
+.elsewhere {
+  border-top: 1px solid var(--rule);
+  padding-top: 56px;
+  margin-top: 24px;
+}
+.elsewhere-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.elsewhere-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+.elsewhere-sub {
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.link-item {
+  border-bottom: 1px solid var(--rule-soft);
+}
+.link-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1.2fr) minmax(0, 2fr) auto;
+  gap: 28px;
+  align-items: center;
+  padding: 26px 4px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: padding 0.25s ease, color 0.2s ease;
+  position: relative;
+}
+.link-row:hover {
+  padding-left: 12px;
+  color: var(--accent);
+}
+.link-row::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: var(--accent-soft);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: -1;
+}
+.link-row:hover::before { opacity: 1; }
+
+.link-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--faint);
+  font-weight: 400;
+}
+.link-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+}
+.link-name em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 14px;
+  margin-left: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  vertical-align: 4px;
+}
+.link-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.link-arrow {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px;
+  color: var(--faint);
+  transition: transform 0.25s ease, color 0.2s ease;
+  font-weight: 400;
+}
+.link-row:hover .link-arrow {
+  color: var(--accent);
+  transform: translateX(6px);
+}
+
+/* ============================================================
+   COLOPHON
+   ============================================================ */
+.colophon {
+  margin-top: 96px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.colophon-left {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+}
+.colophon-right {
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 500;
+}
+
+/* ============================================================
+   TABLET
+   ============================================================ */
 @media (max-width: 960px) {
-  .hd-hero { grid-template-columns: 1fr 360px; gap: 32px; }
-  .hd-name { font-size: 42px; }
-}
+  .page { padding: 28px 36px 72px; }
+  .masthead { margin-bottom: 56px; }
 
-/* ====== MOBILE ====== */
-@media (max-width: 720px) {
-  .hd-landing { padding: 32px 18px 56px; max-width: 100%; }
-  .hd-topbar { margin-bottom: 28px; }
-  .hd-brand { font-size: 11px; letter-spacing: 1.4px; }
-  .hd-topbar-socials a { width: 32px; height: 32px; }
-  .hd-topbar-socials a svg { width: 14px; height: 14px; }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 44px;
+    margin-bottom: 72px;
+  }
+  .hero-text { order: 2; }
+  .portrait { order: 1; aspect-ratio: 16 / 9; }
+  .portrait-caption { position: static; margin-top: 12px; display: block; }
 
-  .hd-hero {
+  .essay {
     grid-template-columns: 1fr;
     gap: 28px;
+    padding: 52px 0;
+  }
+  .essay-side { position: static; }
+  .essay-side-title { font-size: 16px; }
+
+  .link-row {
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+    gap: 18px;
+    padding: 22px 4px;
+  }
+  .link-desc {
+    grid-column: 2 / 4;
+    margin-top: -10px;
+    padding-left: 0;
+  }
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+@media (max-width: 640px) {
+  .page { padding: 22px 22px 56px; }
+  .masthead {
+    padding-bottom: 16px;
     margin-bottom: 40px;
   }
-  .hd-hero-text { order: 2; }
-  .hd-photo { order: 1; max-width: 100%; margin: 0 auto; }
-  .hd-name { font-size: 38px; }
-  .hd-role { font-size: 15px; }
-  .hd-tagline { font-size: 14.5px; }
+  .mast-mark { font-size: 15px; }
+  .mast-meta { font-size: 10px; letter-spacing: 1.2px; }
+  .mast-meta span + span::before { margin: 0 8px 3px; }
 
-  .hd-about { padding: 28px 22px; margin-bottom: 40px; }
-  .hd-about p { font-size: 16px; line-height: 1.78; }
+  .hero { gap: 32px; margin-bottom: 56px; }
+  .eyebrow { font-size: 10px; margin-bottom: 18px; }
+  .eyebrow::after { max-width: 40px; }
+  .name {
+    font-size: clamp(44px, 13vw, 64px);
+    margin-bottom: 20px;
+  }
+  .role-line { font-size: 16px; }
+  .tagline {
+    font-size: 18px;
+    margin-top: 28px;
+    padding-top: 20px;
+  }
 
-  .hd-grid { grid-template-columns: 1fr; gap: 14px; }
-  .hd-card { padding: 22px 20px; }
-  .hd-card-title { font-size: 19px; }
+  .essay { padding: 40px 0; gap: 22px; }
+  .essay-body {
+    font-size: 17.5px;
+    line-height: 1.68;
+  }
+  .essay-body p:first-child::first-letter {
+    font-size: 54px;
+    margin: 4px 10px 0 -1px;
+  }
+
+  .elsewhere { padding-top: 40px; }
+  .elsewhere-title { font-size: 24px; }
+  .link-name { font-size: 22px; }
+  .link-name em {
+    display: block;
+    margin: 6px 0 0;
+    vertical-align: baseline;
+    font-size: 11px;
+  }
+  .link-row {
+    grid-template-columns: 18px minmax(0, 1fr) auto;
+    gap: 14px;
+    padding: 20px 2px;
+  }
+  .link-row:hover { padding-left: 6px; }
+  .link-desc {
+    font-size: 13px;
+    grid-column: 2 / 4;
+    margin-top: -8px;
+  }
+  .colophon { margin-top: 64px; }
 }
 
 @media (max-width: 380px) {
-  .hd-name { font-size: 32px; }
+  .name { font-size: 40px; }
+  .link-name { font-size: 20px; }
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .link-row, .link-row::before, .link-arrow {
+    transition: none;
+  }
 }
 </style>
 </head>
 <body>
 
-<main class="hd-landing">
+<main class="page">
 
-  <!-- TOP BAR -->
-  <div class="hd-topbar">
-    <div class="hd-brand">Harshal Dasani</div>
-    <div class="hd-topbar-socials">
-      <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg>
-      </a>
-      <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener" aria-label="X / Twitter" title="X / Twitter">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>
-      </a>
-      <a href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-      </a>
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="mast-mark">Harshal Dasani</div>
+    <div class="mast-meta">
+      <span>Mumbai</span><span>Est. Markets</span>
     </div>
-  </div>
+  </header>
 
-  <!-- HERO — side by side -->
-  <section class="hd-hero">
-    <div class="hd-hero-text">
-      <h1 class="hd-name">Harshal Dasani</h1>
-      <div class="hd-role">Business Head &middot; INVasset PMS &amp; AIF</div>
-      <div class="hd-location">Mumbai, India</div>
-      <div class="hd-tagline-box">
-        <div class="hd-tagline-label">In one line</div>
-        <p class="hd-tagline">
-          Making sense of how central banks, geopolitics, capital flows, and human behavior
-          show up in stock prices.
-        </p>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="eyebrow">A personal page</div>
+      <h1 class="name">Harshal<br>Dasani.</h1>
+      <div class="role-line">
+        <strong>Business Head</strong>, INVasset PMS &amp; AIF
       </div>
+      <div class="loc-line">Mumbai, India</div>
+      <p class="tagline">
+        Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.
+      </p>
     </div>
-    <div class="hd-photo">
-      <img src="harshal-dasani.jpg" alt="Harshal Dasani — Business Head, INVasset PMS" loading="eager" width="540" height="720">
+    <figure class="portrait">
+      <img src="harshal-dasani.jpg" alt="Harshal Dasani — Business Head, INVasset PMS" loading="eager" width="1000" height="563">
+      <figcaption class="portrait-caption">Mumbai &middot; 2026</figcaption>
+    </figure>
+  </section>
+
+  <!-- ESSAY / ABOUT -->
+  <section class="essay">
+    <aside class="essay-side">
+      <div class="essay-side-label">About</div>
+      <div class="essay-side-title">A reader of cycles, psychology, and time.</div>
+    </aside>
+    <div class="essay-body">
+      <p>I&apos;m Harshal Dasani &mdash; Business Head at <strong>INVasset PMS</strong>, with over ten years of experience in Indian equity markets.</p>
+      <p>I spend most of my days trying to make sense of how the world&apos;s biggest forces &mdash; central banks, geopolitics, capital flows, human behavior &mdash; show up in stock prices. I&apos;ve come to believe that the best investors aren&apos;t the loudest forecasters; they&apos;re the most disciplined readers of cycles, psychology, and time.</p>
+      <p>My approach is part numbers, part narrative. Fundamental analysis tells me what a business is worth. Technical and macro lenses tell me when the market is willing to listen. Behavioral finance reminds me that everyone &mdash; including me &mdash; is more biased than they think. I try to hold all three in mind at once.</p>
+      <p>I&apos;m a <strong>CFA candidate</strong> and have cleared <strong>Level II of the Chartered Accountancy program</strong> &mdash; credentials that have taught me as much about how to think as what to know.</p>
+      <p>Outside the desk, you&apos;ll find me sharing views across India&apos;s leading financial publications &mdash; <span class="brand">The Economic Times, Mint, Moneycontrol, Business Standard, Financial Express, Business Today, Outlook Money, Times of India, Forbes, PTI, and Reuters</span> &mdash; and on television via <span class="brand">Good Returns, CNBC Bajar Gujarati, and Moneycontrol</span>. I also publish long-form market commentary on YouTube and X as <strong>Markets with Harshal</strong>.</p>
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section class="hd-about">
-    <div class="hd-about-label">About</div>
-    <p>I&apos;m Harshal Dasani &mdash; Business Head at <strong>INVasset PMS</strong>, with <strong>over 10 years of experience in Indian equity markets</strong>.</p>
-    <p>I spend most of my days trying to make sense of how the world&apos;s biggest forces &mdash; central banks, geopolitics, capital flows, human behavior &mdash; show up in stock prices. I&apos;ve come to believe that the best investors aren&apos;t the loudest forecasters; they&apos;re the most disciplined readers of cycles, psychology, and time.</p>
-    <p>My approach is part numbers, part narrative. Fundamental analysis tells me what a business is worth. Technical and macro lenses tell me when the market is willing to listen. Behavioral finance reminds me that everyone &mdash; including me &mdash; is more biased than they think. I try to hold all three in mind at once.</p>
-    <p>I&apos;m a <strong>CFA candidate</strong> and have cleared <strong>Level II of the Chartered Accountancy program</strong> &mdash; credentials that have taught me as much about how to think as what to know.</p>
-    <p>Outside the desk, you&apos;ll find me sharing views across India&apos;s leading financial publications &mdash; <em class="brand">The Economic Times, Mint, Moneycontrol, Business Standard, Financial Express, Business Today, Outlook Money, Times of India, Forbes, PTI, and Reuters</em> &mdash; and on television via <em class="brand">Good Returns, CNBC Bajar Gujarati, and Moneycontrol</em>. I also publish long-form market commentary on YouTube and X as <strong>Markets with Harshal</strong>.</p>
+  <!-- ELSEWHERE -->
+  <section class="elsewhere">
+    <div class="elsewhere-head">
+      <h2 class="elsewhere-title">Elsewhere</h2>
+      <div class="elsewhere-sub">Four places to find me</div>
+    </div>
+
+    <ul class="links" aria-label="Where to find Harshal Dasani">
+      <li class="link-item">
+        <a class="link-row" href="tracker/">
+          <span class="link-num">01</span>
+          <span class="link-name">Media Tracker <em>Live</em></span>
+          <span class="link-desc">Every feature, quote, and interview &mdash; 1,041 articles across 150+ publications in 8 languages.</span>
+          <span class="link-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </li>
+      <li class="link-item">
+        <a class="link-row" href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener">
+          <span class="link-num">02</span>
+          <span class="link-name">LinkedIn <em>Professional</em></span>
+          <span class="link-desc">Notes, posts, and where I&apos;m thinking about Indian markets right now.</span>
+          <span class="link-arrow" aria-hidden="true">&#8599;</span>
+        </a>
+      </li>
+      <li class="link-item">
+        <a class="link-row" href="https://x.com/HarshalDasanii" target="_blank" rel="noopener">
+          <span class="link-num">03</span>
+          <span class="link-name">X / Twitter <em>Daily</em></span>
+          <span class="link-desc">Real-time takes on Indian equities, macro, IPOs, and global markets.</span>
+          <span class="link-arrow" aria-hidden="true">&#8599;</span>
+        </a>
+      </li>
+      <li class="link-item">
+        <a class="link-row" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener">
+          <span class="link-num">04</span>
+          <span class="link-name">YouTube <em>Markets with Harshal</em></span>
+          <span class="link-desc">Long-form market explainers, sector deep-dives, and earnings-season takes.</span>
+          <span class="link-arrow" aria-hidden="true">&#8599;</span>
+        </a>
+      </li>
+    </ul>
   </section>
 
-  <!-- DESTINATIONS -->
-  <div class="hd-section-label">Find me online</div>
-  <nav class="hd-grid" aria-label="Where to find Harshal Dasani">
-
-    <a href="tracker/" class="hd-card hd-card-tracker">
-      <div class="hd-card-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="13" height="13"><path d="M7 17L17 7M9 7h8v8"/></svg>
-      </div>
-      <div class="hd-card-ico" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h2v8H3v-8zm4-6h2v14H7V7zm4 3h2v11h-2V10zm4-7h2v18h-2V3zm4 10h2v8h-2v-8z"/></svg>
-      </div>
-      <div class="hd-card-label">Live &middot; auto-updated</div>
-      <div class="hd-card-title">Media Tracker</div>
-      <div class="hd-card-sub">Every feature, quote, and interview &mdash; 1,041 articles across 150+ publications in 8 languages.</div>
-    </a>
-
-    <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener" class="hd-card hd-card-linkedin">
-      <div class="hd-card-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="13" height="13"><path d="M7 17L17 7M9 7h8v8"/></svg>
-      </div>
-      <div class="hd-card-ico" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg>
-      </div>
-      <div class="hd-card-label">Professional</div>
-      <div class="hd-card-title">LinkedIn</div>
-      <div class="hd-card-sub">Updates, posts, and where I&apos;m thinking about Indian markets right now.</div>
-    </a>
-
-    <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener" class="hd-card hd-card-x">
-      <div class="hd-card-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="13" height="13"><path d="M7 17L17 7M9 7h8v8"/></svg>
-      </div>
-      <div class="hd-card-ico" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>
-      </div>
-      <div class="hd-card-label">Live commentary</div>
-      <div class="hd-card-title">X / Twitter</div>
-      <div class="hd-card-sub">Real-time takes on Indian equities, macro, IPOs, and global markets.</div>
-    </a>
-
-    <a href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener" class="hd-card hd-card-youtube">
-      <div class="hd-card-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="13" height="13"><path d="M7 17L17 7M9 7h8v8"/></svg>
-      </div>
-      <div class="hd-card-ico" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-      </div>
-      <div class="hd-card-label">Markets with Harshal</div>
-      <div class="hd-card-title">YouTube</div>
-      <div class="hd-card-sub">Long-form market explainers, sector deep-dives, and earnings season takes.</div>
-    </a>
-
-  </nav>
-
-  <footer class="hd-footer">
-    &copy; 2026 Harshal Dasani
+  <!-- COLOPHON -->
+  <footer class="colophon">
+    <div class="colophon-left">&copy; 2026 Harshal Dasani</div>
+    <div class="colophon-right">Set in Fraunces &amp; Inter</div>
   </footer>
 
 </main>
 
 </body>
 </html>
+                                                                                                                                                                                                                                                                                      
