@@ -189,7 +189,27 @@ body::before {
    ============================================================ */
 .hero {
   margin-bottom: 112px;
-  max-width: 980px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 72px;
+  align-items: end;
+}
+.hero-text { min-width: 0; }
+.hero-portrait {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #1a1612;
+  position: relative;
+  margin-bottom: 6px;
+}
+.hero-portrait img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 25%;
+  display: block;
+  filter: contrast(1.04) saturate(0.92);
 }
 
 .eyebrow {
@@ -214,7 +234,7 @@ body::before {
 .name {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 400;
-  font-size: clamp(58px, 11vw, 148px);
+  font-size: clamp(54px, 8.4vw, 104px);
   line-height: 0.92;
   letter-spacing: -0.04em;
   margin: 0 0 40px;
@@ -470,7 +490,8 @@ body::before {
   .page { padding: 28px 36px 72px; }
   .masthead { margin-bottom: 64px; }
 
-  .hero { margin-bottom: 80px; }
+  .hero { margin-bottom: 80px; grid-template-columns: 1fr; gap: 36px; align-items: start; }
+  .hero-portrait { max-width: 340px; order: -1; }
   .name { margin-bottom: 32px; }
   .role-block { gap: 12px 18px; padding-bottom: 24px; margin-bottom: 24px; }
 
@@ -498,6 +519,9 @@ body::before {
    MOBILE
    ============================================================ */
 @media (max-width: 640px) {
+  .hero { gap: 28px; }
+  .hero-portrait { max-width: 280px; }
+
   .page { padding: 22px 22px 56px; }
   .masthead {
     padding-bottom: 16px;
@@ -568,18 +592,23 @@ body::before {
 
 <main class="page">
 
-  <!-- HERO — name carries the page -->
+  <!-- HERO — name + portrait, side by side -->
   <section class="hero">
-    <h1 class="name">Harshal Dasani</h1>
-    <div class="role-block">
-      <div class="role-line">
-        <strong>Business Head</strong>, INVasset PMS &amp; AIF
+    <div class="hero-text">
+      <h1 class="name">Harshal Dasani</h1>
+      <div class="role-block">
+        <div class="role-line">
+          <strong>Business Head</strong>, INVasset PMS &amp; AIF
+        </div>
+        <div class="loc-line">Mumbai, India</div>
       </div>
-      <div class="loc-line">Mumbai, India</div>
+      <p class="tagline">
+        Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.
+      </p>
     </div>
-    <p class="tagline">
-      Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.
-    </p>
+    <figure class="hero-portrait">
+      <img src="harshal-dasani.jpg" alt="Harshal Dasani" width="576" height="720" loading="eager">
+    </figure>
   </section>
 
   <!-- ESSAY / ABOUT -->
@@ -650,4 +679,4 @@ body::before {
 
 </body>
 </html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
