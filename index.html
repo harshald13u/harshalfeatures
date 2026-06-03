@@ -1116,7 +1116,7 @@ html[data-theme="light"] .hero-tags a {
     transform: none !important;
   }
   .hero-tags a { animation: none !important; }
-  .press-track { animation: none !important; transform: none !important; }
+  /* .press-track left alone - JS-driven inline transform must win */
   .mast-socials a { transition: none; }
 }
 </style>
@@ -1412,8 +1412,6 @@ function toggleTheme(){
     var track = document.querySelector('.press-track');
     var stage = document.getElementById('pressMarquee');
     if (!track || !stage) return;
-    // Respect prefers-reduced-motion: render statically with no animation.
-    if (reduced) { track.style.transform = 'none'; return; }
     var trackWidth = 0, halfWidth = 0;
     function recalc(){
       trackWidth = track.scrollWidth;
@@ -1422,7 +1420,7 @@ function toggleTheme(){
     recalc();
     window.addEventListener('resize', recalc, { passive: true });
     var x = 0;
-    var speed = 50; // px per second
+    var speed = reduced ? 12 : 50; // px per second; slow (not zero) under reduced-motion
     var last = performance.now();
     var paused = false;
     stage.addEventListener('pointerenter', function(){ paused = true; });

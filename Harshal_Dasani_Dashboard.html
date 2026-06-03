@@ -441,8 +441,8 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
          border-radius: 4px 4px 0 0; margin-top: auto;
          transition: opacity 0.15s, height 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
          box-shadow: 0 0 12px rgba(212,166,74,0.5); cursor: default; position: relative; }
-.m-bar.peak { background: linear-gradient(to top, #c97a3a, #d4a64a);
-              box-shadow: 0 0 16px rgba(201,122,58,0.6); }
+.m-bar.peak { background: linear-gradient(to top, #ffffff, #ece4d3);
+              box-shadow: 0 0 18px rgba(255,255,255,0.55); }
 .m-bar:hover { opacity: 0.85; }
 .m-bar:hover::after { content: attr(data-count); position: absolute; bottom: 100%;
                       left: 50%; transform: translateX(-50%); background: #15110d; color: #fff;
@@ -590,8 +590,8 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 .mobile-chart-fill { width: 30px; min-height: 4px; border-radius: 8px 8px 3px 3px;
                      background: linear-gradient(to top, #b8852b, #d4a64a);
                      box-shadow: 0 0 12px rgba(212,166,74,0.38); transition: transform 0.15s, opacity 0.15s; }
-.mobile-chart-bar.active .mobile-chart-fill { background: linear-gradient(to top, #c97a3a, #d4a64a);
-                                              box-shadow: 0 0 16px rgba(201,122,58,0.55); transform: scaleX(1.12); }
+.mobile-chart-bar.active .mobile-chart-fill { background: linear-gradient(to top, #ffffff, #ece4d3);
+                                              box-shadow: 0 0 18px rgba(255,255,255,0.55); transform: scaleX(1.12); }
 .mobile-chart-label { font-size: 9px; color: var(--txt-mut); line-height: 1.15; text-align: center; max-width: 52px; }
 .mobile-chart-value { font-size: 10px; color: #fff; font-weight: 800; }
 .mobile-chart-detail { margin-top: 12px; padding: 12px; border-radius: 10px;
@@ -954,7 +954,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
         <div class="snap-month"><div class="snap-month-bar" style="height:75px"></div><div class="snap-month-label">Aug<br>79</div></div>
         <div class="snap-month"><div class="snap-month-bar" style="height:83px"></div><div class="snap-month-label">Sep<br>87</div></div>
         <div class="snap-month"><div class="snap-month-bar" style="height:62px"></div><div class="snap-month-label">Oct<br>65</div></div>
-        <div class="snap-month"><div class="snap-month-bar" style="height:120px;background:linear-gradient(to top,#c97a3a,#d4a64a)"></div><div class="snap-month-label">Nov<br>126</div></div>
+        <div class="snap-month"><div class="snap-month-bar" style="height:120px;background:linear-gradient(to top,#ffffff,#ece4d3)"></div><div class="snap-month-label">Nov<br>126</div></div>
         <div class="snap-month"><div class="snap-month-bar" style="height:99px"></div><div class="snap-month-label">Dec<br>104</div></div>
         <div class="snap-month"><div class="snap-month-bar" style="height:103px"></div><div class="snap-month-label">Jan<br>108</div></div>
         <div class="snap-month"><div class="snap-month-bar" style="height:81px"></div><div class="snap-month-label">Feb<br>85</div></div>
@@ -2025,15 +2025,22 @@ function renderCumulativePanel(unique) {
       pointBackgroundColor:'#d4a64a', pointBorderColor:'#d4a64a',
       pointHoverBackgroundColor:'#fff', _perBucket:perBucket, _unit: unitName }] },
     options: { responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      onClick: (event, elements, chart) => {
+        const pts = chart.getElementsAtEventForMode(event, 'index', {intersect:false}, true);
+        if (pts && pts.length) {
+          const i = pts[0].index;
+          $('cumulative-note').textContent = `${labels[i]}: running total ${data[i]} features, +${perBucket[i]} added in that ${unitName}.`;
+        }
+      },
       plugins:{ legend:{display:false},
-        tooltip:{ backgroundColor:'rgba(12,10,36,0.95)', borderColor:'rgba(212,166,74,0.4)', borderWidth:1,
-          titleColor:'#fff', bodyColor:'#C9D4F5', padding:10, displayColors:false,
+        tooltip:{ backgroundColor:'rgba(21,17,13,0.95)', borderColor:'rgba(212,166,74,0.4)', borderWidth:1,
+          titleColor:'#fff', bodyColor:'#ece4d3', padding:10, displayColors:false,
           callbacks:{ label:(c)=>`Total: ${c.parsed.y}  (+${c.dataset._perBucket[c.dataIndex]} this ${c.dataset._unit})` } } },
       scales:{ x:{ grid:{color:GRID_CLR}, ticks:{maxRotation: gran==='day'?45:0, autoSkip:true,
                   maxTicksLimit: gran==='day'?14:(gran==='week'?12:10)} },
                y:{ beginAtZero:true, grid:{color:GRID_CLR}, ticks:{precision:0} } } }
   });
-  $('cumulative-note').textContent = `Running total reached ${data[data.length-1]} features by ${labels[labels.length-1]}. Hover any point to see that ${unitName}'s add.`;
+  $('cumulative-note').textContent = `Running total reached ${data[data.length-1]} features by ${labels[labels.length-1]}. Tap any point for that ${unitName}'s add.`;
 }
 
 function renderTopicPanel(unique) {
@@ -2176,8 +2183,8 @@ function renderMonthlyPanel(unique) {
   const data   = bucketKeys.map(k => counts[k] || 0);
   const maxVal = Math.max(...data);
   const peakIdx = data.indexOf(maxVal);
-  const colors = data.map((_,i)=> i===peakIdx ? '#d4a64a' : '#8a8273');
-  const hovers = data.map((_,i)=> i===peakIdx ? '#e8c27e' : '#d4a64a');
+  const colors = data.map((_,i)=> i===peakIdx ? '#ffffff' : '#8a8273');
+  const hovers = data.map((_,i)=> i===peakIdx ? '#f5f0e6' : '#d4a64a');
   const total = data.reduce((a,b)=>a+b,0);
   const nonZero = data.filter(v=>v>0).length || 1;
   const avg = (total / bucketKeys.length).toFixed(1);
@@ -2196,8 +2203,8 @@ function renderMonthlyPanel(unique) {
       borderRadius:4, maxBarThickness: gran==='month' ? 38 : (gran==='week' ? 30 : 18) }] },
     options: { responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
       plugins:{ legend:{display:false},
-        tooltip:{ backgroundColor:'rgba(12,10,36,0.95)', borderColor:'rgba(212,166,74,0.4)', borderWidth:1,
-          titleColor:'#fff', bodyColor:'#C9D4F5', padding:10, displayColors:false,
+        tooltip:{ backgroundColor:'rgba(21,17,13,0.95)', borderColor:'rgba(212,166,74,0.4)', borderWidth:1,
+          titleColor:'#fff', bodyColor:'#ece4d3', padding:10, displayColors:false,
           callbacks:{ label:(c)=>`${c.parsed.y} feature${c.parsed.y===1?'':'s'}` } } },
       scales:{ x:{ grid:{display:false}, ticks:{maxRotation: gran==='day'?45:0, autoSkip:true,
                    maxTicksLimit: gran==='day'?14:(gran==='week'?12:14)} },
