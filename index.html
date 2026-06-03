@@ -360,9 +360,11 @@ body::before {
   display: flex;
   flex-wrap: nowrap;
   width: fit-content;
-  animation: pressScroll 32s linear infinite;
+  animation: pressScroll 28s linear infinite;
+  animation-play-state: paused;
 }
-.press-track:hover { animation-play-state: paused; }
+.press:hover .press-track,
+.press:focus-within .press-track { animation-play-state: running; }
 .press-set {
   display: flex;
   align-items: center;
@@ -907,35 +909,27 @@ body::before {
       <div class="press-track">
         <div class="press-set">
           <span class="press-mark is-sans">The Economic Times</span>
-          <span class="press-mark is-italic">Mint</span>
+          <span class="press-mark is-italic">Livemint</span>
           <span class="press-mark is-smallcaps">moneycontrol</span>
           <span class="press-mark is-uppercase">Business Standard</span>
-          <span class="press-mark is-sans">Financial Express</span>
-          <span class="press-mark">Business Today</span>
-          <span class="press-mark is-italic">Outlook</span>
           <span class="press-mark is-smallcaps">Times of India</span>
           <span class="press-mark is-uppercase">Forbes</span>
           <span class="press-mark is-uppercase">Reuters</span>
-          <span class="press-mark is-sans">NDTV Profit</span>
           <span class="press-mark is-sans">CNBC</span>
-          <span class="press-mark">Good Returns</span>
-          <span class="press-mark is-uppercase">PTI</span>
+          <span class="press-mark is-sans">Financial Express</span>
+          <span class="press-mark is-italic">Outlook</span>
         </div>
         <div class="press-set" aria-hidden="true">
           <span class="press-mark is-sans">The Economic Times</span>
-          <span class="press-mark is-italic">Mint</span>
+          <span class="press-mark is-italic">Livemint</span>
           <span class="press-mark is-smallcaps">moneycontrol</span>
           <span class="press-mark is-uppercase">Business Standard</span>
-          <span class="press-mark is-sans">Financial Express</span>
-          <span class="press-mark">Business Today</span>
-          <span class="press-mark is-italic">Outlook</span>
           <span class="press-mark is-smallcaps">Times of India</span>
           <span class="press-mark is-uppercase">Forbes</span>
           <span class="press-mark is-uppercase">Reuters</span>
-          <span class="press-mark is-sans">NDTV Profit</span>
           <span class="press-mark is-sans">CNBC</span>
-          <span class="press-mark">Good Returns</span>
-          <span class="press-mark is-uppercase">PTI</span>
+          <span class="press-mark is-sans">Financial Express</span>
+          <span class="press-mark is-italic">Outlook</span>
         </div>
       </div>
     </section>
@@ -1019,4 +1013,5 @@ body::before {
       <span class="soc-t"><span class="soc-name">X / Twitter</span><span class="soc-meta">Daily takes</span></span>
     </a>
     <a class="soc" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener">
-      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5
+      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 12 .05 12s0 3 .45 4.9a3.02 3.02 0 0 0 2.13 2.14c1.9.46 9.37.46 9.37.46s7.47 0 9.37-.46a3.02 3.02 0 0 0 2.13-2.14c.45-1.9.45-4.9.45-4.9s0-3-.45-4.9zM9.75 15.5v-7L15.8 12l-6.05 3.5z"/></svg></span>
+      <span class="soc-t"><span class="soc-name">YouTube</span><span class="soc-meta
