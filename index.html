@@ -194,7 +194,15 @@ body::before {
 .hero {
   margin-bottom: 64px;
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  column-gap: 64px;
+  row-gap: 36px;
+  align-items: center;
 }
+.hero-text { grid-column: 1; min-width: 0; }
+.hero-photo { grid-column: 2; }
+.ticker { grid-column: 1 / -1; }
 .eyebrow {
   font-size: 11px;
   font-weight: 600;
@@ -292,51 +300,29 @@ body::before {
 
 /* landscape photo */
 .hero-photo {
-  margin: 0 0 28px;
+  margin: 0;
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border-radius: 6px;
-  background: #1a1612;
+  aspect-ratio: 4 / 5;
+  overflow: visible;
+  background: transparent;
   perspective: 900px;
+  /* soft radial fade so the photo's dark backdrop merges seamlessly into page bg */
+  -webkit-mask-image: radial-gradient(ellipse 80% 92% at 50% 48%, #000 55%, transparent 100%);
+          mask-image: radial-gradient(ellipse 80% 92% at 50% 48%, #000 55%, transparent 100%);
 }
 .hero-photo img {
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: center 32%;
+  object-position: center 18%;
   display: block;
-  filter: contrast(1.04) saturate(0.92);
+  filter: contrast(1.05) saturate(0.96);
   transform: translate3d(0, var(--py, 0), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.3s cubic-bezier(.2,.7,.2,1), filter 0.4s ease;
   will-change: transform;
+  mix-blend-mode: lighten;
 }
-.hero-photo:hover img { filter: contrast(1.06) saturate(1); }
-.hero-photo::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 55%, rgba(14,12,10,0.55) 100%);
-  pointer-events: none;
-}
-.hero-photo-cap {
-  position: absolute;
-  left: 22px; bottom: 16px;
-  font-size: 10.5px;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-  color: var(--ink);
-  font-weight: 500;
-  z-index: 2;
-  opacity: 0.85;
-}
-.hero-photo-cap::before {
-  content: '';
-  display: inline-block;
-  width: 18px; height: 1px;
-  background: var(--accent);
-  margin-right: 10px;
-  vertical-align: 3px;
-}
+.hero-photo:hover img { filter: contrast(1.07) saturate(1); }
 
 /* ticker — recent features rotate */
 .ticker {
@@ -877,17 +863,18 @@ body::before {
   </header>
 
   <section class="hero">
-    <div class="eyebrow">A Personal Page</div>
-    <h1 class="name" id="name" aria-label="Harshal Dasani"></h1>
-    <div class="role-block">
-      <div class="role-line"><strong>Business Head</strong>, INVasset PMS &amp; AIF</div>
-      <div class="loc-line">Mumbai, India</div>
+    <div class="hero-text">
+      <div class="eyebrow">A Personal Page</div>
+      <h1 class="name" id="name" aria-label="Harshal Dasani"></h1>
+      <div class="role-block">
+        <div class="role-line"><strong>Business Head</strong>, INVasset PMS &amp; AIF</div>
+        <div class="loc-line">Mumbai, India</div>
+      </div>
+      <p class="tagline">Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.</p>
     </div>
-    <p class="tagline">Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.</p>
 
     <figure class="hero-photo" id="heroPhoto">
-      <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="1200" height="675" loading="eager" decoding="async">
-      <figcaption class="hero-photo-cap">Mumbai &middot; 2026</figcaption>
+      <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="576" height="720" loading="eager" decoding="async">
     </figure>
 
     <div class="ticker" aria-label="Recent media features">
