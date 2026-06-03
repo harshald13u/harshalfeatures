@@ -1640,6 +1640,14 @@ function setDrill(type, value) {
 // Wire up the search box (debounced) + bar drill-down once the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   renderSpecialFeatures();
+  // Auto-apply pub filter from URL ?pub=X (deep-link from landing marquee logos)
+  try {
+    var _urlParams = new URLSearchParams(window.location.search);
+    var _urlPub = _urlParams.get('pub');
+    if (_urlPub) {
+      setTimeout(function(){ setDrill('pub', _urlPub); }, 350);
+    }
+  } catch(e) {}
   const inp = document.getElementById('feat-search');
   if (inp) {
     let t;

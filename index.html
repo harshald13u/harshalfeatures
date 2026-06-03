@@ -402,6 +402,8 @@ body::before {
   flex-wrap: nowrap;
   width: max-content;
   animation: pressScroll 36s linear infinite;
+  -webkit-animation: pressScroll 36s linear infinite;
+  will-change: transform;
 }
 .press:hover .press-track,
 .press:focus-within .press-track {
@@ -419,9 +421,13 @@ body::before {
   align-items: center;
   height: 36px;
   opacity: 0.62;
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
   flex-shrink: 0;
+  text-decoration: none;
+  cursor: pointer;
 }
+.press-mark:hover { opacity: 1; transform: translateY(-2px); }
+.press-mark:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 .press-mark img {
   height: 100%;
   width: auto;
@@ -435,6 +441,10 @@ body::before {
 @keyframes pressScroll {
   0%   { transform: translate3d(0, 0, 0); }
   100% { transform: translate3d(-50%, 0, 0); }
+}
+@-webkit-keyframes pressScroll {
+  0%   { -webkit-transform: translate3d(0, 0, 0); }
+  100% { -webkit-transform: translate3d(-50%, 0, 0); }
 }
 
 .press::before, .press::after {
@@ -993,38 +1003,38 @@ body::before {
         
         
         <div class="press-set">
-          <span class="press-mark"><img src="as-featured-logos/economic-times.svg" alt="The Economic Times" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/livemint.svg" alt="Livemint" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/moneycontrol.svg" alt="Moneycontrol" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/business-standard.svg" alt="Business Standard" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/times-of-india.svg" alt="Times of India" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/forbes.svg" alt="Forbes" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/reuters.svg" alt="Reuters" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/cnbc.svg" alt="CNBC" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/financial-express.svg" alt="Financial Express" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/outlook.svg" alt="Outlook" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/business-today.svg" alt="Business Today" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/ndtv-profit.svg" alt="NDTV Profit" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/hindustan-times.svg" alt="Hindustan Times" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/news18.svg" alt="News18" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/hindu-businessline.svg" alt="The Hindu BusinessLine" loading="lazy"></span>
+          <a class="press-mark" href="tracker/?pub=Economic%20Times" aria-label="Filter tracker by Economic Times" title="See features in Economic Times"><img src="as-featured-logos/economic-times.svg" alt="The Economic Times" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Live%20Mint" aria-label="Filter tracker by Live Mint" title="See features in Live Mint"><img src="as-featured-logos/livemint.svg" alt="Livemint" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Moneycontrol" aria-label="Filter tracker by Moneycontrol" title="See features in Moneycontrol"><img src="as-featured-logos/moneycontrol.svg" alt="Moneycontrol" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Business%20Standard" aria-label="Filter tracker by Business Standard" title="See features in Business Standard"><img src="as-featured-logos/business-standard.svg" alt="Business Standard" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Times%20of%20India" aria-label="Filter tracker by Times of India" title="See features in Times of India"><img src="as-featured-logos/times-of-india.svg" alt="Times of India" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Forbes%20India" aria-label="Filter tracker by Forbes India" title="See features in Forbes India"><img src="as-featured-logos/forbes.svg" alt="Forbes" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Reuters" aria-label="Filter tracker by Reuters" title="See features in Reuters"><img src="as-featured-logos/reuters.svg" alt="Reuters" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=CNBC%20TV18" aria-label="Filter tracker by CNBC TV18" title="See features in CNBC TV18"><img src="as-featured-logos/cnbc.svg" alt="CNBC" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Financial%20Express" aria-label="Filter tracker by Financial Express" title="See features in Financial Express"><img src="as-featured-logos/financial-express.svg" alt="Financial Express" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Outlook" aria-label="Filter tracker by Outlook" title="See features in Outlook"><img src="as-featured-logos/outlook.svg" alt="Outlook" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Business%20Today" aria-label="Filter tracker by Business Today" title="See features in Business Today"><img src="as-featured-logos/business-today.svg" alt="Business Today" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=NDTV%20Profit" aria-label="Filter tracker by NDTV Profit" title="See features in NDTV Profit"><img src="as-featured-logos/ndtv-profit.svg" alt="NDTV Profit" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Hindustan%20Times" aria-label="Filter tracker by Hindustan Times" title="See features in Hindustan Times"><img src="as-featured-logos/hindustan-times.svg" alt="Hindustan Times" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=News18" aria-label="Filter tracker by News18" title="See features in News18"><img src="as-featured-logos/news18.svg" alt="News18" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=The%20Hindu%20BusinessLine" aria-label="Filter tracker by The Hindu BusinessLine" title="See features in The Hindu BusinessLine"><img src="as-featured-logos/hindu-businessline.svg" alt="The Hindu BusinessLine" loading="lazy"></a>
         </div>
         <div class="press-set" aria-hidden="true">
-          <span class="press-mark"><img src="as-featured-logos/economic-times.svg" alt="The Economic Times" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/livemint.svg" alt="Livemint" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/moneycontrol.svg" alt="Moneycontrol" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/business-standard.svg" alt="Business Standard" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/times-of-india.svg" alt="Times of India" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/forbes.svg" alt="Forbes" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/reuters.svg" alt="Reuters" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/cnbc.svg" alt="CNBC" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/financial-express.svg" alt="Financial Express" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/outlook.svg" alt="Outlook" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/business-today.svg" alt="Business Today" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/ndtv-profit.svg" alt="NDTV Profit" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/hindustan-times.svg" alt="Hindustan Times" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/news18.svg" alt="News18" loading="lazy"></span>
-          <span class="press-mark"><img src="as-featured-logos/hindu-businessline.svg" alt="The Hindu BusinessLine" loading="lazy"></span>
+          <a class="press-mark" href="tracker/?pub=Economic%20Times" aria-label="Filter tracker by Economic Times" title="See features in Economic Times"><img src="as-featured-logos/economic-times.svg" alt="The Economic Times" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Live%20Mint" aria-label="Filter tracker by Live Mint" title="See features in Live Mint"><img src="as-featured-logos/livemint.svg" alt="Livemint" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Moneycontrol" aria-label="Filter tracker by Moneycontrol" title="See features in Moneycontrol"><img src="as-featured-logos/moneycontrol.svg" alt="Moneycontrol" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Business%20Standard" aria-label="Filter tracker by Business Standard" title="See features in Business Standard"><img src="as-featured-logos/business-standard.svg" alt="Business Standard" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Times%20of%20India" aria-label="Filter tracker by Times of India" title="See features in Times of India"><img src="as-featured-logos/times-of-india.svg" alt="Times of India" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Forbes%20India" aria-label="Filter tracker by Forbes India" title="See features in Forbes India"><img src="as-featured-logos/forbes.svg" alt="Forbes" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Reuters" aria-label="Filter tracker by Reuters" title="See features in Reuters"><img src="as-featured-logos/reuters.svg" alt="Reuters" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=CNBC%20TV18" aria-label="Filter tracker by CNBC TV18" title="See features in CNBC TV18"><img src="as-featured-logos/cnbc.svg" alt="CNBC" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Financial%20Express" aria-label="Filter tracker by Financial Express" title="See features in Financial Express"><img src="as-featured-logos/financial-express.svg" alt="Financial Express" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Outlook" aria-label="Filter tracker by Outlook" title="See features in Outlook"><img src="as-featured-logos/outlook.svg" alt="Outlook" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Business%20Today" aria-label="Filter tracker by Business Today" title="See features in Business Today"><img src="as-featured-logos/business-today.svg" alt="Business Today" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=NDTV%20Profit" aria-label="Filter tracker by NDTV Profit" title="See features in NDTV Profit"><img src="as-featured-logos/ndtv-profit.svg" alt="NDTV Profit" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=Hindustan%20Times" aria-label="Filter tracker by Hindustan Times" title="See features in Hindustan Times"><img src="as-featured-logos/hindustan-times.svg" alt="Hindustan Times" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=News18" aria-label="Filter tracker by News18" title="See features in News18"><img src="as-featured-logos/news18.svg" alt="News18" loading="lazy"></a>
+          <a class="press-mark" href="tracker/?pub=The%20Hindu%20BusinessLine" aria-label="Filter tracker by The Hindu BusinessLine" title="See features in The Hindu BusinessLine"><img src="as-featured-logos/hindu-businessline.svg" alt="The Hindu BusinessLine" loading="lazy"></a>
         </div>
       
       
