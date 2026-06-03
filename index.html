@@ -763,6 +763,20 @@ body::before {
 /* ============================================================
    TABLET
    ============================================================ */
+
+/* ============================================================
+   iPad LANDSCAPE / narrow desktop (1024 – 1180px)
+   ============================================================ */
+@media (max-width: 1180px) {
+  .page { padding: 26px 40px 68px; max-width: 100%; }
+  .hero { grid-template-columns: minmax(0, 1fr) 420px; column-gap: 48px; }
+  .name { font-size: clamp(50px, 8.6vw, 100px); }
+  .about { grid-template-columns: 180px minmax(0, 1fr); gap: 44px; padding: 44px 0 48px; }
+  .about-body { column-gap: 32px; }
+  .doors { gap: 18px; }
+  .door { min-height: 240px; padding: 26px 26px 24px; }
+}
+
 @media (max-width: 960px) {
   .page { padding: 24px 32px 64px; }
   .masthead { margin-bottom: 40px; }
@@ -780,9 +794,14 @@ body::before {
   }
   .about-body { column-count: 2; column-gap: 28px; font-size: 15.5px; }
 
+  .about-stats { gap: 18px 32px; }
+
   .doors { gap: 16px; margin-bottom: 48px; }
   .door { min-height: 200px; padding: 22px 22px 20px; }
   .door-name { font-size: clamp(28px, 4.6vw, 40px); }
+
+  .social { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .soc { padding: 14px 14px; gap: 10px; }
 }
 
 @media (max-width: 820px) {
@@ -817,7 +836,7 @@ body::before {
   .loc-line { font-size: 10px; letter-spacing: 1.5px; }
   .tagline { font-size: 17px; line-height: 1.5; margin-bottom: 24px; }
   .role-block { padding-bottom: 18px; margin-bottom: 18px; }
-  .hero-photo { max-width: 340px; margin: 0 auto; }
+  .hero-photo { max-width: 360px; margin: 0 auto; }
 
   .press { padding: 20px 0; }
   .press-label { font-size: 9px; letter-spacing: 1.6px; margin-bottom: 12px; }
@@ -836,7 +855,7 @@ body::before {
     font-size: 15.5px;
     line-height: 1.6;
   }
-  .about-stats { gap: 14px 22px; margin-top: 18px; }
+  .about-stats { gap: 16px 18px; margin-top: 18px; flex-wrap: wrap; }
   .about-stat-n { font-size: 20px; }
 
   .primary-title { font-size: 24px; }
@@ -859,7 +878,9 @@ body::before {
     gap: 10px;
     margin-bottom: 48px;
   }
-  .soc { padding: 14px 16px; }
+  .soc { padding: 16px 18px; min-height: 56px; }
+  .soc-name { font-size: 16px; }
+  .soc-meta { font-size: 12px; }
 }
 
 @media (max-width: 380px) {
