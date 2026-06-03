@@ -149,23 +149,29 @@ body::before {
   border-bottom: 1px solid var(--rule);
   margin-bottom: 56px;
 }
-.mast-mark {
-  font-family: 'Fraunces', Georgia, serif;
-  font-weight: 500;
-  font-size: 17px;
-  letter-spacing: -0.2px;
-  color: var(--ink);
-  font-style: italic;
+.mast-socials {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.mast-mark::before {
-  content: '';
-  display: inline-block;
-  width: 7px; height: 7px;
-  background: var(--accent);
+.mast-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
   border-radius: 50%;
-  margin-right: 10px;
-  vertical-align: 2px;
-  animation: pulse 2.6s ease-in-out infinite;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.mast-socials a svg { width: 15px; height: 15px; display: block; }
+.mast-socials a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(212,166,74,0.08);
+  transform: translateY(-1px);
 }
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -780,7 +786,8 @@ body::before {
     padding-bottom: 14px;
     margin-bottom: 32px;
   }
-  .mast-mark { font-size: 15px; }
+  .mast-socials a { width: 28px; height: 28px; }
+  .mast-socials a svg { width: 13px; height: 13px; }
   .mast-meta { font-size: 10px; letter-spacing: 1.4px; }
   .mast-meta span + span::before { margin: 0 8px 3px; }
 
@@ -851,7 +858,7 @@ body::before {
     opacity: 1 !important;
     transform: none !important;
   }
-  .mast-mark::before { animation: none; }
+  .mast-socials a { transition: none; }
 }
 </style>
 </head>
@@ -860,7 +867,17 @@ body::before {
 <main class="page">
 
   <header class="masthead">
-    <div class="mast-mark">Harshal Dasani</div>
+    <div class="mast-socials">
+      <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg>
+      </a>
+      <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener" aria-label="X / Twitter" title="X / Twitter">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
     <div class="mast-meta">
       <span>Stock Market</span><span>Commodities</span><span>Macros</span><span>Geopolitics</span>
     </div>
@@ -997,50 +1014,4 @@ body::before {
       <span class="soc-t"><span class="soc-name">X / Twitter</span><span class="soc-meta">Daily takes</span></span>
     </a>
     <a class="soc" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener">
-      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 12 .05 12s0 3 .45 4.9a3.02 3.02 0 0 0 2.13 2.14c1.9.46 9.37.46 9.37.46s7.47 0 9.37-.46a3.02 3.02 0 0 0 2.13-2.14c.45-1.9.45-4.9.45-4.9s0-3-.45-4.9zM9.75 15.5v-7L15.8 12l-6.05 3.5z"/></svg></span>
-      <span class="soc-t"><span class="soc-name">YouTube</span><span class="soc-meta">Markets with Harshal</span></span>
-    </a>
-  </nav>
-
-  <footer class="colophon">
-    <div class="colophon-left">&copy; 2026 Harshal Dasani</div>
-    <div class="colophon-right">Set in Fraunces &amp; Inter</div>
-  </footer>
-
-</main>
-
-<script>
-(function(){
-  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  var nameEl = document.getElementById('name');
-  if (nameEl) {
-    var html = '';
-    'Harshal Dasani'.split(' ').forEach(function(word){
-      html += '<span class="word">';
-      word.split('').forEach(function(c){ html += '<span class="ch" aria-hidden="true">'+c+'</span>'; });
-      html += '</span>';
-    });
-    nameEl.innerHTML = html;
-  }
-
-  var counter = document.getElementById('trackerCount');
-  function animateCount(el){
-    if (!el || el.dataset.done) return;
-    el.dataset.done = '1';
-    var target = parseInt(el.getAttribute('data-target')||'0',10);
-    if (reduced) { el.textContent = target.toLocaleString('en-IN'); return; }
-    var start = performance.now(), dur = 1600;
-    function step(t){
-      var p = Math.min(1, (t-start)/dur);
-      var eased = 1 - Math.pow(1-p, 3);
-      el.textContent = Math.round(target*eased).toLocaleString('en-IN');
-      if (p<1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  var doors = document.querySelectorAll('[data-door]');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEac
+      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 1
