@@ -764,13 +764,13 @@ body::before {
    TABLET
    ============================================================ */
 @media (max-width: 960px) {
-  .page { padding: 24px 36px 64px; }
+  .page { padding: 24px 32px 64px; }
   .masthead { margin-bottom: 40px; }
   .hero { margin-bottom: 48px; grid-template-columns: 1fr; column-gap: 0; row-gap: 28px; }
-  .hero-photo { max-width: 100%; margin: 0 auto; }
-  .name { margin-bottom: 24px; }
+  .hero-photo { max-width: 520px; margin: 0 auto; }
+  .name { margin-bottom: 24px; font-size: clamp(48px, 9.4vw, 88px); }
   .role-block { gap: 10px 18px; padding-bottom: 20px; margin-bottom: 22px; }
-  .tagline { margin-bottom: 32px; }
+  .tagline { margin-bottom: 32px; font-size: clamp(18px, 2.4vw, 22px); }
 
   .about {
     grid-template-columns: 1fr;
@@ -778,42 +778,53 @@ body::before {
     padding: 40px 0 44px;
     margin-bottom: 56px;
   }
-  .about-body { column-count: 2; column-gap: 32px; font-size: 16px; }
+  .about-body { column-count: 2; column-gap: 28px; font-size: 15.5px; }
 
-  .doors { gap: 18px; margin-bottom: 48px; }
-  .door { min-height: 240px; padding: 26px 26px 24px; }
+  .doors { gap: 16px; margin-bottom: 48px; }
+  .door { min-height: 200px; padding: 22px 22px 20px; }
+  .door-name { font-size: clamp(28px, 4.6vw, 40px); }
 }
+
+@media (max-width: 820px) {
+  .about-body { column-count: 1; max-width: 640px; }
+  .doors { grid-template-columns: 1fr; gap: 14px; }
+  .door { min-height: 0; }
+  .hero-photo { max-width: 440px; }
+}
+
 
 /* ============================================================
    MOBILE
    ============================================================ */
 @media (max-width: 640px) {
-  .page { padding: 20px 22px 52px; }
+  .page { padding: 18px 20px 52px; }
   .masthead {
     padding-bottom: 14px;
     margin-bottom: 32px;
   }
   .mast-socials a { width: 28px; height: 28px; }
   .mast-socials a svg { width: 13px; height: 13px; }
-  .mast-meta { font-size: 10px; letter-spacing: 1.4px; }
-  .mast-meta span + span::before { margin: 0 8px 3px; }
+  .mast-meta { font-size: 9.5px; letter-spacing: 1.3px; }
+  .mast-meta span + span::before { margin: 0 7px 3px; width: 2px; height: 2px; }
 
-  .hero { margin-bottom: 40px; }
-  .eyebrow { font-size: 10px; margin-bottom: 18px; letter-spacing: 1.8px; }
-  .eyebrow::after { max-width: 48px; }
+  .hero { margin-bottom: 40px; row-gap: 24px; }
   .name {
-    font-size: clamp(46px, 13.5vw, 76px);
-    margin-bottom: 22px;
+    font-size: clamp(44px, 12.5vw, 72px);
+    margin-bottom: 20px;
+    line-height: 0.94;
   }
-  .role-line { font-size: 17px; }
-  .tagline { font-size: 18px; margin-bottom: 28px; }
-  .hero-photo { margin-bottom: 0; }
-  .press { padding: 22px 0; }
-  .press-label { font-size: 9.5px; letter-spacing: 1.8px; margin-bottom: 14px; }
-  .press-set { gap: 36px; padding-right: 36px; }
-  .press-mark { height: 28px; }
-  .press-mark img { max-width: 140px; }
-  .press::before, .press::after { width: 40px; }
+  .role-line { font-size: 16px; line-height: 1.35; }
+  .loc-line { font-size: 10px; letter-spacing: 1.5px; }
+  .tagline { font-size: 17px; line-height: 1.5; margin-bottom: 24px; }
+  .role-block { padding-bottom: 18px; margin-bottom: 18px; }
+  .hero-photo { max-width: 340px; margin: 0 auto; }
+
+  .press { padding: 20px 0; }
+  .press-label { font-size: 9px; letter-spacing: 1.6px; margin-bottom: 12px; }
+  .press-set { gap: 32px; padding-right: 32px; }
+  .press-mark { height: 26px; }
+  .press-mark img { max-width: 130px; }
+  .press::before, .press::after { width: 36px; }
 
   .about {
     padding: 32px 0 36px;
@@ -822,39 +833,45 @@ body::before {
   }
   .about-body {
     column-count: 1;
-    font-size: 16px;
+    font-size: 15.5px;
     line-height: 1.6;
   }
   .about-stats { gap: 14px 22px; margin-top: 18px; }
   .about-stat-n { font-size: 20px; }
 
-  .primary-title { font-size: 25px; }
+  .primary-title { font-size: 24px; }
   .doors {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
     margin-bottom: 40px;
   }
   .door {
     min-height: 0;
-    padding: 22px 22px 20px;
+    padding: 20px 20px 18px;
   }
-  .door-name { font-size: 32px; line-height: 1.04; margin-bottom: 12px; }
-  .door-desc { font-size: 13.5px; margin-bottom: 22px; }
-  .door-foot { padding-top: 14px; }
+  .door-name { font-size: 30px; line-height: 1.04; margin-bottom: 10px; }
+  .door-desc { font-size: 13px; line-height: 1.5; margin-bottom: 18px; }
+  .door-foot { padding-top: 12px; }
   .door-stat-n { font-size: 22px; }
 
   .social {
     grid-template-columns: 1fr;
     gap: 10px;
-    margin-bottom: 56px;
+    margin-bottom: 48px;
   }
   .soc { padding: 14px 16px; }
 }
 
 @media (max-width: 380px) {
-  .name { font-size: 44px; }
-  .door-name { font-size: 28px; }
-  .tagline { font-size: 17px; }
+  .page { padding: 14px 16px 44px; }
+  .name { font-size: 42px; }
+  .door-name { font-size: 26px; }
+  .tagline { font-size: 16px; }
+  .role-line { font-size: 15px; }
+  .hero-photo { max-width: 280px; }
+  .press-mark { height: 22px; }
+  .press-mark img { max-width: 110px; }
+  .press-set { gap: 26px; padding-right: 26px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
