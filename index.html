@@ -223,7 +223,7 @@ body::before {
   margin-top: auto;
   padding-top: 22px;
 }
-.hero-tags span {
+.hero-tags a {
   display: inline-flex;
   align-items: center;
   padding: 8px 14px;
@@ -236,13 +236,19 @@ body::before {
   text-transform: uppercase;
   color: var(--ink-2);
   background: transparent;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-  cursor: default;
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
 }
-.hero-tags span:hover {
+.hero-tags a:hover {
   color: var(--accent);
   border-color: var(--accent);
-  background: rgba(212,166,74,0.06);
+  background: rgba(212,166,74,0.08);
+  transform: translateY(-1px);
+}
+.hero-tags a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 .eyebrow {
   font-size: 11px;
@@ -973,12 +979,12 @@ body::before {
       <figure class="hero-photo" id="heroPhoto">
         <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="1000" height="516" loading="eager" decoding="async">
       </figure>
-      <div class="hero-tags" aria-label="Topics">
-        <span>Stock Market</span>
-        <span>Commodities</span>
-        <span>Macros</span>
-        <span>Geopolitics</span>
-      </div>
+      <nav class="hero-tags" aria-label="Blog topics">
+        <a href="blog/?topic=stock-market">Stock Market</a>
+        <a href="blog/?topic=commodities">Commodities</a>
+        <a href="blog/?topic=macros">Macros</a>
+        <a href="blog/?topic=geopolitics">Geopolitics</a>
+      </nav>
     </div>
 
     <section class="press" id="pressMarquee" aria-label="As featured on">
