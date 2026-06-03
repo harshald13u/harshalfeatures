@@ -401,14 +401,10 @@ body::before {
   display: flex;
   flex-wrap: nowrap;
   width: max-content;
-  animation: pressScroll 36s linear infinite;
-  -webkit-animation: pressScroll 36s linear infinite;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
-.press:hover .press-track,
-.press:focus-within .press-track {
-  animation-play-state: paused;
-}
+.press.is-paused .press-track { /* JS adds this class on hover */ }
 .press-set {
   display: flex;
   align-items: center;
@@ -1231,6 +1227,35 @@ body::before {
     pressEl.addEventListener('focusin', setActive);
     pressEl.addEventListener('focusout', clearActive);
   }
+  // ===== JS-driven press marquee — bulletproof on iOS Safari =====
+  (function(){
+    var track = document.querySelector('.press-track');
+    var stage = document.getElementById('pressMarquee');
+    if (!track || !stage) return;
+    var trackWidth = 0, halfWidth = 0;
+    function recalc(){
+      trackWidth = track.scrollWidth;
+      halfWidth = trackWidth / 2; // since content is duplicated
+    }
+    recalc();
+    window.addEventListener('resize', recalc, { passive: true });
+    var x = 0;
+    var speed = 50; // px per second
+    var last = performance.now();
+    var paused = false;
+    stage.addEventListener('pointerenter', function(){ paused = true; });
+    stage.addEventListener('pointerleave', function(){ paused = false; });
+    function step(t){
+      var dt = (t - last) / 1000; last = t;
+      if (!paused) {
+        x -= speed * dt;
+        if (-x >= halfWidth) x += halfWidth; // seamless loop
+        track.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+      }
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
 })();
 </script>
 </body>
