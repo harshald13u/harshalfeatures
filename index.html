@@ -287,12 +287,14 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
   width: 100%;
-  margin: 12px 0 0 0;
+  margin: auto 0 0 0;
   padding: 0;
 }
-/* Photo top aligns with name top; chips sit naturally below the photo */
+/* Photo top aligns with name top; chips push to bottom of stretched col (= bottom of tagline) */
 .hero-right {
-  align-self: start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
 }
 .hero-tags a {
   display: inline-flex;
