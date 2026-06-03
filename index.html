@@ -232,8 +232,8 @@ body::before {
   font-family: 'Inter', sans-serif;
   font-weight: 800;
   font-size: clamp(54px, 9.2vw, 116px);
-  line-height: 0.9;
-  letter-spacing: -0.04em;
+  line-height: 0.94;
+  letter-spacing: -0.045em;
   margin: 0 0 32px;
   color: var(--ink);
   display: flex;
@@ -438,7 +438,7 @@ body::before {
   font-size: 16.5px;
   line-height: 1.62;
   color: var(--ink-2);
-  letter-spacing: -0.005em;
+  letter-spacing: -0.002em;
   column-count: 2;
   column-gap: 40px;
 }
@@ -598,7 +598,7 @@ body::before {
 .door-name {
   font-family: 'Inter', sans-serif;
   font-size: clamp(36px, 4.5vw, 52px);
-  font-weight: 800;
+  font-weight: 400;
   letter-spacing: -0.025em;
   line-height: 1.02;
   margin: 0 0 14px;
@@ -1168,4 +1168,9 @@ body::before {
     pressEl.addEventListener('pointerleave', clearActive);
     pressEl.addEventListener('touchstart', setActive, {passive:true});
     pressEl.addEventListener('focusin', setActive);
-    pressEl.addEventListener('focusout'
+    pressEl.addEventListener('focusout', clearActive);
+  }
+})();
+</script>
+</body>
+</html>
