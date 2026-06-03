@@ -129,6 +129,16 @@ html[data-theme="light"] body::before {
     radial-gradient(900px 600px at -5% 105%, rgba(13,44,77,0.04), transparent 60%);
 }
 html[data-theme="light"] .mast-socials a { background: rgba(13,44,77,0.04); }
+/* Light mode: photo dark backdrop reads as page bg via screen blend; no vignette/halo */
+html[data-theme="light"] .hero-photo {
+  background: var(--bg);
+}
+html[data-theme="light"] .hero-photo::before { box-shadow: none; }
+html[data-theme="light"] .hero-photo::after { display: none; }
+html[data-theme="light"] .hero-photo img {
+  mix-blend-mode: screen;
+  filter: contrast(1.18) saturate(1.05) brightness(1.0);
+}
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
