@@ -33,7 +33,7 @@
 <meta name="twitter:description" content="Markets professional, writer, Business Head at INVasset PMS. CFA candidate, CA Level II. Featured across ET, Mint, Moneycontrol &amp; CNBC.">
 <meta name="twitter:image" content="https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg">
 
-<meta name="theme-color" content="#f5f1ea">
+<meta name="theme-color" content="#0e0c0a">
 
 <script type="application/ld+json">
 {
@@ -96,39 +96,40 @@
 
 <style>
 :root {
-  --paper: #f4efe6;
-  --paper-2: #ede6d8;
-  --ink: #1a1814;
-  --ink-2: #2c2924;
-  --muted: #5a544a;
-  --faint: #8a8275;
-  --rule: rgba(26,24,20,0.14);
-  --rule-soft: rgba(26,24,20,0.08);
-  --accent: #7a1f24;
-  --accent-soft: rgba(122,31,36,0.10);
+  /* warm near-black, not cool tech-black */
+  --bg: #0e0c0a;
+  --bg-2: #15110d;
+  --ink: #ece4d3;       /* warm bone — primary text */
+  --ink-2: #c9c0ad;     /* secondary body */
+  --muted: #8a8273;     /* labels, meta */
+  --faint: #5a5447;     /* numerals, rules */
+  --rule: rgba(236,228,211,0.10);
+  --rule-soft: rgba(236,228,211,0.06);
+  --accent: #d4a64a;    /* warm gold — single accent */
+  --accent-soft: rgba(212,166,74,0.08);
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: var(--bg); }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--bg);
+  color: var(--ink-2);
   min-height: 100vh;
   line-height: 1.55;
   font-feature-settings: "ss01", "cv11";
   -webkit-text-size-adjust: 100%;
 }
 
-/* faint paper grain — very subtle */
+/* very subtle warm radial — gives depth without "glow" */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(1200px 600px at 90% -10%, rgba(122,31,36,0.04), transparent 60%),
-    radial-gradient(900px 500px at -5% 100%, rgba(26,24,20,0.04), transparent 60%);
+    radial-gradient(1200px 700px at 85% -10%, rgba(212,166,74,0.045), transparent 60%),
+    radial-gradient(900px 600px at -5% 105%, rgba(212,166,74,0.025), transparent 60%);
 }
 
 .page {
@@ -139,7 +140,7 @@ body::before {
 }
 
 /* ============================================================
-   MASTHEAD — small, FT-style top rule
+   MASTHEAD — small FT-style top rule
    ============================================================ */
 .masthead {
   display: flex;
@@ -147,11 +148,11 @@ body::before {
   justify-content: space-between;
   padding-bottom: 22px;
   border-bottom: 1px solid var(--rule);
-  margin-bottom: 84px;
+  margin-bottom: 96px;
 }
 .mast-mark {
   font-family: 'Fraunces', Georgia, serif;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 17px;
   letter-spacing: -0.2px;
   color: var(--ink);
@@ -168,7 +169,7 @@ body::before {
 }
 .mast-meta {
   font-size: 11px;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
   color: var(--muted);
   font-weight: 500;
@@ -184,31 +185,27 @@ body::before {
 }
 
 /* ============================================================
-   HERO — name as editorial headline, photo as right column
+   HERO — name is the visual now. Single column, big.
    ============================================================ */
 .hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: 72px;
-  align-items: end;
-  margin-bottom: 96px;
+  margin-bottom: 112px;
+  max-width: 980px;
 }
-.hero-text { min-width: 0; }
 
 .eyebrow {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 1.8px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 28px;
+  margin-bottom: 36px;
   display: flex;
   align-items: center;
   gap: 14px;
 }
 .eyebrow::after {
   content: '';
-  flex: 1; max-width: 64px;
+  flex: 1; max-width: 72px;
   height: 1px;
   background: var(--accent);
   opacity: 0.45;
@@ -216,83 +213,56 @@ body::before {
 
 .name {
   font-family: 'Fraunces', Georgia, serif;
-  font-weight: 500;
-  font-size: clamp(54px, 8vw, 104px);
-  line-height: 0.94;
-  letter-spacing: -0.035em;
-  margin: 0 0 28px;
+  font-weight: 400;
+  font-size: clamp(58px, 11vw, 148px);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  margin: 0 0 40px;
   color: var(--ink);
   font-variation-settings: "opsz" 144;
 }
-.name em {
-  font-style: italic;
-  font-weight: 400;
-  color: var(--accent);
-}
 
+.role-block {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 18px 22px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 28px;
+}
 .role-line {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 19px;
+  font-size: 21px;
   font-style: italic;
   font-weight: 400;
-  color: var(--ink-2);
-  line-height: 1.5;
-  margin-bottom: 6px;
+  color: var(--ink);
+  line-height: 1.4;
 }
 .role-line strong {
   font-style: normal;
   font-weight: 500;
+  color: var(--ink);
 }
 .loc-line {
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  letter-spacing: 1.6px;
+  font-size: 11px;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
   color: var(--muted);
   font-weight: 500;
 }
 
 .tagline {
-  margin-top: 36px;
-  padding-top: 24px;
-  border-top: 1px solid var(--rule);
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 400;
-  font-size: 21px;
-  line-height: 1.5;
+  font-size: clamp(20px, 2.4vw, 26px);
+  line-height: 1.45;
   color: var(--ink-2);
-  max-width: 480px;
-  letter-spacing: -0.005em;
-}
-
-/* Portrait — clean editorial cut, slight inner shadow */
-.portrait {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: var(--paper-2);
-  box-shadow:
-    0 1px 0 rgba(26,24,20,0.06),
-    0 30px 60px -30px rgba(26,24,20,0.25);
-}
-.portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 35%;
-  display: block;
-  filter: saturate(0.92) contrast(1.02);
-}
-.portrait-caption {
-  position: absolute;
-  bottom: -28px;
-  right: 0;
-  font-size: 10.5px;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: var(--faint);
-  font-weight: 500;
+  max-width: 720px;
+  letter-spacing: -0.008em;
+  font-style: italic;
+  margin: 0;
 }
 
 /* ============================================================
@@ -300,9 +270,9 @@ body::before {
    ============================================================ */
 .essay {
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
-  gap: 64px;
-  padding: 64px 0;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 72px;
+  padding: 72px 0;
   border-top: 1px solid var(--rule);
   margin-bottom: 16px;
 }
@@ -314,16 +284,16 @@ body::before {
 .essay-side-label {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 1.8px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .essay-side-title {
   font-family: 'Fraunces', Georgia, serif;
   font-style: italic;
   font-weight: 400;
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.4;
   color: var(--muted);
 }
@@ -331,23 +301,23 @@ body::before {
 .essay-body {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 400;
-  font-size: 19px;
+  font-size: 20px;
   line-height: 1.72;
   color: var(--ink-2);
-  max-width: 640px;
+  max-width: 660px;
   letter-spacing: -0.003em;
 }
 .essay-body p {
-  margin: 0 0 24px;
+  margin: 0 0 26px;
 }
 .essay-body p:last-child { margin-bottom: 0; }
 .essay-body p:first-child::first-letter {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 500;
-  font-size: 66px;
+  font-size: 74px;
   line-height: 0.85;
   float: left;
-  margin: 6px 12px 0 -2px;
+  margin: 8px 14px 0 -2px;
   color: var(--accent);
 }
 .essay-body strong {
@@ -356,7 +326,7 @@ body::before {
 }
 .essay-body .brand {
   font-style: italic;
-  color: var(--ink-2);
+  color: var(--ink);
 }
 
 /* ============================================================
@@ -364,29 +334,29 @@ body::before {
    ============================================================ */
 .elsewhere {
   border-top: 1px solid var(--rule);
-  padding-top: 56px;
+  padding-top: 64px;
   margin-top: 24px;
 }
 .elsewhere-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
   gap: 24px;
   flex-wrap: wrap;
 }
 .elsewhere-title {
   font-family: 'Fraunces', Georgia, serif;
-  font-weight: 500;
+  font-weight: 400;
   font-style: italic;
-  font-size: 28px;
-  letter-spacing: -0.01em;
+  font-size: 32px;
+  letter-spacing: -0.015em;
   color: var(--ink);
   margin: 0;
 }
 .elsewhere-sub {
-  font-size: 12px;
-  letter-spacing: 1.4px;
+  font-size: 11px;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
   color: var(--muted);
   font-weight: 500;
@@ -403,29 +373,20 @@ body::before {
 }
 .link-row {
   display: grid;
-  grid-template-columns: 24px minmax(0, 1.2fr) minmax(0, 2fr) auto;
-  gap: 28px;
+  grid-template-columns: 28px minmax(0, 1.2fr) minmax(0, 2fr) auto;
+  gap: 32px;
   align-items: center;
-  padding: 26px 4px;
+  padding: 28px 4px;
   text-decoration: none;
   color: var(--ink);
-  transition: padding 0.25s ease, color 0.2s ease;
+  transition: padding 0.28s ease, color 0.2s ease, background 0.28s ease;
   position: relative;
 }
 .link-row:hover {
-  padding-left: 12px;
-  color: var(--accent);
-}
-.link-row::before {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; top: 0; bottom: 0;
+  padding-left: 14px;
   background: var(--accent-soft);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  z-index: -1;
 }
-.link-row:hover::before { opacity: 1; }
+.link-row:hover .link-name { color: var(--accent); }
 
 .link-num {
   font-family: 'Fraunces', Georgia, serif;
@@ -437,44 +398,47 @@ body::before {
 .link-name {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 500;
-  font-size: 26px;
-  letter-spacing: -0.015em;
+  font-size: 28px;
+  letter-spacing: -0.018em;
   line-height: 1.1;
+  color: var(--ink);
+  transition: color 0.2s ease;
 }
 .link-name em {
   font-style: italic;
   font-weight: 400;
   color: var(--muted);
-  font-size: 14px;
-  margin-left: 8px;
-  letter-spacing: 0.5px;
+  font-size: 11px;
+  margin-left: 10px;
+  letter-spacing: 1.4px;
   text-transform: uppercase;
-  vertical-align: 4px;
+  vertical-align: 5px;
+  font-family: 'Inter', sans-serif;
 }
 .link-desc {
   font-family: 'Inter', sans-serif;
   font-size: 13.5px;
   color: var(--muted);
-  line-height: 1.5;
+  line-height: 1.55;
   font-weight: 400;
 }
 .link-arrow {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 22px;
   color: var(--faint);
-  transition: transform 0.25s ease, color 0.2s ease;
+  transition: transform 0.28s ease, color 0.2s ease;
   font-weight: 400;
 }
 .link-row:hover .link-arrow {
   color: var(--accent);
-  transform: translateX(6px);
+  transform: translateX(8px);
 }
 
 /* ============================================================
    COLOPHON
    ============================================================ */
 .colophon {
-  margin-top: 96px;
+  margin-top: 112px;
   padding-top: 24px;
   border-top: 1px solid var(--rule);
   display: flex;
@@ -490,44 +454,42 @@ body::before {
 }
 .colophon-right {
   font-size: 11px;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
   color: var(--faint);
   font-weight: 500;
 }
+
+/* selection */
+::selection { background: var(--accent); color: var(--bg); }
 
 /* ============================================================
    TABLET
    ============================================================ */
 @media (max-width: 960px) {
   .page { padding: 28px 36px 72px; }
-  .masthead { margin-bottom: 56px; }
+  .masthead { margin-bottom: 64px; }
 
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 44px;
-    margin-bottom: 72px;
-  }
-  .hero-text { order: 2; }
-  .portrait { order: 1; aspect-ratio: 16 / 9; }
-  .portrait-caption { position: static; margin-top: 12px; display: block; }
+  .hero { margin-bottom: 80px; }
+  .name { margin-bottom: 32px; }
+  .role-block { gap: 12px 18px; padding-bottom: 24px; margin-bottom: 24px; }
 
   .essay {
     grid-template-columns: 1fr;
     gap: 28px;
-    padding: 52px 0;
+    padding: 56px 0;
   }
   .essay-side { position: static; }
   .essay-side-title { font-size: 16px; }
 
   .link-row {
-    grid-template-columns: 20px minmax(0, 1fr) auto;
-    gap: 18px;
-    padding: 22px 4px;
+    grid-template-columns: 22px minmax(0, 1fr) auto;
+    gap: 20px;
+    padding: 24px 4px;
   }
   .link-desc {
     grid-column: 2 / 4;
-    margin-top: -10px;
+    margin-top: -8px;
     padding-left: 0;
   }
 }
@@ -539,67 +501,64 @@ body::before {
   .page { padding: 22px 22px 56px; }
   .masthead {
     padding-bottom: 16px;
-    margin-bottom: 40px;
+    margin-bottom: 48px;
   }
   .mast-mark { font-size: 15px; }
-  .mast-meta { font-size: 10px; letter-spacing: 1.2px; }
+  .mast-meta { font-size: 10px; letter-spacing: 1.4px; }
   .mast-meta span + span::before { margin: 0 8px 3px; }
 
-  .hero { gap: 32px; margin-bottom: 56px; }
-  .eyebrow { font-size: 10px; margin-bottom: 18px; }
-  .eyebrow::after { max-width: 40px; }
+  .hero { margin-bottom: 64px; }
+  .eyebrow { font-size: 10px; margin-bottom: 22px; letter-spacing: 1.8px; }
+  .eyebrow::after { max-width: 48px; }
   .name {
-    font-size: clamp(44px, 13vw, 64px);
-    margin-bottom: 20px;
+    font-size: clamp(46px, 14vw, 72px);
+    margin-bottom: 26px;
   }
-  .role-line { font-size: 16px; }
-  .tagline {
-    font-size: 18px;
-    margin-top: 28px;
-    padding-top: 20px;
-  }
+  .role-line { font-size: 17px; }
+  .tagline { font-size: 18px; }
 
-  .essay { padding: 40px 0; gap: 22px; }
+  .essay { padding: 44px 0; gap: 22px; }
   .essay-body {
     font-size: 17.5px;
     line-height: 1.68;
   }
   .essay-body p:first-child::first-letter {
-    font-size: 54px;
-    margin: 4px 10px 0 -1px;
+    font-size: 58px;
+    margin: 6px 11px 0 -1px;
   }
 
-  .elsewhere { padding-top: 40px; }
-  .elsewhere-title { font-size: 24px; }
+  .elsewhere { padding-top: 44px; }
+  .elsewhere-title { font-size: 26px; }
   .link-name { font-size: 22px; }
   .link-name em {
     display: block;
-    margin: 6px 0 0;
+    margin: 8px 0 0;
     vertical-align: baseline;
-    font-size: 11px;
+    font-size: 10.5px;
   }
   .link-row {
-    grid-template-columns: 18px minmax(0, 1fr) auto;
-    gap: 14px;
-    padding: 20px 2px;
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+    gap: 16px;
+    padding: 22px 2px;
   }
-  .link-row:hover { padding-left: 6px; }
+  .link-row:hover { padding-left: 8px; }
   .link-desc {
     font-size: 13px;
     grid-column: 2 / 4;
-    margin-top: -8px;
+    margin-top: -6px;
   }
-  .colophon { margin-top: 64px; }
+  .colophon { margin-top: 72px; }
 }
 
 @media (max-width: 380px) {
-  .name { font-size: 40px; }
+  .name { font-size: 42px; }
   .link-name { font-size: 20px; }
+  .tagline { font-size: 17px; }
 }
 
 /* respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .link-row, .link-row::before, .link-arrow {
+  .link-row, .link-arrow {
     transition: none;
   }
 }
@@ -617,23 +576,19 @@ body::before {
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO — name carries the page -->
   <section class="hero">
-    <div class="hero-text">
-      <div class="eyebrow">A personal page</div>
-      <h1 class="name">Harshal<br>Dasani.</h1>
+    <div class="eyebrow">A personal page</div>
+    <h1 class="name">Harshal Dasani</h1>
+    <div class="role-block">
       <div class="role-line">
         <strong>Business Head</strong>, INVasset PMS &amp; AIF
       </div>
       <div class="loc-line">Mumbai, India</div>
-      <p class="tagline">
-        Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.
-      </p>
     </div>
-    <figure class="portrait">
-      <img src="harshal-dasani.jpg" alt="Harshal Dasani — Business Head, INVasset PMS" loading="eager" width="1000" height="563">
-      <figcaption class="portrait-caption">Mumbai &middot; 2026</figcaption>
-    </figure>
+    <p class="tagline">
+      Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.
+    </p>
   </section>
 
   <!-- ESSAY / ABOUT -->
@@ -704,4 +659,4 @@ body::before {
 
 </body>
 </html>
-                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
