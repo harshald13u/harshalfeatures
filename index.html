@@ -335,15 +335,15 @@ body::before {
 }
 .hero-photo:hover img { filter: contrast(1.07) saturate(1); }
 
-/* press marquee — As Featured On, transparent (page bg), white wordmarks scrolling */
+/* press marquee — As Featured On, warm brown band, translucent white wordmarks scrolling */
 .press {
   grid-column: 1 / -1;
   position: relative;
   margin: 16px 0 0;
-  padding: 24px 0;
-  background: transparent;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
+  padding: 28px 0;
+  background: linear-gradient(180deg, #2c1d11 0%, #241710 100%);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.45);
   overflow: hidden;
 }
 .press-label {
@@ -353,8 +353,8 @@ body::before {
   letter-spacing: 2.2px;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--muted);
-  margin-bottom: 16px;
+  color: rgba(255,255,255,0.50);
+  margin-bottom: 18px;
 }
 .press-track {
   display: flex;
@@ -374,8 +374,8 @@ body::before {
 }
 .press-mark {
   white-space: nowrap;
-  color: var(--ink);
-  opacity: 0.74;
+  color: #ffffff;
+  opacity: 0.62;
   font-family: 'Fraunces', Georgia, serif;
   font-size: 22px;
   font-weight: 500;
@@ -401,8 +401,8 @@ body::before {
   position: absolute; top: 0; bottom: 0; width: 60px;
   pointer-events: none; z-index: 2;
 }
-.press::before { left: 0;  background: linear-gradient(90deg, var(--bg) 0%, transparent 100%); }
-.press::after  { right: 0; background: linear-gradient(270deg, var(--bg) 0%, transparent 100%); }
+.press::before { left: 0;  background: linear-gradient(90deg, #241710 0%, transparent 100%); }
+.press::after  { right: 0; background: linear-gradient(270deg, #241710 0%, transparent 100%); }
 
 /* ============================================================
    ABOUT — compact, two-column on desktop
@@ -1014,4 +1014,4 @@ body::before {
     </a>
     <a class="soc" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener">
       <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 12 .05 12s0 3 .45 4.9a3.02 3.02 0 0 0 2.13 2.14c1.9.46 9.37.46 9.37.46s7.47 0 9.37-.46a3.02 3.02 0 0 0 2.13-2.14c.45-1.9.45-4.9.45-4.9s0-3-.45-4.9zM9.75 15.5v-7L15.8 12l-6.05 3.5z"/></svg></span>
-      <span class="soc-t"><span class="soc-name">YouTube</span><span class="soc-meta
+      <span class="so
