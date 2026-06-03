@@ -20,8 +20,8 @@
 <meta property="og:description" content="Markets professional, writer, Business Head at INVasset PMS. CFA candidate, CA Level II. Featured across ET, Mint, Moneycontrol &amp; CNBC.">
 <meta property="og:url" content="https://harshald13u.github.io/harshalfeatures/">
 <meta property="og:image" content="https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="675">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="516">
 <meta property="og:locale" content="en_IN">
 <meta property="profile:first_name" content="Harshal">
 <meta property="profile:last_name" content="Dasani">
@@ -164,7 +164,7 @@ body::before {
   border: 1px solid var(--rule);
   color: var(--ink-2);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 .mast-socials a svg { width: 15px; height: 15px; display: block; }
 .mast-socials a:hover {
@@ -273,12 +273,17 @@ body::before {
   font-weight: 400;
   color: var(--ink);
   line-height: 1.4;
+  transition: color 0.5s cubic-bezier(.4, 0, .2, 1);
+  cursor: default;
 }
 .role-line strong {
   font-style: normal;
   font-weight: 500;
   color: var(--ink);
+  transition: color 0.5s cubic-bezier(.4, 0, .2, 1);
 }
+.role-line:hover,
+.role-line:hover strong { color: var(--accent); }
 .loc-line {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
@@ -325,7 +330,7 @@ body::before {
 .hero-photo img {
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: center 24%;
+  object-position: center 18%;
   display: block;
   filter: contrast(1.05) saturate(0.96);
   transform: translate3d(0, var(--py, 0), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
@@ -335,15 +340,15 @@ body::before {
 }
 .hero-photo:hover img { filter: contrast(1.07) saturate(1); }
 
-/* press marquee — As Featured On, warm brown band, translucent white wordmarks scrolling */
+/* press marquee — As Featured On, transparent over page bg, slides on hover */
 .press {
   grid-column: 1 / -1;
   position: relative;
   margin: 16px 0 0;
-  padding: 28px 0;
-  background: linear-gradient(180deg, #2c1d11 0%, #241710 100%);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  border-bottom: 1px solid rgba(0,0,0,0.45);
+  padding: 26px 0;
+  background: transparent;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
   overflow: hidden;
 }
 .press-label {
@@ -353,18 +358,21 @@ body::before {
   letter-spacing: 2.2px;
   text-transform: uppercase;
   font-weight: 600;
-  color: rgba(255,255,255,0.50);
-  margin-bottom: 18px;
+  color: var(--muted);
+  margin-bottom: 16px;
 }
 .press-track {
   display: flex;
   flex-wrap: nowrap;
-  width: fit-content;
+  width: max-content;
   animation: pressScroll 28s linear infinite;
   animation-play-state: paused;
 }
+.press.is-active .press-track,
 .press:hover .press-track,
-.press:focus-within .press-track { animation-play-state: running; }
+.press:focus-within .press-track {
+  animation-play-state: running;
+}
 .press-set {
   display: flex;
   align-items: center;
@@ -395,14 +403,13 @@ body::before {
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
-/* edge fade — uses page bg so it blends */
 .press::before, .press::after {
   content: '';
   position: absolute; top: 0; bottom: 0; width: 60px;
   pointer-events: none; z-index: 2;
 }
-.press::before { left: 0;  background: linear-gradient(90deg, #241710 0%, transparent 100%); }
-.press::after  { right: 0; background: linear-gradient(270deg, #241710 0%, transparent 100%); }
+.press::before { left: 0;  background: linear-gradient(90deg, var(--bg) 0%, transparent 100%); }
+.press::after  { right: 0; background: linear-gradient(270deg, var(--bg) 0%, transparent 100%); }
 
 /* ============================================================
    ABOUT — compact, two-column on desktop
@@ -808,7 +815,7 @@ body::before {
   .role-line { font-size: 17px; }
   .tagline { font-size: 18px; margin-bottom: 28px; }
   .hero-photo { margin-bottom: 0; }
-  .press { padding: 22px 0; margin-top: 4px; }
+  .press { padding: 22px 0; }
   .press-label { font-size: 9.5px; letter-spacing: 1.8px; margin-bottom: 14px; }
   .press-set { gap: 36px; padding-right: 36px; }
   .press-mark { font-size: 17px; }
@@ -858,7 +865,6 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* press-track stays paused by default at .press-track rule above; hover still triggers slide */
   .name .ch, .door, .door::after, .door-arrow, .soc, .hero-photo img {
     transition: none !important;
     animation: none !important;
@@ -875,15 +881,9 @@ body::before {
 
   <header class="masthead">
     <div class="mast-socials">
-      <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg>
-      </a>
-      <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener" aria-label="X / Twitter" title="X / Twitter">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>
-      </a>
-      <a href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-      </a>
+      <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg></a>
+      <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener" aria-label="X / Twitter" title="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg></a>
+      <a href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
     </div>
     <div class="mast-meta">
       <span>Stock Market</span><span>Commodities</span><span>Macros</span><span>Geopolitics</span>
@@ -904,7 +904,7 @@ body::before {
       <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="1000" height="516" loading="eager" decoding="async">
     </figure>
 
-    <section class="press" aria-label="As featured on">
+    <section class="press" id="pressMarquee" aria-label="As featured on">
       <div class="press-label">As Featured On</div>
       <div class="press-track">
         <div class="press-set">
@@ -1013,4 +1013,118 @@ body::before {
       <span class="soc-t"><span class="soc-name">X / Twitter</span><span class="soc-meta">Daily takes</span></span>
     </a>
     <a class="soc" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener">
-      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 12 .05 12s0 3 .45 4.9a3.02 3.02 0 0 0 2.13 2.14c1.9.46 9.37.46 9.37.46s7.47 0 9.37-.46a3.02 3.02 0 0 0 2.13-2.14c.45-1.9.45-4.9.45-4.9s0-3-.45-4.9zM9.75 1
+      <span class="soc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 7.1a3.02 3.02 0 0 0-2.13-2.14C19.47 4.5 12 4.5 12 4.5s-7.47 0-9.37.46A3.02 3.02 0 0 0 .5 7.1C.05 9 .05 12 .05 12s0 3 .45 4.9a3.02 3.02 0 0 0 2.13 2.14c1.9.46 9.37.46 9.37.46s7.47 0 9.37-.46a3.02 3.02 0 0 0 2.13-2.14c.45-1.9.45-4.9.45-4.9s0-3-.45-4.9zM9.75 15.5v-7L15.8 12l-6.05 3.5z"/></svg></span>
+      <span class="soc-t"><span class="soc-name">YouTube</span><span class="soc-meta">Markets with Harshal</span></span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <div class="colophon-left">&copy; 2026 Harshal Dasani</div>
+    <div class="colophon-right">Set in Fraunces &amp; Inter</div>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var nameEl = document.getElementById('name');
+  if (nameEl) {
+    var html = '';
+    'Harshal Dasani'.split(' ').forEach(function(word){
+      html += '<span class="word">';
+      word.split('').forEach(function(c){ html += '<span class="ch" aria-hidden="true">'+c+'</span>'; });
+      html += '</span>';
+    });
+    nameEl.innerHTML = html;
+  }
+
+  var counter = document.getElementById('trackerCount');
+  function animateCount(el){
+    if (!el || el.dataset.done) return;
+    el.dataset.done = '1';
+    var target = parseInt(el.getAttribute('data-target')||'0',10);
+    if (reduced) { el.textContent = target.toLocaleString('en-IN'); return; }
+    var start = performance.now(), dur = 1600;
+    function step(t){
+      var p = Math.min(1, (t-start)/dur);
+      var eased = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.round(target*eased).toLocaleString('en-IN');
+      if (p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  var doors = document.querySelectorAll('[data-door]');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          if (e.target.querySelector('#trackerCount')) animateCount(counter);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    doors.forEach(function(d){ io.observe(d); });
+  } else {
+    doors.forEach(function(d){ d.classList.add('is-in'); });
+    animateCount(counter);
+  }
+
+  if (!reduced) {
+    doors.forEach(function(d){
+      d.addEventListener('mousemove', function(e){
+        var r = d.getBoundingClientRect();
+        d.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+        d.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+      });
+    });
+  }
+
+  var photo = document.getElementById('heroPhoto');
+  if (photo && !reduced && window.matchMedia('(hover: hover)').matches) {
+    var img = photo.querySelector('img');
+    photo.addEventListener('mousemove', function(e){
+      var r = photo.getBoundingClientRect();
+      var dx = (e.clientX-r.left)/r.width - 0.5;
+      var dy = (e.clientY-r.top)/r.height - 0.5;
+      img.style.setProperty('--ry', (dx*2.4)+'deg');
+      img.style.setProperty('--rx', (-dy*1.8)+'deg');
+    });
+    photo.addEventListener('mouseleave', function(){
+      img.style.setProperty('--ry','0deg');
+      img.style.setProperty('--rx','0deg');
+    });
+    var ticking = false;
+    function onScroll(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        var r = photo.getBoundingClientRect();
+        var vh = window.innerHeight || 1;
+        var rel = (r.top + r.height/2 - vh/2)/vh;
+        var py = Math.max(-14, Math.min(14, -rel*18));
+        img.style.setProperty('--py', py+'px');
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  var pressEl = document.getElementById('pressMarquee');
+  if (pressEl) {
+    var setActive = function(){ pressEl.classList.add('is-active'); };
+    var clearActive = function(){ pressEl.classList.remove('is-active'); };
+    pressEl.addEventListener('pointerenter', setActive);
+    pressEl.addEventListener('pointerleave', clearActive);
+    pressEl.addEventListener('touchstart', setActive, {passive:true});
+    pressEl.addEventListener('focusin', setActive);
+    pressEl.addEventListener('focusout', clearActive);
+  }
+})();
+</script>
+</body>
+</html>
