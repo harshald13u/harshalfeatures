@@ -135,7 +135,7 @@ body::before {
   position: relative; z-index: 1;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 28px 56px 72px;
+  padding: max(28px, env(safe-area-inset-top)) max(56px, env(safe-area-inset-right)) 72px max(56px, env(safe-area-inset-left));
 }
 
 /* ============================================================
@@ -768,7 +768,7 @@ body::before {
    iPad LANDSCAPE / narrow desktop (1024 – 1180px)
    ============================================================ */
 @media (max-width: 1180px) {
-  .page { padding: 26px 40px 68px; max-width: 100%; }
+  .page { padding: max(26px, env(safe-area-inset-top)) max(40px, env(safe-area-inset-right)) 68px max(40px, env(safe-area-inset-left)); max-width: 100%; }
   .hero { grid-template-columns: minmax(0, 1fr) 420px; column-gap: 48px; }
   .name { font-size: clamp(50px, 8.6vw, 100px); }
   .about { grid-template-columns: 180px minmax(0, 1fr); gap: 44px; padding: 44px 0 48px; }
@@ -778,7 +778,7 @@ body::before {
 }
 
 @media (max-width: 960px) {
-  .page { padding: 24px 32px 64px; }
+  .page { padding: max(24px, env(safe-area-inset-top)) max(32px, env(safe-area-inset-right)) 64px max(32px, env(safe-area-inset-left)); }
   .masthead { margin-bottom: 40px; }
   .hero { margin-bottom: 48px; grid-template-columns: 1fr; column-gap: 0; row-gap: 28px; }
   .hero-text, .hero-photo { grid-column: auto; }
@@ -817,7 +817,7 @@ body::before {
    MOBILE
    ============================================================ */
 @media (max-width: 640px) {
-  .page { padding: 18px 20px 52px; }
+  .page { padding: max(18px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) 52px max(20px, env(safe-area-inset-left)); }
   .masthead {
     padding-bottom: 14px;
     margin-bottom: 32px;
@@ -885,7 +885,7 @@ body::before {
 }
 
 @media (max-width: 380px) {
-  .page { padding: 14px 16px 44px; }
+  .page { padding: max(14px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 44px max(16px, env(safe-area-inset-left)); }
   .name { font-size: 42px; }
   .door-name { font-size: 26px; }
   .tagline { font-size: 16px; }
