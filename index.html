@@ -286,14 +286,17 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
-  margin-top: -22px;
-  padding-top: 0;
   width: 100%;
-  margin-left: 0;
-  margin-right: 0;
-  position: relative;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
   z-index: 3;
 }
+.hero-right { position: relative; }
 /* Photo top aligns with name top; chips sit naturally below the photo */
 .hero-right {
   align-self: start;
