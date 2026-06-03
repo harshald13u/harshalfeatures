@@ -324,15 +324,15 @@ body::before {
 }
 .hero-photo:hover img { filter: contrast(1.07) saturate(1); }
 
-/* press marquee — As Featured On, warm brown band, white wordmarks scrolling */
+/* press marquee — As Featured On, transparent (page bg), white wordmarks scrolling */
 .press {
   grid-column: 1 / -1;
   position: relative;
-  margin: 8px 0 0;
-  padding: 28px 0;
-  background: linear-gradient(180deg, #2b1d12 0%, #241810 100%);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  border-bottom: 1px solid rgba(0,0,0,0.40);
+  margin: 16px 0 0;
+  padding: 24px 0;
+  background: transparent;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
   overflow: hidden;
 }
 .press-label {
@@ -342,13 +342,14 @@ body::before {
   letter-spacing: 2.2px;
   text-transform: uppercase;
   font-weight: 600;
-  color: rgba(255,255,255,0.55);
-  margin-bottom: 18px;
+  color: var(--muted);
+  margin-bottom: 16px;
 }
 .press-track {
   display: flex;
-  width: max-content;
-  animation: pressScroll 38s linear infinite;
+  flex-wrap: nowrap;
+  width: fit-content;
+  animation: pressScroll 32s linear infinite;
 }
 .press-track:hover { animation-play-state: paused; }
 .press-set {
@@ -356,11 +357,12 @@ body::before {
   align-items: center;
   gap: 56px;
   padding-right: 56px;
+  flex-shrink: 0;
 }
 .press-mark {
   white-space: nowrap;
-  color: #fff;
-  opacity: 0.72;
+  color: var(--ink);
+  opacity: 0.74;
   font-family: 'Fraunces', Georgia, serif;
   font-size: 22px;
   font-weight: 500;
@@ -376,18 +378,18 @@ body::before {
 .press-mark.is-smallcaps { font-variant: small-caps; letter-spacing: 1px; }
 
 @keyframes pressScroll {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
-/* edge fade so marks emerge/disappear softly */
+/* edge fade — uses page bg so it blends */
 .press::before, .press::after {
   content: '';
-  position: absolute; top: 0; bottom: 0; width: 80px;
+  position: absolute; top: 0; bottom: 0; width: 60px;
   pointer-events: none; z-index: 2;
 }
-.press::before { left: 0;  background: linear-gradient(90deg, #241810, transparent); }
-.press::after  { right: 0; background: linear-gradient(270deg, #241810, transparent); }
+.press::before { left: 0;  background: linear-gradient(90deg, var(--bg) 0%, transparent 100%); }
+.press::after  { right: 0; background: linear-gradient(270deg, var(--bg) 0%, transparent 100%); }
 
 /* ============================================================
    ABOUT — compact, two-column on desktop
@@ -866,7 +868,7 @@ body::before {
 
   <section class="hero">
     <div class="hero-text">
-      <h1 class="name" id="name" aria-label="Harshal Dasani"></h1>
+      <h1 class="name" id="name" aria-label="Harshal Dasani">Harshal Dasani</h1>
       <div class="role-block">
         <div class="role-line"><strong>Business Head</strong>, INVasset PMS &amp; AIF</div>
         <div class="loc-line">Mumbai, India</div>
@@ -1041,5 +1043,4 @@ body::before {
   var doors = document.querySelectorAll('[data-door]');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-    
+      entries.forEac
