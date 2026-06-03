@@ -103,7 +103,7 @@
 <!-- <meta name="msvalidate.01" content="PASTE_VERIFICATION_TOKEN_HERE"> -->
 
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -496,11 +496,15 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
               background: rgba(255,255,255,0.04); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
 #feat-search::placeholder { color: var(--txt-faint); }
 #feat-search:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(212,166,74,0.18); background: rgba(255,255,255,0.07); }
-.cum-svg { width: 100%; height: 220px; display: block; }
-.cum-dot { fill: #d4a64a; filter: drop-shadow(0 0 4px rgba(212,166,74,0.9)); }
+.cum-svg { width: 100%; height: 260px; display: block; }
+.cum-dot { fill: #d4a64a; filter: drop-shadow(0 0 4px rgba(212,166,74,0.9)); cursor: pointer; transition: r 0.15s; }
+.cum-dot:hover { r: 6; }
 .cum-area { fill: url(#cumGrad); }
 .cum-line { fill: none; stroke: #d4a64a; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round;
             filter: drop-shadow(0 0 6px rgba(212,166,74,0.8)); }
+.cum-grid { stroke: rgba(236,228,211,0.08); stroke-width: 1; stroke-dasharray: 2 4; }
+.cum-yt { fill: #8a8273; font-size: 10px; font-family: 'Inter', sans-serif; }
+.cum-xt { fill: #c9c0ad; font-size: 10px; font-family: 'Inter', sans-serif; }
 .latest h3 .h-count { font-size: 10px; font-weight: 500; color: var(--txt-mut);
                       background: rgba(255,255,255,0.07); padding: 2px 8px; border-radius: 10px; }
 .feat-list { display: flex; flex-direction: column; gap: 1px; background: var(--line-soft);
@@ -694,7 +698,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
   .footer { flex-direction: column; gap: 4px; padding: 12px 4px; font-size: 9px; }
 
   /* Audit fixes: prevent SVG fallback overflow + widen bar value column */
-  .cum-svg { height: 180px; }
+  .cum-svg { height: 220px; }
   .bar-row { grid-template-columns: 92px 1fr 64px; }
   #feat-search { min-height: 44px; padding: 14px 14px; }
   .header-meta-bar { padding: 10px 14px; font-size: 10px;
@@ -773,7 +777,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 
   .monthly { height: 210px; padding-bottom: 36px; }
   #cumulative { height: 200px; }
-  .cum-svg { height: 200px; }
+  .cum-svg { height: 240px; }
 
   .filter-caption { font-size: 10px; padding: 10px 0 4px; }
 
@@ -1899,17 +1903,38 @@ function renderFallbackMonthlyChart(el, labels, data, peakIdx) {
 }
 
 function renderFallbackCumulativeChart(el, labels, data, perMonth) {
-  const w = 720, h = 220, pad = 28;
+  const w = 720, h = 260, padL = 40, padR = 16, padT = 16, padB = 38;
   const max = Math.max(...data, 1);
-  const x = i => pad + (labels.length === 1 ? 0 : i * ((w - pad * 2) / (labels.length - 1)));
-  const y = v => h - pad - (v / max) * (h - pad * 2);
+  const xRange = w - padL - padR;
+  const yRange = h - padT - padB;
+  const x = i => padL + (labels.length === 1 ? xRange / 2 : i * (xRange / (labels.length - 1)));
+  const y = v => padT + yRange - (v / max) * yRange;
   const points = data.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
-  const area = `${pad},${h-pad} ${points} ${x(data.length - 1).toFixed(1)},${h-pad}`;
-  el.innerHTML = `<svg class="cum-svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="Cumulative coverage growth">
-    <defs><linearGradient id="cumGradFallback" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="rgba(212,166,74,0.45)"/><stop offset="58%" stop-color="rgba(120,90,220,0.18)"/><stop offset="100%" stop-color="rgba(120,90,220,0.01)"/></linearGradient></defs>
+  const area = `${padL},${h-padB} ${points} ${x(data.length - 1).toFixed(1)},${h-padB}`;
+
+  // Y-axis ticks at 0, 25, 50, 75, 100% of max
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map(p => {
+    const val = Math.round(max * p);
+    const yy = y(val);
+    return `<line class="cum-grid" x1="${padL}" x2="${w-padR}" y1="${yy.toFixed(1)}" y2="${yy.toFixed(1)}"></line>
+            <text class="cum-yt" x="${padL-6}" y="${(yy+3).toFixed(1)}" text-anchor="end">${val}</text>`;
+  }).join('');
+
+  // X-axis labels - skip some if too many to avoid overlap
+  const step = Math.max(1, Math.ceil(labels.length / 14));
+  const xLabels = labels.map((lbl, i) => {
+    if (i % step !== 0 && i !== labels.length - 1) return '';
+    const text = String(lbl).replace(/<br\s*\/?>/gi, ' ');
+    return `<text class="cum-xt" x="${x(i).toFixed(1)}" y="${h - padB + 16}" text-anchor="middle">${escapeHtml(text)}</text>`;
+  }).join('');
+
+  el.innerHTML = `<svg class="cum-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Cumulative coverage growth">
+    <defs><linearGradient id="cumGradFallback" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="rgba(212,166,74,0.45)"/><stop offset="58%" stop-color="rgba(212,166,74,0.18)"/><stop offset="100%" stop-color="rgba(212,166,74,0.02)"/></linearGradient></defs>
+    ${yTicks}
     <polygon class="cum-area" fill="url(#cumGradFallback)" points="${area}"></polygon>
     <polyline class="cum-line" points="${points}"></polyline>
-    ${data.map((v, i) => `<circle class="cum-dot" data-idx="${i}" cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="4"><title>${escapeHtml(labels[i])}: ${v} total (+${perMonth[i]})</title></circle>`).join('')}
+    ${data.map((v, i) => `<circle class="cum-dot" data-idx="${i}" cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="4.5"><title>${escapeHtml(labels[i])}: ${v} total (+${perMonth[i]})</title></circle>`).join('')}
+    ${xLabels}
   </svg>`;
   el.querySelectorAll('.cum-dot').forEach(dot => {
     dot.onclick = () => {
