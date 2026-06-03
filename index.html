@@ -134,16 +134,16 @@ html[data-theme="light"] .press-mark { opacity: 1; }
 html[data-theme="light"] .press-mark img { filter: brightness(0) contrast(2); }
 html[data-theme="light"] .press-mark:hover img { filter: brightness(0) contrast(2.4); }
 html[data-theme="light"] .press-label { color: rgba(13,44,77,0.55); }
-/* Light mode: swap to cutout PNG with transparent backdrop — no vignette/blend needed */
+/* Light mode: use the dedicated cream-bg photo straight, no blend/mask/vignette */
 html[data-theme="light"] .hero-photo {
   background: var(--bg);
 }
 html[data-theme="light"] .hero-photo::before { box-shadow: none; }
 html[data-theme="light"] .hero-photo::after { display: none; }
 html[data-theme="light"] .hero-photo img {
-  content: url("harshal-dasani-cutout.png");
+  content: url("harshal-dasani-light.jpg");
   mix-blend-mode: normal;
-  filter: contrast(1.04) saturate(1) brightness(1);
+  filter: none;
 }
 
 * { box-sizing: border-box; }
