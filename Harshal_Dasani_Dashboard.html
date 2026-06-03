@@ -2050,13 +2050,8 @@ function renderJournalistPanel(unique) {
   const tg = document.getElementById('jrn-toggle');
   if (tg) tg.onclick = () => { JRN_PANEL_EXPANDED = !JRN_PANEL_EXPANDED; renderJournalistPanel(unique); };
 
-  // Wire drill click on each row -> setDrill('jrn', value)
-  el.querySelectorAll('.bar-row.clickable').forEach(row => {
-    row.onclick = () => {
-      const val = row.dataset.val;
-      setDrill('jrn', val);
-    };
-  });
+  // Note: drill click is handled by the global delegated click listener
+  // (line ~1485) via data-drill="jrn" + data-val attributes — no per-row binding needed.
 }
 
 function renderPublicationPanel(unique) {
