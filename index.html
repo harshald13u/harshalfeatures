@@ -374,22 +374,22 @@ body::before {
   flex-shrink: 0;
 }
 .press-mark {
-  white-space: nowrap;
-  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
   opacity: 0.62;
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  transition: opacity 0.3s ease;
-  text-decoration: none;
+  transition: opacity 0.3s ease, filter 0.3s ease;
   flex-shrink: 0;
 }
+.press-mark img {
+  height: 100%;
+  width: auto;
+  max-width: 180px;
+  display: block;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
 .press-mark:hover { opacity: 1; }
-.press-mark.is-italic { font-style: italic; }
-.press-mark.is-sans { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: -0.2px; }
-.press-mark.is-uppercase { text-transform: uppercase; letter-spacing: 1.5px; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 18px; }
-.press-mark.is-smallcaps { font-variant: small-caps; letter-spacing: 1px; }
 
 @keyframes pressScroll {
   0%   { transform: translate3d(0, 0, 0); }
@@ -811,8 +811,8 @@ body::before {
   .press { padding: 22px 0; }
   .press-label { font-size: 9.5px; letter-spacing: 1.8px; margin-bottom: 14px; }
   .press-set { gap: 36px; padding-right: 36px; }
-  .press-mark { font-size: 17px; }
-  .press-mark.is-uppercase { font-size: 14px; }
+  .press-mark { height: 28px; }
+  .press-mark img { max-width: 140px; }
   .press::before, .press::after { width: 40px; }
 
   .about {
@@ -900,30 +900,32 @@ body::before {
     <section class="press" id="pressMarquee" aria-label="As featured on">
       <div class="press-label">As Featured On</div>
       <div class="press-track">
+        
         <div class="press-set">
-          <span class="press-mark is-sans">The Economic Times</span>
-          <span class="press-mark is-italic">Livemint</span>
-          <span class="press-mark is-smallcaps">moneycontrol</span>
-          <span class="press-mark is-uppercase">Business Standard</span>
-          <span class="press-mark is-smallcaps">Times of India</span>
-          <span class="press-mark is-uppercase">Forbes</span>
-          <span class="press-mark is-uppercase">Reuters</span>
-          <span class="press-mark is-sans">CNBC</span>
-          <span class="press-mark is-sans">Financial Express</span>
-          <span class="press-mark is-italic">Outlook</span>
+          <span class="press-mark"><img src="as-featured-logos/economic-times.svg" alt="The Economic Times" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/livemint.svg" alt="Livemint" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/moneycontrol.svg" alt="Moneycontrol" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/business-standard.svg" alt="Business Standard" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/times-of-india.svg" alt="Times of India" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/forbes.svg" alt="Forbes" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/reuters.svg" alt="Reuters" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/cnbc.svg" alt="CNBC" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/financial-express.svg" alt="Financial Express" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/outlook.svg" alt="Outlook" loading="lazy"></span>
         </div>
         <div class="press-set" aria-hidden="true">
-          <span class="press-mark is-sans">The Economic Times</span>
-          <span class="press-mark is-italic">Livemint</span>
-          <span class="press-mark is-smallcaps">moneycontrol</span>
-          <span class="press-mark is-uppercase">Business Standard</span>
-          <span class="press-mark is-smallcaps">Times of India</span>
-          <span class="press-mark is-uppercase">Forbes</span>
-          <span class="press-mark is-uppercase">Reuters</span>
-          <span class="press-mark is-sans">CNBC</span>
-          <span class="press-mark is-sans">Financial Express</span>
-          <span class="press-mark is-italic">Outlook</span>
+          <span class="press-mark"><img src="as-featured-logos/economic-times.svg" alt="The Economic Times" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/livemint.svg" alt="Livemint" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/moneycontrol.svg" alt="Moneycontrol" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/business-standard.svg" alt="Business Standard" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/times-of-india.svg" alt="Times of India" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/forbes.svg" alt="Forbes" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/reuters.svg" alt="Reuters" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/cnbc.svg" alt="CNBC" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/financial-express.svg" alt="Financial Express" loading="lazy"></span>
+          <span class="press-mark"><img src="as-featured-logos/outlook.svg" alt="Outlook" loading="lazy"></span>
         </div>
+      
       </div>
     </section>
   </section>
