@@ -204,11 +204,46 @@ body::before {
   grid-template-columns: minmax(0, 1fr) 480px;
   column-gap: 64px;
   row-gap: 36px;
-  align-items: start;
+  align-items: stretch;
 }
 .hero-text { grid-column: 1; min-width: 0; }
 .hero-photo { grid-column: 2; }
 .ticker { grid-column: 1 / -1; }
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.hero-right .hero-photo { margin-top: 0; }
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 22px;
+}
+.hero-tags span {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  background: transparent;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  cursor: default;
+}
+.hero-tags span:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(212,166,74,0.06);
+}
 .eyebrow {
   font-size: 11px;
   font-weight: 600;
@@ -782,6 +817,8 @@ body::before {
   .masthead { margin-bottom: 40px; }
   .hero { margin-bottom: 48px; grid-template-columns: 1fr; column-gap: 0; row-gap: 28px; }
   .hero-text, .hero-photo { grid-column: auto; }
+  .hero-tags { padding-top: 0; margin-top: 12px; gap: 8px; justify-content: center; }
+  .hero-right { align-items: center; }
   .hero-photo { max-width: 520px; margin: 0 auto; }
   .name { margin-bottom: 24px; font-size: clamp(48px, 9.4vw, 88px); }
   .role-block { gap: 10px 18px; padding-bottom: 20px; margin-bottom: 22px; }
@@ -932,9 +969,17 @@ body::before {
       <p class="tagline">Making sense of how central banks, geopolitics, capital flows, and human behavior show up in stock prices.</p>
     </div>
 
-    <figure class="hero-photo" id="heroPhoto">
-      <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="1000" height="516" loading="eager" decoding="async">
-    </figure>
+    <div class="hero-right">
+      <figure class="hero-photo" id="heroPhoto">
+        <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="1000" height="516" loading="eager" decoding="async">
+      </figure>
+      <div class="hero-tags" aria-label="Topics">
+        <span>Stock Market</span>
+        <span>Commodities</span>
+        <span>Macros</span>
+        <span>Geopolitics</span>
+      </div>
+    </div>
 
     <section class="press" id="pressMarquee" aria-label="As featured on">
       <div class="press-label">As Featured On</div>
