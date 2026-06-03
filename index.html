@@ -186,10 +186,24 @@ body::before {
   content: '·'; margin-left: 8px; color: var(--gold);
 }
 .hd-tagline {
-  font-size: 16px; line-height: 1.6;
-  color: #D9E4F7;
+  font-size: 16px; line-height: 1.65;
+  color: #DCE7F7;
   font-weight: 400;
   margin: 0;
+}
+.hd-tagline-box {
+  margin-top: 8px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(0,0,0,0.78), rgba(4,4,8,0.72));
+  border: 1px solid rgba(36,209,194,0.22);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.hd-tagline-label {
+  font-size: 10px; font-weight: 800;
+  color: var(--teal);
+  letter-spacing: 1.4px; text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
 /* Photo on right */
@@ -219,22 +233,23 @@ body::before {
 /* ====== ABOUT SECTION ====== */
 .hd-about {
   margin-bottom: 56px;
-  padding: 36px 36px;
+  padding: 40px 42px;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(8,16,32,0.85), rgba(12,22,42,0.85));
-  border: 1px solid var(--line);
+  background: linear-gradient(135deg, rgba(0,0,0,0.82), rgba(4,4,8,0.78));
+  border: 1px solid rgba(243,199,102,0.20);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 50px rgba(36,209,194,0.06);
 }
 .hd-about-label {
-  font-size: 11px; font-weight: 800;
+  font-size: 12px; font-weight: 800;
   color: var(--gold);
-  letter-spacing: 2px; text-transform: uppercase;
-  margin-bottom: 14px;
+  letter-spacing: 2.2px; text-transform: uppercase;
+  margin-bottom: 18px;
 }
 .hd-about p {
-  margin: 0 0 16px;
-  font-size: 15.5px; line-height: 1.78;
-  color: #D9E4F7;
+  margin: 0 0 18px;
+  font-size: 17.5px; line-height: 1.82;
+  color: #DEE8FB;
 }
 .hd-about p:last-child { margin-bottom: 0; }
 .hd-about strong { color: var(--gold); font-weight: 700; }
@@ -256,8 +271,8 @@ body::before {
   padding: 26px 26px 24px;
   border-radius: 18px;
   text-decoration: none;
-  background: linear-gradient(135deg, rgba(8,16,32,0.92), rgba(12,22,42,0.88));
-  border: 1px solid var(--line);
+  background: linear-gradient(135deg, rgba(0,0,0,0.82), rgba(4,4,8,0.78));
+  border: 1px solid rgba(142,174,223,0.20);
   position: relative; overflow: hidden;
   transition: all 0.25s ease;
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -359,8 +374,8 @@ body::before {
   .hd-role { font-size: 15px; }
   .hd-tagline { font-size: 14.5px; }
 
-  .hd-about { padding: 24px 20px; margin-bottom: 36px; }
-  .hd-about p { font-size: 14.5px; line-height: 1.72; }
+  .hd-about { padding: 28px 22px; margin-bottom: 40px; }
+  .hd-about p { font-size: 16px; line-height: 1.78; }
 
   .hd-grid { grid-template-columns: 1fr; gap: 14px; }
   .hd-card { padding: 22px 20px; }
@@ -398,10 +413,13 @@ body::before {
       <h1 class="hd-name">Harshal Dasani</h1>
       <div class="hd-role">Business Head &middot; INVasset PMS &amp; AIF</div>
       <div class="hd-location">Mumbai, India</div>
-      <p class="hd-tagline">
-        Making sense of how central banks, geopolitics, capital flows, and human behavior
-        show up in stock prices.
-      </p>
+      <div class="hd-tagline-box">
+        <div class="hd-tagline-label">In one line</div>
+        <p class="hd-tagline">
+          Making sense of how central banks, geopolitics, capital flows, and human behavior
+          show up in stock prices.
+        </p>
+      </div>
     </div>
     <div class="hd-photo">
       <img src="harshal-dasani.jpg" alt="Harshal Dasani — Business Head, INVasset PMS" loading="eager" width="540" height="720">
