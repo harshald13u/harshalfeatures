@@ -116,6 +116,22 @@ a { color: inherit; text-decoration: none; }
 .mast-meta a { color: var(--muted); transition: color 0.2s ease; }
 .mast-meta a:hover { color: var(--accent); }
 
+.mast-theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--rule);
+  color: var(--ink-2); cursor: pointer; padding: 0; margin-right: 12px;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  position: relative;
+}
+.mast-theme-toggle::before { content: ""; position: absolute; inset: -6px; display: block; }
+.mast-theme-toggle:hover { color: var(--accent); border-color: var(--accent); background: rgba(212,166,74,0.08); transform: translateY(-1px); }
+.mast-theme-toggle .icon-sun, .mast-theme-toggle .icon-moon { width: 15px; height: 15px; display: block; }
+.mast-theme-toggle .icon-sun { display: none; }
+html[data-theme="light"] .mast-theme-toggle .icon-sun { display: block; }
+html[data-theme="light"] .mast-theme-toggle .icon-moon { display: none; }
+html[data-theme="light"] .mast-theme-toggle { background: rgba(26,52,88,0.04); }
+
 /* HERO */
 .blog-hero { margin-bottom: 36px; }
 .blog-title {
@@ -330,7 +346,7 @@ a { color: inherit; text-decoration: none; }
 <script>
 (function(){
   try {
-    var t = localStorage.getItem('hd-theme');
+    var t = localStorage.getItem('hd-theme-blog');
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   } catch(e) {}
 })();
@@ -341,6 +357,10 @@ a { color: inherit; text-decoration: none; }
 <main class="page">
 
   <header class="masthead">
+    <button class="mast-theme-toggle" onclick="toggleBlogTheme()" aria-label="Toggle light / dark theme" title="Toggle theme" type="button">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
     <div class="mast-socials">
       <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg></a>
       <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg></a>
@@ -452,6 +472,14 @@ a { color: inherit; text-decoration: none; }
         '<div class="blog-empty"><h2 class="blog-empty-title">Couldn’t load posts</h2><p class="blog-empty-sub">Refresh the page or check the manifest at <code>posts.json</code>.</p></div>';
     });
 })();
+</script>
+<script>
+function toggleBlogTheme(){
+  var current = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('hd-theme-blog', next); } catch(e) {}
+}
 </script>
 </body>
 </html>

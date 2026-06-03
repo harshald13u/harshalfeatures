@@ -113,6 +113,46 @@
   --line: rgba(236,228,211,0.18); --line-soft: rgba(236,228,211,0.09);
   --black-panel: rgba(14,12,10, 0.92);
 }
+html[data-theme="light"] {
+  --txt: #1a3458; --txt-mut: #3a527a; --txt-faint: #54687f;
+  --blue: #b8852b; --teal: #b8852b; --gold: #b8852b; --orange: #c97a3a; --purple: #8a8273; --pink: #b8852b;
+  --glass: rgba(255,250,238,0.78); --glass-strong: rgba(245,239,225,0.92);
+  --line: rgba(26,52,88,0.18); --line-soft: rgba(26,52,88,0.10);
+  --black-panel: rgba(245,239,225,0.94);
+}
+html[data-theme="light"] body {
+  background-color: #ebe5d7;
+  background-image:
+    radial-gradient(ellipse 54% 38% at 17% 6%, rgba(184,133,43,0.12), transparent 62%),
+    radial-gradient(ellipse 40% 34% at 83% 14%, rgba(184,133,43,0.07), transparent 66%),
+    radial-gradient(ellipse 52% 36% at 78% 92%, rgba(184,133,43,0.06), transparent 68%),
+    linear-gradient(112deg, transparent 35%, rgba(184,133,43,0.04) 49%, transparent 70%),
+    radial-gradient(circle at 50% 38%, #efe9da 0%, #e5dec9 54%, #ddd4c1 100%);
+}
+html[data-theme="light"] .header { background: linear-gradient(135deg, rgba(245,239,225,0.96), rgba(235,229,215,0.92)); }
+html[data-theme="light"] .header h1, html[data-theme="light"] .title-main { color: #1a3458; -webkit-text-fill-color: #1a3458; }
+html[data-theme="light"] .header-subtitle, html[data-theme="light"] .header .meta { color: #3a527a; }
+html[data-theme="light"] .header-kicker { color: #54687f; }
+html[data-theme="light"] .social-link { background: rgba(26,52,88,0.06); border-color: rgba(26,52,88,0.22); color: #1a3458; }
+html[data-theme="light"] .panel, html[data-theme="light"] .tile, html[data-theme="light"] .latest { background: rgba(255,250,238,0.85); border-color: rgba(26,52,88,0.14); }
+html[data-theme="light"] .headboard { background: rgba(255,250,238,0.70); }
+html[data-theme="light"] .toolbar { background: linear-gradient(180deg, rgba(245,239,225,0.92), rgba(235,229,215,0.80)); }
+html[data-theme="light"] .toolbar button.secondary { color: #1a3458; background: rgba(26,52,88,0.06); }
+html[data-theme="light"] .feat-filters input, html[data-theme="light"] .feat-filters select { background: rgba(26,52,88,0.05) !important; color: #1a3458 !important; border-color: rgba(26,52,88,0.18) !important; color-scheme: light !important; }
+html[data-theme="light"] #feat-search, html[data-theme="light"] #pub-search, html[data-theme="light"] #jrn-search { background: rgba(26,52,88,0.05) !important; color: #1a3458 !important; border-color: rgba(26,52,88,0.18) !important; }
+html[data-theme="light"] .feat-filters select option { background-color: #ffffff !important; color: #1a3458 !important; }
+html[data-theme="light"] .dl-btn { background: rgba(26,52,88,0.08); color: #1a3458; border-color: rgba(26,52,88,0.20); }
+html[data-theme="light"] .r-tile { background: rgba(255,250,238,0.85); border-color: rgba(26,52,88,0.14); }
+html[data-theme="light"] .r-tile.active { background: rgba(184,133,43,0.14); border-color: rgba(184,133,43,0.5); }
+html[data-theme="light"] .header-meta-bar { background: linear-gradient(135deg, rgba(245,239,225,0.6), rgba(235,229,215,0.5)); }
+html[data-theme="light"] .accent-strip { background: linear-gradient(90deg, #b8852b, #c97a3a, #b8852b); }
+/* Charts: keep inner area dark for legibility (white peak + gold line untouched) */
+html[data-theme="light"] #monthly, html[data-theme="light"] #cumulative { background: rgba(14,12,10,0.92); border-radius: 8px; padding: 14px; }
+html[data-theme="light"] .m-name { color: #ece4d3; }
+html[data-theme="light"] .m-name .yr { color: #c9c0ad; }
+html[data-theme="light"] .panel .note { color: #54687f; }
+html[data-theme="light"] .bar-track { background: rgba(26,52,88,0.06); }
+html[data-theme="light"] .info .label { color: #3a527a; }
 html, body { min-height: 100%; }
 body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
        color: var(--txt); padding: 24px; position: relative; z-index: 0;
@@ -164,6 +204,15 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
                               box-shadow: 0 6px 18px rgba(255,255,255,0.18); }
 .social-link.social-youtube:hover { background: rgba(255,0,0,0.20); border-color: #FF0000; color: #FF5252;
                                     box-shadow: 0 6px 18px rgba(255,0,0,0.28); }
+
+/* Theme toggle button */
+.theme-toggle-btn { cursor: pointer; padding: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(236,228,211,0.28); color: inherit; }
+.theme-toggle-btn .icon-sun, .theme-toggle-btn .icon-moon { width: 22px; height: 22px; display: block; }
+.theme-toggle-btn .icon-sun { display: none; }
+html[data-theme="light"] .theme-toggle-btn .icon-sun { display: block; }
+html[data-theme="light"] .theme-toggle-btn .icon-moon { display: none; }
+html[data-theme="light"] .theme-toggle-btn { background: rgba(26,52,88,0.06); border-color: rgba(26,52,88,0.22); }
+
 
 /* Mobile collapse */
 @media (max-width: 720px) {
@@ -821,6 +870,14 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('hd-theme-tracker');
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  } catch(e) {}
+})();
+</script>
 </head>
 <body>
 
@@ -835,6 +892,10 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
       <div class="header-subtitle">Media Features · Consolidated Tracker</div>
     </div>
     <div class="header-right">
+      <button class="social-link theme-toggle-btn" onclick="toggleTrackerTheme()" aria-label="Toggle light / dark theme" title="Toggle theme" type="button">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
       <a class="social-link social-linkedin" href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener" aria-label="LinkedIn profile of Harshal Dasani" title="LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg>
       </a>
@@ -1230,6 +1291,13 @@ async function clearHandle() {
 
 // ===== UI helpers =====
 const $ = id => document.getElementById(id);
+
+function toggleTrackerTheme(){
+  var current = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('hd-theme-tracker', next); } catch(e) {}
+}
 function setStatus(msg, cls='') {
   const el = $('status');
   if (!el) return;
