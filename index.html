@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -106,7 +106,29 @@
   --rule-soft: rgba(236,228,211,0.06);
   --accent: #d4a64a;
   --accent-soft: rgba(212,166,74,0.08);
+  --logo-filter: brightness(0) invert(1);
+  --photo-blend: screen;
 }
+html[data-theme="light"] {
+  --bg: #f6f1e5;
+  --bg-2: #ece5d3;
+  --ink: #0d2c4d;
+  --ink-2: #2c4b7d;
+  --muted: #6b819a;
+  --faint: #a3b4c4;
+  --rule: rgba(13, 44, 77, 0.16);
+  --rule-soft: rgba(13, 44, 77, 0.08);
+  --accent: #c89030;
+  --accent-soft: rgba(200,144,48,0.10);
+  --logo-filter: brightness(0);
+  --photo-blend: multiply;
+}
+html[data-theme="light"] body::before {
+  background:
+    radial-gradient(1200px 700px at 85% -10%, rgba(200,144,48,0.06), transparent 60%),
+    radial-gradient(900px 600px at -5% 105%, rgba(13,44,77,0.04), transparent 60%);
+}
+html[data-theme="light"] .mast-socials a { background: rgba(13,44,77,0.04); }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
@@ -173,6 +195,34 @@ body::before {
   background: rgba(212,166,74,0.08);
   transform: translateY(-1px);
 }
+/* THEME TOGGLE */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+  cursor: pointer;
+  margin-right: 14px;
+  padding: 0;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  vertical-align: middle;
+}
+html[data-theme="light"] .theme-toggle { background: rgba(13,44,77,0.04); }
+.theme-toggle svg { width: 15px; height: 15px; display: block; }
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(212,166,74,0.08);
+  transform: translateY(-1px);
+}
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+html[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%      { opacity: 0.55; transform: scale(0.85); }
@@ -376,7 +426,7 @@ body::before {
   transform: translate3d(0, var(--py, 0), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform 0.3s cubic-bezier(.2,.7,.2,1), filter 0.4s ease;
   will-change: transform;
-  mix-blend-mode: screen;
+  mix-blend-mode: var(--photo-blend);
 }
 .hero-photo:hover img { filter: contrast(1.07) saturate(1); }
 
@@ -434,7 +484,7 @@ body::before {
   max-width: 180px;
   display: block;
   object-fit: contain;
-  filter: brightness(0) invert(1);
+  filter: var(--logo-filter);
 }
 .press-mark:hover { opacity: 1; }
 
@@ -971,7 +1021,10 @@ body::before {
       <a href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
     </div>
     <div class="mast-meta">
-      <span>Stock Market</span><span>Commodities</span><span>Macros</span><span>Geopolitics</span>
+      <button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button><span>Stock Market</span><span>Commodities</span><span>Macros</span><span>Geopolitics</span>
     </div>
   </header>
 
@@ -1131,6 +1184,11 @@ body::before {
 </main>
 
 <script>
+// Theme toggle — global so the inline onclick can call it
+function toggleTheme(){
+  var current = document.documentElement.getAttribute('data-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+}
 (function(){
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
