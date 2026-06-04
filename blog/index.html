@@ -471,7 +471,10 @@ html[data-theme="light"] .post-cover .cover-dark { opacity: 1; }
       post.darkImage ?
         '<img class="cover-light" src="'+escapeHTML(post.image)+'" alt="'+escapeHTML(post.title)+'" loading="lazy">' +
         '<img class="cover-dark" src="'+escapeHTML(post.darkImage)+'" alt="'+escapeHTML(post.title)+'" loading="lazy">' :
-        '<img src="'+escapeHTML(post.image)+'" alt="'+escapeHTML(post.title)+'" loading="lazy">'
+        (post.imageWebp ?
+          '<picture><source srcset="'+escapeHTML(post.imageWebp)+'" type="image/webp"><img src="'+escapeHTML(post.image)+'" alt="'+escapeHTML(post.title)+'" loading="lazy"></picture>' :
+          '<img src="'+escapeHTML(post.image)+'" alt="'+escapeHTML(post.title)+'" loading="lazy">'
+        )
     ) : '<div class="post-cover-fallback">'+escapeHTML((post.title||'·').slice(0,1).toUpperCase())+'</div>';
     var topicLbl = TOPIC_LABELS[post.topic] || post.topic || '';
     return '<a class="post-card" href="posts/'+slug+'/">' +
