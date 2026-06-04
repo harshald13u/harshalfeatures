@@ -158,6 +158,12 @@ html[data-theme="light"] .cum-area { fill: url(#cumGradFallbackLight); }
 html[data-theme="light"] .panel .note { color: #54687f; }
 html[data-theme="light"] .bar-track { background: rgba(26,52,88,0.06); }
 html[data-theme="light"] .info .label { color: #3a527a; }
+html[data-theme="light"] .tile.big .num {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 38%, #b8852b 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  filter: drop-shadow(0 1px 2px rgba(29,78,216,0.25));
+}
 html, body { min-height: 100%; }
 body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
        color: var(--txt); padding: 24px; position: relative; z-index: 0;
