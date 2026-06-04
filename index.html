@@ -1426,7 +1426,7 @@ function toggleTheme(){
     var x = 0;
     // Desktop ~230 px/s, mobile ~140 px/s. Reduced-motion preference no longer slows the marquee.
     var _isMobile = window.matchMedia && window.matchMedia('(max-width: 720px)').matches;
-    var speed = _isMobile ? 140 : 230;
+    var speed = _isMobile ? 80 : 130;
     var last = performance.now();
     var paused = false;
     stage.addEventListener('pointerenter', function(){ paused = true; });
