@@ -1285,6 +1285,12 @@ html[data-theme="light"] .decode-chip:hover {
   .press-set { gap: 26px; padding-right: 26px; }
 }
 
+
+/* Desktop natural-1.3 zoom - user prefers larger render at default browser zoom */
+@media (min-width: 1180px) {
+  body { zoom: 1.3; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
