@@ -122,13 +122,10 @@ html[data-theme="light"] {
 }
 html[data-theme="light"] body {
   background-color: #ebe5d7;
-  background-image:
-    radial-gradient(ellipse 54% 38% at 17% 6%, rgba(184,133,43,0.12), transparent 62%),
-    radial-gradient(ellipse 40% 34% at 83% 14%, rgba(184,133,43,0.07), transparent 66%),
-    radial-gradient(ellipse 52% 36% at 78% 92%, rgba(184,133,43,0.06), transparent 68%),
-    linear-gradient(112deg, transparent 35%, rgba(184,133,43,0.04) 49%, transparent 70%),
-    radial-gradient(circle at 50% 38%, #efe9da 0%, #e5dec9 54%, #ddd4c1 100%);
+  background-image: none;
 }
+html[data-theme="light"] body::before,
+html[data-theme="light"] body::after { display: none !important; content: none !important; background: transparent !important; }
 html[data-theme="light"] .header { background: linear-gradient(135deg, rgba(245,239,225,0.96), rgba(235,229,215,0.92)); }
 html[data-theme="light"] .header h1, html[data-theme="light"] .title-main { color: #1a3458; -webkit-text-fill-color: #1a3458; }
 html[data-theme="light"] .header-subtitle, html[data-theme="light"] .header .meta { color: #3a527a; }
@@ -146,10 +143,18 @@ html[data-theme="light"] .r-tile { background: rgba(255,250,238,0.85); border-co
 html[data-theme="light"] .r-tile.active { background: rgba(184,133,43,0.14); border-color: rgba(184,133,43,0.5); }
 html[data-theme="light"] .header-meta-bar { background: linear-gradient(135deg, rgba(245,239,225,0.6), rgba(235,229,215,0.5)); }
 html[data-theme="light"] .accent-strip { background: linear-gradient(90deg, #b8852b, #c97a3a, #b8852b); }
-/* Charts: keep inner area dark for legibility (white peak + gold line untouched) */
-html[data-theme="light"] #monthly, html[data-theme="light"] #cumulative { background: rgba(14,12,10,0.92); border-radius: 8px; padding: 14px; }
-html[data-theme="light"] .m-name { color: #ece4d3; }
-html[data-theme="light"] .m-name .yr { color: #c9c0ad; }
+/* Charts in light mode: WHITE bg, BLACK non-peak bars, BLUE peak bar, BLUE cumulative line */
+html[data-theme="light"] #monthly, html[data-theme="light"] #cumulative { background: #ffffff; border-radius: 8px; padding: 14px; border: 1px solid rgba(26,52,88,0.10); }
+html[data-theme="light"] .m-bar { background: linear-gradient(to top, #0f172a, #1f2937); box-shadow: 0 0 8px rgba(15,23,42,0.25); }
+html[data-theme="light"] .m-bar.peak { background: linear-gradient(to top, #1d4ed8, #3b82f6); box-shadow: 0 0 16px rgba(59,130,246,0.55); }
+html[data-theme="light"] .m-name { color: #1a3458; }
+html[data-theme="light"] .m-name .yr { color: #54687f; }
+html[data-theme="light"] .cum-line { stroke: #2563eb; filter: drop-shadow(0 0 4px rgba(37,99,235,0.4)); }
+html[data-theme="light"] .cum-dot { fill: #2563eb; filter: drop-shadow(0 0 3px rgba(37,99,235,0.7)); }
+html[data-theme="light"] .cum-grid { stroke: rgba(26,52,88,0.10); }
+html[data-theme="light"] .cum-yt { fill: #54687f; }
+html[data-theme="light"] .cum-xt { fill: #1a3458; }
+html[data-theme="light"] .cum-area { fill: url(#cumGradFallbackLight); }
 html[data-theme="light"] .panel .note { color: #54687f; }
 html[data-theme="light"] .bar-track { background: rgba(26,52,88,0.06); }
 html[data-theme="light"] .info .label { color: #3a527a; }
@@ -2007,7 +2012,7 @@ function renderFallbackCumulativeChart(el, labels, data, perMonth) {
   }).join('');
 
   el.innerHTML = `<svg class="cum-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Cumulative coverage growth">
-    <defs><linearGradient id="cumGradFallback" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="rgba(212,166,74,0.45)"/><stop offset="58%" stop-color="rgba(212,166,74,0.18)"/><stop offset="100%" stop-color="rgba(212,166,74,0.02)"/></linearGradient></defs>
+    <defs><linearGradient id="cumGradFallback" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="rgba(212,166,74,0.45)"/><stop offset="58%" stop-color="rgba(212,166,74,0.18)"/><stop offset="100%" stop-color="rgba(212,166,74,0.02)"/></linearGradient><linearGradient id="cumGradFallbackLight" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="rgba(37,99,235,0.40)"/><stop offset="58%" stop-color="rgba(37,99,235,0.14)"/><stop offset="100%" stop-color="rgba(37,99,235,0.02)"/></linearGradient></defs>
     ${yTicks}
     <polygon class="cum-area" fill="url(#cumGradFallback)" points="${area}"></polygon>
     <polyline class="cum-line" points="${points}"></polyline>
@@ -2118,15 +2123,20 @@ function renderCumulativePanel(unique) {
   }
   el.innerHTML = '<canvas></canvas>';
   const ctx = el.querySelector('canvas').getContext('2d');
+  const _light = document.documentElement.getAttribute('data-theme') === 'light';
+  const _lineColor = _light ? '#2563eb' : '#d4a64a';
+  const _dotColor  = _light ? '#2563eb' : '#d4a64a';
+  const _hoverDot  = _light ? '#ffffff' : '#fff';
   const grad = ctx.createLinearGradient(0,0,0,240);
-  grad.addColorStop(0,'rgba(212,166,74,0.55)'); grad.addColorStop(0.55,'rgba(212,166,74,0.22)'); grad.addColorStop(1,'rgba(212,166,74,0.02)');
+  if (_light) { grad.addColorStop(0,'rgba(37,99,235,0.40)'); grad.addColorStop(0.55,'rgba(37,99,235,0.14)'); grad.addColorStop(1,'rgba(37,99,235,0.02)'); }
+  else        { grad.addColorStop(0,'rgba(212,166,74,0.55)'); grad.addColorStop(0.55,'rgba(212,166,74,0.22)'); grad.addColorStop(1,'rgba(212,166,74,0.02)'); }
   cumChart = new Chart(ctx, {
     type: 'line',
     data: { labels, datasets: [{ label:'Cumulative features', data, fill:true, backgroundColor:grad,
-      borderColor:'#d4a64a', borderWidth:2.5, tension:0.35,
+      borderColor:_lineColor, borderWidth:2.5, tension:0.35,
       pointRadius: bucketKeys.length > 60 ? 1.5 : 3, pointHoverRadius:6,
-      pointBackgroundColor:'#d4a64a', pointBorderColor:'#d4a64a',
-      pointHoverBackgroundColor:'#fff', _perBucket:perBucket, _unit: unitName }] },
+      pointBackgroundColor:_dotColor, pointBorderColor:_dotColor,
+      pointHoverBackgroundColor:_hoverDot, _perBucket:perBucket, _unit: unitName }] },
     options: { responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
       onClick: (event, elements, chart) => {
         const pts = chart.getElementsAtEventForMode(event, 'index', {intersect:false}, true);
@@ -2139,9 +2149,9 @@ function renderCumulativePanel(unique) {
         tooltip:{ backgroundColor:'rgba(21,17,13,0.95)', borderColor:'rgba(212,166,74,0.4)', borderWidth:1,
           titleColor:'#fff', bodyColor:'#ece4d3', padding:10, displayColors:false,
           callbacks:{ label:(c)=>`Total: ${c.parsed.y}  (+${c.dataset._perBucket[c.dataIndex]} this ${c.dataset._unit})` } } },
-      scales:{ x:{ grid:{color:GRID_CLR}, ticks:{maxRotation: gran==='day'?45:0, autoSkip:true,
+      scales:{ x:{ grid:{color: _light ? 'rgba(26,52,88,0.10)' : GRID_CLR}, ticks:{color: _light ? '#1a3458' : undefined, maxRotation: gran==='day'?45:0, autoSkip:true,
                   maxTicksLimit: gran==='day'?14:(gran==='week'?12:10)} },
-               y:{ beginAtZero:true, grid:{color:GRID_CLR}, ticks:{precision:0} } } }
+               y:{ beginAtZero:true, grid:{color: _light ? 'rgba(26,52,88,0.10)' : GRID_CLR}, ticks:{color: _light ? '#1a3458' : undefined, precision:0} } } }
   });
   $('cumulative-note').textContent = `Running total reached ${data[data.length-1]} features by ${labels[labels.length-1]}. Tap any point for that ${unitName}'s add.`;
 }
@@ -2286,8 +2296,9 @@ function renderMonthlyPanel(unique) {
   const data   = bucketKeys.map(k => counts[k] || 0);
   const maxVal = Math.max(...data);
   const peakIdx = data.indexOf(maxVal);
-  const colors = data.map((_,i)=> i===peakIdx ? '#ffffff' : '#8a8273');
-  const hovers = data.map((_,i)=> i===peakIdx ? '#f5f0e6' : '#d4a64a');
+  const _light = document.documentElement.getAttribute('data-theme') === 'light';
+  const colors = data.map((_,i)=> i===peakIdx ? (_light ? '#3b82f6' : '#ffffff') : (_light ? '#1f2937' : '#8a8273'));
+  const hovers = data.map((_,i)=> i===peakIdx ? (_light ? '#60a5fa' : '#f5f0e6') : (_light ? '#374151' : '#d4a64a'));
   const total = data.reduce((a,b)=>a+b,0);
   const nonZero = data.filter(v=>v>0).length || 1;
   const avg = (total / bucketKeys.length).toFixed(1);
