@@ -567,6 +567,8 @@ html[data-theme="light"]{{--bg:#ebe5d7;--bg-2:#ddd4c1;--ink:#1a3458;--ink-2:#3a5
 *{{box-sizing:border-box}}
 html,body{{margin:0;padding:0;background:var(--bg);color:var(--ink-2);transition:background-color .3s,color .3s}}
 body{{font-family:'Inter',sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased;font-size:16.5px}}
+/* Desktop reading size — matches home page pattern (zoom: 1.3 at >=1180px) */
+@media (min-width: 1180px){{body{{zoom:1.3}}}}
 a{{color:var(--accent);text-decoration:none}}
 a:hover{{text-decoration:underline}}
 .theme-toggle{{position:fixed;top:18px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid var(--rule);background:var(--bg-2);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:1000}}
@@ -579,12 +581,14 @@ h1{{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46
 .subtitle{{font-size:18.5px;color:var(--ink-2);line-height:1.5;margin:0 0 22px;font-weight:400}}
 .byline{{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:0 0 30px;flex-wrap:wrap}}
 .byline strong{{color:var(--ink);font-weight:600}}
-.cover{{margin:0 0 14px;border-radius:8px;overflow:hidden;border:1px solid var(--rule)}}
-.cover img{{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}}
-.cover .light-only{{display:none}}
-.cover .dark-only{{display:block}}
-html[data-theme="light"] .cover .light-only{{display:block}}
-html[data-theme="light"] .cover .dark-only{{display:none}}
+.cover{{position:relative;margin:0 0 14px;border-radius:8px;overflow:hidden;border:1px solid var(--rule);aspect-ratio:16/9;background:var(--bg-2)}}
+.cover img{{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}}
+/* Default theme = dark → show dark cover only. Light theme → show light cover only.
+   Pure data-theme driven; we DO NOT use prefers-color-scheme (which can disagree with the user's manual theme choice). */
+.cover .light-only{{opacity:0}}
+.cover .dark-only{{opacity:1}}
+html[data-theme="light"] .cover .light-only{{opacity:1}}
+html[data-theme="light"] .cover .dark-only{{opacity:0}}
 figcaption{{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin:0 0 32px}}
 h2{{font-weight:700;font-size:24px;color:var(--ink);margin:38px 0 12px;letter-spacing:-0.01em;padding-bottom:6px;border-bottom:1px solid var(--rule)}}
 h3{{font-weight:700;font-size:18px;color:var(--accent);margin:26px 0 8px}}
@@ -608,11 +612,8 @@ strong{{color:var(--ink);font-weight:700}}
   <p class="subtitle" itemprop="description">{excerpt_html}</p>
   <p class="byline">By <strong itemprop="author">Harshal Dasani</strong> &middot; <span>Business Head, INVasset PMS</span> &middot; <time itemprop="datePublished" datetime="{date_iso}">{date_pretty}</time></p>
   <figure class="cover">
-    <picture>
-      <source srcset="{dark_cover_filename}" media="(prefers-color-scheme: dark)">
-      <img src="{light_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" itemprop="image" class="light-only">
-    </picture>
-    <img src="{dark_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" class="dark-only" style="display:none">
+    <img src="{light_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" itemprop="image" class="light-only">
+    <img src="{dark_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" class="dark-only">
   </figure>
   <figcaption>{image_caption_html}</figcaption>
   <article itemprop="articleBody">
@@ -625,19 +626,16 @@ strong{{color:var(--ink);font-weight:700}}
   <p class="footer-meta">Published {date_pretty} &middot; Updated {modified_pretty} &middot; <a href="../../../">harshald13u.github.io/harshalfeatures</a></p>
 </main>
 <script>
-// Keep <picture> + manual <img> dual-cover swap in sync with data-theme toggle
+// Dual-cover swap is driven entirely by CSS opacity on data-theme.
+// We also fire a pageshow listener so bfcache returns to the right cover.
 (function(){{
-  function syncCover(){{
-    var t = document.documentElement.getAttribute('data-theme') || 'dark';
-    var light = document.querySelector('.cover img.light-only');
-    var dark = document.querySelector('.cover img.dark-only');
-    if (!light || !dark) return;
-    if (t === 'light') {{ light.style.display = 'block'; dark.style.display = 'none'; }}
-    else {{ light.style.display = 'none'; dark.style.display = 'block'; }}
+  function refresh(){{
+    // No-op: CSS already keys off [data-theme]. Just bump a tiny inline custom property to
+    // force any cached state to reflow on bfcache returns.
+    document.documentElement.style.setProperty('--cover-tick', Date.now());
   }}
-  syncCover();
-  new MutationObserver(syncCover).observe(document.documentElement, {{attributes:true, attributeFilter:['data-theme']}});
-  window.addEventListener('pageshow', syncCover);
+  refresh();
+  window.addEventListener('pageshow', refresh);
 }})();
 </script>
 </body>
@@ -894,4 +892,4 @@ if __name__ == "__main__":
     result = publish_blog(target)
     print()
     print("=" * 60)
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    print(json.dumps(result, indent=2, 
