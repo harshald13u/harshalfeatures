@@ -1,7 +1,7 @@
 {
   "name": "Harshal Dasani",
   "short_name": "Harshal Dasani",
-  "description": "Harshal Dasani \u2014 Business Head, INVasset PMS. Media features, blogs and analysis on Indian markets.",
+  "description": "Official website and about page for Harshal Dasani - Business Head, INVasset PMS & AIF in Mumbai.",
   "start_url": "https://harshald13u.github.io/harshalfeatures/",
   "display": "standalone",
   "background_color": "#05030f",
@@ -22,5 +22,4 @@
     }
   ],
   "scope": "https://harshald13u.github.io/harshalfeatures/",
-  "id": "https://harshald13u.github.io/harshalfeatures/"
-}
+  "id": "https://harshald13u.github.io/har

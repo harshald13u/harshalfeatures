@@ -8,16 +8,4 @@
 - [Media Features Tracker](https://harshald13u.github.io/harshalfeatures/tracker/): live searchable database of every article, interview and quote across 145+ publications.
 - [Markets with Harshal Blog](https://harshald13u.github.io/harshalfeatures/blog/): long-form notes on stock markets, commodities, macros, geopolitics, interviews and media features.
 - [Harshal Dasani at INVasset PMS](https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-invasset/): profile page for Harshal Dasani's role and market themes.
-- [Harshal Dasani Interviews](https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-interviews/): guide to interviews, quotes and market commentary.
-- [Harshal Dasani Media Features](https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-media-features/): guide to media coverage and the tracker.
-- [Markets with Harshal](https://harshald13u.github.io/harshalfeatures/blog/posts/markets-with-harshal/): overview of the Markets with Harshal commentary themes.
-
-## Identity
-
-- Name: Harshal Dasani
-- Role: Business Head, INVasset PMS & AIF
-- Location: Mumbai, India
-- Credentials: CFA candidate, CA Level II
-- LinkedIn: https://www.linkedin.com/in/harshal-dasani-/
-- X / Twitter: https://x.com/HarshalDasanii
-- YouTube: https://www.youtube.com/@marketswitharshal
+- [Harshal Dasani Interview
