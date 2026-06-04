@@ -1,7 +1,7 @@
 {
-  "name": "Harshal Dasani Media Features",
-  "short_name": "Harshal Features",
-  "description": "Live media coverage tracker",
+  "name": "Harshal Dasani",
+  "short_name": "Harshal Dasani",
+  "description": "Harshal Dasani \u2014 Business Head, INVasset PMS. Media features, blogs and analysis on Indian markets.",
   "start_url": "https://harshald13u.github.io/harshalfeatures/",
   "display": "standalone",
   "background_color": "#05030f",
