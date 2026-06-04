@@ -1422,7 +1422,7 @@ function toggleTheme(){
     var x = 0;
     // Desktop ~95 px/s (snappier), mobile ~55 px/s, reduced-motion 14 px/s (slow but moving)
     var _isMobile = window.matchMedia && window.matchMedia('(max-width: 720px)').matches;
-    var speed = reduced ? 14 : (_isMobile ? 55 : 95);
+    var speed = reduced ? 18 : (_isMobile ? 85 : 160);
     var last = performance.now();
     var paused = false;
     stage.addEventListener('pointerenter', function(){ paused = true; });
