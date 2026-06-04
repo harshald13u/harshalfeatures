@@ -164,6 +164,42 @@ html[data-theme="light"] .tile.big .num {
   -webkit-text-fill-color: transparent; color: transparent;
   filter: drop-shadow(0 1px 2px rgba(29,78,216,0.25));
 }
+/* Special Features gallery cards in light mode */
+html[data-theme="light"] .sf-gallery .sf-img-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(26,52,88,0.18);
+  box-shadow: 0 4px 16px rgba(26,52,88,0.10);
+}
+html[data-theme="light"] .sf-gallery .sf-img-card:hover {
+  border-color: rgba(184,133,43,0.55);
+  box-shadow: 0 8px 28px rgba(184,133,43,0.22);
+}
+html[data-theme="light"] .sf-gallery .sf-img-caption {
+  background: #ffffff !important;
+  border-top: 1px solid rgba(26,52,88,0.14);
+}
+html[data-theme="light"] .sf-gallery .sf-img-caption .sf-img-pub { color: #b8852b !important; }
+html[data-theme="light"] .sf-gallery .sf-img-caption .sf-img-title { color: #1a3458 !important; }
+/* Special Features modal in light mode */
+html[data-theme="light"] #sf-modal .sf-modal-card {
+  background: linear-gradient(135deg, rgba(255,250,238,0.98), rgba(245,239,225,0.96)) !important;
+  border: 1px solid rgba(26,52,88,0.18);
+}
+html[data-theme="light"] #sf-modal .sf-modal-title { color: #b8852b !important; }
+html[data-theme="light"] #sf-modal .sf-close { background: rgba(26,52,88,0.08); border-color: rgba(26,52,88,0.18); color: #1a3458; }
+html[data-theme="light"] #sf-modal .sf-card { background: #ffffff !important; border: 1px solid rgba(26,52,88,0.14); }
+html[data-theme="light"] #sf-modal .sf-card:hover { background: rgba(184,133,43,0.06) !important; border-color: rgba(184,133,43,0.45); }
+html[data-theme="light"] #sf-modal .sf-pub { color: #b8852b !important; }
+html[data-theme="light"] #sf-modal .sf-title { color: #1a3458 !important; }
+html[data-theme="light"] #sf-modal .sf-sub { color: #54687f !important; }
+html[data-theme="light"] #sf-modal .sf-arrow { color: #b8852b !important; }
+/* Special Features tile in main grid */
+html[data-theme="light"] .tile.special {
+  background: linear-gradient(135deg, rgba(184,133,43,0.10), rgba(184,133,43,0.04)) !important;
+  border-color: rgba(184,133,43,0.35);
+}
+html[data-theme="light"] .tile.special .sf-count { color: #b8852b !important; }
+
 html, body { min-height: 100%; }
 body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
        color: var(--txt); padding: 24px; position: relative; z-index: 0;
