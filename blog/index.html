@@ -345,10 +345,15 @@ html[data-theme="light"] .mast-theme-toggle { background: rgba(26,52,88,0.04); }
 </script>
 <script>
 (function(){
-  try {
-    var t = localStorage.getItem('hd-theme');
-    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-  } catch(e) {}
+  function applyTheme(){
+    try {
+      var t = localStorage.getItem('hd-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch(e) {}
+  }
+  applyTheme();
+  // Re-apply on bfcache restore so back/forward nav keeps the user's choice
+  window.addEventListener('pageshow', applyTheme);
 })();
 </script>
 </head>

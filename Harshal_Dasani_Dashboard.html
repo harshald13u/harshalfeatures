@@ -919,10 +919,15 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script>
 (function(){
-  try {
-    var t = localStorage.getItem('hd-theme');
-    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-  } catch(e) {}
+  function applyTheme(){
+    try {
+      var t = localStorage.getItem('hd-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch(e) {}
+  }
+  applyTheme();
+  // Re-apply on bfcache restore so back/forward nav keeps the user's choice
+  window.addEventListener('pageshow', applyTheme);
 })();
 </script>
 </head>

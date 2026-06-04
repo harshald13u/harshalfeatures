@@ -1122,10 +1122,15 @@ html[data-theme="light"] .hero-tags a {
 </style>
 <script>
 (function(){
-  try {
-    var t = localStorage.getItem('hd-theme');
-    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-  } catch(e) {}
+  function applyTheme(){
+    try {
+      var t = localStorage.getItem('hd-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch(e) {}
+  }
+  applyTheme();
+  // Re-apply on bfcache restore so back/forward nav keeps the user's choice
+  window.addEventListener('pageshow', applyTheme);
 })();
 </script>
 </head>
