@@ -892,4 +892,4 @@ if __name__ == "__main__":
     result = publish_blog(target)
     print()
     print("=" * 60)
-    print(json.dumps(result, indent=2, 
+    print(json.dumps(result, indent=2, ensure_ascii=False))
