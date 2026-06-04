@@ -1,3 +1,46 @@
 {
-  "posts": []
+  "posts": [
+    {
+      "slug": "harshal-dasani-media-features",
+      "title": "Harshal Dasani Media Features",
+      "topic": "media",
+      "date": "2026-06-04",
+      "order": 1,
+      "excerpt": "A live guide to Harshal Dasani media coverage across articles, quotes, e-paper appearances and press mentions.",
+      "image": "https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg",
+      "url": "blog/posts/harshal-dasani-media-features/"
+    },
+    {
+      "slug": "harshal-dasani-interviews",
+      "title": "Harshal Dasani Interviews",
+      "topic": "interviews",
+      "date": "2026-06-04",
+      "order": 2,
+      "excerpt": "Where to find Harshal Dasani interviews, market quotes and public commentary across financial publications and television.",
+      "image": "https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg",
+      "url": "blog/posts/harshal-dasani-interviews/"
+    },
+    {
+      "slug": "markets-with-harshal",
+      "title": "Markets with Harshal",
+      "topic": "youtube",
+      "date": "2026-06-04",
+      "order": 3,
+      "excerpt": "The YouTube home for Harshal Dasani's Indian market analysis, precious-metals outlooks, macro notes and geopolitics commentary.",
+      "image": "https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg",
+      "url": "blog/posts/markets-with-harshal/"
+    },
+    {
+      "slug": "harshal-dasani-invasset",
+      "title": "Harshal Dasani at INVasset PMS",
+      "topic": "about",
+      "date": "2026-06-04",
+      "order": 4,
+      "showInBlog": false,
+      "showOnHome": false,
+      "excerpt": "A profile of Harshal Dasani as Business Head at INVasset PMS, Mumbai, with market work across equities, commodities, macros and geopolitics.",
+      "image": "https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg",
+      "url": "blog/posts/harshal-dasani-invasset/"
+    }
+  ]
 }

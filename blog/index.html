@@ -428,7 +428,11 @@ html[data-theme="light"] .mast-theme-toggle { background: rgba(26,52,88,0.04); }
     "stock-market": "Stock Market",
     "commodities": "Commodities",
     "macros": "Macros",
-    "geopolitics": "Geopolitics"
+    "geopolitics": "Geopolitics",
+    "media": "Media",
+    "interviews": "Interviews",
+    "about": "About",
+    "youtube": "YouTube"
   };
   var url = new URL(window.location.href);
   var activeTopic = (url.searchParams.get('topic') || 'all').toLowerCase();
@@ -477,10 +481,19 @@ html[data-theme="light"] .mast-theme-toggle { background: rgba(26,52,88,0.04); }
   fetch('posts.json?nc=' + Date.now())
     .then(function(r){ return r.json(); })
     .then(function(data){
-      var posts = (data && data.posts) || [];
-      // Sort: newest first by date
+      var posts = ((data && data.posts) || []).filter(function(post){
+        return post.showInBlog !== false;
+      }).map(function(post, idx){
+        post.__blogIndex = idx;
+        return post;
+      });
+      // Sort: newest first by date, then manifest order for same-day posts
       posts.sort(function(a,b){
-        return new Date(b.date||0) - new Date(a.date||0);
+        var byDate = new Date(b.date||0) - new Date(a.date||0);
+        if (byDate) return byDate;
+        var bOrder = typeof b.order === 'number' ? b.order : b.__blogIndex;
+        var aOrder = typeof a.order === 'number' ? a.order : a.__blogIndex;
+        return bOrder - aOrder;
       });
       // Filter by topic
       if (activeTopic !== 'all') {
