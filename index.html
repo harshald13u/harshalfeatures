@@ -1223,8 +1223,8 @@ html[data-theme="light"] .decode-chip:hover {
   color: var(--ink);
   letter-spacing: -0.01em;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -2183,18 +2183,34 @@ function toggleTheme(){
       '</span>' +
     '</a>';
   }
+  var HOME_FALLBACK = [
+    { slug: 'harshal-dasani-media-features', url: 'blog/posts/harshal-dasani-media-features/', topic: 'media', title: 'Harshal Dasani Media Features', excerpt: 'A live archive of 1,045+ articles, quotes, e-paper appearances and press coverage across 150+ outlets.', date: '2026-06-04' },
+    { slug: 'harshal-dasani-interviews', url: 'blog/posts/harshal-dasani-interviews/', topic: 'interviews', title: 'Harshal Dasani Interviews', excerpt: 'TV, podcast and markets commentary \u2014 CNBC TV18, NDTV Profit, Goodreturns, Moneycontrol and Markets with Harshal.', date: '2026-06-04' },
+    { slug: 'markets-with-harshal', url: 'blog/posts/markets-with-harshal/', topic: 'youtube', title: 'Markets with Harshal', excerpt: 'YouTube channel by Harshal Dasani \u2014 Indian market analysis, gold and silver outlook, macros and geopolitics.', date: '2026-06-04' }
+  ];
+  function renderLatestCards(posts){
+    var list = document.getElementById('latestHomepagePosts');
+    if (!list) return;
+    var seen = {}, out = [];
+    (posts || []).forEach(function(p){ if (p && p.slug) seen[p.slug] = 1; out.push(p); });
+    for (var i = 0; i < HOME_FALLBACK.length && out.length < 3; i++){
+      if (!seen[HOME_FALLBACK[i].slug]) out.push(HOME_FALLBACK[i]);
+    }
+    out = out.slice(0, 3);
+    if (out.length) list.innerHTML = out.map(latestHomePostHTML).join('');
+  }
   function loadHomepagePosts(){
     var list = document.getElementById('latestHomepagePosts');
-    if (!list || !window.fetch) return;
+    if (!list) return;
+    if (!window.fetch) { renderLatestCards([]); return; }
     fetch('blog/posts.json?nc=' + Date.now())
       .then(function(r){ return r.json(); })
       .then(function(data){
         var posts = ((data && data.posts) || []).slice();
         posts.sort(function(a, b){ return new Date(b.date || 0) - new Date(a.date || 0); });
-        posts = posts.slice(0, 3);
-        if (posts.length) list.innerHTML = posts.map(latestHomePostHTML).join('');
+        renderLatestCards(posts);
       })
-      .catch(function(){});
+      .catch(function(){ renderLatestCards([]); });
   }
   loadHomepagePosts();
 
