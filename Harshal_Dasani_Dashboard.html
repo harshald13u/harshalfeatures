@@ -574,11 +574,14 @@ html[data-theme="light"] .theme-toggle-btn { background: rgba(26,52,88,0.06); bo
 .feat-filters { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: -2px 0 14px; padding: 10px 12px;
                 background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 8px; }
 .feat-filters label { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--txt-mut); font-weight: 600; }
-.feat-filters input[type=date], .feat-filters select {
+.feat-filters input[type=date], .feat-filters input[list], .feat-filters select {
   padding: 6px 10px; font-size: 12px; color: var(--txt); background: rgba(255,255,255,0.05);
   border: 1px solid var(--line); border-radius: 6px; outline: none; font-family: inherit;
   color-scheme: dark; cursor: pointer;
 }
+.feat-filters input[list] { min-width: 180px; }
+.feat-filters input[list]::placeholder { color: var(--txt-faint); opacity: 0.8; }
+
 /* The native dropdown popup uses OS colors — force readable dark theme on options */
 .feat-filters select option {
   background-color: #15110d;
