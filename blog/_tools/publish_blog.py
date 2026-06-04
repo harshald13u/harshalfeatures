@@ -697,8 +697,8 @@ html[data-theme="light"]{{--bg:#ebe5d7;--bg-2:#ddd4c1;--ink:#1a3458;--ink-2:#3a5
 *{{box-sizing:border-box}}
 html,body{{margin:0;padding:0;background:var(--bg);color:var(--ink-2);transition:background-color .3s,color .3s}}
 body{{font-family:'Inter',sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased;font-size:16.5px}}
-/* Desktop reading size — matches home page pattern (zoom: 1.3 at >=1180px) */
-@media (min-width: 1180px){{body{{zoom:1.3}}}}
+/* Desktop reading size — matches home page pattern (zoom: 1.5 at >=1180px) */
+@media (min-width: 1180px){{body{{zoom:1.5}}}}
 a{{color:var(--accent);text-decoration:none}}
 a:hover{{text-decoration:underline}}
 .theme-toggle{{position:fixed;top:18px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid var(--rule);background:var(--bg-2);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:1000}}
