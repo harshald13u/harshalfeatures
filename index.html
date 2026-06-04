@@ -1141,11 +1141,11 @@ html[data-theme="light"] .decode-chip:hover {
 }
 .latest-card {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) auto;
-  gap: 16px;
-  align-items: start;
+  grid-template-columns: 150px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
   min-height: 0;
-  padding: 18px;
+  padding: 14px;
   border: 1px solid var(--rule);
   border-radius: 8px;
   background: var(--bg-2);
@@ -1159,8 +1159,31 @@ html[data-theme="light"] .decode-chip:hover {
   background: #181410;
 }
 html[data-theme="light"] .latest-card:hover { background: rgba(184,133,43,0.05); }
+.latest-thumb {
+  position: relative;
+  width: 150px;
+  aspect-ratio: 16 / 9;
+  border-radius: 7px;
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+}
+.latest-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+.latest-card:hover .latest-thumb img { transform: scale(1.05); }
 .latest-index {
-  font-size: 11px;
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(14,12,10,0.74);
+  font-size: 10px;
   letter-spacing: 1.6px;
   text-transform: uppercase;
   color: var(--accent);
@@ -1586,11 +1609,12 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
   }
   .spotlight-title { font-size: clamp(34px, 10vw, 50px); }
   .latest-card {
-    grid-template-columns: 32px minmax(0, 1fr);
+    grid-template-columns: 104px minmax(0, 1fr);
     gap: 12px;
     min-height: 0;
-    padding: 16px;
+    padding: 14px;
   }
+  .latest-thumb { width: 104px; }
   .latest-meta {
     grid-column: 2;
     flex-direction: row;
@@ -1869,7 +1893,7 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
         <div class="spotlight-label">Latest 3 Blogs</div>
         <div class="latest-list" id="latestHomepagePosts" aria-live="polite">
           <a class="latest-card" href="blog/posts/harshal-dasani-media-features/">
-            <span class="latest-index">01</span>
+            <span class="latest-thumb"><span class="latest-index">01</span></span>
             <span>
               <span class="latest-topic">Media</span>
               <h3 class="latest-title">Harshal Dasani Media Features</h3>
@@ -1878,7 +1902,7 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
             <span class="latest-meta"><span>04 Jun 2026</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>
           </a>
           <a class="latest-card" href="blog/posts/harshal-dasani-interviews/">
-            <span class="latest-index">02</span>
+            <span class="latest-thumb"><span class="latest-index">02</span></span>
             <span>
               <span class="latest-topic">Interviews</span>
               <h3 class="latest-title">Harshal Dasani Interviews</h3>
@@ -1887,7 +1911,7 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
             <span class="latest-meta"><span>04 Jun 2026</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>
           </a>
           <a class="latest-card" href="blog/posts/markets-with-harshal/">
-            <span class="latest-index">03</span>
+            <span class="latest-thumb"><span class="latest-index">03</span></span>
             <span>
               <span class="latest-topic">Markets</span>
               <h3 class="latest-title">Markets with Harshal</h3>
@@ -2044,9 +2068,15 @@ function toggleTheme(){
     var href = post.url || (slug ? 'blog/posts/' + slug + '/' : 'blog/');
     var topic = HOME_TOPIC_LABELS[post.topic] || post.topic || 'Blog';
     var num = String(idx + 1).padStart(2, '0');
-    return '<a class="latest-card" href="'+escapeHomeHTML(href)+'">' +
+    var img = post.image || '';
+    var webp = post.imageWebp || '';
+    var thumb = '<span class="latest-thumb">' +
+      (img ? '<picture>' + (webp ? '<source srcset="'+escapeHomeHTML(webp)+'" type="image/webp">' : '') + '<img src="'+escapeHomeHTML(img)+'" alt="" loading="lazy" decoding="async">' + '</picture>' : '') +
       '<span class="latest-index">'+num+'</span>' +
-      '<span><span class="latest-topic">'+escapeHomeHTML(topic)+'</span>' +
+    '</span>';
+    return '<a class="latest-card" href="'+escapeHomeHTML(href)+'">' +
+      thumb +
+      '<span class="latest-body"><span class="latest-topic">'+escapeHomeHTML(topic)+'</span>' +
       '<h3 class="latest-title">'+escapeHomeHTML(post.title || 'Untitled')+'</h3>' +
       '<p class="latest-excerpt">'+escapeHomeHTML(post.excerpt || '')+'</p></span>' +
       '<span class="latest-meta"><span>'+escapeHomeHTML(formatHomeDate(post.date))+'</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>' +
