@@ -156,6 +156,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -1093,8 +1094,7 @@ html[data-theme="light"] .decode-chip:hover {
   padding-bottom: 6px;
 }
 .spotlight-link,
-.tracker-quick,
-.tracker-search button {
+.tracker-quick {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1113,8 +1113,7 @@ html[data-theme="light"] .decode-chip:hover {
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 .spotlight-link:hover,
-.tracker-quick:hover,
-.tracker-search button:hover {
+.tracker-quick:hover {
   color: var(--bg);
   border-color: var(--accent);
   background: var(--accent);
@@ -1124,7 +1123,7 @@ html[data-theme="light"] .decode-chip:hover {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(330px, 0.92fr);
   gap: 22px;
-  align-items: stretch;
+  align-items: start;
 }
 .spotlight-grid > div:first-child {
   display: flex;
@@ -1240,9 +1239,7 @@ html[data-theme="light"] .latest-card:hover { background: rgba(184,133,43,0.05);
 .tracker-spotlight {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 100%;
-  padding: 28px;
+  padding: 26px 28px 24px;
   border: 1px solid rgba(212,166,74,0.35);
   border-radius: 8px;
   background:
@@ -1259,13 +1256,14 @@ html[data-theme="light"] .tracker-spotlight {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 .tracker-live {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   min-height: 24px;
-  padding: 0 10px;
+  padding: 0 11px;
   border-radius: 999px;
   background: var(--accent);
   color: var(--bg);
@@ -1274,67 +1272,100 @@ html[data-theme="light"] .tracker-spotlight {
   text-transform: uppercase;
   font-weight: 800;
 }
-.tracker-spotlight-title {
-  font-size: clamp(32px, 4vw, 52px);
-  line-height: 0.98;
-  color: var(--ink);
-  margin: 0 0 16px;
+.tracker-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--bg);
+  animation: trackerLiveDot 1.5s ease-in-out infinite;
 }
-.tracker-spotlight-copy {
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--ink-2);
-  margin: 0 0 24px;
+@keyframes trackerLiveDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.7); }
 }
-.tracker-spotlight-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 0 0 22px;
-}
-.tracker-spotlight-stat {
-  padding-top: 12px;
-  border-top: 1px solid var(--rule);
-}
-.tracker-spotlight-n {
-  font-size: 25px;
-  line-height: 1;
+.tracker-ticker-n {
+  font-family: 'Noto Serif', Georgia, 'Times New Roman', serif;
+  font-size: clamp(58px, 7.4vw, 92px);
+  line-height: 0.92;
   font-weight: 700;
   color: var(--accent);
   font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+  margin: 2px 0 0;
 }
-.tracker-spotlight-l {
-  margin-top: 5px;
-  font-size: 9.5px;
+.tracker-ticker-rule {
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+  margin: 11px 0 9px;
+}
+.tracker-ticker-cap {
+  font-size: 11px;
   letter-spacing: 1.3px;
   text-transform: uppercase;
   color: var(--muted);
   font-weight: 700;
+  margin-bottom: 18px;
+}
+.tracker-spotlight-title {
+  font-family: 'Noto Serif', Georgia, 'Times New Roman', serif;
+  font-size: clamp(20px, 2.4vw, 27px);
+  font-weight: 700;
+  line-height: 1.08;
+  color: var(--ink);
+  margin: 0 0 16px;
 }
 .tracker-search {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
+  align-items: center;
   gap: 8px;
   margin-bottom: 14px;
+  padding: 6px 6px 6px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+}
+html[data-theme="light"] .tracker-search {
+  background: #fffdf7;
+  border-color: rgba(26,52,88,0.20);
+}
+.tracker-search:focus-within { border-color: var(--accent); }
+.tracker-search-ic {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
 }
 .tracker-search input {
-  width: 100%;
-  min-height: 40px;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  background: rgba(0,0,0,0.12);
+  flex: 1;
+  min-width: 0;
+  min-height: 34px;
+  border: 0;
+  background: transparent;
   color: var(--ink);
-  padding: 0 12px;
+  padding: 0;
   font: inherit;
   font-size: 13px;
   outline: none;
 }
-html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.32); }
-.tracker-search input:focus { border-color: var(--accent); }
+.tracker-search input::placeholder { color: var(--muted); }
 .tracker-search button {
-  min-width: 86px;
-  font-family: 'Inter', sans-serif;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--bg);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
+.tracker-search button:hover { transform: scale(1.06); }
+.tracker-search button svg { width: 18px; height: 18px; }
 
 /* ============================================================
    SOCIAL — secondary row
@@ -1626,15 +1657,13 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
   .latest-title { font-size: 20px; }
   .latest-excerpt { font-size: 13px; }
   .tracker-spotlight { padding: 20px; }
-  .tracker-spotlight-title { font-size: 32px; }
-  .tracker-spotlight-stats { grid-template-columns: 1fr; gap: 8px; }
-  .tracker-search { grid-template-columns: 1fr; }
-  .tracker-search button { width: 100%; }
+  .tracker-ticker-n { font-size: clamp(52px, 16vw, 74px); }
+  .tracker-spotlight-title { font-size: 22px; }
 }
 
 @media (max-width: 380px) {
   .spotlight-title { font-size: 32px; }
-  .tracker-spotlight-title { font-size: 30px; }
+  .tracker-spotlight-title { font-size: 20px; }
 }
 
 
@@ -1923,29 +1952,23 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
       </div>
 
       <aside class="tracker-spotlight" data-door aria-labelledby="trackerSpotlightTitle" role="link" tabindex="0" data-href="tracker/">
-        <div>
-          <div class="tracker-spotlight-top">
-            <span class="tracker-kicker">Media Tracker</span>
-            <span class="tracker-live">Live</span>
-          </div>
-          <h3 class="tracker-spotlight-title" id="trackerSpotlightTitle">Search every feature, quote and interview.</h3>
-          <p class="tracker-spotlight-copy">A live archive of Harshal Dasani coverage across financial publications, broadcast references, web articles and e-paper mentions.</p>
-          <div class="tracker-spotlight-stats">
-            <div class="tracker-spotlight-stat"><div class="tracker-spotlight-n" id="trackerCount" data-target="1048">0</div><div class="tracker-spotlight-l">Articles</div></div>
-            <div class="tracker-spotlight-stat"><div class="tracker-spotlight-n">150+</div><div class="tracker-spotlight-l">Publications</div></div>
-            <div class="tracker-spotlight-stat"><div class="tracker-spotlight-n">8</div><div class="tracker-spotlight-l">Languages</div></div>
-          </div>
+        <div class="tracker-spotlight-top">
+          <span class="tracker-kicker">Media Tracker</span>
+          <span class="tracker-live"><span class="tracker-live-dot" aria-hidden="true"></span>Live</span>
         </div>
-        <div>
-          <form class="tracker-search" action="tracker/" method="get">
-            <input type="search" name="q" placeholder="Search Mint, CNBC, gold..." aria-label="Search the media tracker">
-            <button type="submit">Search</button>
-          </form>
-          <div class="tracker-quick-links">
-            <a class="tracker-quick" href="tracker/">Full tracker</a>
-            <a class="tracker-quick" href="tracker/?q=interview">Interviews</a>
-            <a class="tracker-quick" href="tracker/?q=Economic%20Times">Economic Times</a>
-          </div>
+        <div class="tracker-ticker-n" id="trackerCount" data-target="1048" aria-label="1,048 media appearances">0</div>
+        <div class="tracker-ticker-rule" aria-hidden="true"></div>
+        <div class="tracker-ticker-cap">Media appearances &middot; 150+ publications &middot; 8 languages</div>
+        <h3 class="tracker-spotlight-title" id="trackerSpotlightTitle">Search every feature, quote &amp; interview.</h3>
+        <form class="tracker-search" action="tracker/" method="get">
+          <svg class="tracker-search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+          <input type="search" name="q" placeholder="Search Mint, CNBC, gold..." aria-label="Search the media tracker">
+          <button type="submit" aria-label="Search the media tracker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></button>
+        </form>
+        <div class="tracker-quick-links">
+          <a class="tracker-quick" href="tracker/">Full tracker</a>
+          <a class="tracker-quick" href="tracker/?q=interview">Interviews</a>
+          <a class="tracker-quick" href="tracker/?q=Economic%20Times">Economic Times</a>
         </div>
       </aside>
     </div>
