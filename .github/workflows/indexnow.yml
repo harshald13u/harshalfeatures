@@ -1,0 +1,24 @@
+name: IndexNow Ping
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Bing + Yandex via IndexNow
+        run: |
+          curl -sS -X POST https://api.indexnow.org/IndexNow \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d '{
+              "host": "harshald13u.github.io",
+              "key": "3412182e9fe241df9ed3c70da4d3e950",
+              "keyLocation": "https://harshald13u.github.io/harshalfeatures/3412182e9fe241df9ed3c70da4d3e950.txt",
+              "urlList": [
+                "https://harshald13u.github.io/harshalfeatures/",
+                "https://harshald13u.github.io/harshalfeatures/tracker/",
+                "https://harshald13u.github.io/harshalfeatures/blog/"
+              ]
+            }' && echo "[indexnow] pinged Bing + Yandex"
