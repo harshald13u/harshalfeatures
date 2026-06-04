@@ -121,33 +121,56 @@ def extract_docx(docx_path):
                 out.append(eid)
         return out
 
-    for p in body.findall(f"{{{W_NS}}}p"):
-        style = style_of(p).lower()
-        # Heading style detection. Word stores them as "Heading1" or "Heading 1"
-        norm = style.replace(" ", "")
-        if norm.startswith("heading1") or norm == "title":
-            block_type = "h1"
-        elif norm.startswith("heading2"):
-            block_type = "h2"
-        elif norm.startswith("heading3"):
-            block_type = "h3"
-        else:
-            block_type = "p"
+    # Walk paragraphs AND tables in document order. We iterate body children directly
+    # so a w:tbl interleaved between w:p elements lands in the right position.
+    for child in list(body):
+        tag = child.tag.split("}", 1)[-1] if "}" in child.tag else child.tag
 
-        # Inline images first (preserve insertion order)
-        for eid in embed_ids_of(p):
-            target = rid_to_target.get(eid, "")
-            fname = os.path.basename(target)
-            if not fname or fname not in media_bytes:
-                continue
-            if fname not in fname_to_idx:
-                fname_to_idx[fname] = len(images)
-                images.append((fname, media_bytes[fname]))
-            paragraphs.append({"type": "image", "text": "", "image_idx": fname_to_idx[fname]})
+        if tag == "p":
+            p = child
+            style = style_of(p).lower()
+            norm = style.replace(" ", "")
+            if norm.startswith("heading1") or norm == "title":
+                block_type = "h1"
+            elif norm.startswith("heading2"):
+                block_type = "h2"
+            elif norm.startswith("heading3"):
+                block_type = "h3"
+            else:
+                block_type = "p"
 
-        text = text_of(p).strip()
-        if text:
-            paragraphs.append({"type": block_type, "text": text, "image_idx": None})
+            # Inline images first (preserve insertion order)
+            for eid in embed_ids_of(p):
+                target = rid_to_target.get(eid, "")
+                fname = os.path.basename(target)
+                if not fname or fname not in media_bytes:
+                    continue
+                if fname not in fname_to_idx:
+                    fname_to_idx[fname] = len(images)
+                    images.append((fname, media_bytes[fname]))
+                paragraphs.append({"type": "image", "text": "", "image_idx": fname_to_idx[fname]})
+
+            text = text_of(p).strip()
+            if text:
+                paragraphs.append({"type": block_type, "text": text, "image_idx": None})
+
+        elif tag == "tbl":
+            # Parse the table into rows of cells (text only). Header detection:
+            # row 0 is treated as <thead> if it looks like header (no numbers, all bold-ish).
+            tbl = child
+            rows_data = []
+            for tr in tbl.findall(f"{{{W_NS}}}tr"):
+                row_cells = []
+                for tc in tr.findall(f"{{{W_NS}}}tc"):
+                    cell_text = "".join((t.text or "") for t in tc.iter(f"{{{W_NS}}}t")).strip()
+                    # gridSpan for merged cells
+                    gridSpan = tc.find(f"{{{W_NS}}}tcPr/{{{W_NS}}}gridSpan")
+                    colspan = int(gridSpan.attrib.get(f"{{{W_NS}}}val", "1")) if gridSpan is not None else 1
+                    row_cells.append({"text": cell_text, "colspan": colspan})
+                if row_cells:
+                    rows_data.append(row_cells)
+            if rows_data:
+                paragraphs.append({"type": "table", "rows": rows_data, "text": "", "image_idx": None})
 
     return {"images": images, "paragraphs": paragraphs}
 
@@ -296,6 +319,43 @@ def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
             # Image file already saved by caller
             fname = f"img-{idx}.png"
             parts.append(f'<figure class="inline-figure"><img src="{fname}" alt="" loading="lazy"></figure>')
+            continue
+
+        if p["type"] == "table":
+            rows = p.get("rows", [])
+            if not rows:
+                continue
+            # Heuristic for thead: row 0 if all cells are short text and it's not a single full-width cell
+            thead_html = ""
+            tbody_rows = rows
+            first = rows[0]
+            is_header_row = (
+                len(first) >= 2 and
+                all(not re.search(r"\d", (c.get("text") or "")) for c in first)
+            )
+            def _cell_attrs(c):
+                cs = c.get("colspan", 1)
+                return f' colspan="{cs}"' if cs > 1 else ""
+            if is_header_row:
+                header_cells = []
+                for c in first:
+                    header_cells.append(f"<th{_cell_attrs(c)}>{html_escape(c.get('text',''))}</th>")
+                thead_html = "<thead><tr>" + "".join(header_cells) + "</tr></thead>"
+                tbody_rows = rows[1:]
+            body_trs = []
+            for r in tbody_rows:
+                # If the row is a single-cell "section divider" (spanning all columns), render as a sub-header
+                if len(r) == 1 and r[0].get("colspan", 1) >= len(first):
+                    cell_html = inline_entity_links(html_escape(r[0].get("text", "")), entities or [], used_entities)
+                    body_trs.append(f'<tr class="tbl-section"><td colspan="{len(first)}">{cell_html}</td></tr>')
+                else:
+                    cells = []
+                    for c in r:
+                        cell_html = inline_entity_links(html_escape(c.get("text", "")), entities or [], used_entities)
+                        cells.append(f"<td{_cell_attrs(c)}>{cell_html}</td>")
+                    body_trs.append("<tr>" + "".join(cells) + "</tr>")
+            tbody_html = "<tbody>" + "".join(body_trs) + "</tbody>"
+            parts.append(f'<div class="table-wrap"><table class="post-table">{thead_html}{tbody_html}</table></div>')
             continue
 
         text = html_escape(p["text"])
@@ -672,6 +732,17 @@ h3{{font-weight:700;font-size:18px;color:var(--accent);margin:26px 0 8px}}
 p{{margin:0 0 18px}}
 .inline-figure{{margin:24px 0}}
 .inline-figure img{{width:100%;height:auto;border-radius:6px;border:1px solid var(--rule)}}
+/* Tables — readable, light/dark theme aware, horizontal scroll on narrow viewports */
+.table-wrap{{margin:28px 0;overflow-x:auto;border:1px solid var(--rule);border-radius:8px;background:var(--bg-2)}}
+.post-table{{width:100%;border-collapse:collapse;font-size:14.5px;color:var(--ink-2)}}
+.post-table thead th{{text-align:left;padding:12px 14px;background:var(--bg);color:var(--ink);font-weight:700;font-size:12.5px;letter-spacing:0.4px;text-transform:uppercase;border-bottom:1px solid var(--rule);white-space:nowrap}}
+.post-table tbody td{{padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.45}}
+.post-table tbody tr:last-child td{{border-bottom:none}}
+.post-table tbody tr:hover{{background:rgba(212,166,74,0.05)}}
+html[data-theme="light"] .post-table tbody tr:hover{{background:rgba(184,133,43,0.06)}}
+.post-table tbody td:first-child{{font-weight:600;color:var(--ink)}}
+.post-table tbody td:not(:first-child){{font-variant-numeric:tabular-nums}}
+.post-table tr.tbl-section td{{background:var(--bg);color:var(--accent);font-weight:700;font-size:11.5px;letter-spacing:0.6px;text-transform:uppercase;padding:9px 14px;border-bottom:1px solid var(--rule)}}
 blockquote{{margin:26px 0;padding:6px 0 6px 22px;border-left:3px solid var(--accent);font-style:italic;color:var(--ink);font-size:18px}}
 strong{{color:var(--ink);font-weight:700}}
 .next{{margin-top:54px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}}
@@ -1072,19 +1143,17 @@ def publish_blog(docx_path):
         f.write(html)
     print(f"[publish] wrote {post_dir}/index.html  ({len(html)} bytes)")
 
-    # Save the body text for re-rendering later if needed
+    # body.md
     body_md_lines = []
     for i, p in enumerate(paras):
-        if i in skip or p["type"] == "image":
-            continue
-        if i in (dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx):
-            continue
-        prefix = {"h1": "# ", "h2": "## ", "h3": "### ", "p": ""}.get(p["type"], "")
+        if i in skip or p["type"] in ("image", "table"): continue
+        if i in (dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx): continue
+        prefix = {"h1":"# ","h2":"## ","h3":"### ","p":""}.get(p["type"], "")
         body_md_lines.append(prefix + p["text"])
     with open(os.path.join(post_dir, "body.md"), "w", encoding="utf-8") as f:
         f.write("\n\n".join(body_md_lines))
 
-    # Append to posts.json
+    # posts.json
     if os.path.exists(POSTS_JSON):
         with open(POSTS_JSON) as f:
             data = json.load(f)
@@ -1100,12 +1169,10 @@ def publish_blog(docx_path):
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"[publish] posts.json updated ({len(data['posts'])} posts total)")
 
-    # Sitemap + news-sitemap (DEPLOYED side)
     upsert_sitemap_post(SITEMAP_PATH, canonical, today, light_cover_url, image_caption)
     upsert_news_sitemap(NEWS_SITEMAP_PATH, canonical, title, date_str)
     print(f"[publish] sitemap.xml + news-sitemap.xml updated")
 
-    # RSS feed — write to BOTH source and deployed
     build_rss_feed(f"{BLOG_DIR}/feed.xml", SITE_BASE)
     build_rss_feed(f"{DEPLOYED}/blog/feed.xml", SITE_BASE)
 
@@ -1117,21 +1184,21 @@ def publish_blog(docx_path):
         "word_count": wc, "reading_minutes": rt,
         "used_entities": sorted(used_entities),
         "mentioned_entities": sorted(mentioned_entities),
+        "tables": sum(1 for p in paras if p.get("type") == "table"),
     }
 
 
 def find_latest_blog():
-    """Return the newest .docx in Blogs/ (ignores _system/ and ~$ lock files)."""
     blogs_dir = f"{FEATURES}/Blogs"
     candidates = []
     for fn in os.listdir(blogs_dir):
         if fn.startswith("~$") or fn.startswith("."): continue
         if not fn.lower().endswith(".docx"): continue
-        p = os.path.join(blogs_dir, fn)
-        if not os.path.isfile(p): continue
+        path = os.path.join(blogs_dir, fn)
+        if not os.path.isfile(path): continue
         m = re.match(r"(\d{4}-\d{2}-\d{2})_", fn)
-        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(p))
-        candidates.append((key, p))
+        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(path))
+        candidates.append((key, path))
     if not candidates:
         raise SystemExit("No .docx blogs in /Features/Blogs/")
     candidates.sort(reverse=True)
