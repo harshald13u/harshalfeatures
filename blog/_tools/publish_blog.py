@@ -697,8 +697,7 @@ html[data-theme="light"]{{--bg:#ebe5d7;--bg-2:#ddd4c1;--ink:#1a3458;--ink-2:#3a5
 *{{box-sizing:border-box}}
 html,body{{margin:0;padding:0;background:var(--bg);color:var(--ink-2);transition:background-color .3s,color .3s}}
 body{{font-family:'Inter',sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased;font-size:16.5px}}
-/* Desktop reading size — matches home page pattern (zoom: 1.5 at >=1180px) */
-@media (min-width: 1180px){{body{{zoom:1.5}}}}
+/* No CSS zoom — page renders at native 100% browser zoom. */
 a{{color:var(--accent);text-decoration:none}}
 a:hover{{text-decoration:underline}}
 .theme-toggle{{position:fixed;top:18px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid var(--rule);background:var(--bg-2);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:1000}}
@@ -714,8 +713,8 @@ h1{{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46
 /* Cover breaks OUT of the article column — extends up to 1400px on desktop while body stays at 760px.
    The width calc keeps it sane on every viewport: capped at viewport-minus-32px on narrow screens. */
 .cover{{position:relative;display:block;margin:0 auto 14px;border-radius:8px;overflow:hidden;border:1px solid var(--rule);background:var(--bg-2);
-       width:min(calc(100% + 340px), calc(100vw - 32px));
-       max-width:1400px;
+       width:min(calc(100% + 170px), calc(100vw - 32px));
+       max-width:1100px;
        margin-left:50%;transform:translateX(-50%);
        aspect-ratio:16/9;cursor:zoom-in;text-decoration:none}}
 .cover img{{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:var(--bg-2)}}
