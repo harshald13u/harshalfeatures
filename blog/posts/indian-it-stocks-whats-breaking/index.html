@@ -282,10 +282,10 @@ h1{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46p
 .cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:var(--bg-2)}
 /* Default theme = dark → show dark cover only. Light theme → show light cover only.
    Pure data-theme driven; we DO NOT use prefers-color-scheme (which can disagree with the user's manual theme choice). */
-.cover .light-only{opacity:0}
-.cover .dark-only{opacity:1}
-html[data-theme="light"] .cover .light-only{opacity:1}
-html[data-theme="light"] .cover .dark-only{opacity:0}
+.cover .light-only{opacity:1}
+.cover .dark-only{opacity:0}
+html[data-theme="light"] .cover .light-only{opacity:0}
+html[data-theme="light"] .cover .dark-only{opacity:1}
 @media (max-width: 800px){.cover{margin-left:0;transform:none;width:100%}}
 figcaption{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin:0 0 32px}
 h2{font-weight:700;font-size:24px;color:var(--ink);margin:38px 0 12px;letter-spacing:-0.01em;padding-bottom:6px;border-bottom:1px solid var(--rule)}
@@ -510,7 +510,7 @@ strong{color:var(--ink);font-weight:700}
   if (!cover) return;
   function activeCoverSrc(){
     var t = document.documentElement.getAttribute('data-theme') || 'dark';
-    return cover.getAttribute(t === 'light' ? 'data-light' : 'data-dark');
+    return cover.getAttribute(t === 'light' ? 'data-dark' : 'data-light');
   }
   function openFull(){
     var src = activeCoverSrc();
