@@ -735,16 +735,26 @@ html[data-theme="light"] .hero-tags a {
   gap: 14px;
 }
 .lens-card {
+  display: block;
   padding: 16px 18px;
   border: 1px solid var(--rule);
   border-radius: 8px;
   background: var(--bg-2);
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.lens-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 .lens-card:hover {
-  border-color: rgba(212,166,74,0.45);
-  transform: translateY(-1px);
+  border-color: rgba(212,166,74,0.55);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(212,166,74,0.10);
 }
+.lens-card:hover .lens-card-t { color: var(--accent); }
 html[data-theme="light"] .lens-card:hover {
   border-color: rgba(184,133,43,0.55);
   background: rgba(184,133,43,0.04);
@@ -756,6 +766,7 @@ html[data-theme="light"] .lens-card:hover {
   color: var(--ink);
   margin-bottom: 4px;
   letter-spacing: -0.005em;
+  transition: color 0.2s ease;
 }
 .lens-card-d {
   font-size: 12.5px;
@@ -1485,22 +1496,22 @@ html[data-theme="light"] .decode-chip:hover {
           <div class="lens-eyebrow">My Market Lens</div>
           <p class="lens-lede">Markets are rarely moved by one factor alone. I look at the intersection of liquidity, policy, valuation, geopolitics and behaviour &mdash; because the best signals often appear before the consensus narrative catches up.</p>
           <div class="lens-grid">
-            <div class="lens-card">
+            <a class="lens-card" href="blog/?topic=macros" aria-label="Read Harshal Dasani's macro blogs">
               <div class="lens-card-t">Macro</div>
               <div class="lens-card-d">Rates, DXY, bond yields, crude and liquidity</div>
-            </div>
-            <div class="lens-card">
+            </a>
+            <a class="lens-card" href="blog/?topic=geopolitics" aria-label="Read Harshal Dasani's geopolitics blogs">
               <div class="lens-card-t">Geopolitics</div>
               <div class="lens-card-d">Conflicts, tariffs, supply chains and trade routes</div>
-            </div>
-            <div class="lens-card">
+            </a>
+            <a class="lens-card" href="blog/?topic=stock-market" aria-label="Read Harshal Dasani's stock market structure blogs">
               <div class="lens-card-t">Market Structure</div>
               <div class="lens-card-d">FII/DII flows, positioning and valuation cycles</div>
-            </div>
-            <div class="lens-card">
+            </a>
+            <a class="lens-card" href="blog/?topic=commodities" aria-label="Read Harshal Dasani's market behaviour blogs">
               <div class="lens-card-t">Behaviour</div>
               <div class="lens-card-d">Fear, greed, consensus and narrative shifts</div>
-            </div>
+            </a>
           </div>
         </div>
 
