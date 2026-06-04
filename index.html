@@ -1132,105 +1132,155 @@ html[data-theme="light"] .decode-chip:hover {
 }
 .spotlight-label { margin-bottom: 12px; }
 .latest-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 .latest-card {
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr) auto;
-  gap: 18px;
-  align-items: center;
-  min-height: 0;
-  padding: 14px;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-height: 172px;
+  overflow: hidden;
   border: 1px solid var(--rule);
-  border-radius: 8px;
+  border-radius: 14px;
   background: var(--bg-2);
   color: var(--ink);
   text-decoration: none;
-  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  isolation: isolate;
+  transition: transform 0.3s cubic-bezier(.2,.7,.2,1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.latest-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(212,166,74,0.55);
-  background: #181410;
+.latest-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
-html[data-theme="light"] .latest-card:hover { background: rgba(184,133,43,0.05); }
 .latest-thumb {
   position: relative;
-  width: 150px;
-  aspect-ratio: 16 / 9;
-  border-radius: 7px;
+  flex: 0 0 44%;
+  max-width: 250px;
+  align-self: stretch;
   overflow: hidden;
   background: var(--bg);
-  border: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
 }
 .latest-thumb img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.35s ease;
+  transition: transform 0.5s cubic-bezier(.2,.7,.2,1);
 }
-.latest-card:hover .latest-thumb img { transform: scale(1.05); }
+.latest-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(14,12,10,0.55) 0%, rgba(14,12,10,0.12) 38%, transparent 60%);
+  pointer-events: none;
+}
+.latest-thumb.is-empty {
+  background: radial-gradient(120% 120% at 0% 0%, rgba(212,166,74,0.18), transparent 55%), var(--bg);
+}
+.latest-thumb.is-empty::after { background: none; }
 .latest-index {
   position: absolute;
-  top: 7px;
-  left: 7px;
-  padding: 3px 8px;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 4px 9px;
   border-radius: 999px;
-  background: rgba(14,12,10,0.74);
+  background: rgba(14,12,10,0.72);
+  border: 1px solid rgba(212,166,74,0.45);
+  backdrop-filter: blur(4px);
   font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  line-height: 1;
+  color: var(--accent);
+}
+.latest-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  padding: 20px 22px;
+}
+.latest-topic {
+  font-size: 10px;
+  font-weight: 700;
   letter-spacing: 1.6px;
   text-transform: uppercase;
   color: var(--accent);
-  font-weight: 700;
-}
-.latest-topic {
-  display: block;
-  font-size: 10px;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 700;
-  margin-bottom: 6px;
 }
 .latest-title {
-  font-size: clamp(19px, 2vw, 25px);
-  line-height: 1.08;
   margin: 0;
+  font-size: clamp(17px, 1.5vw, 20px);
+  line-height: 1.2;
+  font-weight: 700;
   color: var(--ink);
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .latest-excerpt {
-  font-size: 13.5px;
-  line-height: 1.48;
-  color: var(--muted);
-  margin: 9px 0 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .latest-meta {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-  min-width: 74px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
   font-size: 10px;
+  font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
   color: var(--muted);
-  font-weight: 700;
   white-space: nowrap;
 }
 .latest-arrow {
-  color: var(--ink);
-  font-size: 20px;
+  font-size: 17px;
   line-height: 1;
-  transition: color 0.2s ease, transform 0.2s ease;
+  color: var(--ink-2);
+  transition: color 0.25s ease, transform 0.25s ease;
 }
-.latest-card:hover .latest-arrow {
-  color: var(--accent);
-  transform: translateX(4px);
+.latest-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(212,166,74,0.55);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+}
+.latest-card:hover .latest-thumb img { transform: scale(1.06); }
+.latest-card:hover .latest-arrow { color: var(--accent); transform: translateX(4px); }
+html[data-theme="light"] .latest-thumb::after {
+  background: linear-gradient(135deg, rgba(26,52,88,0.42) 0%, rgba(26,52,88,0.08) 38%, transparent 60%);
+}
+html[data-theme="light"] .latest-index {
+  background: rgba(26,52,88,0.82);
+  border-color: rgba(184,133,43,0.55);
+  color: #f4ecd8;
+}
+html[data-theme="light"] .latest-thumb.is-empty {
+  background: radial-gradient(120% 120% at 0% 0%, rgba(184,133,43,0.20), transparent 55%), var(--bg);
+}
+html[data-theme="light"] .latest-card:hover {
+  border-color: rgba(184,133,43,0.6);
+  box-shadow: 0 16px 40px rgba(26,52,88,0.14);
 }
 
 .tracker-spotlight[data-href] { cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
@@ -1623,10 +1673,9 @@ html[data-theme="light"] .tracker-search {
     padding-bottom: 0;
   }
   .spotlight-title { font-size: clamp(38px, 8vw, 64px); }
-  .latest-list {
-    grid-template-rows: auto;
-    flex: initial;
-  }
+  .latest-list { gap: 16px; }
+  .latest-card { min-height: 184px; }
+  .latest-thumb { flex-basis: 40%; max-width: 320px; }
 }
 
 @media (max-width: 640px) {
@@ -1640,22 +1689,22 @@ html[data-theme="light"] .tracker-search {
   }
   .spotlight-title { font-size: clamp(34px, 10vw, 50px); }
   .latest-card {
-    grid-template-columns: 104px minmax(0, 1fr);
-    gap: 12px;
+    flex-direction: column;
+    align-items: stretch;
     min-height: 0;
-    padding: 14px;
   }
-  .latest-thumb { width: 104px; }
-  .latest-meta {
-    grid-column: 2;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    min-width: 0;
-    margin-top: 6px;
+  .latest-thumb {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: none;
+    height: 172px;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
   }
-  .latest-title { font-size: 20px; }
-  .latest-excerpt { font-size: 13px; }
+  .latest-body { padding: 16px 16px 18px; }
+  .latest-title { font-size: 18px; -webkit-line-clamp: 3; line-clamp: 3; }
+  .latest-excerpt { font-size: 12.5px; }
+  .latest-card:hover { transform: none; }
   .tracker-spotlight { padding: 20px; }
   .tracker-ticker-n { font-size: clamp(52px, 16vw, 74px); }
   .tracker-spotlight-title { font-size: 22px; }
@@ -1921,32 +1970,20 @@ html[data-theme="light"] .tracker-search {
       <div>
         <div class="spotlight-label">Latest 3 Blogs</div>
         <div class="latest-list" id="latestHomepagePosts" aria-live="polite">
-          <a class="latest-card" href="blog/posts/harshal-dasani-media-features/">
-            <span class="latest-thumb"><span class="latest-index">01</span></span>
-            <span>
-              <span class="latest-topic">Media</span>
-              <h3 class="latest-title">Harshal Dasani Media Features</h3>
-              <p class="latest-excerpt">A guide to the live archive of articles, quotes, e-paper appearances and press coverage.</p>
+          <a class="latest-card" href="blog/posts/indian-it-stocks-whats-breaking/">
+            <span class="latest-thumb">
+              <picture>
+                <source srcset="blog/posts/indian-it-stocks-whats-breaking/cover-ai-express.webp" type="image/webp">
+                <img src="blog/posts/indian-it-stocks-whats-breaking/cover-ai-express.png" alt="" loading="lazy" decoding="async">
+              </picture>
+              <span class="latest-index">01</span>
             </span>
-            <span class="latest-meta"><span>04 Jun 2026</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>
-          </a>
-          <a class="latest-card" href="blog/posts/harshal-dasani-interviews/">
-            <span class="latest-thumb"><span class="latest-index">02</span></span>
-            <span>
-              <span class="latest-topic">Interviews</span>
-              <h3 class="latest-title">Harshal Dasani Interviews</h3>
-              <p class="latest-excerpt">Where to find interviews, quotes and public market commentary across financial publications and television.</p>
+            <span class="latest-body">
+              <span class="latest-topic">Stock Market</span>
+              <h3 class="latest-title">Indian IT Stocks: What’s Actually Breaking — and Why the Market Stopped Paying Up</h3>
+              <p class="latest-excerpt">TCS, Infosys and Wipro returned ₹1.09 lakh crore to shareholders since 2020 and spend under 1% of revenue on R&amp;D.</p>
+              <span class="latest-meta"><span>04 Jun 2026</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>
             </span>
-            <span class="latest-meta"><span>04 Jun 2026</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>
-          </a>
-          <a class="latest-card" href="blog/posts/markets-with-harshal/">
-            <span class="latest-thumb"><span class="latest-index">03</span></span>
-            <span>
-              <span class="latest-topic">Markets</span>
-              <h3 class="latest-title">Markets with Harshal</h3>
-              <p class="latest-excerpt">The core themes behind Indian markets, commodities, macro cycles, geopolitics and behavioral finance notes.</p>
-            </span>
-            <span class="latest-meta"><span>04 Jun 2026</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>
           </a>
         </div>
       </div>
@@ -2093,16 +2130,15 @@ function toggleTheme(){
     var num = String(idx + 1).padStart(2, '0');
     var img = post.image || '';
     var webp = post.imageWebp || '';
-    var thumb = '<span class="latest-thumb">' +
-      (img ? '<picture>' + (webp ? '<source srcset="'+escapeHomeHTML(webp)+'" type="image/webp">' : '') + '<img src="'+escapeHomeHTML(img)+'" alt="" loading="lazy" decoding="async">' + '</picture>' : '') +
-      '<span class="latest-index">'+num+'</span>' +
-    '</span>';
+    var picture = img ? '<picture>' + (webp ? '<source srcset="'+escapeHomeHTML(webp)+'" type="image/webp">' : '') + '<img src="'+escapeHomeHTML(img)+'" alt="" loading="lazy" decoding="async">' + '</picture>' : '';
     return '<a class="latest-card" href="'+escapeHomeHTML(href)+'">' +
-      thumb +
-      '<span class="latest-body"><span class="latest-topic">'+escapeHomeHTML(topic)+'</span>' +
-      '<h3 class="latest-title">'+escapeHomeHTML(post.title || 'Untitled')+'</h3>' +
-      '<p class="latest-excerpt">'+escapeHomeHTML(post.excerpt || '')+'</p></span>' +
-      '<span class="latest-meta"><span>'+escapeHomeHTML(formatHomeDate(post.date))+'</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>' +
+      '<span class="latest-thumb'+(img ? '' : ' is-empty')+'">' + picture + '<span class="latest-index">'+num+'</span></span>' +
+      '<span class="latest-body">' +
+        '<span class="latest-topic">'+escapeHomeHTML(topic)+'</span>' +
+        '<h3 class="latest-title">'+escapeHomeHTML(post.title || 'Untitled')+'</h3>' +
+        '<p class="latest-excerpt">'+escapeHomeHTML(post.excerpt || '')+'</p>' +
+        '<span class="latest-meta"><span>'+escapeHomeHTML(formatHomeDate(post.date))+'</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>' +
+      '</span>' +
     '</a>';
   }
   function loadHomepagePosts(){
