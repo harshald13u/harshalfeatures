@@ -616,12 +616,13 @@ html[data-theme="light"] .hero-tags a {
   margin-bottom: 72px;
 }
 .about-side-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 12px;
+  font-size: clamp(28px, 4.8vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--ink);
+  margin-bottom: 14px;
+  line-height: 1;
 }
 .about-side-title {
   font-family: 'Inter', sans-serif;
@@ -655,15 +656,20 @@ html[data-theme="light"] .hero-tags a {
   color: var(--ink);
 }
 .about-stats {
-  margin-top: 22px;
+  margin-top: 28px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 18px 28px;
+  flex-direction: column;
+  gap: 14px 0;
   font-family: 'Inter', sans-serif;
   break-inside: avoid;
   -webkit-column-break-before: always;
   break-before: column;
 }
+.about-stat {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.about-stat:last-child { border-bottom: none; }
 .about-stat {
   display: flex;
   flex-direction: column;
