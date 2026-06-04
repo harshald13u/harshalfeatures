@@ -286,11 +286,11 @@ def publish_from_docx(docx_path, slug, title=None, topic=None, excerpt=None, dat
         if not title:
             title = "Untitled"
 
-    # Build excerpt from first non-empty paragraph
+    # Build excerpt from first non-empty paragraph — use FULL text (user writes SEO-friendly one-liner)
     if not excerpt:
         for p in data["paragraphs"]:
             if p["type"] == "p" and p["text"]:
-                excerpt = p["text"][:155].rsplit(" ", 1)[0] + "…"
+                excerpt = p["text"].strip()
                 break
         if not excerpt: excerpt = title
 
@@ -313,8 +313,13 @@ def publish_from_docx(docx_path, slug, title=None, topic=None, excerpt=None, dat
         inline_map[i] = saved
 
     # Build body HTML — preserve heading hierarchy + inline images
+    # Skip the FIRST paragraph (used as subtitle/excerpt) to avoid duplication
     body_html_parts = []
+    first_p_skipped = False
     for p in data["paragraphs"]:
+        if p["type"] == "p" and not first_p_skipped and p["text"]:
+            first_p_skipped = True
+            continue
         if p["type"] == "image":
             idx = p["image_idx"]
             if idx == 0: continue  # already shown as cover
