@@ -1,4 +1,4 @@
-# Robots policy for the Harshal Dasani Media Features Dashboard
+# Robots policy for the Harshal Dasani official website
 # Allow all reputable crawlers full access; point them at the sitemap.
 
 User-agent: *
