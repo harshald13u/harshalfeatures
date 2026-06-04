@@ -106,11 +106,12 @@ a { color: inherit; text-decoration: none; }
 
 /* MASTHEAD — same as landing */
 .masthead {
-  display: flex; align-items: center; justify-content: space-between;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  gap: 18px;
   padding-bottom: 18px; border-bottom: 1px solid var(--rule);
   margin-bottom: 48px;
 }
-.mast-socials { display: flex; align-items: center; gap: 10px; }
+.mast-socials { display: flex; align-items: center; justify-self: center; gap: 10px; }
 .mast-socials a {
   display: inline-flex; align-items: center; justify-content: center;
   width: 32px; height: 32px; border-radius: 50%;
@@ -123,6 +124,7 @@ a { color: inherit; text-decoration: none; }
   background: rgba(212,166,74,0.08); transform: translateY(-1px);
 }
 .mast-meta {
+  justify-self: start;
   font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
   color: var(--muted); font-weight: 500;
 }
@@ -133,9 +135,10 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex; align-items: center; justify-content: center;
   width: 32px; height: 32px; border-radius: 50%;
   background: rgba(255,255,255,0.04); border: 1px solid var(--rule);
-  color: var(--ink-2); cursor: pointer; padding: 0; margin-right: 12px;
+  color: var(--ink-2); cursor: pointer; padding: 0; margin: 0;
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
   position: relative;
+  justify-self: end;
 }
 .mast-theme-toggle::before { content: ""; position: absolute; inset: -6px; display: block; }
 .mast-theme-toggle:hover { color: var(--accent); border-color: var(--accent); background: rgba(212,166,74,0.08); transform: translateY(-1px); }
@@ -385,16 +388,16 @@ html[data-theme="light"] .mast-theme-toggle { background: rgba(26,52,88,0.04); }
 <main class="page">
 
   <header class="masthead">
-    <button class="mast-theme-toggle" onclick="toggleBlogTheme()" aria-label="Toggle light / dark theme" title="Toggle theme" type="button">
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-    </button>
+    <div class="mast-meta"><a href="https://harshald13u.github.io/harshalfeatures/">&larr; Back to home</a></div>
     <div class="mast-socials">
       <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg></a>
       <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener noreferrer" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg></a>
       <a href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
     </div>
-    <div class="mast-meta"><a href="https://harshald13u.github.io/harshalfeatures/">&larr; Back to home</a></div>
+    <button class="mast-theme-toggle" onclick="toggleBlogTheme()" aria-label="Toggle light / dark theme" title="Toggle theme" type="button">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
   </header>
 
   <section class="blog-hero">
