@@ -47,7 +47,7 @@ from datetime import datetime, timezone
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-FEATURES = "/sessions/keen-zen-archimedes/mnt/Features"
+FEATURES = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # .../Features (session-agnostic)
 BLOG_DIR = f"{FEATURES}/blog"
 POSTS_DIR = f"{BLOG_DIR}/posts"
 POSTS_JSON = f"{BLOG_DIR}/posts.json"
@@ -702,9 +702,12 @@ a{{color:var(--accent);text-decoration:none}}
 a:hover{{text-decoration:underline}}
 .theme-toggle{{position:fixed;top:18px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid var(--rule);background:var(--bg-2);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:1000}}
 .page{{max-width:760px;margin:0 auto;padding:56px 24px 96px}}
-.crumb{{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}}
+.crumb{{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}}
 .crumb a{{color:var(--muted)}}
 .crumb a:hover{{color:var(--accent)}}
+.crumb-back{{white-space:nowrap}}
+.crumb-trail{{text-align:right}}
+@media(max-width:520px){{.crumb{{flex-direction:column;align-items:flex-start;gap:8px}}.crumb-trail{{text-align:left}}}}
 .topic-pill{{display:inline-block;padding:5px 12px;border:1px solid var(--rule);border-radius:999px;font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:18px;background:var(--bg-2)}}
 h1{{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46px);line-height:1.12;letter-spacing:-0.02em;color:var(--ink);margin:0 0 14px}}
 .subtitle{{font-size:18.5px;color:var(--ink-2);line-height:1.5;margin:0 0 22px;font-weight:400}}
@@ -847,7 +850,7 @@ strong{{color:var(--ink);font-weight:700}}
 <body>
 <button class="theme-toggle" aria-label="Toggle theme" onclick="(function(){{var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{{localStorage.setItem('hd-theme',n)}}catch(e){{}}}})()">☼</button>
 <main class="page" itemscope itemtype="https://schema.org/NewsArticle">
-  <nav class="crumb" aria-label="Breadcrumb"><a href="../../../">Harshal Dasani</a> &middot; <a href="../../">Blogs</a> &middot; <span>{topic_label}</span></nav>
+  <nav class="crumb" aria-label="Breadcrumb"><a class="crumb-back" href="../../">&larr; Back to Blogs</a><span class="crumb-trail"><a href="../../../">Harshal Dasani</a> &middot; <a href="../../">Blogs</a> &middot; <span>{topic_label}</span></span></nav>
   <span class="topic-pill">{topic_label}</span>
   <h1 itemprop="headline">{title_html}</h1>
   <p class="subtitle" itemprop="description">{excerpt_html}</p>
