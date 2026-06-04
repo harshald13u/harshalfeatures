@@ -1,3 +1,32 @@
 {
-  "posts": []
+  "posts": [
+    {
+      "slug": "harshal-dasani-invasset",
+      "title": "Harshal Dasani at INVasset PMS: Role, Market Views and Media Commentary",
+      "excerpt": "A concise profile of Harshal Dasani, Business Head at INVasset PMS & AIF, and the market themes he tracks across equities, commodities, macro and geopolitics.",
+      "date": "2026-06-04",
+      "topic": "markets-with-harshal"
+    },
+    {
+      "slug": "harshal-dasani-interviews",
+      "title": "Harshal Dasani Interviews: Market Views Across ET, Mint, Moneycontrol and CNBC",
+      "excerpt": "Where to find Harshal Dasani interviews, quotes and commentary across financial publications, television and market coverage.",
+      "date": "2026-06-04",
+      "topic": "interviews"
+    },
+    {
+      "slug": "harshal-dasani-media-features",
+      "title": "Harshal Dasani Media Features: Articles, Quotes and Press Coverage",
+      "excerpt": "A guide to the live Harshal Dasani media features tracker covering articles, quotes, e-paper appearances and mentions across 145+ publications.",
+      "date": "2026-06-04",
+      "topic": "media-features"
+    },
+    {
+      "slug": "markets-with-harshal",
+      "title": "Markets with Harshal: Indian Markets, Commodities, Macro and Geopolitics",
+      "excerpt": "The core themes behind Markets with Harshal: Indian equity markets, commodities, macro cycles, geopolitics and behavioral finance.",
+      "date": "2026-06-04",
+      "topic": "stock-market"
+    }
+  ]
 }

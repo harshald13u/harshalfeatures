@@ -11,8 +11,8 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/"/>
     <image:image>
       <image:loc>https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg</image:loc>
-      <image:title>Harshal Dasani — Business Head, INVasset PMS</image:title>
-      <image:caption>Harshal Dasani — markets professional and writer. Mumbai.</image:caption>
+      <image:title>Harshal Dasani - Business Head, INVasset PMS</image:title>
+      <image:caption>Harshal Dasani - markets professional and writer. Mumbai.</image:caption>
     </image:image>
   </url>
   <url>
@@ -30,5 +30,37 @@
     <priority>0.8</priority>
     <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshald13u.github.io/harshalfeatures/blog/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/blog/"/>
+  </url>
+  <url>
+    <loc>https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-invasset/</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-invasset/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-invasset/"/>
+  </url>
+  <url>
+    <loc>https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-interviews/</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-interviews/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-interviews/"/>
+  </url>
+  <url>
+    <loc>https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-media-features/</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-media-features/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-media-features/"/>
+  </url>
+  <url>
+    <loc>https://harshald13u.github.io/harshalfeatures/blog/posts/markets-with-harshal/</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshald13u.github.io/harshalfeatures/blog/posts/markets-with-harshal/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/blog/posts/markets-with-harshal/"/>
   </url>
 </urlset>
