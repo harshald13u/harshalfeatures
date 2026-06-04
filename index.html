@@ -1424,9 +1424,9 @@ function toggleTheme(){
     recalc();
     window.addEventListener('resize', recalc, { passive: true });
     var x = 0;
-    // Desktop ~95 px/s (snappier), mobile ~55 px/s, reduced-motion 14 px/s (slow but moving)
+    // Desktop ~230 px/s, mobile ~140 px/s. Reduced-motion preference no longer slows the marquee.
     var _isMobile = window.matchMedia && window.matchMedia('(max-width: 720px)').matches;
-    var speed = reduced ? 18 : (_isMobile ? 85 : 160);
+    var speed = _isMobile ? 140 : 230;
     var last = performance.now();
     var paused = false;
     stage.addEventListener('pointerenter', function(){ paused = true; });
