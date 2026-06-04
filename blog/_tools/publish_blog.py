@@ -878,3 +878,33 @@ def publish_blog(docx_path):
         "used_entities": sorted(used_entities),
         "body_paragraphs": sum(1 for p in paras if p["type"] in ("p","h2","h3")) - len(skip),
     }
+
+
+
+def find_latest_blog():
+    """Return the newest .docx in Blogs/ (ignores _system/, ignores temp ~$ files)."""
+    blogs_dir = f"{FEATURES}/Blogs"
+    candidates = []
+    for fn in os.listdir(blogs_dir):
+        if fn.startswith("~$") or fn.startswith("."):
+            continue
+        if not fn.lower().endswith(".docx"):
+            continue
+        path = os.path.join(blogs_dir, fn)
+        if not os.path.isfile(path):
+            continue
+        m = re.match(r"(\d{4}-\d{2}-\d{2})_", fn)
+        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(path))
+        candidates.append((key, path))
+    if not candidates:
+        raise SystemExit("No .docx blogs in /Features/Blogs/")
+    candidates.sort(reverse=True)
+    return candidates[0][1]
+
+
+if __name__ == "__main__":
+    target = sys.argv[1] if len(sys.argv) > 1 else find_latest_blog()
+    result = publish_blog(target)
+    print()
+    print("=" * 60)
+    print(json.dumps(result, indent=2, ensure_ascii=False))

@@ -18,7 +18,7 @@
 <meta name="article:section" content="Stock Market">
 <meta name="article:author" content="Harshal Dasani">
 <meta name="article:published_time" content="2026-06-04T09:00:00+05:30">
-<meta name="article:modified_time" content="2026-06-04T12:22:48+00:00">
+<meta name="article:modified_time" content="2026-06-04T14:44:03+00:00">
 
 <link rel="canonical" href="https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/">
 <link rel="alternate" hreflang="en-IN" href="https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/">
@@ -36,7 +36,7 @@
 <meta property="og:image:alt" content="Nifty IT ‘What’s In / What’s Out’ snapshot — valuation, growth and AI pressure on Indian IT stocks TCS, Infosys and Wipro">
 <meta property="og:locale" content="en_IN">
 <meta property="article:published_time" content="2026-06-04T09:00:00+05:30">
-<meta property="article:modified_time" content="2026-06-04T12:22:48+00:00">
+<meta property="article:modified_time" content="2026-06-04T14:44:03+00:00">
 <meta property="article:author" content="Harshal Dasani">
 <meta property="article:section" content="Stock Market">
 
@@ -93,7 +93,7 @@
       "alternativeHeadline": "Indian IT Stocks: What’s Actually Breaking — and Why the Market Stopped Paying Up",
       "description": "TCS, Infosys and Wipro returned ₹1.09 lakh crore to shareholders since 2020 and spend under 1% of revenue on R&D. Why the market is repricing Indian IT.",
       "datePublished": "2026-06-04T09:00:00+05:30",
-      "dateModified": "2026-06-04T12:22:48+00:00",
+      "dateModified": "2026-06-04T14:44:03+00:00",
       "url": "https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/",
       "mainEntityOfPage": "https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/",
       "image": {
@@ -127,13 +127,18 @@
       "about": [
         {
           "@type": "Thing",
-          "name": "European Union",
-          "sameAs": "https://www.wikidata.org/wiki/Q458"
+          "name": "Nifty 50",
+          "sameAs": "https://www.wikidata.org/wiki/Q1958057"
         },
         {
           "@type": "Thing",
-          "name": "Nifty 50",
-          "sameAs": "https://www.wikidata.org/wiki/Q1958057"
+          "name": "Wipro",
+          "sameAs": "https://www.wikidata.org/wiki/Q487725"
+        },
+        {
+          "@type": "Thing",
+          "name": "European Union",
+          "sameAs": "https://www.wikidata.org/wiki/Q458"
         },
         {
           "@type": "Thing",
@@ -144,11 +149,6 @@
           "@type": "Thing",
           "name": "Infosys",
           "sameAs": "https://www.wikidata.org/wiki/Q852683"
-        },
-        {
-          "@type": "Thing",
-          "name": "Wipro",
-          "sameAs": "https://www.wikidata.org/wiki/Q487725"
         }
       ]
     },
@@ -200,14 +200,21 @@ h1{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46p
 .subtitle{font-size:18.5px;color:var(--ink-2);line-height:1.5;margin:0 0 22px;font-weight:400}
 .byline{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:0 0 30px;flex-wrap:wrap}
 .byline strong{color:var(--ink);font-weight:600}
-.cover{position:relative;margin:0 0 14px;border-radius:8px;overflow:hidden;border:1px solid var(--rule);aspect-ratio:16/9;background:var(--bg-2)}
-.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* Cover breaks OUT of the article column — extends up to 1400px on desktop while body stays at 760px.
+   The width calc keeps it sane on every viewport: capped at viewport-minus-32px on narrow screens. */
+.cover{position:relative;display:block;margin:0 auto 14px;border-radius:8px;overflow:hidden;border:1px solid var(--rule);background:var(--bg-2);
+       width:min(calc(100% + 340px), calc(100vw - 32px));
+       max-width:1400px;
+       margin-left:50%;transform:translateX(-50%);
+       aspect-ratio:16/9;cursor:zoom-in;text-decoration:none}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:var(--bg-2)}
 /* Default theme = dark → show dark cover only. Light theme → show light cover only.
    Pure data-theme driven; we DO NOT use prefers-color-scheme (which can disagree with the user's manual theme choice). */
 .cover .light-only{opacity:0}
 .cover .dark-only{opacity:1}
 html[data-theme="light"] .cover .light-only{opacity:1}
 html[data-theme="light"] .cover .dark-only{opacity:0}
+@media (max-width: 800px){.cover{margin-left:0;transform:none;width:100%}}
 figcaption{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin:0 0 32px}
 h2{font-weight:700;font-size:24px;color:var(--ink);margin:38px 0 12px;letter-spacing:-0.01em;padding-bottom:6px;border-bottom:1px solid var(--rule)}
 h3{font-weight:700;font-size:18px;color:var(--accent);margin:26px 0 8px}
@@ -230,7 +237,7 @@ strong{color:var(--ink);font-weight:700}
   <h1 itemprop="headline">Indian IT Stocks: What’s Actually Breaking — and Why the Market Stopped Paying Up</h1>
   <p class="subtitle" itemprop="description">TCS, Infosys and Wipro returned ₹1.09 lakh crore to shareholders since 2020 and spend under 1% of revenue on R&amp;D. Why the market is repricing Indian IT.</p>
   <p class="byline">By <strong itemprop="author">Harshal Dasani</strong> &middot; <span>Business Head, INVasset PMS</span> &middot; <time itemprop="datePublished" datetime="2026-06-04T09:00:00+05:30">4 June 2026</time></p>
-  <figure class="cover">
+  <figure class="cover" role="button" tabindex="0" aria-label="Open cover in full resolution" data-light="cover.png" data-dark="cover-dark.png">
     <img src="cover.png" alt="Nifty IT ‘What’s In / What’s Out’ snapshot — valuation, growth and AI pressure on Indian IT stocks TCS, Infosys and Wipro" width="1600" height="900" loading="eager" fetchpriority="high" itemprop="image" class="light-only">
     <img src="cover-dark.png" alt="Nifty IT ‘What’s In / What’s Out’ snapshot — valuation, growth and AI pressure on Indian IT stocks TCS, Infosys and Wipro" width="1600" height="900" loading="eager" fetchpriority="high" class="dark-only">
   </figure>
@@ -277,16 +284,29 @@ strong{color:var(--ink);font-weight:700}
   <p class="footer-meta">Published 4 June 2026 &middot; Updated 4 June 2026 &middot; <a href="../../../">harshald13u.github.io/harshalfeatures</a></p>
 </main>
 <script>
-// Dual-cover swap is driven entirely by CSS opacity on data-theme.
-// We also fire a pageshow listener so bfcache returns to the right cover.
+// Cover swap is CSS-only (opacity keyed on [data-theme]). pageshow keeps bfcache returns in sync.
+// Click/Enter on the cover opens the ACTIVE-theme image at full resolution in a new tab.
 (function(){
   function refresh(){
-    // No-op: CSS already keys off [data-theme]. Just bump a tiny inline custom property to
-    // force any cached state to reflow on bfcache returns.
     document.documentElement.style.setProperty('--cover-tick', Date.now());
   }
   refresh();
   window.addEventListener('pageshow', refresh);
+
+  var cover = document.querySelector('.cover');
+  if (!cover) return;
+  function activeCoverSrc(){
+    var t = document.documentElement.getAttribute('data-theme') || 'dark';
+    return cover.getAttribute(t === 'light' ? 'data-light' : 'data-dark');
+  }
+  function openFull(){
+    var src = activeCoverSrc();
+    if (src) window.open(src, '_blank', 'noopener');
+  }
+  cover.addEventListener('click', openFull);
+  cover.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFull(); }
+  });
 })();
 </script>
 </body>
