@@ -2170,7 +2170,7 @@ function renderTopicPanel(unique) {
   const list = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
   const max = list[0][1];
   const total = unique.length;
-  const colors = ['#8a8273','#FFE0A8','#B8EAD8','#d4a64a','#D6C8F8','#FFB8C8','#B8E8F0','#FFD5B8','#C8E6C0'];
+  const colors = ['#1d4ed8','#059669','#d97706','#dc2626','#7c3aed','#0891b2','#db2777','#ca8a04','#4338ca','#15803d','#be123c','#b45309'];
   el.innerHTML = list.map(([t,c],i)=>{
     const w = c/max*100; const pct=(c/total*100).toFixed(1);
     return `<div class="bar-row clickable" data-drill="topic" data-val="${escapeHtml(t)}"><div class="bar-label small">${escapeHtml(t)}</div><div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${colors[i%colors.length]}"></div></div><div class="bar-value">${c} | ${pct}%</div></div>`;
@@ -2186,7 +2186,7 @@ function renderLanguagePanel(unique) {
     langCounts[l] = (langCounts[l] || 0) + 1;
   }
   const langList = Object.entries(langCounts).sort((a, b) => b[1] - a[1]);
-  const lc = ['#8a8273','#FFE0A8','#B8EAD8','#d4a64a','#D6C8F8','#FFC8DC','#C8E6C0'];
+  const lc = ['#1d4ed8','#059669','#d97706','#dc2626','#7c3aed','#0891b2','#db2777','#ca8a04','#4338ca','#15803d','#be123c','#b45309'];
   const langTotal = unique.length;
   const maxL = langList[0][1];
   $('lang-bars').innerHTML = langList.map(([lang, count], i) => {
@@ -2373,7 +2373,7 @@ function renderJournalistPanel(unique) {
   const totalArticles = unique.length;
 
   // Color palette - rotate through dashboard accents
-  const COLORS = ['#5BA8FF', '#2DD4BF', '#d4a64a', '#FF9A4D', '#d4a64a', '#F472B6', '#22C55E', '#F87171', '#FBBF24', '#60A5FA'];
+  const COLORS = ['#1d4ed8','#059669','#d97706','#dc2626','#7c3aed','#0891b2','#db2777','#ca8a04','#4338ca','#15803d','#be123c','#b45309'];
 
   const html_rows = display.map(([name, count], i) => {
     const pct = (count / maxVal) * 100;
@@ -2418,8 +2418,8 @@ function renderPublicationPanel(unique) {
   const defaultN = 10;
   const pubList = (term || PUB_PANEL_EXPANDED) ? allPubs : allPubs.slice(0, defaultN);
   // Gradient palette so even publications past #3 stay visually meaningful
-  const palette = ['#E5A82E','#1FA08C','#8a8273','#d4a64a','#F472B6','#d4a64a','#3FA796','#C77DCA','#FFC857','#d4a64a'];
-  const greyPalette = ['#B8C0D8','#A8B0C8','#98A0B8','#888EAA','#7A809E'];
+  const palette = ['#1d4ed8','#059669','#d97706','#dc2626','#7c3aed','#0891b2','#db2777','#ca8a04','#4338ca','#15803d','#be123c','#b45309'];
+  const greyPalette = ['#475569','#334155','#1e293b','#64748b','#4b5563'];
   const maxP = pubList[0][1];
   const total = unique.length;
   $('pub-bars').innerHTML = pubList.map(([pub, count], i) => {
