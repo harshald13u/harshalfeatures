@@ -1210,6 +1210,10 @@ html[data-theme="light"] .latest-card:hover { background: rgba(184,133,43,0.05);
   color: var(--accent);
   transform: translateX(4px);
 }
+
+.tracker-spotlight[data-href] { cursor: pointer; transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; }
+.tracker-spotlight[data-href]:hover { transform: translateY(-2px); border-color: rgba(212,166,74,0.45); box-shadow: 0 12px 30px rgba(212,166,74,0.12); }
+.tracker-spotlight[data-href]:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 .tracker-spotlight {
   display: flex;
   flex-direction: column;
@@ -1897,7 +1901,7 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
         </div>
       </div>
 
-      <aside class="tracker-spotlight" data-door aria-labelledby="trackerSpotlightTitle">
+      <aside class="tracker-spotlight" data-door aria-labelledby="trackerSpotlightTitle" role="link" tabindex="0" data-href="tracker/">
         <div>
           <div class="tracker-spotlight-top">
             <span class="tracker-kicker">Media Tracker</span>
@@ -2138,6 +2142,29 @@ function toggleTheme(){
     }
     requestAnimationFrame(step);
   })();
+})();
+
+// Make tracker-spotlight card clickable (entire card -> /tracker/) without breaking inner search form / quick links
+(function(){
+  var card = document.querySelector('.tracker-spotlight[data-href]');
+  if (!card) return;
+  var href = card.getAttribute('data-href');
+  function isInteractive(el){
+    if (!el || el === card) return false;
+    var tag = (el.tagName || '').toLowerCase();
+    if (tag === 'a' || tag === 'button' || tag === 'input' || tag === 'form' || tag === 'textarea' || tag === 'select') return true;
+    return isInteractive(el.parentElement);
+  }
+  card.addEventListener('click', function(e){
+    if (isInteractive(e.target)) return;  // let the inner form/link handle it
+    window.location.href = href;
+  });
+  card.addEventListener('keydown', function(e){
+    if ((e.key === 'Enter' || e.key === ' ') && !isInteractive(e.target)) {
+      e.preventDefault();
+      window.location.href = href;
+    }
+  });
 })();
 </script>
 </body>
