@@ -2242,7 +2242,7 @@ function renderTopicPanel(unique) {
   const el = $('topic-bars');
   if (!unique.length) { el.innerHTML='<div style="font-size:11px;color:#9CA3AF;padding:20px 0">No entries in this window.</div>'; $('topic-note').textContent=''; return; }
   const counts = {};
-  for (const r of unique) { const t = getTopic(r['Heading Of The Article']); counts[t]=(counts[t]||0)+1; }
+  for (const r of unique) { const t = getTopic(r['Heading Of The Article'] || r.Heading); counts[t]=(counts[t]||0)+1; }
   const list = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
   const max = list[0][1];
   const total = unique.length;
@@ -2558,7 +2558,7 @@ function renderLatestEntry(unique) {
   let drillActive = false;
   if (term) {
     sortedByDate = sortedByDate.filter(r =>
-      String(r['Heading Of The Article'] || '').toLowerCase().includes(term) ||
+      String(r['Heading Of The Article'] || r.Heading || '').toLowerCase().includes(term) ||
       String(r.Publication || '').toLowerCase().includes(term) ||
       String(r.Language || '').toLowerCase().includes(term) ||
       String(r.Journalist || '').toLowerCase().includes(term)
@@ -2567,7 +2567,7 @@ function renderLatestEntry(unique) {
   } else if (DRILL) {
     drillActive = true;
     sortedByDate = sortedByDate.filter(r => {
-      if (DRILL.type === 'topic') return getTopic(r['Heading Of The Article']) === DRILL.value;
+      if (DRILL.type === 'topic') return getTopic(r['Heading Of The Article'] || r.Heading) === DRILL.value;
       if (DRILL.type === 'lang')  return (r.Language || 'Unknown') === DRILL.value;
       if (DRILL.type === 'pub')   return (r.Publication || 'Unknown') === DRILL.value;
       if (DRILL.type === 'jrn')   return (r.Journalist || '') === DRILL.value;
@@ -2592,7 +2592,7 @@ function renderLatestEntry(unique) {
   const top5 = (term || drillActive || manualFilterActive) ? sortedByDate.slice(0, 300) : sortedByDate.slice(0, 10);
   $('latest-list').innerHTML = top5.map((r, i) => {
     const url = r.Link || '';
-    const heading = r['Heading Of The Article'] || '';
+    const heading = r['Heading Of The Article'] || r.Heading || '';
     const pub = r.Publication || '';
     const journalist = r.Journalist || '';
     const date = fmtDateNice(r.Date);
