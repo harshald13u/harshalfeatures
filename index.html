@@ -357,9 +357,10 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
 .hero-right .hero-photo { margin-top: 0; }
 .hero-tags {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
   width: 100%;
+  max-width: 440px;
   margin: auto 0 80px 0;
   padding: 0;
 }
@@ -373,29 +374,45 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
   position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 9px 10px;
-  border: 1px solid var(--rule);
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 52px;
+  padding: 0 18px 0 20px;
+  border: 1px solid rgba(212,166,74,0.32);
   border-radius: 999px;
   font-family: 'Inter', sans-serif;
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.3px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--ink);
-  background: transparent;
+  background:
+    linear-gradient(135deg, rgba(212,166,74,0.16), rgba(255,255,255,0.02)),
+    rgba(255,255,255,0.03);
   text-decoration: none;
   transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
   white-space: nowrap;
   min-width: 0;
-  text-align: center;
+  text-align: left;
   overflow: hidden;
   animation: chipPulse 3.2s ease-in-out infinite;
 }
-.hero-tags a:nth-child(2) { animation-delay: 0.4s; }
-.hero-tags a:nth-child(3) { animation-delay: 0.8s; }
-.hero-tags a:nth-child(4) { animation-delay: 1.2s; }
+.hero-tags a:nth-child(2) { animation-delay: 0.45s; }
+.hero-tag-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(212,166,74,0.16);
+  color: var(--accent);
+  font-size: 16px;
+  line-height: 1;
+  flex: 0 0 auto;
+  transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
 .hero-tags a::after {
   content: '';
   position: absolute; inset: 0;
@@ -405,16 +422,26 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
 }
 html[data-theme="light"] .hero-tags a {
   color: #0a1a2e;
-  border-color: rgba(10,26,46,0.32);
+  border-color: rgba(184,133,43,0.42);
+  background:
+    linear-gradient(135deg, rgba(184,133,43,0.15), rgba(255,255,255,0.26)),
+    rgba(255,255,255,0.22);
   font-weight: 800;
 }
 .hero-tags a:hover {
-  color: var(--accent);
+  color: var(--ink);
   border-color: var(--accent);
-  background: rgba(212,166,74,0.10);
+  background:
+    linear-gradient(135deg, rgba(212,166,74,0.24), rgba(212,166,74,0.08)),
+    rgba(255,255,255,0.05);
   transform: translateY(-2px);
   box-shadow: 0 6px 22px rgba(212,166,74,0.28);
   animation-play-state: paused;
+}
+.hero-tags a:hover .hero-tag-arrow {
+  color: var(--bg);
+  background: var(--accent);
+  transform: translateX(3px);
 }
 .hero-tags a:hover::after {
   animation: chipSheen 0.7s ease-out forwards;
@@ -1744,11 +1771,9 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
       <figure class="hero-photo" id="heroPhoto">
         <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="1000" height="516" loading="eager" decoding="async">
       </figure>
-      <nav class="hero-tags" aria-label="Blog topics">
-        <a href="blog/?topic=stock-market">Stock Market</a>
-        <a href="blog/?topic=commodities">Commodities</a>
-        <a href="blog/?topic=macros">Macros</a>
-        <a href="blog/?topic=geopolitics">Geopolitics</a>
+      <nav class="hero-tags" aria-label="Primary sections">
+        <a href="tracker/" aria-label="Open media tracker"><span>Media</span><span class="hero-tag-arrow" aria-hidden="true">&rarr;</span></a>
+        <a href="blog/" aria-label="Open blog"><span>Blog</span><span class="hero-tag-arrow" aria-hidden="true">&rarr;</span></a>
       </nav>
     </div>
 
