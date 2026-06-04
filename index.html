@@ -1123,7 +1123,7 @@ html[data-theme="light"] .decode-chip:hover {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(330px, 0.92fr);
   gap: 22px;
-  align-items: start;
+  align-items: stretch;
 }
 .spotlight-grid > div:first-child {
   display: flex;
@@ -1289,16 +1289,19 @@ html[data-theme="light"] .latest-card:hover {
 .tracker-spotlight {
   display: flex;
   flex-direction: column;
-  padding: 26px 28px 24px;
-  border: 1px solid rgba(212,166,74,0.35);
-  border-radius: 8px;
+  gap: 12px;
+  min-height: 100%;
+  justify-content: space-between;
+  padding: 20px;
+  border: 1px solid rgba(212,166,74,0.30);
+  border-radius: 14px;
   background:
-    linear-gradient(135deg, rgba(212,166,74,0.14), transparent 40%),
+    linear-gradient(150deg, rgba(212,166,74,0.10), transparent 46%),
     var(--bg-2);
 }
 html[data-theme="light"] .tracker-spotlight {
   background:
-    linear-gradient(135deg, rgba(184,133,43,0.13), transparent 42%),
+    linear-gradient(150deg, rgba(184,133,43,0.12), transparent 48%),
     var(--bg-2);
 }
 .tracker-spotlight-top {
@@ -1306,13 +1309,12 @@ html[data-theme="light"] .tracker-spotlight {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 8px;
 }
 .tracker-live {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 24px;
+  min-height: 22px;
   padding: 0 11px;
   border-radius: 999px;
   background: var(--accent);
@@ -1323,9 +1325,7 @@ html[data-theme="light"] .tracker-spotlight {
   font-weight: 800;
 }
 .tracker-live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+  width: 6px; height: 6px; border-radius: 50%;
   background: var(--bg);
   animation: trackerLiveDot 1.5s ease-in-out infinite;
 }
@@ -1333,89 +1333,83 @@ html[data-theme="light"] .tracker-spotlight {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.35; transform: scale(0.7); }
 }
-.tracker-ticker-n {
+.ts-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.ts-kpi {
+  position: relative;
+  display: flex; flex-direction: column; justify-content: center; gap: 5px;
+  min-height: 56px; padding: 10px 12px;
+  border: 1px solid var(--rule); border-radius: 11px;
+  background: var(--bg);
+}
+.ts-kpi-n {
   font-family: 'Noto Serif', Georgia, 'Times New Roman', serif;
-  font-size: clamp(58px, 7.4vw, 92px);
-  line-height: 0.92;
-  font-weight: 700;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -1px;
-  margin: 2px 0 0;
+  font-size: 25px; line-height: 1; font-weight: 700;
+  color: var(--ink); font-variant-numeric: tabular-nums; letter-spacing: -0.5px;
 }
-.tracker-ticker-rule {
-  height: 1px;
-  background: var(--accent);
-  opacity: 0.5;
-  margin: 11px 0 9px;
+.ts-kpi-l {
+  font-size: 9px; line-height: 1.25; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted);
 }
-.tracker-ticker-cap {
-  font-size: 11px;
-  letter-spacing: 1.3px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 700;
-  margin-bottom: 18px;
+.ts-kpi-sub { display: block; font-weight: 600; letter-spacing: 0.4px; opacity: 0.8; }
+.ts-kpi-special { background: rgba(212,166,74,0.12); border-color: rgba(212,166,74,0.55); }
+.ts-kpi-special .ts-kpi-n { color: var(--accent); }
+.ts-kpi-special .ts-kpi-l { color: var(--ink-2); }
+.ts-kpi-chev { position: absolute; top: 10px; right: 11px; color: var(--accent); font-size: 15px; line-height: 1; }
+.ts-kpi-bar::before {
+  content: ""; position: absolute; left: 0; top: 11px; bottom: 11px; width: 3px;
+  border-radius: 0 2px 2px 0; background: var(--accent);
 }
-.tracker-spotlight-title {
-  font-family: 'Noto Serif', Georgia, 'Times New Roman', serif;
-  font-size: clamp(20px, 2.4vw, 27px);
-  font-weight: 700;
-  line-height: 1.08;
-  color: var(--ink);
-  margin: 0 0 16px;
+.ts-star { color: var(--accent); }
+.ts-section { display: flex; flex-direction: column; }
+.ts-sec-head { display: flex; align-items: center; gap: 6px; margin-bottom: 9px; }
+.ts-sec-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.6px;
+  text-transform: uppercase; color: var(--accent);
 }
-.tracker-search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
-  padding: 6px 6px 6px 14px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+.ts-sf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ts-sf {
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid var(--rule); border-radius: 11px; background: var(--bg);
+  text-decoration: none;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
-html[data-theme="light"] .tracker-search {
-  background: #fffdf7;
-  border-color: rgba(26,52,88,0.20);
+.ts-sf:hover { transform: translateY(-2px); border-color: rgba(212,166,74,0.55); box-shadow: 0 10px 26px rgba(0,0,0,0.30); }
+.ts-sf-thumb { position: relative; height: 92px; overflow: hidden; background: var(--bg-2); }
+.ts-sf-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+.ts-sf:hover .ts-sf-thumb img { transform: scale(1.05); }
+.ts-sf-cap { display: flex; flex-direction: column; gap: 3px; padding: 8px 10px 10px; }
+.ts-sf-pub { font-size: 8.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
+.ts-sf-title {
+  font-size: 11px; line-height: 1.3; color: var(--ink-2);
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.tracker-search:focus-within { border-color: var(--accent); }
-.tracker-search-ic {
-  flex: 0 0 auto;
-  width: 18px;
-  height: 18px;
-  color: var(--accent);
+.ts-latest { display: flex; flex-direction: column; }
+.ts-tf {
+  display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 10px;
+  padding: 9px 0; border-top: 1px solid var(--rule); text-decoration: none;
 }
-.tracker-search input {
-  flex: 1;
-  min-width: 0;
-  min-height: 34px;
-  border: 0;
-  background: transparent;
-  color: var(--ink);
-  padding: 0;
-  font: inherit;
-  font-size: 13px;
-  outline: none;
+.ts-tf:first-child { border-top: 0; padding-top: 2px; }
+.ts-tf-l { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.ts-tf-topic { font-size: 8.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
+.ts-tf-head {
+  font-size: 12px; font-weight: 600; line-height: 1.28; color: var(--ink);
+  display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.tracker-search input::placeholder { color: var(--muted); }
-.tracker-search button {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--bg);
-  cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+.ts-tf-pub { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
+.ts-tf-arrow { font-size: 15px; color: var(--ink-2); transition: transform 0.2s ease, color 0.2s ease; }
+.ts-tf:hover .ts-tf-head { color: var(--accent); }
+.ts-tf:hover .ts-tf-arrow { transform: translateX(3px); color: var(--accent); }
+.ts-cta {
+  margin-top: auto;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 40px; border-radius: 999px;
+  border: 1px solid rgba(212,166,74,0.55); background: rgba(212,166,74,0.10);
+  color: var(--accent); text-decoration: none;
+  font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
 }
-.tracker-search button:hover { transform: scale(1.06); }
-.tracker-search button svg { width: 18px; height: 18px; }
+.ts-cta:hover { background: var(--accent); color: var(--bg); }
+.ts-cta-arrow { font-size: 14px; }
 
 /* ============================================================
    SOCIAL — secondary row
@@ -1705,14 +1699,14 @@ html[data-theme="light"] .tracker-search {
   .latest-title { font-size: 18px; -webkit-line-clamp: 3; line-clamp: 3; }
   .latest-excerpt { font-size: 12.5px; }
   .latest-card:hover { transform: none; }
-  .tracker-spotlight { padding: 20px; }
-  .tracker-ticker-n { font-size: clamp(52px, 16vw, 74px); }
-  .tracker-spotlight-title { font-size: 22px; }
+  .tracker-spotlight { padding: 16px; }
+  .ts-kpi-n { font-size: 21px; }
+  .ts-kpi-l { font-size: 8px; }
 }
 
 @media (max-width: 380px) {
   .spotlight-title { font-size: 32px; }
-  .tracker-spotlight-title { font-size: 20px; }
+  .ts-kpi-n { font-size: 19px; }
 }
 
 
@@ -1990,23 +1984,71 @@ html[data-theme="light"] .tracker-search {
 
       <aside class="tracker-spotlight" data-door aria-labelledby="trackerSpotlightTitle" role="link" tabindex="0" data-href="tracker/">
         <div class="tracker-spotlight-top">
-          <span class="tracker-kicker">Media Tracker</span>
+          <span class="tracker-kicker" id="trackerSpotlightTitle">Media Tracker</span>
           <span class="tracker-live"><span class="tracker-live-dot" aria-hidden="true"></span>Live</span>
         </div>
-        <div class="tracker-ticker-n" id="trackerCount" data-target="1048" aria-label="1,048 media appearances">0</div>
-        <div class="tracker-ticker-rule" aria-hidden="true"></div>
-        <div class="tracker-ticker-cap">Media appearances &middot; 150+ publications &middot; 8 languages</div>
-        <h3 class="tracker-spotlight-title" id="trackerSpotlightTitle">Search every feature, quote &amp; interview.</h3>
-        <form class="tracker-search" action="tracker/" method="get">
-          <svg class="tracker-search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
-          <input type="search" name="q" placeholder="Search Mint, CNBC, gold..." aria-label="Search the media tracker">
-          <button type="submit" aria-label="Search the media tracker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="19" y2="12"></line><polyline points="13 6 19 12 13 18"></polyline></svg></button>
-        </form>
-        <div class="tracker-quick-links">
-          <a class="tracker-quick" href="tracker/">Full tracker</a>
-          <a class="tracker-quick" href="tracker/?q=interview">Interviews</a>
-          <a class="tracker-quick" href="tracker/?q=Economic%20Times">Economic Times</a>
+
+        <div class="ts-kpis">
+          <div class="ts-kpi">
+            <div class="ts-kpi-n" id="trackerCount" data-target="1048" aria-label="1,048 unique feature links">0</div>
+            <div class="ts-kpi-l">Unique feature links</div>
+          </div>
+          <div class="ts-kpi ts-kpi-special">
+            <div class="ts-kpi-n">2</div>
+            <div class="ts-kpi-l"><span class="ts-star" aria-hidden="true">&#9733;</span> Special features</div>
+            <span class="ts-kpi-chev" aria-hidden="true">&rsaquo;</span>
+          </div>
+          <div class="ts-kpi ts-kpi-bar">
+            <div class="ts-kpi-n">2.52</div>
+            <div class="ts-kpi-l">Avg / day<span class="ts-kpi-sub">since Apr &rsquo;25</span></div>
+          </div>
         </div>
+
+        <div class="ts-section">
+          <div class="ts-sec-head"><span class="ts-sec-label">Special Features</span><span class="ts-star" aria-hidden="true">&#9733;</span></div>
+          <div class="ts-sf-grid">
+            <a class="ts-sf" href="https://www.livemint.com/market/stock-market-news/gold-prices-at-6-000-silver-rate-at-150-why-harshal-dasani-remains-bullish-on-precious-metals-despite-meltdown-11770370001942.html" target="_blank" rel="noopener">
+              <span class="ts-sf-thumb"><img src="special-features-assets/livemint-gold-silver-feb2026.jpg" alt="Live Mint &mdash; Gold at $6,000, silver at $150" loading="lazy" decoding="async"></span>
+              <span class="ts-sf-cap"><span class="ts-sf-pub">Live Mint &middot; 7 Feb 2026</span><span class="ts-sf-title">Gold at $6,000, silver at $150: why Harshal Dasani stays bullish on precious metals</span></span>
+            </a>
+            <a class="ts-sf" href="https://earthenconnect.com/wp-content/uploads/2025/12/Outlook-Business-Issue-December-2025-PDF-Double-Spread-2.pdf" target="_blank" rel="noopener">
+              <span class="ts-sf-thumb"><img src="special-features-assets/outlook-business-outliers-dec2025.jpg" alt="Outlook Business The Outliers &mdash; Harshal Dasani on Manipal" loading="lazy" decoding="async"></span>
+              <span class="ts-sf-cap"><span class="ts-sf-pub">Outlook Business &middot; Dec 2025</span><span class="ts-sf-title">&ldquo;The Outliers&rdquo; &mdash; Harshal Dasani on Ranjan Pai building Manipal</span></span>
+            </a>
+          </div>
+        </div>
+
+        <div class="ts-section">
+          <div class="ts-sec-head"><span class="ts-sec-label">Latest Features</span></div>
+          <div class="ts-latest">
+            <a class="ts-tf" href="https://m.economictimes.com/markets/stocks/news/it-stocks-crash-planning-to-buy-the-dip-heres-what-analysts-say/articleshow/131494868.cms" target="_blank" rel="noopener">
+              <span class="ts-tf-l">
+                <span class="ts-tf-topic">IT &amp; Tech</span>
+                <span class="ts-tf-head">IT stocks crash! Planning to buy the dip? Here&rsquo;s what analysts say</span>
+                <span class="ts-tf-pub">Economic Times &middot; 4 Jun 2026</span>
+              </span>
+              <span class="ts-tf-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+            <a class="ts-tf" href="https://www.businesstoday.in/markets/stocks/story/spacex-ipo-price-out-valuation-risks-growth-explains-all-what-investors-should-know-534868-2026-06-04" target="_blank" rel="noopener">
+              <span class="ts-tf-l">
+                <span class="ts-tf-topic">IPO</span>
+                <span class="ts-tf-head">SpaceX IPO price out: valuation, risks, growth &mdash; all investors should know</span>
+                <span class="ts-tf-pub">Business Today &middot; 4 Jun 2026</span>
+              </span>
+              <span class="ts-tf-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+            <a class="ts-tf" href="https://www.livemint.com/market/stock-market-news/tcs-wipro-to-infosys-it-stocks-continue-to-fall-amid-ai-jitters-11780546797587.html" target="_blank" rel="noopener">
+              <span class="ts-tf-l">
+                <span class="ts-tf-topic">IT &amp; Tech</span>
+                <span class="ts-tf-head">TCS, Wipro to Infosys: IT stocks continue to fall amid AI jitters</span>
+                <span class="ts-tf-pub">Live Mint &middot; 4 Jun 2026</span>
+              </span>
+              <span class="ts-tf-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <a class="ts-cta" href="tracker/">Open the full media tracker <span class="ts-cta-arrow" aria-hidden="true">&rarr;</span></a>
       </aside>
     </div>
   </section>
