@@ -10,6 +10,8 @@ Reduce it to a single ratio — R&D as a share of revenue — and the gap become
 
 Now look at the companies actually defining the AI era. Meta puts roughly a quarter of its revenue into R&D — closer to 28% in recent quarters. Alphabet runs at about 14%. Microsoft, around 12%. Meta’s R&D budget in a single year — near $44 billion, or about ₹3.7 lakh crore — is larger than the entire six-year buyback bill of India’s three biggest IT firms. By more than three times over.
 
+R&D as reported in company filings — Indian IT for FY25, the US firms for their latest fiscal year. The comparison metric is R&D as a share of revenue.
+
 There is no version of an AI strategy that starts with buying your own stock.
 
 ## This is not one bad quarter
@@ -45,6 +47,8 @@ A headcount-led model breaks the moment AI cuts the hours per project — bench 
 ## Capital allocation is the tell
 
 Here is the part the buyback numbers give away.
+
+Cumulative announced buyback value since 2020. Against this, the three firms’ combined FY25 R&D was about ₹4,350 crore.
 
 When a management team returns cash year after year — TCS alone has run multiple programmes in the ₹16,000–18,000 crore range — it is telling you something. It is saying it cannot find a better use for that capital than buying its own stock. In an ordinary year, that is shareholder-friendly discipline. In the middle of an AI capex supercycle, when every global peer is spending double-digit percentages of revenue to build the next platform, it is closer to an admission.
 

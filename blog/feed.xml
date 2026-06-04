@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Harshal Dasani — Blog</title>
+    <link>https://harshald13u.github.io/harshalfeatures/blog/</link>
+    <atom:link href="https://harshald13u.github.io/harshalfeatures/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Long-form notes on Indian equity markets, commodities, macros and geopolitics by Harshal Dasani — Business Head at INVasset PMS, Mumbai.</description>
+    <language>en-IN</language>
+    <copyright>(c) Harshal Dasani</copyright>
+    <lastBuildDate>Thu, 04 Jun 2026 15:01:33 +0000</lastBuildDate>
+    <generator>publish_blog.py v2</generator>
+    <managingEditor>noreply@harshald13u.github.io (Harshal Dasani)</managingEditor>
+    <webMaster>noreply@harshald13u.github.io (Harshal Dasani)</webMaster>
+    <ttl>60</ttl>
+    <image>
+      <url>https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg</url>
+      <title>Harshal Dasani</title>
+      <link>https://harshald13u.github.io/harshalfeatures/blog/</link>
+    </image>
+    <item>
+      <title>Indian IT Stocks: What’s Actually Breaking — and Why the Market Stopped Paying Up</title>
+      <link>https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/</link>
+      <guid isPermaLink="true">https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/</guid>
+      <pubDate>Thu, 04 Jun 2026 09:00:00 +0530</pubDate>
+      <description><![CDATA[TCS, Infosys and Wipro returned ₹1.09 lakh crore to shareholders since 2020 and spend under 1% of revenue on R&amp;D. Why the market is repricing Indian IT.]]></description>
+      <category>Stock Market</category>
+      <enclosure url="https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/cover.png" type="image/png"/>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Harshal Dasani</dc:creator>
+    </item>
+  </channel>
+</rss>

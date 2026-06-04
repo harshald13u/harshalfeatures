@@ -338,18 +338,33 @@ def save_cover(images, idx, post_dir, basename):
 # JSON-LD + meta
 # ---------------------------------------------------------------------------
 def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover_url,
-                   focus_keywords, image_alt, used_entities, entities):
+                   focus_keywords, image_alt, used_entities, entities, word_count, reading_minutes,
+                   article_body_text=None, mentioned_entities=None):
     today_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     published_iso = f"{date_str}T09:00:00+05:30"
 
+    # `about` = the core entities the article is centrally about (E-E-A-T strong signal)
     about = []
+    # `mentions` = every other entity the article mentions but isn't centrally about
+    mentions = []
     if entities:
         idx = {e.get("name"): e for e in entities}
-        for name in used_entities:
+        used = set(used_entities or [])
+        mentioned = set(mentioned_entities or []) - used  # exclude any duplicate
+        for name in used:
             ent = idx.get(name)
             if not ent or not ent.get("wikidata"):
                 continue
             about.append({
+                "@type": "Thing",
+                "name": name,
+                "sameAs": f"https://www.wikidata.org/wiki/{ent['wikidata']}",
+            })
+        for name in mentioned:
+            ent = idx.get(name)
+            if not ent or not ent.get("wikidata"):
+                continue
+            mentions.append({
                 "@type": "Thing",
                 "name": name,
                 "sameAs": f"https://www.wikidata.org/wiki/{ent['wikidata']}",
@@ -366,24 +381,40 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         "datePublished": published_iso,
         "dateModified": today_iso,
         "url": canonical,
-        "mainEntityOfPage": canonical,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": canonical},
         "image": {
             "@type": "ImageObject",
             "url": light_cover_url,
             "width": 1600,
             "height": 900,
             "caption": image_alt or title,
+            "license": f"{SITE_BASE}/",
+            "acquireLicensePage": f"{SITE_BASE}/",
         },
         "author": {"@id": f"{SITE_BASE}/#person"},
         "publisher": {"@id": f"{SITE_BASE}/#person"},
+        "copyrightHolder": {"@id": f"{SITE_BASE}/#person"},
+        "copyrightYear": int(date_str[:4]),
         "articleSection": topic.replace("-", " ").title(),
         "inLanguage": "en-IN",
         "isAccessibleForFree": True,
+        "wordCount": word_count,
+        "timeRequired": f"PT{reading_minutes}M",
+        # Speakable signals to Google Assistant / voice surfaces which parts of the page are summarisable
+        "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": ["h1", ".subtitle"],
+        },
     }
+    if article_body_text:
+        # Truncate huge body to a sane 8000 char window for the schema (Google's accepted limit)
+        article["articleBody"] = article_body_text[:8000]
     if keywords_list:
         article["keywords"] = keywords_list
     if about:
         article["about"] = about
+    if mentions:
+        article["mentions"] = mentions
 
     breadcrumb = {
         "@type": "BreadcrumbList",
@@ -401,7 +432,10 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         "url": f"{SITE_BASE}/",
         "image": f"{SITE_BASE}/harshal-dasani.jpg",
         "jobTitle": "Business Head, INVasset PMS",
+        "description": "Harshal Dasani — markets professional, writer, and Business Head at INVasset PMS, Mumbai. CFA candidate; CA Level II.",
         "worksFor": {"@type": "Organization", "name": "INVasset PMS", "url": "https://invasset.com/"},
+        "knowsAbout": ["Indian equity markets", "Portfolio Management Services", "Macroeconomics", "Commodities", "Geopolitics"],
+        "alumniOf": "The Institute of Chartered Accountants of India",
         "sameAs": [
             "https://www.linkedin.com/in/harshaldasani/",
             "https://twitter.com/HarshalDasanii",
@@ -409,7 +443,26 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         ],
     }
 
-    graph = {"@context": "https://schema.org", "@graph": [person, article, breadcrumb]}
+    # WebSite with SearchAction so Google can render a site-wide search box in SERPs
+    website = {
+        "@type": "WebSite",
+        "@id": f"{SITE_BASE}/#website",
+        "url": f"{SITE_BASE}/",
+        "name": "Harshal Dasani",
+        "description": "Long-form notes on Indian markets, commodities, macros and geopolitics by Harshal Dasani.",
+        "publisher": {"@id": f"{SITE_BASE}/#person"},
+        "inLanguage": "en-IN",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": f"{SITE_BASE}/blog/?q={{search_term_string}}",
+            },
+            "query-input": "required name=search_term_string",
+        },
+    }
+
+    graph = {"@context": "https://schema.org", "@graph": [person, website, article, breadcrumb]}
     return json.dumps(graph, ensure_ascii=False, indent=2)
 
 
@@ -507,14 +560,29 @@ POST_TEMPLATE = """<!DOCTYPE html>
 <meta name="googlebot" content="index, follow">
 <meta name="bingbot" content="index, follow">
 <meta name="news_keywords" content="{keywords}">
+<meta name="standout" content="{canonical}">
 <meta name="article:section" content="{topic_label}">
 <meta name="article:author" content="Harshal Dasani">
 <meta name="article:published_time" content="{date_iso}">
 <meta name="article:modified_time" content="{modified_iso}">
+<meta name="rating" content="general">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<!-- Dublin Core (recognised by academic / news indexers like Highbeam, ProQuest) -->
+<meta name="DC.title" content="{seo_title}">
+<meta name="DC.creator" content="Harshal Dasani">
+<meta name="DC.date" content="{date_iso}">
+<meta name="DC.description" content="{meta_description}">
+<meta name="DC.language" content="en-IN">
+<meta name="DC.publisher" content="Harshal Dasani">
+<meta name="DC.subject" content="{topic_label}">
+<meta name="DC.identifier" content="{canonical}">
+<meta name="DC.rights" content="(c) Harshal Dasani — long-form analysis, not investment advice">
 
 <link rel="canonical" href="{canonical}">
 <link rel="alternate" hreflang="en-IN" href="{canonical}">
 <link rel="alternate" hreflang="x-default" href="{canonical}">
+<link rel="alternate" type="application/rss+xml" title="Harshal Dasani — Blog feed" href="../../feed.xml">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Harshal Dasani">
@@ -522,6 +590,7 @@ POST_TEMPLATE = """<!DOCTYPE html>
 <meta property="og:description" content="{meta_description}">
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{light_cover_url}">
+<meta property="og:image:secure_url" content="{light_cover_url}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1600">
 <meta property="og:image:height" content="900">
@@ -531,6 +600,7 @@ POST_TEMPLATE = """<!DOCTYPE html>
 <meta property="article:modified_time" content="{modified_iso}">
 <meta property="article:author" content="Harshal Dasani">
 <meta property="article:section" content="{topic_label}">
+{article_tag_meta}
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@HarshalDasanii">
@@ -607,7 +677,26 @@ strong{{color:var(--ink);font-weight:700}}
 .next{{margin-top:54px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}}
 .next a{{font-size:13px}}
 .footer-meta{{margin-top:18px;font-size:12px;color:var(--muted);line-height:1.6}}
-@media print{{.theme-toggle{{display:none}}}}
+.reading-time{{font-variant-numeric:tabular-nums}}
+/* Share strip below the article */
+.share{{margin-top:48px;padding-top:22px;border-top:1px solid var(--rule);display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}}
+.share-label{{font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin-right:6px}}
+.share a{{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--rule);border-radius:999px;color:var(--ink-2);background:var(--bg-2);text-decoration:none;font-size:12px;font-weight:600}}
+.share a:hover{{color:var(--accent);border-color:var(--accent);text-decoration:none}}
+.share svg{{width:14px;height:14px;flex-shrink:0}}
+/* Author bio block — strong E-E-A-T signal */
+.author-bio{{margin-top:40px;padding:22px 24px;background:var(--bg-2);border:1px solid var(--rule);border-radius:10px;display:flex;gap:18px;align-items:flex-start}}
+.author-bio img{{width:72px;height:72px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--rule)}}
+.author-bio-body{{flex:1;min-width:0}}
+.author-bio h3{{color:var(--ink);font-size:16px;font-weight:700;margin:0 0 4px}}
+.author-bio p{{font-size:13.5px;color:var(--ink-2);margin:0 0 10px;line-height:1.55}}
+.author-bio .author-links{{display:flex;gap:14px;font-size:12px}}
+.author-bio .author-links a{{color:var(--accent);font-weight:600}}
+@media (max-width: 600px){{
+  .author-bio{{flex-direction:column;align-items:flex-start}}
+  .author-bio img{{width:56px;height:56px}}
+}}
+@media print{{.theme-toggle,.share{{display:none}}}}
 </style>
 </head>
 <body>
@@ -617,7 +706,7 @@ strong{{color:var(--ink);font-weight:700}}
   <span class="topic-pill">{topic_label}</span>
   <h1 itemprop="headline">{title_html}</h1>
   <p class="subtitle" itemprop="description">{excerpt_html}</p>
-  <p class="byline">By <strong itemprop="author">Harshal Dasani</strong> &middot; <span>Business Head, INVasset PMS</span> &middot; <time itemprop="datePublished" datetime="{date_iso}">{date_pretty}</time></p>
+  <p class="byline">By <strong itemprop="author">Harshal Dasani</strong> &middot; <span>Business Head, INVasset PMS</span> &middot; <time itemprop="datePublished" datetime="{date_iso}">{date_pretty}</time> &middot; <span class="reading-time" aria-label="Reading time">{reading_minutes} min read &middot; {word_count_pretty} words</span></p>
   <figure class="cover" role="button" tabindex="0" aria-label="Open cover in full resolution" data-light="{light_cover_filename}" data-dark="{dark_cover_filename}">
     <img src="{light_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" itemprop="image" class="light-only">
     <img src="{dark_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" class="dark-only">
@@ -626,6 +715,38 @@ strong{{color:var(--ink);font-weight:700}}
   <article itemprop="articleBody">
 {body_html}
   </article>
+  <div class="share" role="group" aria-label="Share this article">
+    <span class="share-label">Share</span>
+    <a href="https://twitter.com/intent/tweet?url={canonical_enc}&amp;text={share_title_enc}&amp;via=HarshalDasanii" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21l-6.5 7.43L22 22h-6.797l-4.86-6.34L4.6 22H2l7.04-8.04L1.86 2h6.97l4.32 5.71L18.244 2zm-2.39 18h1.604L7.243 4H5.55l10.305 16z"/></svg>
+      X / Twitter
+    </a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url={canonical_enc}" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.339 18.337V9.81H5.6v8.527h2.739zM6.969 8.605c.945 0 1.532-.6 1.532-1.351-.018-.768-.587-1.35-1.514-1.35-.928 0-1.532.582-1.532 1.35 0 .751.587 1.351 1.496 1.351h.018zm11.391 9.732v-4.892c0-2.526-1.351-3.7-3.151-3.7-1.453 0-2.103.793-2.467 1.351V9.81H10.003c.036.757 0 8.527 0 8.527h2.739v-4.762c0-.243.018-.485.09-.659.196-.485.643-.987 1.395-.987.984 0 1.378.75 1.378 1.85v4.558h2.755z"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://wa.me/?text={share_title_enc}%20{canonical_enc}" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 6.32A8.27 8.27 0 0 0 12 4c-4.5 0-8.16 3.66-8.16 8.16 0 1.43.37 2.84 1.08 4.08L3.75 20.27l4.13-1.08a8.13 8.13 0 0 0 4.12 1.11c4.5 0 8.16-3.66 8.16-8.16a8.07 8.07 0 0 0-2.56-5.82zM12 18.92h-.01a6.76 6.76 0 0 1-3.45-.95l-.25-.15-2.45.64.65-2.39-.16-.25a6.78 6.78 0 0 1-1.04-3.66 6.78 6.78 0 0 1 6.78-6.76 6.74 6.74 0 0 1 4.79 1.98 6.71 6.71 0 0 1 1.98 4.79c0 3.73-3.04 6.75-6.84 6.75zm3.7-5.05c-.2-.1-1.2-.59-1.39-.66-.19-.07-.32-.1-.46.1-.13.2-.53.66-.65.8-.12.13-.24.15-.44.05-.2-.1-.86-.32-1.63-1.02a6.13 6.13 0 0 1-1.13-1.4c-.12-.2-.01-.31.09-.41.09-.09.2-.24.3-.36.1-.12.13-.2.2-.34.07-.13.03-.25-.02-.35-.05-.1-.46-1.1-.62-1.5-.16-.4-.33-.34-.46-.34h-.39c-.13 0-.34.05-.52.25-.18.2-.69.67-.69 1.64 0 .97.7 1.91.8 2.04.1.13 1.4 2.14 3.4 3 .47.2.85.32 1.14.41.48.15.91.13 1.25.08.38-.06 1.2-.49 1.36-.96.17-.47.17-.87.12-.96-.05-.09-.18-.14-.38-.24z"/></svg>
+      WhatsApp
+    </a>
+    <a href="mailto:?subject={share_title_enc}&amp;body={canonical_enc}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Email
+    </a>
+  </div>
+  <aside class="author-bio" itemscope itemtype="https://schema.org/Person">
+    <img src="../../../harshal-dasani.jpg" alt="Harshal Dasani — Business Head, INVasset PMS" loading="lazy" itemprop="image" width="72" height="72">
+    <div class="author-bio-body">
+      <h3 itemprop="name">About Harshal Dasani</h3>
+      <p itemprop="description">Business Head at <a href="https://invasset.com/" rel="external" target="_blank" itemprop="worksFor">INVasset PMS</a>, Mumbai. CFA candidate · CA Level II. Writes long-form on Indian equity markets, commodities, macros and geopolitics. <a href="../../../tracker/">See media features &rarr;</a></p>
+      <div class="author-links">
+        <a href="https://www.linkedin.com/in/harshaldasani/" target="_blank" rel="noopener noreferrer" itemprop="sameAs">LinkedIn</a>
+        <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener noreferrer" itemprop="sameAs">X (Twitter)</a>
+        <a href="../../">All posts</a>
+        <a href="../../feed.xml" type="application/rss+xml">RSS</a>
+      </div>
+    </div>
+  </aside>
   <div class="next">
     <a href="../../">&larr; All blogs by Harshal Dasani</a>
     <a href="../../../tracker/">Media Features Tracker &rarr;</a>
@@ -669,6 +790,83 @@ strong{{color:var(--ink);font-weight:700}}
 def pretty_date(date_str):
     dt = datetime.strptime(date_str, "%Y-%m-%d")
     return dt.strftime("%-d %B %Y")
+
+
+def word_count_of(text):
+    return len(re.findall(r"\b[\w'’‘-]+\b", text or ""))
+
+
+def reading_minutes(words, wpm=220):
+    """Estimate reading time in whole minutes (rounded up, minimum 1)."""
+    if not words:
+        return 1
+    import math
+    return max(1, math.ceil(words / wpm))
+
+
+def url_enc(s):
+    import urllib.parse
+    return urllib.parse.quote(s or "", safe="")
+
+
+def build_rss_feed(feed_path, site_base):
+    """Generate /blog/feed.xml — RSS 2.0 — from posts.json."""
+    if not os.path.exists(POSTS_JSON):
+        return
+    with open(POSTS_JSON) as f:
+        data = json.load(f)
+    posts = sorted(data.get("posts", []), key=lambda p: p.get("date",""), reverse=True)[:30]
+    now_rfc822 = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
+
+    items = []
+    for p in posts:
+        try:
+            dt = datetime.strptime(p["date"], "%Y-%m-%d")
+            pub = dt.strftime("%a, %d %b %Y 09:00:00 +0530")
+        except Exception:
+            pub = now_rfc822
+        title = (p.get("title") or "").replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+        excerpt = (p.get("excerpt") or "").replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
+        url = p.get("url") or ""
+        image = p.get("image") or ""
+        items.append(f"""    <item>
+      <title>{title}</title>
+      <link>{url}</link>
+      <guid isPermaLink="true">{url}</guid>
+      <pubDate>{pub}</pubDate>
+      <description><![CDATA[{excerpt}]]></description>
+      <category>{(p.get('topic') or '').replace('-', ' ').title()}</category>
+      <enclosure url="{image}" type="image/png"/>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Harshal Dasani</dc:creator>
+    </item>""")
+
+    rss = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Harshal Dasani — Blog</title>
+    <link>{site_base}/blog/</link>
+    <atom:link href="{site_base}/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Long-form notes on Indian equity markets, commodities, macros and geopolitics by Harshal Dasani — Business Head at INVasset PMS, Mumbai.</description>
+    <language>en-IN</language>
+    <copyright>(c) Harshal Dasani</copyright>
+    <lastBuildDate>{now_rfc822}</lastBuildDate>
+    <generator>publish_blog.py v2</generator>
+    <managingEditor>noreply@harshald13u.github.io (Harshal Dasani)</managingEditor>
+    <webMaster>noreply@harshald13u.github.io (Harshal Dasani)</webMaster>
+    <ttl>60</ttl>
+    <image>
+      <url>{site_base}/harshal-dasani.jpg</url>
+      <title>Harshal Dasani</title>
+      <link>{site_base}/blog/</link>
+    </image>
+{chr(10).join(items)}
+  </channel>
+</rss>
+"""
+    os.makedirs(os.path.dirname(feed_path), exist_ok=True)
+    with open(feed_path, "w", encoding="utf-8") as f:
+        f.write(rss)
+    print(f"[rss] wrote {feed_path}  ({len(rss)} bytes, {len(posts)} items)")
 
 
 def load_entities():
@@ -797,11 +995,40 @@ def publish_blog(docx_path):
     date_iso = f"{date_str}T09:00:00+05:30"
     modified_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
 
+    # Word count and reading time (220 wpm — Medium / industry average)
+    plain_body_text = " ".join(p["text"] for i, p in enumerate(paras)
+                                if i not in skip and p["type"] != "image"
+                                and i not in (dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx))
+    wc = word_count_of(plain_body_text)
+    rt = reading_minutes(wc)
+
+    # Mentioned entities = a second scan over the body (whole-word, case-insensitive)
+    # that catches entities WITHOUT a Wikidata Q-ID, plus any aliases not used as the
+    # primary link in the post. Used for the `mentions` array in JSON-LD.
+    all_entities = entities  # includes those without Q-IDs
+    mentioned_entities = set()
+    for ent in all_entities:
+        name = ent.get("name") or ""
+        if not name or name in used_entities:
+            continue
+        # If no Q-ID we can't enrich it, so skip
+        if not ent.get("wikidata"):
+            continue
+        cands = [name] + list(ent.get("aliases") or [])
+        for cand in cands:
+            if re.search(r"(?<![A-Za-z0-9_])" + re.escape(cand) + r"(?![A-Za-z0-9_])",
+                         plain_body_text, 0 if cand.isupper() else re.IGNORECASE):
+                mentioned_entities.add(name)
+                break
+
     jsonld = article_jsonld(
         title=title, excerpt=excerpt, slug=slug, topic=topic, date_str=date_str,
         canonical=canonical, light_cover_url=light_cover_url,
         focus_keywords=focus_kw, image_alt=image_alt,
         used_entities=used_entities, entities=entities_with_qid,
+        word_count=wc, reading_minutes=rt,
+        article_body_text=plain_body_text,
+        mentioned_entities=mentioned_entities,
     )
 
     topic_label = {
@@ -816,6 +1043,8 @@ def publish_blog(docx_path):
         meta_description=html_escape(meta_desc),
         keywords=html_escape(focus_kw),
         canonical=canonical,
+        canonical_enc=url_enc(canonical),
+        share_title_enc=url_enc(seo_title),
         og_title=html_escape(seo_title),
         light_cover_url=light_cover_url,
         image_alt=html_escape(image_alt),
@@ -831,6 +1060,12 @@ def publish_blog(docx_path):
         modified_pretty=pretty_date(today),
         body_html=body_html,
         jsonld=jsonld,
+        word_count_pretty=f"{wc:,}",
+        reading_minutes=rt,
+        article_tag_meta="\n".join(
+            f'<meta property="article:tag" content="{html_escape(k.strip())}">'
+            for k in (focus_kw.split(",") if focus_kw else []) if k.strip()
+        ),
     )
 
     with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
@@ -870,32 +1105,33 @@ def publish_blog(docx_path):
     upsert_news_sitemap(NEWS_SITEMAP_PATH, canonical, title, date_str)
     print(f"[publish] sitemap.xml + news-sitemap.xml updated")
 
+    # RSS feed — write to BOTH source and deployed
+    build_rss_feed(f"{BLOG_DIR}/feed.xml", SITE_BASE)
+    build_rss_feed(f"{DEPLOYED}/blog/feed.xml", SITE_BASE)
+
     return {
         "slug": slug, "title": title, "topic": topic, "date": date_str,
         "excerpt": excerpt, "image": light_cover_url, "url": canonical,
         "post_dir": post_dir,
         "light_cover": light_cover_filename, "dark_cover": dark_cover_filename,
+        "word_count": wc, "reading_minutes": rt,
         "used_entities": sorted(used_entities),
-        "body_paragraphs": sum(1 for p in paras if p["type"] in ("p","h2","h3")) - len(skip),
+        "mentioned_entities": sorted(mentioned_entities),
     }
 
 
-
 def find_latest_blog():
-    """Return the newest .docx in Blogs/ (ignores _system/, ignores temp ~$ files)."""
+    """Return the newest .docx in Blogs/ (ignores _system/ and ~$ lock files)."""
     blogs_dir = f"{FEATURES}/Blogs"
     candidates = []
     for fn in os.listdir(blogs_dir):
-        if fn.startswith("~$") or fn.startswith("."):
-            continue
-        if not fn.lower().endswith(".docx"):
-            continue
-        path = os.path.join(blogs_dir, fn)
-        if not os.path.isfile(path):
-            continue
+        if fn.startswith("~$") or fn.startswith("."): continue
+        if not fn.lower().endswith(".docx"): continue
+        p = os.path.join(blogs_dir, fn)
+        if not os.path.isfile(p): continue
         m = re.match(r"(\d{4}-\d{2}-\d{2})_", fn)
-        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(path))
-        candidates.append((key, path))
+        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(p))
+        candidates.append((key, p))
     if not candidates:
         raise SystemExit("No .docx blogs in /Features/Blogs/")
     candidates.sort(reverse=True)
