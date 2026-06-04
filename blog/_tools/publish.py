@@ -172,3 +172,195 @@ if __name__ == "__main__":
     with open(args.body) as f:
         body_md = f.read()
     publish(args.slug, args.title, args.topic, args.date, args.excerpt, args.cover, body_md)
+
+
+
+# ============================================================
+# Word (.docx) ingestion
+# ============================================================
+import zipfile, xml.etree.ElementTree as ET
+
+def extract_docx(docx_path):
+    """Extract images + body text from a .docx file at full resolution.
+
+    Returns dict:
+        {
+          "images": [(filename, bytes), ...],  # in document order, first = cover
+          "paragraphs": [
+              {"type": "p"|"h1"|"h2"|"li"|"image", "text": "...", "image_idx": N},
+              ...
+          ],
+          "raw_text": "all body text concatenated, for the categorizer"
+        }
+    """
+    images = []
+    paragraphs = []
+
+    with zipfile.ZipFile(docx_path) as z:
+        # 1. Pull every image from word/media/ in document insertion order
+        media_files = sorted(
+            [n for n in z.namelist() if n.startswith("word/media/")],
+            key=lambda x: (len(x), x)
+        )
+        for name in media_files:
+            content = z.read(name)
+            fname = os.path.basename(name)
+            images.append((fname, content))
+
+        # 2. Parse word/document.xml to get text + image positions in order
+        doc_xml = z.read("word/document.xml").decode("utf-8")
+        # Quick regex parse for image relationship IDs
+        # and paragraph text — simpler than full XML walk
+        ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
+              "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+              "a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
+
+        # Parse relationships to map rId -> media filename
+        try:
+            rels_xml = z.read("word/_rels/document.xml.rels").decode("utf-8")
+            rels_root = ET.fromstring(rels_xml)
+            rid_to_target = {}
+            for rel in rels_root.findall("{http://schemas.openxmlformats.org/package/2006/relationships}Relationship"):
+                rid_to_target[rel.attrib.get("Id")] = rel.attrib.get("Target", "")
+        except Exception:
+            rid_to_target = {}
+
+        root = ET.fromstring(doc_xml)
+        body = root.find("w:body", ns)
+        if body is None:
+            return {"images": images, "paragraphs": paragraphs, "raw_text": ""}
+
+        media_filename_to_idx = {fn: i for i, (fn, _) in enumerate(images)}
+
+        for p in body.findall("w:p", ns):
+            # detect heading style
+            pStyle = p.find("w:pPr/w:pStyle", ns)
+            style = pStyle.attrib.get(f"{{{ns['w']}}}val", "") if pStyle is not None else ""
+            block_type = "p"
+            if style.lower().startswith("heading 1"): block_type = "h1"
+            elif style.lower().startswith("heading 2"): block_type = "h2"
+            elif style.lower().startswith("listparagraph"): block_type = "li"
+
+            # find any inline drawings (images) in this paragraph
+            embed_ids = []
+            for blip in p.iter("{http://schemas.openxmlformats.org/drawingml/2006/main}blip"):
+                eid = blip.attrib.get("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed")
+                if eid: embed_ids.append(eid)
+
+            # paragraph text
+            text_parts = []
+            for t in p.iter("{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t"):
+                if t.text: text_parts.append(t.text)
+            text = "".join(text_parts).strip()
+
+            for eid in embed_ids:
+                target = rid_to_target.get(eid, "")
+                fname = os.path.basename(target) if target else ""
+                idx = media_filename_to_idx.get(fname)
+                if idx is not None:
+                    paragraphs.append({"type": "image", "image_idx": idx, "text": ""})
+
+            if text:
+                paragraphs.append({"type": block_type, "text": text})
+
+    raw_text = " ".join(p["text"] for p in paragraphs if p.get("text"))
+    return {"images": images, "paragraphs": paragraphs, "raw_text": raw_text}
+
+
+def publish_from_docx(docx_path, slug, title=None, topic=None, excerpt=None, date_str=None):
+    """End-to-end publish from a .docx file."""
+    data = extract_docx(docx_path)
+    if not data["images"]:
+        raise SystemExit("No images found in the Word document — please embed at least the cover image.")
+
+    # First image = cover
+    cover_fname, cover_bytes = data["images"][0]
+    inline_images = data["images"][1:]
+
+    # Use first heading as title if not provided
+    if not title:
+        for p in data["paragraphs"]:
+            if p["type"] in ("h1", "h2") and p["text"]:
+                title = p["text"]
+                break
+        if not title:
+            title = "Untitled"
+
+    # Build excerpt from first non-empty paragraph
+    if not excerpt:
+        for p in data["paragraphs"]:
+            if p["type"] == "p" and p["text"]:
+                excerpt = p["text"][:155].rsplit(" ", 1)[0] + "…"
+                break
+        if not excerpt: excerpt = title
+
+    date_str = date_str or datetime.today().strftime("%Y-%m-%d")
+
+    # Save cover + inline images
+    post_dir = os.path.join(BLOG_DIR, "posts", slug)
+    os.makedirs(post_dir, exist_ok=True)
+    cover_ext = os.path.splitext(cover_fname)[1].lower() or ".jpg"
+    cover_out = f"cover{cover_ext}"
+    with open(os.path.join(post_dir, cover_out), "wb") as f:
+        f.write(cover_bytes)
+    inline_map = {}  # original image_idx -> saved filename
+    inline_map[0] = cover_out
+    for i, (orig_fname, body) in enumerate(inline_images, start=1):
+        ext = os.path.splitext(orig_fname)[1].lower() or ".jpg"
+        saved = f"img-{i}{ext}"
+        with open(os.path.join(post_dir, saved), "wb") as f:
+            f.write(body)
+        inline_map[i] = saved
+
+    # Build body HTML — preserve heading hierarchy + inline images
+    body_html_parts = []
+    for p in data["paragraphs"]:
+        if p["type"] == "image":
+            idx = p["image_idx"]
+            if idx == 0: continue  # already shown as cover
+            fname = inline_map.get(idx, "")
+            if fname:
+                body_html_parts.append(f'<figure class="inline-img"><img src="{fname}" alt="" loading="lazy"></figure>')
+        elif p["type"] == "h1": body_html_parts.append(f"<h2>{p['text']}</h2>")
+        elif p["type"] == "h2": body_html_parts.append(f"<h3>{p['text']}</h3>")
+        elif p["type"] == "li": body_html_parts.append(f"<p>• {p['text']}</p>")
+        elif p["type"] == "p": body_html_parts.append(f"<p>{p['text']}</p>")
+    body_md = "\n\n".join(p["text"] for p in data["paragraphs"] if p.get("text"))
+
+    # Render — use existing render_post_html but inject our pre-built body
+    html_template = render_post_html(slug, title, topic, date_str, excerpt, "", cover_out)
+    # Replace empty body section with our custom body
+    final_html = html_template.replace(
+        "{body_html}",
+        "\n".join(body_html_parts)
+    )
+    # If still has empty {body_html} placeholder (since render_post_html consumed it), replace by find
+    if not body_html_parts:
+        body_html_parts = ["<p>(empty post)</p>"]
+    # Just write a fresh version with body inserted
+    with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
+        f.write(html_template.replace("<!-- BODY -->", "\n".join(body_html_parts)) if "<!-- BODY -->" in html_template else html_template)
+
+    # Save the raw source
+    with open(os.path.join(post_dir, "body.md"), "w", encoding="utf-8") as f:
+        f.write(body_md)
+
+    # Append to posts.json
+    posts_json_path = os.path.join(BLOG_DIR, "posts.json")
+    with open(posts_json_path) as f:
+        data_json = json.load(f)
+    canonical = f"https://harshald13u.github.io/harshalfeatures/blog/posts/{slug}/"
+    entry = {
+        "slug": slug, "title": title, "topic": topic, "date": date_str,
+        "excerpt": excerpt, "image": f"{canonical}{cover_out}", "url": canonical,
+    }
+    data_json["posts"] = [p for p in data_json.get("posts", []) if p.get("slug") != slug]
+    data_json["posts"].append(entry)
+    with open(posts_json_path, "w") as f:
+        json.dump(data_json, f, indent=2)
+
+    print(f"Published from .docx: {slug}")
+    print(f"  Cover: {cover_out}")
+    print(f"  Inline images: {len(inline_images)}")
+    print(f"  Body paragraphs: {len(body_html_parts)}")
+    return entry
