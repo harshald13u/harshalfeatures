@@ -355,6 +355,8 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
   min-width: 0;
 }
 .hero-right .hero-photo { margin-top: 0; }
+.hero-tags-2 { grid-template-columns: 1fr 1fr !important; max-width: 360px !important; gap: 14px !important; }
+.hero-tags-2 a { font-size: 12.5px !important; padding: 12px 18px !important; letter-spacing: 1px !important; }
 .hero-tags {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1426,11 +1428,9 @@ html[data-theme="light"] .decode-chip:hover {
       <figure class="hero-photo" id="heroPhoto">
         <img src="harshal-dasani.jpg" alt="Harshal Dasani &mdash; Business Head, INVasset PMS" width="1000" height="516" loading="eager" decoding="async">
       </figure>
-      <nav class="hero-tags" aria-label="Blog topics">
-        <a href="blog/?topic=stock-market">Stock Market</a>
-        <a href="blog/?topic=commodities">Commodities</a>
-        <a href="blog/?topic=macros">Macros</a>
-        <a href="blog/?topic=geopolitics">Geopolitics</a>
+      <nav class="hero-tags hero-tags-2" aria-label="Main sections">
+        <a href="tracker/">Media</a>
+        <a href="blog/">Blog</a>
       </nav>
     </div>
 
