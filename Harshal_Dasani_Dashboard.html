@@ -920,7 +920,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
 <script>
 (function(){
   try {
-    var t = localStorage.getItem('hd-theme-tracker');
+    var t = localStorage.getItem('hd-theme');
     if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
   } catch(e) {}
 })();
@@ -1343,7 +1343,7 @@ function toggleTrackerTheme(){
   var current = document.documentElement.getAttribute('data-theme') || 'dark';
   var next = current === 'light' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', next);
-  try { localStorage.setItem('hd-theme-tracker', next); } catch(e) {}
+  try { localStorage.setItem('hd-theme', next); } catch(e) {}
   // Force charts to redraw so they pick up the new theme colors (Chart.js doesn't auto-refresh on attribute changes)
   try {
     if (typeof UNIQUE_ROWS !== 'undefined' && UNIQUE_ROWS.length && typeof renderPanels === 'function') {
