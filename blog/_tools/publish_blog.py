@@ -433,7 +433,7 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
     keywords_list = [k.strip() for k in focus_keywords.split(",") if k.strip()] if focus_keywords else []
 
     article = {
-        "@type": "NewsArticle",
+        "@type": "BlogPosting",
         "@id": f"{canonical}#article",
         "headline": title[:110],
         "alternativeHeadline": title,
@@ -452,7 +452,7 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
             "acquireLicensePage": f"{SITE_BASE}/",
         },
         "author": {"@id": f"{SITE_BASE}/#person"},
-        "publisher": {"@id": f"{SITE_BASE}/#person"},
+        "publisher": {"@id": f"{SITE_BASE}/#org"},
         "copyrightHolder": {"@id": f"{SITE_BASE}/#person"},
         "copyrightYear": int(date_str[:4]),
         "articleSection": topic.replace("-", " ").title(),
@@ -497,8 +497,7 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         "knowsAbout": ["Indian equity markets", "Portfolio Management Services", "Macroeconomics", "Commodities", "Geopolitics"],
         "alumniOf": "The Institute of Chartered Accountants of India",
         "sameAs": [
-            "https://www.linkedin.com/in/harshaldasani/",
-            "https://twitter.com/HarshalDasanii",
+            "https://www.linkedin.com/in/harshal-dasani-/",
             "https://x.com/HarshalDasanii",
         ],
     }
@@ -510,7 +509,7 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         "url": f"{SITE_BASE}/",
         "name": "Harshal Dasani",
         "description": "Long-form notes on Indian markets, commodities, macros and geopolitics by Harshal Dasani.",
-        "publisher": {"@id": f"{SITE_BASE}/#person"},
+        "publisher": {"@id": f"{SITE_BASE}/#org"},
         "inLanguage": "en-IN",
         "potentialAction": {
             "@type": "SearchAction",
@@ -522,7 +521,20 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         },
     }
 
-    graph = {"@context": "https://schema.org", "@graph": [person, website, article, breadcrumb]}
+    org = {
+        "@type": "Organization",
+        "@id": f"{SITE_BASE}/#org",
+        "name": "Harshal Dasani",
+        "url": f"{SITE_BASE}/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": f"{SITE_BASE}/icon-512.png",
+            "width": 512,
+            "height": 512,
+        },
+    }
+
+    graph = {"@context": "https://schema.org", "@graph": [person, org, website, article, breadcrumb]}
     return json.dumps(graph, ensure_ascii=False, indent=2)
 
 
@@ -849,7 +861,7 @@ strong{{color:var(--ink);font-weight:700}}
 </head>
 <body>
 <button class="theme-toggle" aria-label="Toggle theme" onclick="(function(){{var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{{localStorage.setItem('hd-theme',n)}}catch(e){{}}}})()">☼</button>
-<main class="page" itemscope itemtype="https://schema.org/NewsArticle">
+<main class="page" itemscope itemtype="https://schema.org/BlogPosting">
   <nav class="crumb" aria-label="Breadcrumb"><a class="crumb-back" href="../../">&larr; Back to Blogs</a><span class="crumb-trail"><a href="../../../">Harshal Dasani</a> &middot; <a href="../../">Blogs</a> &middot; <span>{topic_label}</span></span></nav>
   <span class="topic-pill">{topic_label}</span>
   <h1 itemprop="headline">{title_html}</h1>
@@ -888,7 +900,7 @@ strong{{color:var(--ink);font-weight:700}}
       <h3 itemprop="name">About Harshal Dasani</h3>
       <p itemprop="description">Business Head at <a href="https://invasset.com/" rel="external" target="_blank" itemprop="worksFor">INVasset PMS</a>, Mumbai. CFA candidate · CA Level II. Writes long-form on Indian equity markets, commodities, macros and geopolitics. <a href="../../../tracker/">See media features &rarr;</a></p>
       <div class="author-links">
-        <a href="https://www.linkedin.com/in/harshaldasani/" target="_blank" rel="noopener noreferrer" itemprop="sameAs">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener noreferrer" itemprop="sameAs">LinkedIn</a>
         <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener noreferrer" itemprop="sameAs">X (Twitter)</a>
         <a href="../../">All posts</a>
         <a href="../../feed.xml" type="application/rss+xml">RSS</a>
