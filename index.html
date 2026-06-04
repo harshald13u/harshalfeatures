@@ -1044,263 +1044,6 @@ html[data-theme="light"] .decode-chip:hover {
 }
 
 /* ============================================================
-   HOMEPAGE SPOTLIGHT - latest blogs + media tracker
-   ============================================================ */
-.home-spotlight {
-  margin: 0 0 64px;
-  padding: 48px 0 56px;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-.spotlight-head {
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.72fr);
-  gap: 34px;
-  align-items: end;
-  margin-bottom: 30px;
-}
-.spotlight-kicker,
-.spotlight-label,
-.tracker-kicker {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--accent);
-}
-.spotlight-title {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(42px, 6.2vw, 74px);
-  font-weight: 800;
-  line-height: 0.96;
-  color: var(--ink);
-  margin: 12px 0 0;
-  max-width: 840px;
-}
-.spotlight-copy {
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--ink-2);
-  margin: 0 0 18px;
-}
-.spotlight-actions,
-.tracker-quick-links {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.spotlight-link,
-.tracker-quick,
-.tracker-search button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 40px;
-  padding: 0 15px;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--ink);
-  background: transparent;
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-}
-.spotlight-link:hover,
-.tracker-quick:hover,
-.tracker-search button:hover {
-  color: var(--bg);
-  border-color: var(--accent);
-  background: var(--accent);
-  transform: translateY(-1px);
-}
-.spotlight-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(330px, 0.92fr);
-  gap: 22px;
-  align-items: stretch;
-}
-.spotlight-label { margin-bottom: 12px; }
-.latest-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-.latest-card {
-  display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) auto;
-  gap: 16px;
-  align-items: start;
-  min-height: 128px;
-  padding: 18px;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  background: var(--bg-2);
-  color: var(--ink);
-  text-decoration: none;
-  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-}
-.latest-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(212,166,74,0.55);
-  background: #181410;
-}
-html[data-theme="light"] .latest-card:hover { background: rgba(184,133,43,0.05); }
-.latest-index {
-  font-size: 11px;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
-}
-.latest-topic {
-  display: block;
-  font-size: 10px;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-.latest-title {
-  font-size: clamp(19px, 2vw, 25px);
-  line-height: 1.08;
-  margin: 0;
-  color: var(--ink);
-}
-.latest-excerpt {
-  font-size: 13.5px;
-  line-height: 1.48;
-  color: var(--muted);
-  margin: 9px 0 0;
-}
-.latest-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-  min-width: 74px;
-  font-size: 10px;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 700;
-  white-space: nowrap;
-}
-.latest-arrow {
-  color: var(--ink);
-  font-size: 20px;
-  line-height: 1;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-.latest-card:hover .latest-arrow {
-  color: var(--accent);
-  transform: translateX(4px);
-}
-.tracker-spotlight {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100%;
-  padding: 28px;
-  border: 1px solid rgba(212,166,74,0.35);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(212,166,74,0.14), transparent 40%),
-    var(--bg-2);
-}
-html[data-theme="light"] .tracker-spotlight {
-  background:
-    linear-gradient(135deg, rgba(184,133,43,0.13), transparent 42%),
-    var(--bg-2);
-}
-.tracker-spotlight-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-.tracker-live {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  padding: 0 10px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: var(--bg);
-  font-size: 10px;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  font-weight: 800;
-}
-.tracker-spotlight-title {
-  font-size: clamp(32px, 4vw, 52px);
-  line-height: 0.98;
-  color: var(--ink);
-  margin: 0 0 16px;
-}
-.tracker-spotlight-copy {
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--ink-2);
-  margin: 0 0 24px;
-}
-.tracker-spotlight-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 0 0 22px;
-}
-.tracker-spotlight-stat {
-  padding-top: 12px;
-  border-top: 1px solid var(--rule);
-}
-.tracker-spotlight-n {
-  font-size: 25px;
-  line-height: 1;
-  font-weight: 700;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-}
-.tracker-spotlight-l {
-  margin-top: 5px;
-  font-size: 9.5px;
-  letter-spacing: 1.3px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 700;
-}
-.tracker-search {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-.tracker-search input {
-  width: 100%;
-  min-height: 40px;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  background: rgba(0,0,0,0.12);
-  color: var(--ink);
-  padding: 0 12px;
-  font: inherit;
-  font-size: 13px;
-  outline: none;
-}
-html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.32); }
-.tracker-search input:focus { border-color: var(--accent); }
-.tracker-search button {
-  min-width: 86px;
-  font-family: 'Inter', sans-serif;
-}
-
-/* ============================================================
    SOCIAL — secondary row
    ============================================================ */
 .social-head {
@@ -1472,20 +1215,16 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
   .theme-toggle { margin-right: 0; margin-left: 4px; }
 
   .hero { margin-bottom: 24px; row-gap: 18px; }
-  .hero, .hero-text, .hero-right, .role-block, .tagline { min-width: 0; max-width: 100%; }
-  .hero-text { width: min(100%, calc(100vw - 40px)); }
-  .hero-tags { margin: 14px auto 0; width: 100%; max-width: 380px; gap: 7px; }
+  .hero-tags { margin: 14px auto 0; max-width: 380px; gap: 7px; }
   .hero-tags a { font-size: 10.5px; padding: 8px 8px; letter-spacing: 0.6px; }
   .name {
     font-size: clamp(44px, 12.5vw, 72px);
     margin-bottom: 20px;
     line-height: 0.94;
   }
-  .name .word { flex: 0 0 100%; }
-  .role-block { display: block; }
-  .role-line { font-size: 16px; line-height: 1.35; max-width: calc(100vw - 40px); overflow-wrap: break-word; }
-  .loc-line { font-size: 10px; letter-spacing: 1.5px; margin-top: 8px; overflow-wrap: break-word; }
-  .tagline { font-size: 17px; line-height: 1.5; margin-bottom: 24px; max-width: min(100%, 320px); overflow-wrap: break-word; }
+  .role-line { font-size: 16px; line-height: 1.35; }
+  .loc-line { font-size: 10px; letter-spacing: 1.5px; }
+  .tagline { font-size: 17px; line-height: 1.5; margin-bottom: 24px; }
   .role-block { padding-bottom: 18px; margin-bottom: 18px; }
   .hero-photo { max-width: 360px; margin: 0 auto; }
 
@@ -1544,57 +1283,6 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
   .press-mark { height: 22px; }
   .press-mark img { max-width: 110px; }
   .press-set { gap: 26px; padding-right: 26px; }
-}
-
-@media (max-width: 960px) {
-  .home-spotlight {
-    margin-bottom: 48px;
-    padding: 40px 0 46px;
-  }
-  .spotlight-head,
-  .spotlight-grid {
-    grid-template-columns: 1fr;
-  }
-  .spotlight-title { font-size: clamp(38px, 8vw, 64px); }
-}
-
-@media (max-width: 640px) {
-  .home-spotlight {
-    padding: 34px 0 38px;
-    margin-bottom: 42px;
-  }
-  .spotlight-head {
-    gap: 20px;
-    margin-bottom: 24px;
-  }
-  .spotlight-title { font-size: clamp(34px, 10vw, 50px); }
-  .spotlight-copy { font-size: 14px; }
-  .latest-card {
-    grid-template-columns: 32px minmax(0, 1fr);
-    gap: 12px;
-    min-height: 0;
-    padding: 16px;
-  }
-  .latest-meta {
-    grid-column: 2;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    min-width: 0;
-    margin-top: 6px;
-  }
-  .latest-title { font-size: 20px; }
-  .latest-excerpt { font-size: 13px; }
-  .tracker-spotlight { padding: 20px; }
-  .tracker-spotlight-title { font-size: 32px; }
-  .tracker-spotlight-stats { grid-template-columns: 1fr; gap: 8px; }
-  .tracker-search { grid-template-columns: 1fr; }
-  .tracker-search button { width: 100%; }
-}
-
-@media (max-width: 380px) {
-  .spotlight-title { font-size: 32px; }
-  .tracker-spotlight-title { font-size: 30px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1850,82 +1538,48 @@ html[data-theme="light"] .tracker-search input { background: rgba(255,255,255,0.
     </div>
   </section>
 
-  <section class="home-spotlight" aria-labelledby="spotlightTitle">
-    <div class="spotlight-head">
-      <div>
-        <div class="spotlight-kicker">Blog + Media Tracker</div>
-        <h2 class="spotlight-title" id="spotlightTitle">Latest thinking.</h2>
-      </div>
-      <div>
-        <div class="spotlight-actions">
-          <a class="spotlight-link" href="blog/">Read blog</a>
-          <a class="spotlight-link" href="tracker/">Open tracker</a>
-        </div>
-      </div>
-    </div>
+  <div class="primary-head">
+    <h2 class="primary-title">Two places worth your time</h2>
+    <div class="primary-sub">The Highlights</div>
+  </div>
 
-    <div class="spotlight-grid">
+  <div class="doors">
+    <a class="door" href="blog/?topic=stock-market" data-door>
       <div>
-        <div class="spotlight-label">Latest 3 Blogs</div>
-        <div class="latest-list" id="latestHomepagePosts" aria-live="polite">
-          <a class="latest-card" href="blog/posts/harshal-dasani-media-features/">
-            <span class="latest-index">01</span>
-            <span>
-              <span class="latest-topic">Media</span>
-              <h3 class="latest-title">Harshal Dasani Media Features</h3>
-              <p class="latest-excerpt">A guide to the live archive of articles, quotes, e-paper appearances and press coverage.</p>
-            </span>
-            <span class="latest-meta"><span>04 Jun 2026</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>
-          </a>
-          <a class="latest-card" href="blog/posts/harshal-dasani-interviews/">
-            <span class="latest-index">02</span>
-            <span>
-              <span class="latest-topic">Interviews</span>
-              <h3 class="latest-title">Harshal Dasani Interviews</h3>
-              <p class="latest-excerpt">Where to find interviews, quotes and public market commentary across financial publications and television.</p>
-            </span>
-            <span class="latest-meta"><span>04 Jun 2026</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>
-          </a>
-          <a class="latest-card" href="blog/posts/markets-with-harshal/">
-            <span class="latest-index">03</span>
-            <span>
-              <span class="latest-topic">Markets</span>
-              <h3 class="latest-title">Markets with Harshal</h3>
-              <p class="latest-excerpt">The core themes behind Indian markets, commodities, macro cycles, geopolitics and behavioral finance notes.</p>
-            </span>
-            <span class="latest-meta"><span>04 Jun 2026</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>
-          </a>
+        <div class="door-top">
+          <span class="door-kicker">01 &nbsp;Blog</span>
+          <span class="door-badge soft">Coming soon</span>
         </div>
+        <h3 class="door-name">Stock Market &middot; Commodities &middot; Macros &middot; Geopolitics</h3>
+        <p class="door-desc">Long-form pieces on markets, behavior, and the questions I keep coming back to.</p>
       </div>
+      <div class="door-foot">
+        <div class="door-stat">
+          <div class="door-stat-n">New</div>
+          <div class="door-stat-l">Launching 2026</div>
+        </div>
+        <span class="door-arrow" aria-hidden="true">&rarr;</span>
+      </div>
+    </a>
 
-      <aside class="tracker-spotlight" data-door aria-labelledby="trackerSpotlightTitle">
-        <div>
-          <div class="tracker-spotlight-top">
-            <span class="tracker-kicker">Media Tracker</span>
-            <span class="tracker-live">Live</span>
-          </div>
-          <h3 class="tracker-spotlight-title" id="trackerSpotlightTitle">Search every feature, quote and interview.</h3>
-          <p class="tracker-spotlight-copy">A live archive of Harshal Dasani coverage across financial publications, broadcast references, web articles and e-paper mentions.</p>
-          <div class="tracker-spotlight-stats">
-            <div class="tracker-spotlight-stat"><div class="tracker-spotlight-n" id="trackerCount" data-target="1048">0</div><div class="tracker-spotlight-l">Articles</div></div>
-            <div class="tracker-spotlight-stat"><div class="tracker-spotlight-n">150+</div><div class="tracker-spotlight-l">Publications</div></div>
-            <div class="tracker-spotlight-stat"><div class="tracker-spotlight-n">8</div><div class="tracker-spotlight-l">Languages</div></div>
-          </div>
+    <a class="door" href="tracker/" data-door>
+      <div>
+        <div class="door-top">
+          <span class="door-kicker">02 &nbsp;Media Tracker</span>
+          <span class="door-badge">Live</span>
         </div>
-        <div>
-          <form class="tracker-search" action="tracker/" method="get">
-            <input type="search" name="q" placeholder="Search Mint, CNBC, gold..." aria-label="Search the media tracker">
-            <button type="submit">Search</button>
-          </form>
-          <div class="tracker-quick-links">
-            <a class="tracker-quick" href="tracker/">Full tracker</a>
-            <a class="tracker-quick" href="tracker/?q=interview">Interviews</a>
-            <a class="tracker-quick" href="tracker/?q=Economic%20Times">Economic Times</a>
-          </div>
+        <h3 class="door-name">Every feature, quote &amp; interview</h3>
+        <p class="door-desc">Across 150+ publications in 8 languages &mdash; print, e-paper, web, broadcast.</p>
+      </div>
+      <div class="door-foot">
+        <div class="door-stat">
+          <div class="door-stat-n" id="trackerCount" data-target="1041">0</div>
+          <div class="door-stat-l">Articles tracked</div>
         </div>
-      </aside>
-    </div>
-  </section>
+        <span class="door-arrow" aria-hidden="true">&rarr;</span>
+      </div>
+    </a>
+  </div>
 
   <div class="social-head">
     <span class="social-label">Also on</span>
@@ -1966,8 +1620,7 @@ function toggleTheme(){
   var nameEl = document.getElementById('name');
   if (nameEl) {
     var html = '';
-    'Harshal Dasani'.split(' ').forEach(function(word, idx){
-      if (idx) html += ' ';
+    'Harshal Dasani'.split(' ').forEach(function(word){
       html += '<span class="word">';
       word.split('').forEach(function(c){ html += '<span class="ch" aria-hidden="true">'+c+'</span>'; });
       html += '</span>';
@@ -2017,56 +1670,6 @@ function toggleTheme(){
       });
     });
   }
-
-  var HOME_TOPIC_LABELS = {
-    "stock-market": "Stock Market",
-    "commodities": "Commodities",
-    "macros": "Macros",
-    "geopolitics": "Geopolitics",
-    "media": "Media",
-    "interviews": "Interviews",
-    "about": "About",
-    "youtube": "YouTube"
-  };
-  function escapeHomeHTML(str){
-    return String(str || '').replace(/[&<>"']/g, function(c){
-      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
-    });
-  }
-  function formatHomeDate(s){
-    try {
-      var d = new Date(s);
-      if (isNaN(d)) return s || '';
-      return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-    } catch(e) { return s || ''; }
-  }
-  function latestHomePostHTML(post, idx){
-    var slug = post.slug ? encodeURIComponent(post.slug) : '';
-    var href = post.url || (slug ? 'blog/posts/' + slug + '/' : 'blog/');
-    var topic = HOME_TOPIC_LABELS[post.topic] || post.topic || 'Blog';
-    var num = String(idx + 1).padStart(2, '0');
-    return '<a class="latest-card" href="'+escapeHomeHTML(href)+'">' +
-      '<span class="latest-index">'+num+'</span>' +
-      '<span><span class="latest-topic">'+escapeHomeHTML(topic)+'</span>' +
-      '<h3 class="latest-title">'+escapeHomeHTML(post.title || 'Untitled')+'</h3>' +
-      '<p class="latest-excerpt">'+escapeHomeHTML(post.excerpt || '')+'</p></span>' +
-      '<span class="latest-meta"><span>'+escapeHomeHTML(formatHomeDate(post.date))+'</span><span class="latest-arrow" aria-hidden="true">&rarr;</span></span>' +
-    '</a>';
-  }
-  function loadHomepagePosts(){
-    var list = document.getElementById('latestHomepagePosts');
-    if (!list || !window.fetch) return;
-    fetch('blog/posts.json?nc=' + Date.now())
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        var posts = ((data && data.posts) || []).slice();
-        posts.sort(function(a, b){ return new Date(b.date || 0) - new Date(a.date || 0); });
-        posts = posts.slice(0, 3);
-        if (posts.length) list.innerHTML = posts.map(latestHomePostHTML).join('');
-      })
-      .catch(function(){});
-  }
-  loadHomepagePosts();
 
   var photo = document.getElementById('heroPhoto');
   if (photo && !reduced && window.matchMedia('(hover: hover)').matches) {
