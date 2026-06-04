@@ -698,6 +698,120 @@ html[data-theme="light"] .hero-tags a {
   break-inside: avoid;
 }
 .about-body p:last-child { margin-bottom: 0; }
+
+/* === Editorial blocks below the About paragraphs === */
+.about-extras { margin-top: 44px; }
+.lens-block, .decode-block {
+  padding-top: 28px;
+  margin-top: 28px;
+  border-top: 1px solid var(--rule);
+}
+.about-extras > .lens-block:first-child {
+  margin-top: 0;
+  border-top: none;
+  padding-top: 0;
+}
+.lens-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.lens-lede {
+  font-family: 'Inter', sans-serif;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  margin: 0 0 22px;
+  max-width: 640px;
+  letter-spacing: -0.002em;
+}
+.lens-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.lens-card {
+  padding: 16px 18px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--bg-2);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.lens-card:hover {
+  border-color: rgba(212,166,74,0.45);
+  transform: translateY(-1px);
+}
+html[data-theme="light"] .lens-card:hover {
+  border-color: rgba(184,133,43,0.55);
+  background: rgba(184,133,43,0.04);
+}
+.lens-card-t {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--ink);
+  margin-bottom: 4px;
+  letter-spacing: -0.005em;
+}
+.lens-card-d {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.decode-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.decode-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.35px;
+  color: var(--ink-2);
+  background: transparent;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.decode-chip:hover {
+  color: var(--accent);
+  border-color: rgba(212,166,74,0.55);
+  background: rgba(212,166,74,0.06);
+}
+html[data-theme="light"] .decode-chip:hover {
+  color: var(--accent);
+  border-color: rgba(184,133,43,0.55);
+  background: rgba(184,133,43,0.06);
+}
+.signature-quote {
+  margin: 40px 0 0;
+  padding: 6px 0 6px 20px;
+  border-left: 2px solid var(--accent);
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 560px;
+  letter-spacing: -0.005em;
+}
+@media (max-width: 640px) {
+  .lens-grid { grid-template-columns: 1fr; }
+  .about-extras { margin-top: 36px; }
+  .lens-block, .decode-block { padding-top: 22px; margin-top: 22px; }
+  .lens-lede { font-size: 14.5px; }
+  .signature-quote { font-size: 15.5px; margin-top: 32px; padding-left: 16px; }
+}
+
 .about-body strong {
   font-weight: 500;
   color: var(--ink);
@@ -1363,7 +1477,53 @@ html[data-theme="light"] .hero-tags a {
         <p>I&apos;m Harshal Dasani &mdash; <strong>Business Head at INVasset PMS</strong>, with over ten years in Indian equity markets. I spend most days trying to make sense of how the world&apos;s biggest forces &mdash; central banks, geopolitics, capital flows, human behavior &mdash; show up in stock prices.</p>
         <p>My approach is part numbers, part narrative. Fundamentals tell me what a business is worth; technical and macro lenses tell me when the market is willing to listen; behavioral finance reminds me that everyone &mdash; including me &mdash; is more biased than they think. I&apos;m a <strong>CFA candidate</strong> and have cleared <strong>Level II of CA</strong>.</p>
         <p>Outside the desk, you&apos;ll find me sharing views across <span class="brand">The Economic Times, Mint, Moneycontrol, Business Standard, Financial Express, Business Today, Outlook Money, Times of India, Forbes, PTI and Reuters</span> &mdash; and on television via <span class="brand">Good Returns, CNBC Bajar Gujarati and Moneycontrol</span>. I publish long-form commentary on YouTube and X as <strong>Markets with Harshal</strong>.</p>
-      </div>    </div>
+      </div>
+
+      <div class="about-extras">
+
+        <div class="lens-block">
+          <div class="lens-eyebrow">My Market Lens</div>
+          <p class="lens-lede">Markets are rarely moved by one factor alone. I look at the intersection of liquidity, policy, valuation, geopolitics and behaviour &mdash; because the best signals often appear before the consensus narrative catches up.</p>
+          <div class="lens-grid">
+            <div class="lens-card">
+              <div class="lens-card-t">Macro</div>
+              <div class="lens-card-d">Rates, DXY, bond yields, crude and liquidity</div>
+            </div>
+            <div class="lens-card">
+              <div class="lens-card-t">Geopolitics</div>
+              <div class="lens-card-d">Conflicts, tariffs, supply chains and trade routes</div>
+            </div>
+            <div class="lens-card">
+              <div class="lens-card-t">Market Structure</div>
+              <div class="lens-card-d">FII/DII flows, positioning and valuation cycles</div>
+            </div>
+            <div class="lens-card">
+              <div class="lens-card-t">Behaviour</div>
+              <div class="lens-card-d">Fear, greed, consensus and narrative shifts</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="decode-block">
+          <div class="lens-eyebrow">What I Decode</div>
+          <div class="decode-chips">
+            <span class="decode-chip">Indian Equities</span>
+            <span class="decode-chip">Gold</span>
+            <span class="decode-chip">Silver</span>
+            <span class="decode-chip">Crude Oil</span>
+            <span class="decode-chip">Currencies</span>
+            <span class="decode-chip">Global Rates</span>
+            <span class="decode-chip">Geopolitics</span>
+            <span class="decode-chip">Capital Flows</span>
+            <span class="decode-chip">Sector Rotations</span>
+            <span class="decode-chip">Market Psychology</span>
+          </div>
+        </div>
+
+        <blockquote class="signature-quote">I try to connect what moves money before it moves markets.</blockquote>
+
+      </div>
+    </div>
   </section>
 
   <div class="primary-head">
