@@ -1302,6 +1302,12 @@ function toggleTrackerTheme(){
   var next = current === 'light' ? 'dark' : 'light';
   document.documentElement.setAttribute('data-theme', next);
   try { localStorage.setItem('hd-theme-tracker', next); } catch(e) {}
+  // Force charts to redraw so they pick up the new theme colors (Chart.js doesn't auto-refresh on attribute changes)
+  try {
+    if (typeof UNIQUE_ROWS !== 'undefined' && UNIQUE_ROWS.length && typeof renderPanels === 'function') {
+      renderPanels();
+    }
+  } catch(e) {}
 }
 function setStatus(msg, cls='') {
   const el = $('status');
