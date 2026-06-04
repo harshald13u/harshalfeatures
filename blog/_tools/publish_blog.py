@@ -713,8 +713,8 @@ h1{{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46
 /* Cover breaks OUT of the article column — extends up to 1400px on desktop while body stays at 760px.
    The width calc keeps it sane on every viewport: capped at viewport-minus-32px on narrow screens. */
 .cover{{position:relative;display:block;margin:0 auto 14px;border-radius:8px;overflow:hidden;border:1px solid var(--rule);background:var(--bg-2);
-       width:min(calc(100% + 170px), calc(100vw - 32px));
-       max-width:1100px;
+       width:min(calc(100% + 187px), calc(100vw - 32px));
+       max-width:1210px;
        margin-left:50%;transform:translateX(-50%);
        aspect-ratio:16/9;cursor:zoom-in;text-decoration:none}}
 .cover img{{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:var(--bg-2)}}
