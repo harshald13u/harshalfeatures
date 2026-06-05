@@ -933,7 +933,8 @@ html[data-theme="light"] .post-table tr.tbl-total td{{background:rgba(184,133,43
 
 /* Mobile: tighten padding so the table doesn't blow up horizontal scroll on tiny screens */
 @media (max-width: 600px){{
-  .post-table thead th, .post-table tbody td{{padding:10px 12px;font-size:13.5px}}
+  .post-table thead th, .post-table tbody td{{padding:7px 8px;font-size:12px;line-height:1.32}}
+  .post-table thead th{{letter-spacing:0.3px}}
   .post-table tr.tbl-section td{{padding:9px 12px;font-size:10.5px;letter-spacing:1px}}
 }}
 blockquote{{margin:26px 0;padding:6px 0 6px 22px;border-left:3px solid var(--accent);font-style:italic;color:var(--ink);font-size:18px}}
