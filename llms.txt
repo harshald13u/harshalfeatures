@@ -4,7 +4,7 @@
 
 ## Primary pages
 
-- [About — Harshal Dasani](https://harshald13u.github.io/harshalfeatures/): personal page with bio, stats and links to social channels.
+- [About, Harshal Dasani](https://harshald13u.github.io/harshalfeatures/): personal page with bio, stats and links to social channels.
 - [Media Features Tracker](https://harshald13u.github.io/harshalfeatures/tracker/): live searchable database of every article, interview and quote across 145+ publications.
 - [Markets with Harshal Blog](https://harshald13u.github.io/harshalfeatures/blog/): long-form notes on stock markets, commodities, macros, geopolitics, interviews and media features.
 - [Harshal Dasani at INVasset PMS](https://harshald13u.github.io/harshalfeatures/blog/posts/harshal-dasani-invasset/): profile page for Harshal Dasani's role and market themes.

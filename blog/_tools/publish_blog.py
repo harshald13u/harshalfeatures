@@ -239,6 +239,16 @@ def find_caption_idx(paragraphs, after_idx):
 # ---------------------------------------------------------------------------
 # Body HTML render
 # ---------------------------------------------------------------------------
+def normalize_dashes(s):
+    if not s:
+        return s
+    s = s.replace("&mdash;", "\u2014").replace("&#8212;", "\u2014")
+    s = re.sub(r"[ \t]*\u2014[ \t]*", ", ", s)
+    s = re.sub(r",[ \t]*([.,;:!?])", r"\1", s)
+    s = re.sub(r",[ \t]*(</[A-Za-z])", r"\1", s)
+    return s
+
+
 def html_escape(s):
     return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
              .replace('"', "&quot;").replace("'", "&#39;"))
@@ -1131,6 +1141,7 @@ def build_rss_feed(feed_path, site_base):
   </channel>
 </rss>
 """
+    rss = normalize_dashes(rss)
     os.makedirs(os.path.dirname(feed_path), exist_ok=True)
     with open(feed_path, "w", encoding="utf-8") as f:
         f.write(rss)
@@ -1228,6 +1239,12 @@ def publish_blog(docx_path):
     focus_kw = metadata["Focus Keywords"].strip()
     image_alt = metadata["Image Alt"].strip()
     image_caption = metadata["Image Caption"].strip()
+    title = normalize_dashes(title)
+    excerpt = normalize_dashes(excerpt)
+    seo_title = normalize_dashes(seo_title)
+    meta_desc = normalize_dashes(meta_desc)
+    image_alt = normalize_dashes(image_alt)
+    image_caption = normalize_dashes(image_caption)
 
     post_dir = os.path.join(POSTS_DIR, slug)
     os.makedirs(post_dir, exist_ok=True)
@@ -1342,6 +1359,7 @@ def publish_blog(docx_path):
         ),
     )
 
+    html = normalize_dashes(html)
     with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
         f.write(html)
     print(f"[publish] wrote {post_dir}/index.html  ({len(html)} bytes)")
