@@ -1082,7 +1082,7 @@ def url_enc(s):
 
 
 def render_related_html(current_slug):
-    """Auto 'Related analysis' cross-links (topic cluster) from the 2 most recent OTHER posts."""
+    """'Related analysis' - up to 3 most recent OTHER posts as cards (photo + headline + one-line description)."""
     if not os.path.exists(POSTS_JSON):
         return ""
     try:
@@ -1092,17 +1092,26 @@ def render_related_html(current_slug):
         return ""
     labels = {"stock-market": "Stock Market", "commodities": "Commodities", "macros": "Macros", "geopolitics": "Geopolitics"}
     posts = [p for p in data.get("posts", []) if p.get("slug") and p.get("slug") != current_slug]
-    posts = sorted(posts, key=lambda p: p.get("date", ""), reverse=True)[:2]
+    posts = sorted(posts, key=lambda p: p.get("date", ""), reverse=True)[:3]
     if not posts:
         return ""
-    links = ""
+    cards = ""
     for p in posts:
         topic = labels.get(p.get("topic", ""), (p.get("topic", "") or "Blog").replace("-", " ").title())
-        links += ('    <a href="../' + html_escape(p.get("slug", "")) + '/" style="display:block;border-top:1px solid var(--rule);padding:14px 2px;text-decoration:none">'
-                  '<span style="display:block;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:5px">' + html_escape(topic) + '</span>'
-                  '<span style="display:block;font-size:16px;font-weight:700;color:var(--ink);line-height:1.32">' + html_escape(p.get("title", "")) + '</span></a>\n')
-    return ('  <section class="post-related" aria-label="Related analysis" style="margin:44px 0 8px">\n'
-            '    <h2>Related analysis</h2>\n' + links + '  </section>\n')
+        img = p.get("image", "")
+        thumb = ('<span style="display:block;aspect-ratio:16/9;overflow:hidden;background:var(--bg)"><img src="' + html_escape(img) + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></span>') if img else ""
+        cards += ('    <a class="related-card" href="../' + html_escape(p.get("slug", "")) + '/" style="display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:var(--bg-2);text-decoration:none">'
+                  + thumb
+                  + '<span style="display:flex;flex-direction:column;gap:5px;padding:12px 13px 14px">'
+                  + '<span style="font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent)">' + html_escape(topic) + '</span>'
+                  + '<span style="font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.28;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">' + html_escape(p.get("title", "")) + '</span>'
+                  + '<span style="font-size:12.5px;color:var(--ink-2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">' + html_escape(p.get("excerpt", "")) + '</span>'
+                  + '</span></a>\n')
+    return ('  <section class="post-related" aria-label="Related analysis" style="margin:46px 0 8px">\n'
+            '    <h2>Related analysis</h2>\n'
+            '    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:6px">\n'
+            + cards +
+            '    </div>\n  </section>\n')
 
 
 def build_rss_feed(feed_path, site_base):
