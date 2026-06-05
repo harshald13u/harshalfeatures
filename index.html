@@ -1674,6 +1674,21 @@ html[data-theme="light"] .tracker-spotlight {
   .latest-card { grid-template-columns: 300px minmax(0, 1fr); }
 }
 
+/* ============================================================
+   TABLET / iPAD = DESKTOP LAYOUT
+   Re-applies the desktop 2-column layout for 641-960px so iPads
+   never get the stacked phone layout. Phones (<=640) are untouched.
+   ============================================================ */
+@media (min-width: 641px) and (max-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1fr) 300px; column-gap: 34px; row-gap: 0; }
+  .hero-right { align-items: stretch; }
+  .hero-photo { max-width: 300px; margin: 0; }
+  .about { grid-template-columns: 170px minmax(0, 1fr); gap: 30px; }
+  .about-body { column-count: 2; }
+  .spotlight-head { grid-template-columns: minmax(0, 1fr) auto; }
+  .spotlight-grid { grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr); align-items: start; }
+}
+
 @media (max-width: 640px) {
   .home-spotlight {
     padding: 34px 0 38px;
