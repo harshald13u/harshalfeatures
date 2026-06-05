@@ -1727,6 +1727,30 @@ html[data-theme="light"] .tracker-spotlight {
 
 /* No CSS zoom, page renders at native 100% browser zoom. */
 
+/* ============================================================
+   PHONE FIXES (<=640): kill horizontal overflow; clean blog cards + tracker box
+   ============================================================ */
+@media (max-width: 640px) {
+  html, body { overflow-x: hidden; }
+  .home-spotlight, .spotlight-grid, .spotlight-grid > div { min-width: 0; max-width: 100%; }
+
+  /* Latest Blogs cards: fully stacked, text wraps, no giant empty thumb */
+  .latest-card { grid-template-columns: 1fr !important; }
+  .latest-thumb { width: 100% !important; height: auto !important; aspect-ratio: 16 / 9; border-right: none; border-bottom: 1px solid var(--rule); }
+  .latest-thumb.is-empty { display: none; }
+  .latest-body { min-width: 0; width: 100%; }
+  .latest-title, .latest-excerpt, .latest-topic { min-width: 0; overflow-wrap: anywhere; }
+
+  /* Media Tracker box: fit the phone, no overflow */
+  .tracker-spotlight { max-width: 100%; overflow: hidden; }
+  .ts-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ts-kpi { min-width: 0; }
+  .ts-sf-grid { grid-template-columns: 1fr; }
+  .ts-sf-thumb { height: auto; aspect-ratio: 16 / 9; }
+  .ts-sf, .ts-tf, .ts-tf-l { min-width: 0; }
+  .ts-sf-title, .ts-tf-head, .ts-tf-pub { overflow-wrap: anywhere; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
