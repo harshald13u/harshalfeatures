@@ -57,6 +57,7 @@ SITEMAP_PATH = f"{DEPLOYED}/sitemap.xml"
 NEWS_SITEMAP_PATH = f"{DEPLOYED}/news-sitemap.xml"
 SITE_BASE = "https://harshald13u.github.io/harshalfeatures"
 ENTITIES_PATH = f"{BLOG_DIR}/_tools/entities.json"
+HOTSPOTS_PATH = f"{BLOG_DIR}/_tools/chart_hotspots.json"
 
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -323,7 +324,8 @@ def inline_entity_links(text, entities, used_in_post):
 
 def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
                      dark_cover_idx, caption_idx, image_caption,
-                     post_dir, entities=None, inline_filenames=None, inline_chart_pairs=None):
+                     post_dir, entities=None, inline_filenames=None, inline_chart_pairs=None,
+                     post_hotspots=None):
     """Render the body HTML.
 
     Skips: metadata block, byline (rendered elsewhere), the light cover image (rendered as hero),
@@ -334,6 +336,8 @@ def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
     """
     inline_filenames = inline_filenames or {}
     inline_chart_pairs = inline_chart_pairs or {}
+    post_hotspots = post_hotspots or {}  # figure-index (str) -> [hotspot dicts]
+    inline_figure_count = 0  # 0-indexed counter for hotspot lookup
     hard_skip = set(skip_idxs)
     if dark_marker_idx is not None:
         hard_skip.add(dark_marker_idx)
@@ -377,19 +381,27 @@ def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
                 continue  # not on disk
             cap_text = inline_caption_for.get(i, "")
             cap_html = f'<figcaption class="inline-cap">{html_escape(cap_text)}</figcaption>' if cap_text else ""
+            overlay_html = render_hotspot_overlay(post_hotspots.get(str(inline_figure_count), []))
+            inline_figure_count += 1
             if img_idx in inline_chart_pairs:
                 dark_idx = inline_chart_pairs[img_idx]
                 dark_fname = inline_filenames.get(dark_idx, light_fname)
                 parts.append(
                     f'<figure class="inline-figure inline-figure-dual" data-light="{light_fname}" data-dark="{dark_fname}">'
+                    f'<div class="chart-img-wrap">'
                     f'<img class="light-only" src="{light_fname}" alt="{html_escape(cap_text)}" loading="lazy" decoding="async">'
                     f'<img class="dark-only" src="{dark_fname}" alt="{html_escape(cap_text)}" loading="lazy" decoding="async">'
+                    f'{overlay_html}'
+                    f'</div>'
                     f'{cap_html}</figure>'
                 )
             else:
                 parts.append(
                     f'<figure class="inline-figure">'
+                    f'<div class="chart-img-wrap">'
                     f'<img src="{light_fname}" alt="{html_escape(cap_text)}" loading="lazy" decoding="async">'
+                    f'{overlay_html}'
+                    f'</div>'
                     f'{cap_html}</figure>'
                 )
             continue
@@ -921,6 +933,23 @@ p{{margin:0 0 18px}}
 .inline-figure-dual .dark-only{{opacity:1;position:relative}}
 html[data-theme="light"] .inline-figure-dual .light-only{{opacity:1;position:relative}}
 html[data-theme="light"] .inline-figure-dual .dark-only{{opacity:0;position:absolute;inset:0}}
+/* Chart hotspots — interactive overlay for inline figures */
+.chart-img-wrap{{position:relative}}
+.chart-overlay{{position:absolute;inset:0;pointer-events:none;z-index:2}}
+.chart-hotspot{{position:absolute;width:5.5%;aspect-ratio:1;border-radius:50%;border:none;background:transparent;cursor:help;pointer-events:auto;transform:translate(-50%,-50%);transition:background-color .15s ease,box-shadow .15s ease;padding:0}}
+.chart-hotspot:hover,.chart-hotspot:focus-visible{{background:rgba(212,166,74,0.25);box-shadow:0 0 0 2px var(--accent);outline:none}}
+html[data-theme="light"] .chart-hotspot:hover,html[data-theme="light"] .chart-hotspot:focus-visible{{background:rgba(184,133,43,0.22)}}
+.chart-tooltip{{position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:var(--bg-2);color:var(--ink);padding:9px 13px;border:1px solid var(--rule);border-radius:8px;font-size:13px;line-height:1.45;white-space:nowrap;opacity:0;visibility:hidden;transition:opacity .15s,visibility .15s;pointer-events:none;z-index:10;box-shadow:0 6px 18px rgba(0,0,0,0.28);text-align:left}}
+html[data-theme="light"] .chart-tooltip{{box-shadow:0 6px 18px rgba(26,52,88,0.12)}}
+.chart-tooltip strong{{color:var(--accent);font-weight:700;display:inline-block;margin-bottom:2px;font-size:12.5px;letter-spacing:0.2px}}
+.chart-hotspot:hover .chart-tooltip,.chart-hotspot:focus-visible .chart-tooltip{{opacity:1;visibility:visible}}
+/* Tooltip arrow */
+.chart-tooltip::after{{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--bg-2)}}
+/* Mobile: pin tooltips to viewport instead of trying to stay above the hotspot */
+@media (max-width: 600px){{
+  .chart-hotspot{{width:8%}}
+  .chart-tooltip{{font-size:12px;padding:7px 10px}}
+}}
 /* Tables — editorial design, theme-aware, horizontal scroll on narrow viewports.
    Lifted card with rounded corners + subtle shadow; navy header band; gold section dividers;
    tabular-nums right-aligned data columns; hairline row separators only (no full grid). */
@@ -1249,6 +1278,40 @@ def build_rss_feed(feed_path, site_base):
     print(f"[rss] wrote {feed_path}  ({len(rss)} bytes, {len(posts)} items)")
 
 
+def load_chart_hotspots():
+    """Load the slug -> figure-index -> [hotspots] map. Empty dict if file missing."""
+    if not os.path.exists(HOTSPOTS_PATH):
+        return {}
+    try:
+        with open(HOTSPOTS_PATH, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        # strip _doc / comments
+        return {k: v for k, v in data.items() if not k.startswith("_")}
+    except Exception as e:
+        print(f"[hotspots] warn: {e}")
+        return {}
+
+
+def render_hotspot_overlay(hotspots):
+    """Build the HTML for an interactive hotspot overlay (returns empty string if no hotspots)."""
+    if not hotspots:
+        return ""
+    buttons = []
+    for h in hotspots:
+        x = float(h.get("x", 50))
+        y = float(h.get("y", 50))
+        label = html_escape(h.get("label", ""))
+        value = html_escape(h.get("value", ""))
+        buttons.append(
+            f'<button type="button" class="chart-hotspot" '
+            f'style="left:{x}%;top:{y}%" '
+            f'aria-label="{label}: {value}" tabindex="0">'
+            f'<span class="chart-tooltip" role="tooltip"><strong>{label}</strong><br>{value}</span>'
+            f'</button>'
+        )
+    return f'<div class="chart-overlay" aria-hidden="false">{"".join(buttons)}</div>'
+
+
 def load_entities():
     if not os.path.exists(ENTITIES_PATH):
         return []
@@ -1422,10 +1485,14 @@ def publish_blog(docx_path):
     takeaways_html = render_takeaways_html(takeaways_items)
     faq_html = render_faq_html(faq_pairs)
     related_html = render_related_html(slug)
+    post_hotspots = load_chart_hotspots().get(slug, {})
+    if post_hotspots:
+        print(f"[publish] hotspots for {slug}: {sum(len(v) for v in post_hotspots.values())} across {len(post_hotspots)} figure(s)")
     body_html = takeaways_html + render_body_html(
         paras, skip, dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx,
         image_caption, post_dir, entities=entities_with_qid,
         inline_filenames=inline_filenames, inline_chart_pairs=inline_chart_pairs,
+        post_hotspots=post_hotspots,
     )
     # Recover the set of entities actually used by re-scanning the rendered HTML
     for ent in entities_with_qid:
@@ -1492,99 +1559,4 @@ def publish_blog(docx_path):
         share_title_enc=url_enc(seo_title),
         og_title=html_escape(seo_title),
         light_cover_url=light_cover_url,
-        image_alt=html_escape(image_alt),
-        light_cover_filename=light_cover_filename,
-        dark_cover_filename=dark_cover_filename,
-        topic_label=topic_label,
-        title_html=html_escape(title),
-        excerpt_html=html_escape(excerpt),
-        image_caption_html=html_escape(image_caption),
-        date_iso=date_iso,
-        date_pretty=pretty_date(date_str),
-        modified_iso=modified_iso,
-        modified_pretty=pretty_date(today),
-        body_html=body_html,
-        faq_html=faq_html,
-        related_html=related_html,
-        jsonld=jsonld,
-        word_count_pretty=f"{wc:,}",
-        reading_minutes=rt,
-        article_tag_meta="\n".join(
-            f'<meta property="article:tag" content="{html_escape(k.strip())}">'
-            for k in (focus_kw.split(",") if focus_kw else []) if k.strip()
-        ),
-    )
-
-    html = normalize_dashes(html)
-    with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
-        f.write(html)
-    print(f"[publish] wrote {post_dir}/index.html  ({len(html)} bytes)")
-
-    # body.md
-    body_md_lines = []
-    for i, p in enumerate(paras):
-        if i in skip or p["type"] in ("image", "table"): continue
-        if i in (dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx): continue
-        prefix = {"h1":"# ","h2":"## ","h3":"### ","p":""}.get(p["type"], "")
-        body_md_lines.append(prefix + p["text"])
-    with open(os.path.join(post_dir, "body.md"), "w", encoding="utf-8") as f:
-        f.write("\n\n".join(body_md_lines))
-
-    # posts.json
-    if os.path.exists(POSTS_JSON):
-        with open(POSTS_JSON, encoding="utf-8") as f:
-            data = json.load(f)
-    else:
-        data = {"posts": []}
-    entry = {
-        "slug": slug, "title": title, "topic": topic, "date": date_str,
-        "excerpt": excerpt, "image": light_cover_url, "url": canonical,
-    }
-    data["posts"] = [entry] + [p for p in data.get("posts", []) if p.get("slug") != slug]
-    data["posts"].sort(key=lambda p: p.get("date", ""), reverse=True)
-    with open(POSTS_JSON, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-    print(f"[publish] posts.json updated ({len(data['posts'])} posts total)")
-
-    upsert_sitemap_post(SITEMAP_PATH, canonical, today, light_cover_url, image_caption)
-    upsert_news_sitemap(NEWS_SITEMAP_PATH, canonical, title, date_str)
-    print(f"[publish] sitemap.xml + news-sitemap.xml updated")
-
-    build_rss_feed(f"{BLOG_DIR}/feed.xml", SITE_BASE)
-    build_rss_feed(f"{DEPLOYED}/blog/feed.xml", SITE_BASE)
-
-    return {
-        "slug": slug, "title": title, "topic": topic, "date": date_str,
-        "excerpt": excerpt, "image": light_cover_url, "url": canonical,
-        "post_dir": post_dir,
-        "light_cover": light_cover_filename, "dark_cover": dark_cover_filename,
-        "word_count": wc, "reading_minutes": rt,
-        "used_entities": sorted(used_entities),
-        "mentioned_entities": sorted(mentioned_entities),
-        "tables": sum(1 for p in paras if p.get("type") == "table"),
-    }
-
-
-def find_latest_blog():
-    blogs_dir = f"{FEATURES}/Blogs"
-    candidates = []
-    for fn in os.listdir(blogs_dir):
-        if fn.startswith("~$") or fn.startswith("."): continue
-        if not fn.lower().endswith(".docx"): continue
-        path = os.path.join(blogs_dir, fn)
-        if not os.path.isfile(path): continue
-        m = re.match(r"(\d{4}-\d{2}-\d{2})_", fn)
-        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(path))
-        candidates.append((key, path))
-    if not candidates:
-        raise SystemExit("No .docx blogs in /Features/Blogs/")
-    candidates.sort(reverse=True)
-    return candidates[0][1]
-
-
-if __name__ == "__main__":
-    target = sys.argv[1] if len(sys.argv) > 1 else find_latest_blog()
-    result = publish_blog(target)
-    print()
-    print("=" * 60)
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+     
