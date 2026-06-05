@@ -1427,4 +1427,164 @@ def publish_blog(docx_path):
         image_caption, post_dir, entities=entities_with_qid,
         inline_filenames=inline_filenames, inline_chart_pairs=inline_chart_pairs,
     )
-    # Recover the set o
+    # Recover the set of entities actually used by re-scanning the rendered HTML
+    for ent in entities_with_qid:
+        qid = ent.get("wikidata") or ""
+        if not qid:
+            continue
+        if re.search(r"wikidata\.org/wiki/" + re.escape(qid) + r"\b", body_html):
+            used_entities.add(ent["name"])
+
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    date_iso = f"{date_str}T09:00:00+05:30"
+    modified_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
+
+    # Word count and reading time (220 wpm — Medium / industry average)
+    plain_body_text = " ".join(p["text"] for i, p in enumerate(paras)
+                                if i not in skip and p["type"] != "image"
+                                and i not in (dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx))
+    wc = word_count_of(plain_body_text)
+    rt = reading_minutes(wc)
+
+    # Mentioned entities = a second scan over the body (whole-word, case-insensitive)
+    # that catches entities WITHOUT a Wikidata Q-ID, plus any aliases not used as the
+    # primary link in the post. Used for the `mentions` array in JSON-LD.
+    all_entities = entities  # includes those without Q-IDs
+    mentioned_entities = set()
+    for ent in all_entities:
+        name = ent.get("name") or ""
+        if not name or name in used_entities:
+            continue
+        # If no Q-ID we can't enrich it, so skip
+        if not ent.get("wikidata"):
+            continue
+        cands = [name] + list(ent.get("aliases") or [])
+        for cand in cands:
+            if re.search(r"(?<![A-Za-z0-9_])" + re.escape(cand) + r"(?![A-Za-z0-9_])",
+                         plain_body_text, 0 if cand.isupper() else re.IGNORECASE):
+                mentioned_entities.add(name)
+                break
+
+    jsonld = article_jsonld(
+        title=title, excerpt=excerpt, slug=slug, topic=topic, date_str=date_str,
+        canonical=canonical, light_cover_url=light_cover_url,
+        focus_keywords=focus_kw, image_alt=image_alt,
+        used_entities=used_entities, entities=entities_with_qid,
+        word_count=wc, reading_minutes=rt,
+        article_body_text=plain_body_text,
+        mentioned_entities=mentioned_entities,
+        faq_pairs=faq_pairs,
+    )
+
+    topic_label = {
+        "stock-market": "Stock Market",
+        "commodities": "Commodities",
+        "macros": "Macros",
+        "geopolitics": "Geopolitics",
+    }[topic]
+
+    html = POST_TEMPLATE.format(
+        seo_title=html_escape(seo_title),
+        meta_description=html_escape(meta_desc),
+        keywords=html_escape(focus_kw),
+        canonical=canonical,
+        canonical_enc=url_enc(canonical),
+        share_title_enc=url_enc(seo_title),
+        og_title=html_escape(seo_title),
+        light_cover_url=light_cover_url,
+        image_alt=html_escape(image_alt),
+        light_cover_filename=light_cover_filename,
+        dark_cover_filename=dark_cover_filename,
+        topic_label=topic_label,
+        title_html=html_escape(title),
+        excerpt_html=html_escape(excerpt),
+        image_caption_html=html_escape(image_caption),
+        date_iso=date_iso,
+        date_pretty=pretty_date(date_str),
+        modified_iso=modified_iso,
+        modified_pretty=pretty_date(today),
+        body_html=body_html,
+        faq_html=faq_html,
+        related_html=related_html,
+        jsonld=jsonld,
+        word_count_pretty=f"{wc:,}",
+        reading_minutes=rt,
+        article_tag_meta="\n".join(
+            f'<meta property="article:tag" content="{html_escape(k.strip())}">'
+            for k in (focus_kw.split(",") if focus_kw else []) if k.strip()
+        ),
+    )
+
+    html = normalize_dashes(html)
+    with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"[publish] wrote {post_dir}/index.html  ({len(html)} bytes)")
+
+    # body.md
+    body_md_lines = []
+    for i, p in enumerate(paras):
+        if i in skip or p["type"] in ("image", "table"): continue
+        if i in (dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx): continue
+        prefix = {"h1":"# ","h2":"## ","h3":"### ","p":""}.get(p["type"], "")
+        body_md_lines.append(prefix + p["text"])
+    with open(os.path.join(post_dir, "body.md"), "w", encoding="utf-8") as f:
+        f.write("\n\n".join(body_md_lines))
+
+    # posts.json
+    if os.path.exists(POSTS_JSON):
+        with open(POSTS_JSON, encoding="utf-8") as f:
+            data = json.load(f)
+    else:
+        data = {"posts": []}
+    entry = {
+        "slug": slug, "title": title, "topic": topic, "date": date_str,
+        "excerpt": excerpt, "image": light_cover_url, "url": canonical,
+    }
+    data["posts"] = [entry] + [p for p in data.get("posts", []) if p.get("slug") != slug]
+    data["posts"].sort(key=lambda p: p.get("date", ""), reverse=True)
+    with open(POSTS_JSON, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    print(f"[publish] posts.json updated ({len(data['posts'])} posts total)")
+
+    upsert_sitemap_post(SITEMAP_PATH, canonical, today, light_cover_url, image_caption)
+    upsert_news_sitemap(NEWS_SITEMAP_PATH, canonical, title, date_str)
+    print(f"[publish] sitemap.xml + news-sitemap.xml updated")
+
+    build_rss_feed(f"{BLOG_DIR}/feed.xml", SITE_BASE)
+    build_rss_feed(f"{DEPLOYED}/blog/feed.xml", SITE_BASE)
+
+    return {
+        "slug": slug, "title": title, "topic": topic, "date": date_str,
+        "excerpt": excerpt, "image": light_cover_url, "url": canonical,
+        "post_dir": post_dir,
+        "light_cover": light_cover_filename, "dark_cover": dark_cover_filename,
+        "word_count": wc, "reading_minutes": rt,
+        "used_entities": sorted(used_entities),
+        "mentioned_entities": sorted(mentioned_entities),
+        "tables": sum(1 for p in paras if p.get("type") == "table"),
+    }
+
+
+def find_latest_blog():
+    blogs_dir = f"{FEATURES}/Blogs"
+    candidates = []
+    for fn in os.listdir(blogs_dir):
+        if fn.startswith("~$") or fn.startswith("."): continue
+        if not fn.lower().endswith(".docx"): continue
+        path = os.path.join(blogs_dir, fn)
+        if not os.path.isfile(path): continue
+        m = re.match(r"(\d{4}-\d{2}-\d{2})_", fn)
+        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(path))
+        candidates.append((key, path))
+    if not candidates:
+        raise SystemExit("No .docx blogs in /Features/Blogs/")
+    candidates.sort(reverse=True)
+    return candidates[0][1]
+
+
+if __name__ == "__main__":
+    target = sys.argv[1] if len(sys.argv) > 1 else find_latest_blog()
+    result = publish_blog(target)
+    print()
+    print("=" * 60)
+    print(json.dumps(result, indent=2, ensure_ascii=False))

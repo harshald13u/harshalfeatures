@@ -50,6 +50,4 @@ For now, the RBI has chosen patience, and given the crosswinds it is facing, tha
 
 This blog reflects the views of INVasset PMS and is for information only. It is not investment advice or a recommendation to buy or sell any security. Please consult your financial adviser before making investment decisions.
 
-CHART — DARK MODE  ·  use this version on the dark site theme
-
 India’s repo rate cycle, 2023–2026 (dark version).
