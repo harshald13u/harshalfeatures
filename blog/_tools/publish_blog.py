@@ -1449,4 +1449,8 @@ def find_latest_blog():
 
 
 if __name__ == "__main__":
-    target = sys.ar
+    target = sys.argv[1] if len(sys.argv) > 1 else find_latest_blog()
+    result = publish_blog(target)
+    print()
+    print("=" * 60)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
