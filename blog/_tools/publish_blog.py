@@ -581,7 +581,7 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         "url": f"{SITE_BASE}/",
         "image": f"{SITE_BASE}/harshal-dasani.jpg",
         "jobTitle": "Business Head, INVasset PMS",
-        "description": "Harshal Dasani — markets professional, writer, and Business Head at INVasset PMS, Mumbai. CFA candidate; CA Level II.",
+        "description": "Harshal Dasani — markets professional and writer with over a decade in Indian equity markets. Business Head at INVasset PMS, Mumbai. CFA candidate; CA Level II.",
         "worksFor": {"@type": "Organization", "name": "INVasset PMS", "url": "https://invasset.com/"},
         "knowsAbout": ["Indian equity markets", "Portfolio Management Services", "Macroeconomics", "Commodities", "Geopolitics"],
         "alumniOf": "The Institute of Chartered Accountants of India",
@@ -1010,7 +1010,7 @@ strong{{color:var(--ink);font-weight:700}}
     <img src="../../../harshal-dasani.jpg" alt="Harshal Dasani — Business Head, INVasset PMS" loading="lazy" itemprop="image" width="72" height="72">
     <div class="author-bio-body">
       <h3 itemprop="name">About Harshal Dasani</h3>
-      <p itemprop="description">Business Head at <a href="https://invasset.com/" rel="external" target="_blank" itemprop="worksFor">INVasset PMS</a>, Mumbai. CFA candidate · CA Level II. Writes long-form on Indian equity markets, commodities, macros and geopolitics. <a href="../../../tracker/">See media features &rarr;</a></p>
+      <p itemprop="description">Over a decade in Indian equity markets — equity research, portfolio strategy, capital flows. Currently Business Head at <a href="https://invasset.com/" rel="external" target="_blank" itemprop="worksFor">INVasset PMS</a>, Mumbai. CFA candidate · CA Level II. Long-form notes on equities, commodities, macros and geopolitics. <a href="../../../tracker/">See media features &rarr;</a></p>
       <div class="author-links">
         <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener noreferrer" itemprop="sameAs">LinkedIn</a>
         <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener noreferrer" itemprop="sameAs">X (Twitter)</a>
@@ -1144,7 +1144,7 @@ def build_rss_feed(feed_path, site_base):
     <title>Harshal Dasani — Blog</title>
     <link>{site_base}/blog/</link>
     <atom:link href="{site_base}/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <description>Long-form notes on Indian equity markets, commodities, macros and geopolitics by Harshal Dasani — Business Head at INVasset PMS, Mumbai.</description>
+    <description>Long-form notes on Indian equity markets, commodities, macros and geopolitics by Harshal Dasani — over a decade in Indian markets, currently Business Head at INVasset PMS, Mumbai.</description>
     <language>en-IN</language>
     <copyright>(c) Harshal Dasani</copyright>
     <lastBuildDate>{now_rfc822}</lastBuildDate>
@@ -1449,8 +1449,4 @@ def find_latest_blog():
 
 
 if __name__ == "__main__":
-    target = sys.argv[1] if len(sys.argv) > 1 else find_latest_blog()
-    result = publish_blog(target)
-    print()
-    print("=" * 60)
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    target = sys.ar
