@@ -942,11 +942,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
        color: var(--txt); padding: 24px; position: relative; z-index: 0;
        background-color: #0e0c0a; }
 /* Real NASA James Webb deep-space photograph as background layer */
-body::before { content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
-  background-image: url('galaxy-bg.jpg');
-  background-size: cover; background-position: center; background-attachment: fixed;
-  filter: brightness(0.85) saturate(1.08);
-  animation: none; }
+body::before { content: none; } /* galaxy background removed from dark mode (05-Jun-2026) */
 /* Subtle dark gradient overlay so content stays readable */
 body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background: radial-gradient(ellipse 100% 80% at 50% 50%, rgba(14,12,10,0.15), rgba(14,12,10,0.55) 95%);
