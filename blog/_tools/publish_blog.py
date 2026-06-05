@@ -329,9 +329,16 @@ def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
             thead_html = ""
             tbody_rows = rows
             first = rows[0]
+            def _is_datalike(s):
+                s = (s or "").strip()
+                if not s:
+                    return False
+                if s[0] in "₹$€£":
+                    return True
+                return bool(re.match(r"^[~≈]?\s*[\d][\d,\.\s]*\s*(cr|bn|mn|k|%|crore|lakh|x)?$", s, re.I))
             is_header_row = (
                 len(first) >= 2 and
-                all(not re.search(r"\d", (c.get("text") or "")) for c in first)
+                not any(_is_datalike(c.get("text", "")) for c in first)
             )
             def _cell_attrs(c):
                 cs = c.get("colspan", 1)
@@ -353,7 +360,9 @@ def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
                     for c in r:
                         cell_html = inline_entity_links(html_escape(c.get("text", "")), entities or [], used_entities)
                         cells.append(f"<td{_cell_attrs(c)}>{cell_html}</td>")
-                    body_trs.append("<tr>" + "".join(cells) + "</tr>")
+                    _t0 = (r[0].get("text", "") if r else "").strip().lower()
+                    _is_total = _t0.startswith(("total", "combined", "overall", "grand total", "net total"))
+                    body_trs.append(('<tr class="tbl-total">' if _is_total else "<tr>") + "".join(cells) + "</tr>")
             tbody_html = "<tbody>" + "".join(body_trs) + "</tbody>"
             parts.append(f'<div class="table-wrap"><table class="post-table">{thead_html}{tbody_html}</table></div>')
             continue
@@ -869,10 +878,10 @@ html[data-theme="light"] .table-wrap{{box-shadow:0 1px 0 var(--rule), 0 8px 24px
 .post-table tbody tr:last-child td:first-child{{border-bottom-left-radius:11px}}
 .post-table tbody tr:last-child td:last-child{{border-bottom-right-radius:11px}}
 /* Zebra striping */
-.post-table tbody tr:nth-child(even):not(.tbl-section) td{{
+.post-table tbody tr:nth-child(even):not(.tbl-section):not(.tbl-total) td{{
   background:linear-gradient(0deg, rgba(255,255,255,0.015), rgba(255,255,255,0.015)), var(--bg-2);
 }}
-html[data-theme="light"] .post-table tbody tr:nth-child(even):not(.tbl-section) td{{
+html[data-theme="light"] .post-table tbody tr:nth-child(even):not(.tbl-section):not(.tbl-total) td{{
   background:linear-gradient(0deg, rgba(26,52,88,0.025), rgba(26,52,88,0.025)), var(--bg-2);
 }}
 /* Subtle hover */
@@ -903,6 +912,9 @@ html[data-theme="light"] .post-table tbody tr:hover td{{background:rgba(184,133,
   text-align:left;
 }}
 .post-table tr.tbl-section + tr td{{padding-top:14px}}
+.post-table tr.tbl-total td{{background:rgba(212,166,74,0.10);border-top:2px solid var(--accent);border-bottom:none;font-weight:700;color:var(--ink);padding:14px 18px}}
+html[data-theme="light"] .post-table tr.tbl-total td{{background:rgba(184,133,43,0.12)}}
+.post-table tr.tbl-total td:not(:first-child){{color:var(--accent)}}
 
 /* Mobile: tighten padding so the table doesn't blow up horizontal scroll on tiny screens */
 @media (max-width: 600px){{

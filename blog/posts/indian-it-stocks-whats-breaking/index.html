@@ -414,10 +414,10 @@ html[data-theme="light"] .table-wrap{box-shadow:0 1px 0 var(--rule), 0 8px 24px 
 .post-table tbody tr:last-child td:first-child{border-bottom-left-radius:11px}
 .post-table tbody tr:last-child td:last-child{border-bottom-right-radius:11px}
 /* Zebra striping */
-.post-table tbody tr:nth-child(even):not(.tbl-section) td{
+.post-table tbody tr:nth-child(even):not(.tbl-section):not(.tbl-total) td{
   background:linear-gradient(0deg, rgba(255,255,255,0.015), rgba(255,255,255,0.015)), var(--bg-2);
 }
-html[data-theme="light"] .post-table tbody tr:nth-child(even):not(.tbl-section) td{
+html[data-theme="light"] .post-table tbody tr:nth-child(even):not(.tbl-section):not(.tbl-total) td{
   background:linear-gradient(0deg, rgba(26,52,88,0.025), rgba(26,52,88,0.025)), var(--bg-2);
 }
 /* Subtle hover */
@@ -448,6 +448,9 @@ html[data-theme="light"] .post-table tbody tr:hover td{background:rgba(184,133,4
   text-align:left;
 }
 .post-table tr.tbl-section + tr td{padding-top:14px}
+.post-table tr.tbl-total td{background:rgba(212,166,74,0.10);border-top:2px solid var(--accent);border-bottom:none;font-weight:700;color:var(--ink);padding:14px 18px}
+html[data-theme="light"] .post-table tr.tbl-total td{background:rgba(184,133,43,0.12)}
+.post-table tr.tbl-total td:not(:first-child){color:var(--accent)}
 
 /* Mobile: tighten padding so the table doesn't blow up horizontal scroll on tiny screens */
 @media (max-width: 600px){
@@ -528,7 +531,7 @@ strong{color:var(--ink);font-weight:700}
 <p>A headcount-led model breaks the moment AI cuts the hours per project — bench utilisation suffers, promised hikes squeeze margins, and the attrition story flips from a hiring problem to a layoff problem. On top of that, the US H-1B petition fee has been pushed to around $100,000, Indo-US services trade is uncertain, and <a href="https://www.wikidata.org/wiki/Q458" rel="external nofollow noopener" target="_blank">EU</a> AI rules add compliance overhead to an already thin model.</p>
 <h2 id="capital-allocation-is-the-tell">Capital allocation is the tell</h2>
 <p>Here is the part the buyback numbers give away.</p>
-<div class="table-wrap"><table class="post-table"><tbody><tr><td>Company</td><td>Buyback programmes since 2020</td><td>Total</td></tr><tr><td>TCS</td><td>2020, 2022, 2023</td><td>₹51,000 cr</td></tr><tr><td>Infosys</td><td>2021, 2022, 2025</td><td>₹36,500 cr</td></tr><tr><td>Wipro</td><td>2020–21, 2023</td><td>₹21,500 cr</td></tr><tr><td colspan="2">Combined, since 2020</td><td>₹1,09,000 cr</td></tr></tbody></table></div>
+<div class="table-wrap"><table class="post-table"><thead><tr><th>Company</th><th>Buyback programmes since 2020</th><th>Total</th></tr></thead><tbody><tr><td>TCS</td><td>2020, 2022, 2023</td><td>₹51,000 cr</td></tr><tr><td>Infosys</td><td>2021, 2022, 2025</td><td>₹36,500 cr</td></tr><tr><td>Wipro</td><td>2020–21, 2023</td><td>₹21,500 cr</td></tr><tr class="tbl-total"><td colspan="2">Combined, since 2020</td><td>₹1,09,000 cr</td></tr></tbody></table></div>
 <p>Cumulative announced buyback value since 2020. Against this, the three firms’ combined FY25 R&amp;D was about ₹4,350 crore.</p>
 <p>When a management team returns cash year after year — TCS alone has run multiple programmes in the ₹16,000–18,000 crore range — it is telling you something. It is saying it cannot find a better use for that capital than buying its own stock. In an ordinary year, that is shareholder-friendly discipline. In the middle of an AI capex supercycle, when every global peer is spending double-digit percentages of revenue to build the next platform, it is closer to an admission.</p>
 <p>The cash has been going out, not into the future. That is the signal. Not the guidance, not the commentary on the earnings call — the cheque.</p>
