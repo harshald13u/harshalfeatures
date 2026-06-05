@@ -1365,7 +1365,12 @@ html[data-theme="light"] .tracker-spotlight {
   font-size: 10px; font-weight: 700; letter-spacing: 1.6px;
   text-transform: uppercase; color: var(--accent);
 }
-.ts-sf-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.ts-sf-grid { overflow: hidden; border-radius: 11px; border: 1px solid var(--rule); }
+.ts-sf-track { display: flex; align-items: stretch; transition: transform 0.6s cubic-bezier(.2,.7,.2,1); }
+.ts-sf-track .ts-sf { flex: 0 0 100%; border: none; border-radius: 0; }
+.ts-sf-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
+.ts-sf-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); cursor: pointer; padding: 0; border: 0; transition: background .2s ease, transform .2s ease; }
+.ts-sf-dot.is-on { background: var(--accent); transform: scale(1.3); }
 .ts-sf {
   display: block; overflow: hidden;
   border: 1px solid var(--rule); border-radius: 11px; background: var(--bg);
@@ -1373,8 +1378,8 @@ html[data-theme="light"] .tracker-spotlight {
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .ts-sf:hover { transform: translateY(-2px); border-color: rgba(212,166,74,0.55); box-shadow: 0 10px 26px rgba(0,0,0,0.30); }
-.ts-sf-thumb { display: block; width: 100%; background: var(--bg); }
-.ts-sf-thumb img { width: 100%; height: auto; display: block; }
+.ts-sf-thumb { display: block; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg); }
+.ts-sf-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .ts-sf-cap { display: flex; flex-direction: column; gap: 5px; padding: 12px 16px; }
 .ts-sf-pub { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
 .ts-sf-title {
@@ -1999,7 +2004,7 @@ html[data-theme="light"] .tracker-spotlight {
         </div>
 
         <div class="ts-section">
-          <div class="ts-sec-head"><span class="ts-sec-label">Special Features</span><span class="ts-star" aria-hidden="true">&#9733;</span></div>
+          <div class="ts-sec-head"><span class="ts-sec-label">As Featured In</span><span class="ts-star" aria-hidden="true">&#9733;</span></div>
           <div class="ts-sf-grid" id="tsSpecialGrid">
             <a class="ts-sf" href="https://www.livemint.com/market/stock-market-news/gold-prices-at-6-000-silver-rate-at-150-why-harshal-dasani-remains-bullish-on-precious-metals-despite-meltdown-11770370001942.html" target="_blank" rel="noopener">
               <span class="ts-sf-thumb"><img src="special-features-assets/livemint-gold-silver-feb2026.jpg" alt="Live Mint &mdash; Gold at $6,000, silver at $150" loading="lazy" decoding="async"></span>
@@ -2177,11 +2182,23 @@ function toggleTheme(){
         var list=(d && d.special) || []; if(!list.length) return;
         setText('tsSpecialCount', String(list.length));
         list.sort(function(a,b){ return new Date(b.date||0)-new Date(a.date||0); });
-        var s=list[0], grid=document.getElementById('tsSpecialGrid'); if(!grid) return;
-        grid.innerHTML='<a class="ts-sf" href="'+escapeHomeHTML(s.url||'#')+'" target="_blank" rel="noopener">'+
-          '<span class="ts-sf-thumb"><img src="'+escapeHomeHTML(s.image||'')+'" alt="'+escapeHomeHTML(s.alt||s.title||'')+'" loading="lazy" decoding="async"></span>'+
-          '<span class="ts-sf-cap"><span class="ts-sf-pub">'+escapeHomeHTML((s.pub||'')+' \u00b7 '+formatHomeDate(s.date))+'</span>'+
-          '<span class="ts-sf-title">'+escapeHomeHTML(s.title||'')+'</span></span></a>';
+        var vp=document.getElementById('tsSpecialGrid'); if(!vp) return;
+        var slides=list.map(function(s){
+          return '<a class="ts-sf" href="'+escapeHomeHTML(s.url||'#')+'" target="_blank" rel="noopener">'+
+            '<span class="ts-sf-thumb"><img src="'+escapeHomeHTML(s.image||'')+'" alt="'+escapeHomeHTML(s.alt||s.title||'')+'" loading="lazy" decoding="async"></span>'+
+            '<span class="ts-sf-cap"><span class="ts-sf-pub">'+escapeHomeHTML((s.pub||'')+' \u00b7 '+formatHomeDate(s.date))+'</span>'+
+            '<span class="ts-sf-title">'+escapeHomeHTML(s.title||'')+'</span></span></a>';
+        }).join('');
+        var dots=list.length>1 ? '<div class="ts-sf-dots">'+list.map(function(_x,i){ return '<button class="ts-sf-dot'+(i===0?' is-on':'')+'" type="button" aria-label="Show special feature '+(i+1)+'"></button>'; }).join('')+'</div>' : '';
+        vp.innerHTML='<div class="ts-sf-track">'+slides+'</div>'+dots;
+        if(list.length<=1) return;
+        var track=vp.querySelector('.ts-sf-track'), dts=vp.querySelectorAll('.ts-sf-dot'), idx=0, n=list.length, timer=null;
+        function go(k){ idx=(k+n)%n; track.style.transform='translateX(-'+(idx*100)+'%)'; for(var j=0;j<dts.length;j++){ dts[j].classList.toggle('is-on', j===idx); } }
+        function start(){ stop(); timer=setInterval(function(){ go(idx+1); }, 4500); }
+        function stop(){ if(timer){ clearInterval(timer); timer=null; } }
+        for(var j=0;j<dts.length;j++){ (function(jj){ dts[jj].addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); go(jj); start(); }); })(j); }
+        vp.addEventListener('mouseenter', stop); vp.addEventListener('mouseleave', start);
+        start();
       }).catch(function(){});
     }
     function run(){ syncTracker(); syncSpecial(); }
