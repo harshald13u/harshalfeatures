@@ -805,12 +805,9 @@ h1{{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46
 .subtitle{{font-size:18.5px;color:var(--ink-2);line-height:1.5;margin:0 0 22px;font-weight:400}}
 .byline{{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:0 0 30px;flex-wrap:wrap}}
 .byline strong{{color:var(--ink);font-weight:600}}
-/* Cover breaks OUT of the article column — extends up to 1400px on desktop while body stays at 760px.
-   The width calc keeps it sane on every viewport: capped at viewport-minus-32px on narrow screens. */
+/* Cover sits IN LINE with the article column — same width as the body text (no break-out). */
 .cover{{position:relative;display:block;margin:0 auto 14px;border-radius:8px;overflow:hidden;border:1px solid var(--rule);background:var(--bg-2);
-       width:min(calc(100% + 187px), calc(100vw - 32px));
-       max-width:1210px;
-       margin-left:50%;transform:translateX(-50%);
+       width:100%;
        aspect-ratio:16/9;cursor:zoom-in;text-decoration:none}}
 .cover img{{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:var(--bg-2)}}
 /* Default theme = dark → show dark cover only. Light theme → show light cover only.
