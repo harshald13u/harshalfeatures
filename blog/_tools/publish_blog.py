@@ -325,11 +325,8 @@ def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
         if i in hard_skip:
             continue
         if p["type"] == "image":
-            # Any remaining inline image (unusual — spec says only cover images). Render as figure.
-            idx = p["image_idx"]
-            # Image file already saved by caller
-            fname = f"img-{idx}.png"
-            parts.append(f'<figure class="inline-figure"><img src="{fname}" alt="" loading="lazy"></figure>')
+            # Inline body images are out of spec (only the two covers are saved). Skip rather
+            # than emit a broken <img>; charts should be rebuilt as HTML tables.
             continue
 
         if p["type"] == "table":
