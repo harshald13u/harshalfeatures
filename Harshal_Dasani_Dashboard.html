@@ -238,7 +238,7 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
        background-attachment: fixed; }
 /* Starfield layers */
 
-.wrap { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+.wrap { max-width: 1280px; margin: 0 auto; position: relative; z-index: 1; }
 .headboard { border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
              background: rgba(14,12,10,0.66);
              box-shadow: 0 20px 54px rgba(0,0,0,0.42), 0 0 34px rgba(212,166,74,0.08); }
@@ -264,6 +264,10 @@ body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Robo
 
 /* Header right zone — social icons */
 .header-right { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); z-index: 2; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.header-left { position: absolute; left: 28px; top: 50%; transform: translateY(-50%); z-index: 2; }
+.header-back { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--txt-mut); text-decoration: none; padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.03); transition: color .15s ease, border-color .15s ease, background .15s ease; }
+.header-back:hover { color: var(--accent); border-color: var(--accent); }
+html[data-theme="light"] .header-back { background: rgba(26,52,88,0.04); }
 .social-link { display: inline-flex; align-items: center; justify-content: center;
                width: 48px; height: 48px; border-radius: 50%;
                background: rgba(255,255,255,0.05); border: 1px solid rgba(236,228,211,0.28);
@@ -290,6 +294,7 @@ html[data-theme="light"] .theme-toggle-btn { background: rgba(26,52,88,0.06); bo
 @media (max-width: 720px) {
   .header { flex-direction: column; gap: 14px; padding: 20px 16px 18px; }
   .header-right { position: static; transform: none; gap: 14px; margin-top: 4px; justify-content: center; }
+  .header-left { position: static; transform: none; margin-bottom: 2px; }
   .social-link { width: 44px; height: 44px; }
   .social-link svg { width: 22px; height: 22px; }
 }
@@ -976,6 +981,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
 <div class="wrap">
   <header class="headboard">
   <div class="header">
+    <div class="header-left"><a class="header-back" href="https://harshald13u.github.io/harshalfeatures/">&larr; Back to home</a></div>
     <div class="header-main">
       <div class="header-kicker">Media Intelligence Dashboard</div>
       <h1><span class="title-main">Harshal Dasani</span></h1>
