@@ -218,6 +218,26 @@ def find_dark_marker_idx(paragraphs):
     return None
 
 
+def find_chart_dark_markers(paragraphs):
+    """Return a list of indices for any 'CHART/GRAPH/IMAGE/FIGURE — DARK MODE' markers.
+
+    These mark inline body charts where the user has provided a dark-mode variant.
+    The dark-variant image is always the FIRST image paragraph after each marker.
+    """
+    out = []
+    for i, p in enumerate(paragraphs):
+        if p["type"] != "p":
+            continue
+        text = p["text"].upper().replace("–", "—").replace("-", "—")
+        if "DARK MODE" not in text:
+            continue
+        if any(kw in text for kw in ("CHART", "GRAPH", "FIGURE", "IMAGE", "DIAGRAM")):
+            if "COVER" in text:
+                continue  # that's the cover marker, handled separately
+            out.append(i)
+    return out
+
+
 def find_byline_idx(paragraphs):
     for i, p in enumerate(paragraphs):
         if p["type"] == "p" and p["text"].lower().startswith("by harshal dasani"):
@@ -303,12 +323,17 @@ def inline_entity_links(text, entities, used_in_post):
 
 def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
                      dark_cover_idx, caption_idx, image_caption,
-                     post_dir, entities=None):
+                     post_dir, entities=None, inline_filenames=None, inline_chart_pairs=None):
     """Render the body HTML.
 
     Skips: metadata block, byline (rendered elsewhere), the light cover image (rendered as hero),
     the 'Caption:' line under the cover (used as figcaption), the DARK MODE marker label, the dark cover image.
+
+    Inline body images (charts/figures) are rendered when `inline_filenames` is provided.
+    If an image has a paired dark variant in `inline_chart_pairs`, both render with theme-swap.
     """
+    inline_filenames = inline_filenames or {}
+    inline_chart_pairs = inline_chart_pairs or {}
     hard_skip = set(skip_idxs)
     if dark_marker_idx is not None:
         hard_skip.add(dark_marker_idx)
@@ -319,14 +344,54 @@ def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
     if caption_idx is not None:
         hard_skip.add(caption_idx)
 
+    # Find captions for inline images — the next non-skip plain paragraph after each image.
+    # That caption gets consumed (hard-skipped) so it doesn't render twice.
+    inline_caption_for = {}   # image-paragraph-idx -> caption text
+    inline_caption_consumed = set()
+    for i, p in enumerate(paragraphs):
+        if p["type"] != "image" or i in hard_skip:
+            continue
+        for j in range(i + 1, min(i + 4, len(paragraphs))):
+            if j in hard_skip or j in inline_caption_consumed:
+                continue
+            cand = paragraphs[j]
+            if cand["type"] == "p" and cand.get("text"):
+                txt = cand["text"].strip()
+                # Looks like a caption: under ~140 chars, not a section break, not metadata-like
+                if 5 < len(txt) <= 200 and not txt.endswith(":"):
+                    inline_caption_for[i] = txt
+                    inline_caption_consumed.add(j)
+                break
+            elif cand["type"] in ("h2", "h3", "image", "table"):
+                break
+
     used_entities = set()
     parts = []
     for i, p in enumerate(paragraphs):
-        if i in hard_skip:
+        if i in hard_skip or i in inline_caption_consumed:
             continue
         if p["type"] == "image":
-            # Inline body images are out of spec (only the two covers are saved). Skip rather
-            # than emit a broken <img>; charts should be rebuilt as HTML tables.
+            img_idx = p["image_idx"]
+            light_fname = inline_filenames.get(img_idx)
+            if not light_fname:
+                continue  # not on disk
+            cap_text = inline_caption_for.get(i, "")
+            cap_html = f'<figcaption class="inline-cap">{html_escape(cap_text)}</figcaption>' if cap_text else ""
+            if img_idx in inline_chart_pairs:
+                dark_idx = inline_chart_pairs[img_idx]
+                dark_fname = inline_filenames.get(dark_idx, light_fname)
+                parts.append(
+                    f'<figure class="inline-figure inline-figure-dual" data-light="{light_fname}" data-dark="{dark_fname}">'
+                    f'<img class="light-only" src="{light_fname}" alt="{html_escape(cap_text)}" loading="lazy" decoding="async">'
+                    f'<img class="dark-only" src="{dark_fname}" alt="{html_escape(cap_text)}" loading="lazy" decoding="async">'
+                    f'{cap_html}</figure>'
+                )
+            else:
+                parts.append(
+                    f'<figure class="inline-figure">'
+                    f'<img src="{light_fname}" alt="{html_escape(cap_text)}" loading="lazy" decoding="async">'
+                    f'{cap_html}</figure>'
+                )
             continue
 
         if p["type"] == "table":
@@ -845,8 +910,17 @@ p, figcaption, .subtitle{{overflow-wrap:break-word}}
 h2{{font-weight:700;font-size:24px;color:var(--ink);margin:38px 0 12px;letter-spacing:-0.01em;padding-bottom:6px;border-bottom:1px solid var(--rule)}}
 h3{{font-weight:700;font-size:18px;color:var(--accent);margin:26px 0 8px}}
 p{{margin:0 0 18px}}
-.inline-figure{{margin:24px 0}}
-.inline-figure img{{width:100%;height:auto;border-radius:6px;border:1px solid var(--rule)}}
+.inline-figure{{margin:32px 0;position:relative}}
+.inline-figure img{{width:100%;height:auto;border-radius:8px;border:1px solid var(--rule);display:block}}
+.inline-figure figcaption.inline-cap{{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin-top:10px;line-height:1.45}}
+/* Dual-variant figures — light/dark theme swap via opacity (same pattern as cover). */
+.inline-figure-dual{{position:relative}}
+.inline-figure-dual .light-only,
+.inline-figure-dual .dark-only{{transition:opacity 0.15s ease}}
+.inline-figure-dual .light-only{{opacity:0;position:absolute;inset:0}}
+.inline-figure-dual .dark-only{{opacity:1;position:relative}}
+html[data-theme="light"] .inline-figure-dual .light-only{{opacity:1;position:relative}}
+html[data-theme="light"] .inline-figure-dual .dark-only{{opacity:0;position:absolute;inset:0}}
 /* Tables — editorial design, theme-aware, horizontal scroll on narrow viewports.
    Lifted card with rounded corners + subtle shadow; navy header band; gold section dividers;
    tabular-nums right-aligned data columns; hairline row separators only (no full grid). */
@@ -1281,6 +1355,56 @@ def publish_blog(docx_path):
     dark_cover_filename = save_cover(images, dark_img_idx, post_dir, "cover-dark")
     print(f"[publish] covers saved: light={light_cover_filename} dark={dark_cover_filename}")
 
+    # --- Inline chart pairs (NEW) ---
+    # Detect 'CHART/GRAPH/IMAGE/FIGURE — DARK MODE' markers. The image paragraph
+    # immediately after each marker is the DARK variant of the most-recent prior image.
+    chart_dark_markers = find_chart_dark_markers(paras)
+    chart_dark_image_p_idxs = set()      # paragraph indices for dark-chart images (skip in render)
+    inline_chart_pairs = {}              # light_img_idx -> dark_img_idx (both = `images[]` indices)
+    used_cover_image_idxs = {light_img_idx, dark_img_idx}
+    for mk in chart_dark_markers:
+        # Find the next image paragraph after this marker
+        dark_p_idx = None
+        for j in range(mk + 1, len(paras)):
+            if paras[j]["type"] == "image":
+                dark_p_idx = j
+                break
+        if dark_p_idx is None:
+            continue
+        dark_p_image_idx = paras[dark_p_idx]["image_idx"]
+        # Find the most-recent image paragraph BEFORE the marker that isn't a cover and isn't already paired
+        light_p_idx = None
+        for j in range(mk - 1, -1, -1):
+            if paras[j]["type"] == "image":
+                cand = paras[j]["image_idx"]
+                if cand in used_cover_image_idxs:
+                    break  # would cross into the cover
+                if cand in inline_chart_pairs or cand in inline_chart_pairs.values():
+                    continue  # already paired
+                light_p_idx = j
+                break
+        if light_p_idx is None:
+            continue
+        light_p_image_idx = paras[light_p_idx]["image_idx"]
+        inline_chart_pairs[light_p_image_idx] = dark_p_image_idx
+        chart_dark_image_p_idxs.add(dark_p_idx)
+
+    # Save every inline image (not a cover, not a chart-dark variant) to disk as img-{N}.png
+    # Save chart-dark variants too — they'll be referenced by the dual-image figure.
+    inline_filenames = {}  # image_idx (in images[]) -> saved filename
+    for img_idx, (fname, blob) in enumerate(images):
+        if img_idx in used_cover_image_idxs:
+            continue
+        ext = os.path.splitext(fname)[1].lower() or ".png"
+        out_name = f"img-{img_idx}{ext}"
+        with open(os.path.join(post_dir, out_name), "wb") as f:
+            f.write(blob)
+        inline_filenames[img_idx] = out_name
+    if inline_filenames:
+        print(f"[publish] inline images saved: {list(inline_filenames.values())}")
+    if inline_chart_pairs:
+        print(f"[publish] chart pairs (light->dark image idx): {inline_chart_pairs}")
+
     # Render body — strip metadata + byline + cover markers
     canonical = f"{SITE_BASE}/blog/posts/{slug}/"
     light_cover_url = f"{canonical}{light_cover_filename}"
@@ -1293,171 +1417,14 @@ def publish_blog(docx_path):
 
     takeaways_items, faq_pairs, special_skip = extract_special_sections(paras)
     skip = set(skip) | special_skip
+    # Skip chart-dark markers + chart-dark image paragraphs from body render
+    skip = skip | set(chart_dark_markers) | chart_dark_image_p_idxs
     takeaways_html = render_takeaways_html(takeaways_items)
     faq_html = render_faq_html(faq_pairs)
     related_html = render_related_html(slug)
     body_html = takeaways_html + render_body_html(
         paras, skip, dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx,
         image_caption, post_dir, entities=entities_with_qid,
+        inline_filenames=inline_filenames, inline_chart_pairs=inline_chart_pairs,
     )
-    # Recover the set of entities actually used by re-scanning the rendered HTML
-    for ent in entities_with_qid:
-        qid = ent.get("wikidata") or ""
-        if not qid:
-            continue
-        if re.search(r"wikidata\.org/wiki/" + re.escape(qid) + r"\b", body_html):
-            used_entities.add(ent["name"])
-
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    date_iso = f"{date_str}T09:00:00+05:30"
-    modified_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
-
-    # Word count and reading time (220 wpm — Medium / industry average)
-    plain_body_text = " ".join(p["text"] for i, p in enumerate(paras)
-                                if i not in skip and p["type"] != "image"
-                                and i not in (dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx))
-    wc = word_count_of(plain_body_text)
-    rt = reading_minutes(wc)
-
-    # Mentioned entities = a second scan over the body (whole-word, case-insensitive)
-    # that catches entities WITHOUT a Wikidata Q-ID, plus any aliases not used as the
-    # primary link in the post. Used for the `mentions` array in JSON-LD.
-    all_entities = entities  # includes those without Q-IDs
-    mentioned_entities = set()
-    for ent in all_entities:
-        name = ent.get("name") or ""
-        if not name or name in used_entities:
-            continue
-        # If no Q-ID we can't enrich it, so skip
-        if not ent.get("wikidata"):
-            continue
-        cands = [name] + list(ent.get("aliases") or [])
-        for cand in cands:
-            if re.search(r"(?<![A-Za-z0-9_])" + re.escape(cand) + r"(?![A-Za-z0-9_])",
-                         plain_body_text, 0 if cand.isupper() else re.IGNORECASE):
-                mentioned_entities.add(name)
-                break
-
-    jsonld = article_jsonld(
-        title=title, excerpt=excerpt, slug=slug, topic=topic, date_str=date_str,
-        canonical=canonical, light_cover_url=light_cover_url,
-        focus_keywords=focus_kw, image_alt=image_alt,
-        used_entities=used_entities, entities=entities_with_qid,
-        word_count=wc, reading_minutes=rt,
-        article_body_text=plain_body_text,
-        mentioned_entities=mentioned_entities,
-        faq_pairs=faq_pairs,
-    )
-
-    topic_label = {
-        "stock-market": "Stock Market",
-        "commodities": "Commodities",
-        "macros": "Macros",
-        "geopolitics": "Geopolitics",
-    }[topic]
-
-    html = POST_TEMPLATE.format(
-        seo_title=html_escape(seo_title),
-        meta_description=html_escape(meta_desc),
-        keywords=html_escape(focus_kw),
-        canonical=canonical,
-        canonical_enc=url_enc(canonical),
-        share_title_enc=url_enc(seo_title),
-        og_title=html_escape(seo_title),
-        light_cover_url=light_cover_url,
-        image_alt=html_escape(image_alt),
-        light_cover_filename=light_cover_filename,
-        dark_cover_filename=dark_cover_filename,
-        topic_label=topic_label,
-        title_html=html_escape(title),
-        excerpt_html=html_escape(excerpt),
-        image_caption_html=html_escape(image_caption),
-        date_iso=date_iso,
-        date_pretty=pretty_date(date_str),
-        modified_iso=modified_iso,
-        modified_pretty=pretty_date(today),
-        body_html=body_html,
-        faq_html=faq_html,
-        related_html=related_html,
-        jsonld=jsonld,
-        word_count_pretty=f"{wc:,}",
-        reading_minutes=rt,
-        article_tag_meta="\n".join(
-            f'<meta property="article:tag" content="{html_escape(k.strip())}">'
-            for k in (focus_kw.split(",") if focus_kw else []) if k.strip()
-        ),
-    )
-
-    html = normalize_dashes(html)
-    with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
-        f.write(html)
-    print(f"[publish] wrote {post_dir}/index.html  ({len(html)} bytes)")
-
-    # body.md
-    body_md_lines = []
-    for i, p in enumerate(paras):
-        if i in skip or p["type"] in ("image", "table"): continue
-        if i in (dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx): continue
-        prefix = {"h1":"# ","h2":"## ","h3":"### ","p":""}.get(p["type"], "")
-        body_md_lines.append(prefix + p["text"])
-    with open(os.path.join(post_dir, "body.md"), "w", encoding="utf-8") as f:
-        f.write("\n\n".join(body_md_lines))
-
-    # posts.json
-    if os.path.exists(POSTS_JSON):
-        with open(POSTS_JSON, encoding="utf-8") as f:
-            data = json.load(f)
-    else:
-        data = {"posts": []}
-    entry = {
-        "slug": slug, "title": title, "topic": topic, "date": date_str,
-        "excerpt": excerpt, "image": light_cover_url, "url": canonical,
-    }
-    data["posts"] = [entry] + [p for p in data.get("posts", []) if p.get("slug") != slug]
-    data["posts"].sort(key=lambda p: p.get("date", ""), reverse=True)
-    with open(POSTS_JSON, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-    print(f"[publish] posts.json updated ({len(data['posts'])} posts total)")
-
-    upsert_sitemap_post(SITEMAP_PATH, canonical, today, light_cover_url, image_caption)
-    upsert_news_sitemap(NEWS_SITEMAP_PATH, canonical, title, date_str)
-    print(f"[publish] sitemap.xml + news-sitemap.xml updated")
-
-    build_rss_feed(f"{BLOG_DIR}/feed.xml", SITE_BASE)
-    build_rss_feed(f"{DEPLOYED}/blog/feed.xml", SITE_BASE)
-
-    return {
-        "slug": slug, "title": title, "topic": topic, "date": date_str,
-        "excerpt": excerpt, "image": light_cover_url, "url": canonical,
-        "post_dir": post_dir,
-        "light_cover": light_cover_filename, "dark_cover": dark_cover_filename,
-        "word_count": wc, "reading_minutes": rt,
-        "used_entities": sorted(used_entities),
-        "mentioned_entities": sorted(mentioned_entities),
-        "tables": sum(1 for p in paras if p.get("type") == "table"),
-    }
-
-
-def find_latest_blog():
-    blogs_dir = f"{FEATURES}/Blogs"
-    candidates = []
-    for fn in os.listdir(blogs_dir):
-        if fn.startswith("~$") or fn.startswith("."): continue
-        if not fn.lower().endswith(".docx"): continue
-        path = os.path.join(blogs_dir, fn)
-        if not os.path.isfile(path): continue
-        m = re.match(r"(\d{4}-\d{2}-\d{2})_", fn)
-        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(path))
-        candidates.append((key, path))
-    if not candidates:
-        raise SystemExit("No .docx blogs in /Features/Blogs/")
-    candidates.sort(reverse=True)
-    return candidates[0][1]
-
-
-if __name__ == "__main__":
-    target = sys.argv[1] if len(sys.argv) > 1 else find_latest_blog()
-    result = publish_blog(target)
-    print()
-    print("=" * 60)
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    # Recover the set o
