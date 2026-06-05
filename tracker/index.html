@@ -2969,4 +2969,111 @@ async function downloadDashboardPDF() {
     if (y > H - 140) { doc.addPage(); y = 44; }
     doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(18,22,42);
     doc.text('Language Distribution', 40, y);
-    y 
+    y += 6;
+    doc.autoTable({
+      startY: y,
+      head: [['Language','Features','Share']],
+      body: topLangs.map(l => [l[0], String(l[1]), ((l[1]*100)/total).toFixed(1)+'%']),
+      theme: 'striped',
+      styles: {fontSize: 9, cellPadding: 5},
+      headStyles: {fillColor: [40,50,80], textColor: 255, fontStyle:'bold'},
+      alternateRowStyles: {fillColor: [248,249,252]},
+      margin: {left: 40, right: 40},
+      columnStyles: {1:{halign:'right',cellWidth:90}, 2:{halign:'right',cellWidth:80}}
+    });
+
+    // Footer
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(160,165,180);
+    doc.text('Source: WhatsApp_Features_Articles.xlsx · Dashboard: harshald13u.github.io/harshalfeatures',
+             W/2, H - 24, {align: 'center'});
+
+    // ============ PAGE 2+: FULL TABLE ============
+    doc.addPage();
+    doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(18,22,42);
+    doc.text('All Features — Excel-format table', 40, 36);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(140,145,170);
+    doc.text(`${total} entries · sorted newest first · columns match the master Excel`, 40, 50);
+
+    doc.autoTable({
+      startY: 62,
+      head: [['Date', 'Heading', 'Lang', 'Publication', 'Topic']],
+      body: dated.map(r => {
+        const d = r._d;
+        const ds = `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`;
+        return [ds, r._h || '', r.Language || '', r.Publication || '', r._t || ''];
+      }),
+      theme: 'striped',
+      styles: { fontSize: 7.5, cellPadding: 3.5, overflow: 'linebreak', valign: 'top', textColor: [30,32,48] },
+      headStyles: { fillColor: [40,50,80], textColor: 255, fontStyle:'bold', fontSize: 8.5, halign:'left' },
+      alternateRowStyles: { fillColor: [248,249,252] },
+      columnStyles: {
+        0: { cellWidth: 54, halign:'left' },
+        1: { cellWidth: 'auto' },
+        2: { cellWidth: 38 },
+        3: { cellWidth: 78 },
+        4: { cellWidth: 78 }
+      },
+      margin: { left: 28, right: 28, top: 60, bottom: 30 },
+      pageBreak: 'auto',
+      rowPageBreak: 'avoid',
+      willDrawCell: (data) => {
+        // Set the right font for this cell's script before autoTable draws the text
+        const txt = String(data.cell.raw == null ? '' : data.cell.raw);
+        const f = _fontForText(txt, _loadedFonts);
+        if (f) {
+          doc.setFont(f, 'normal');
+          if (data.cell.styles) data.cell.styles.font = f;
+        } else {
+          doc.setFont('helvetica', data.section === 'head' ? 'bold' : 'normal');
+        }
+      },
+      didDrawPage: (data) => {
+        const pgNum = doc.internal.getCurrentPageInfo().pageNumber;
+        doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,165,180);
+        doc.text('Harshal Dasani — Media Intelligence Dashboard', 28, H - 14);
+        doc.text(`Page ${pgNum}`, W - 28, H - 14, {align:'right'});
+        // Repeat title at top of subsequent pages
+        if (pgNum > 2) {
+          doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(18,22,42);
+          doc.text(`All Features (continued)`, 28, 30);
+          doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(140,145,170);
+          doc.text(`${total} entries`, 28, 42);
+        }
+      }
+    });
+
+    // Update page numbers with total at end
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFillColor(255,255,255);
+      doc.rect(W - 80, H - 22, 60, 14, 'F'); // erase old page text
+      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,165,180);
+      doc.text(`Page ${i} of ${pageCount}`, W - 28, H - 14, {align:'right'});
+    }
+
+    const fname = `Harshal_Dasani_Media_Features_${new Date().toISOString().slice(0,10)}.pdf`;
+    doc.save(fname);
+  } catch (e) {
+    console.error('PDF generation failed:', e);
+    alert('PDF generation failed: ' + (e.message || e));
+  } finally {
+    if (btn) btn.innerHTML = orig;
+  }
+}
+</script>
+
+<!-- Special Features modal -->
+<div id="sf-modal" onclick="if(event.target.id==='sf-modal') closeSpecialFeaturesModal()">
+  <div class="sf-modal-card">
+    <div class="sf-modal-head">
+      <div class="sf-modal-title">Special Features</div>
+      <button class="sf-close" onclick="closeSpecialFeaturesModal()" aria-label="Close">×</button>
+    </div>
+    <div class="sf-list" id="sf-modal-list"></div>
+  </div>
+</div>
+
+
+</body>
+</html>
