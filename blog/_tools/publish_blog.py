@@ -47,11 +47,12 @@ from datetime import datetime, timezone
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-FEATURES = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # .../Features (session-agnostic)
+FEATURES = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # repo/workspace root
 BLOG_DIR = f"{FEATURES}/blog"
 POSTS_DIR = f"{BLOG_DIR}/posts"
 POSTS_JSON = f"{BLOG_DIR}/posts.json"
-DEPLOYED = f"{FEATURES}/ harshal-features"
+LEGACY_DEPLOYED = os.path.join(FEATURES, " harshal-features")
+DEPLOYED = LEGACY_DEPLOYED if os.path.isdir(LEGACY_DEPLOYED) else FEATURES
 SITEMAP_PATH = f"{DEPLOYED}/sitemap.xml"
 NEWS_SITEMAP_PATH = f"{DEPLOYED}/news-sitemap.xml"
 SITE_BASE = "https://harshald13u.github.io/harshalfeatures"
@@ -796,13 +797,13 @@ POST_TEMPLATE = """<!DOCTYPE html>
 :root{{--bg:#0e0c0a;--bg-2:#15110d;--ink:#ece4d3;--ink-2:#c9c0ad;--muted:#8a8273;--rule:rgba(236,228,211,0.10);--accent:#d4a64a;}}
 html[data-theme="light"]{{--bg:#ebe5d7;--bg-2:#ddd4c1;--ink:#1a3458;--ink-2:#3a527a;--muted:#54687f;--rule:rgba(26,52,88,0.18);--accent:#b8852b;}}
 *{{box-sizing:border-box}}
-html,body{{margin:0;padding:0;background:var(--bg);color:var(--ink-2);transition:background-color .3s,color .3s}}
+html,body{{margin:0;padding:0;background:var(--bg);color:var(--ink-2);transition:background-color .3s,color .3s;overflow-x:hidden}}
 body{{font-family:'Inter',sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased;font-size:16.5px}}
 /* No CSS zoom — page renders at native 100% browser zoom. */
 a{{color:var(--accent);text-decoration:none}}
 a:hover{{text-decoration:underline}}
 .theme-toggle{{position:fixed;top:18px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid var(--rule);background:var(--bg-2);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:1000}}
-.page{{max-width:1280px;margin:0 auto;padding:56px 24px 96px}}
+.page{{width:100%;max-width:1280px;margin:0 auto;padding:56px 24px 96px}}
 .crumb{{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}}
 .crumb a{{color:var(--muted)}}
 .crumb a:hover{{color:var(--accent)}}
@@ -810,7 +811,7 @@ a:hover{{text-decoration:underline}}
 .crumb-trail{{text-align:right}}
 @media(max-width:520px){{.crumb{{flex-direction:column;align-items:flex-start;gap:8px}}.crumb-trail{{text-align:left}}}}
 .topic-pill{{display:inline-block;padding:5px 12px;border:1px solid var(--rule);border-radius:999px;font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:18px;background:var(--bg-2)}}
-h1{{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46px);line-height:1.12;letter-spacing:-0.02em;color:var(--ink);margin:0 0 14px}}
+h1{{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46px);line-height:1.12;letter-spacing:0;color:var(--ink);margin:0 0 14px;overflow-wrap:anywhere}}
 .subtitle{{font-size:18.5px;color:var(--ink-2);line-height:1.5;margin:0 0 22px;font-weight:400}}
 .byline{{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin:0 0 30px;flex-wrap:wrap}}
 .byline strong{{color:var(--ink);font-weight:600}}
@@ -827,6 +828,13 @@ html[data-theme="light"] .cover .light-only{{opacity:0}}
 html[data-theme="light"] .cover .dark-only{{opacity:1}}
 @media (max-width: 800px){{.cover{{margin-left:0;transform:none;width:100%}}}}
 figcaption{{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin:0 0 32px}}
+p, figcaption, .subtitle{{overflow-wrap:break-word}}
+@media (max-width: 600px){{
+  .page{{padding:48px 20px 84px}}
+  h1{{font-size:clamp(30px,8.5vw,36px);line-height:1.1}}
+  .subtitle{{font-size:17px;line-height:1.48}}
+  .page figcaption{{text-align:left;line-height:1.45}}
+}}
 h2{{font-weight:700;font-size:24px;color:var(--ink);margin:38px 0 12px;letter-spacing:-0.01em;padding-bottom:6px;border-bottom:1px solid var(--rule)}}
 h3{{font-weight:700;font-size:18px;color:var(--accent);margin:26px 0 8px}}
 p{{margin:0 0 18px}}
@@ -1047,7 +1055,7 @@ strong{{color:var(--ink);font-weight:700}}
 # ---------------------------------------------------------------------------
 def pretty_date(date_str):
     dt = datetime.strptime(date_str, "%Y-%m-%d")
-    return dt.strftime("%-d %B %Y")
+    return f"{dt.day} {dt.strftime('%B %Y')}"
 
 
 def word_count_of(text):
@@ -1071,7 +1079,7 @@ def build_rss_feed(feed_path, site_base):
     """Generate /blog/feed.xml — RSS 2.0 — from posts.json."""
     if not os.path.exists(POSTS_JSON):
         return
-    with open(POSTS_JSON) as f:
+    with open(POSTS_JSON, encoding="utf-8") as f:
         data = json.load(f)
     posts = sorted(data.get("posts", []), key=lambda p: p.get("date",""), reverse=True)[:30]
     now_rfc822 = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
@@ -1087,6 +1095,8 @@ def build_rss_feed(feed_path, site_base):
         excerpt = (p.get("excerpt") or "").replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
         url = p.get("url") or ""
         image = p.get("image") or ""
+        image_l = image.lower()
+        image_type = "image/jpeg" if image_l.endswith((".jpg", ".jpeg")) else ("image/webp" if image_l.endswith(".webp") else "image/png")
         items.append(f"""    <item>
       <title>{title}</title>
       <link>{url}</link>
@@ -1094,7 +1104,7 @@ def build_rss_feed(feed_path, site_base):
       <pubDate>{pub}</pubDate>
       <description><![CDATA[{excerpt}]]></description>
       <category>{(p.get('topic') or '').replace('-', ' ').title()}</category>
-      <enclosure url="{image}" type="image/png"/>
+      <enclosure url="{image}" type="{image_type}"/>
       <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Harshal Dasani</dc:creator>
     </item>""")
 
@@ -1348,15 +1358,15 @@ def publish_blog(docx_path):
 
     # posts.json
     if os.path.exists(POSTS_JSON):
-        with open(POSTS_JSON) as f:
+        with open(POSTS_JSON, encoding="utf-8") as f:
             data = json.load(f)
     else:
         data = {"posts": []}
-    data["posts"] = [p for p in data.get("posts", []) if p.get("slug") != slug]
-    data["posts"].append({
+    entry = {
         "slug": slug, "title": title, "topic": topic, "date": date_str,
         "excerpt": excerpt, "image": light_cover_url, "url": canonical,
-    })
+    }
+    data["posts"] = [entry] + [p for p in data.get("posts", []) if p.get("slug") != slug]
     data["posts"].sort(key=lambda p: p.get("date", ""), reverse=True)
     with open(POSTS_JSON, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
