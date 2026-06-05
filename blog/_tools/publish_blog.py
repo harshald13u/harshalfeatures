@@ -1014,8 +1014,8 @@ strong{{color:var(--ink);font-weight:700}}
       <div class="author-links">
         <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener noreferrer" itemprop="sameAs">LinkedIn</a>
         <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener noreferrer" itemprop="sameAs">X (Twitter)</a>
+        <a href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener noreferrer" itemprop="sameAs">YouTube</a>
         <a href="../../">All posts</a>
-        <a href="../../feed.xml" type="application/rss+xml">RSS</a>
       </div>
     </div>
   </aside>
@@ -1452,5 +1452,4 @@ if __name__ == "__main__":
     target = sys.argv[1] if len(sys.argv) > 1 else find_latest_blog()
     result = publish_blog(target)
     print()
-    print("=" * 60)
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    print("=" *
