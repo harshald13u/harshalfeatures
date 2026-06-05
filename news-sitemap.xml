@@ -10,4 +10,28 @@
       </news:publication>
       <news:publication_date>2026-06-05T09:00:00+05:30</news:publication_date>
       <news:title>The end of the easing cycle: what the RBI’s June pause means for investors</news:title>
-  
+    </news:news>
+  </url>
+  <url>
+    <loc>https://harshald13u.github.io/harshalfeatures/blog/posts/crude-oil-india-markets-rupee-inflation/</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Harshal Dasani</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-06-05T09:00:00+05:30</news:publication_date>
+      <news:title>The Oil Shock and India: Crude, the Rupee, and Inflation</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Harshal Dasani</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-06-04T09:00:00+05:30</news:publication_date>
+      <news:title>Indian IT Stocks: What’s Actually Breaking, and Why the Market Stopped Paying Up</news:title>
+    </news:news>
+  </url>
+</urlset>

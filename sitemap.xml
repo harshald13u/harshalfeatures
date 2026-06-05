@@ -11,8 +11,7 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/"/>
     <image:image>
       <image:loc>https://harshald13u.github.io/harshalfeatures/harshal-dasani.jpg</image:loc>
-      <image:title>Harshal Dasani - Business Head, INVasset PMS</image:title>
-      <image:caption>Harshal Dasani - markets professional and writer. Mumbai.</image:caption>
+      <image:title>Harshal Dasani, Business Head, INVasset PMS</image:title>
     </image:image>
   </url>
   <url>
@@ -60,9 +59,11 @@
     <lastmod>2026-06-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/"/>
     <image:image>
       <image:loc>https://harshald13u.github.io/harshalfeatures/blog/posts/indian-it-stocks-whats-breaking/cover.png</image:loc>
-      <image:title>Nifty IT, what’s in, what’s out: the sector in one frame.</image:title>
+      <image:title>Indian IT Stocks: What’s Actually Breaking, and Why the Market Stopped Paying Up</image:title>
     </image:image>
   </url>
   <url>
@@ -70,9 +71,11 @@
     <lastmod>2026-06-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshald13u.github.io/harshalfeatures/blog/posts/crude-oil-india-markets-rupee-inflation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/blog/posts/crude-oil-india-markets-rupee-inflation/"/>
     <image:image>
-      <image:loc>https://harshald13u.github.io/harshalfeatures/blog/posts/crude-oil-india-markets-rupee-inflation/cover.jpg</image:loc>
-      <image:title>Crude&#39;s three regimes for Indian equities, rally, range, or risk-off.</image:title>
+      <image:loc>https://harshald13u.github.io/harshalfeatures/blog/posts/crude-oil-india-markets-rupee-inflation/cover.png</image:loc>
+      <image:title>The Oil Shock and India: Crude, the Rupee, and Inflation</image:title>
     </image:image>
   </url>
   <url>
@@ -80,6 +83,11 @@
     <lastmod>2026-06-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/"/>
     <image:image>
       <image:loc>https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/cover.png</image:loc>
-      <image:title>The RBI’s June pause: t
+      <image:title>The end of the easing cycle: what the RBI’s June pause means for investors</image:title>
+    </image:image>
+  </url>
+</urlset>
