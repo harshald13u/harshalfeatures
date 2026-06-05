@@ -1765,6 +1765,21 @@ html[data-theme="light"] .tracker-spotlight {
   .about-stat-l { font-size: 9.5px; }
 }
 
+/* ============================================================
+   PHONE: centre-aligned layout (<=640). Desktop/iPad untouched.
+   ============================================================ */
+@media (max-width: 640px) {
+  .page { text-align: center; }
+  /* flex rows that text-align can't centre on their own */
+  .role-block { justify-content: center; }
+  .soc { justify-content: center; }
+  .latest-meta { justify-content: center; gap: 14px; }
+  .ts-tf { justify-content: center; text-align: center; }
+  .ts-tf-l { align-items: center; }
+  .tracker-quick-links, .author-links { justify-content: center; }
+  .crumb { justify-content: center; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
