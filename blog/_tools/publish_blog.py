@@ -991,7 +991,7 @@ strong{{color:var(--ink);font-weight:700}}
   <article itemprop="articleBody">
 {body_html}
   </article>
-{faq_html}  <div class="share" role="group" aria-label="Share this article">
+{faq_html}{related_html}  <div class="share" role="group" aria-label="Share this article">
     <span class="share-label">Share</span>
     <a href="https://twitter.com/intent/tweet?url={canonical_enc}&amp;text={share_title_enc}&amp;via=HarshalDasanii" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21l-6.5 7.43L22 22h-6.797l-4.86-6.34L4.6 22H2l7.04-8.04L1.86 2h6.97l4.32 5.71L18.244 2zm-2.39 18h1.604L7.243 4H5.55l10.305 16z"/></svg>
@@ -1083,6 +1083,30 @@ def reading_minutes(words, wpm=220):
 def url_enc(s):
     import urllib.parse
     return urllib.parse.quote(s or "", safe="")
+
+
+def render_related_html(current_slug):
+    """Auto 'Related analysis' cross-links (topic cluster) from the 2 most recent OTHER posts."""
+    if not os.path.exists(POSTS_JSON):
+        return ""
+    try:
+        with open(POSTS_JSON, encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return ""
+    labels = {"stock-market": "Stock Market", "commodities": "Commodities", "macros": "Macros", "geopolitics": "Geopolitics"}
+    posts = [p for p in data.get("posts", []) if p.get("slug") and p.get("slug") != current_slug]
+    posts = sorted(posts, key=lambda p: p.get("date", ""), reverse=True)[:2]
+    if not posts:
+        return ""
+    links = ""
+    for p in posts:
+        topic = labels.get(p.get("topic", ""), (p.get("topic", "") or "Blog").replace("-", " ").title())
+        links += ('    <a href="../' + html_escape(p.get("slug", "")) + '/" style="display:block;border-top:1px solid var(--rule);padding:14px 2px;text-decoration:none">'
+                  '<span style="display:block;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:5px">' + html_escape(topic) + '</span>'
+                  '<span style="display:block;font-size:16px;font-weight:700;color:var(--ink);line-height:1.32">' + html_escape(p.get("title", "")) + '</span></a>\n')
+    return ('  <section class="post-related" aria-label="Related analysis" style="margin:44px 0 8px">\n'
+            '    <h2>Related analysis</h2>\n' + links + '  </section>\n')
 
 
 def build_rss_feed(feed_path, site_base):
@@ -1268,6 +1292,7 @@ def publish_blog(docx_path):
     skip = set(skip) | special_skip
     takeaways_html = render_takeaways_html(takeaways_items)
     faq_html = render_faq_html(faq_pairs)
+    related_html = render_related_html(slug)
     body_html = takeaways_html + render_body_html(
         paras, skip, dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx,
         image_caption, post_dir, entities=entities_with_qid,
@@ -1350,6 +1375,7 @@ def publish_blog(docx_path):
         modified_pretty=pretty_date(today),
         body_html=body_html,
         faq_html=faq_html,
+        related_html=related_html,
         jsonld=jsonld,
         word_count_pretty=f"{wc:,}",
         reading_minutes=rt,
