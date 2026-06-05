@@ -1751,6 +1751,17 @@ html[data-theme="light"] .tracker-spotlight {
   .ts-sf-title, .ts-tf-head, .ts-tf-pub { overflow-wrap: anywhere; }
 }
 
+/* About stats: 2-up grid on phone (2 + 2 + 1) to save vertical space */
+@media (max-width: 640px) {
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; row-gap: 0; margin-top: 16px; }
+  .about-stat { padding: 11px 0; border-bottom: 1px solid var(--rule); }
+  .about-stat:nth-child(5) { grid-column: 1 / -1; }
+  .about-stat:last-child { border-bottom: none; }
+  .about-stat-n { font-size: 19px; }
+  .about-stat-n.stat-narrow { font-size: 13px; line-height: 1.3; }
+  .about-stat-l { font-size: 9.5px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
