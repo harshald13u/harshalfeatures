@@ -19,7 +19,7 @@
 <meta name="article:section" content="Macros">
 <meta name="article:author" content="Harshal Dasani">
 <meta name="article:published_time" content="2026-06-05T09:00:00+05:30">
-<meta name="article:modified_time" content="2026-06-05T12:15:16+00:00">
+<meta name="article:modified_time" content="2026-06-05T12:27:53+00:00">
 <meta name="rating" content="general">
 <meta name="referrer" content="no-referrer-when-downgrade">
 
@@ -52,7 +52,7 @@
 <meta property="og:image:alt" content="RBI Monetary Policy Committee June 2026, the repo-rate pause and what it means for investors">
 <meta property="og:locale" content="en_IN">
 <meta property="article:published_time" content="2026-06-05T09:00:00+05:30">
-<meta property="article:modified_time" content="2026-06-05T12:15:16+00:00">
+<meta property="article:modified_time" content="2026-06-05T12:27:53+00:00">
 <meta property="article:author" content="Harshal Dasani">
 <meta property="article:section" content="Macros">
 <meta property="article:tag" content="RBI MPC">
@@ -157,7 +157,7 @@
       "alternativeHeadline": "The end of the easing cycle: what the RBI’s June pause means for investors",
       "description": "The RBI held the repo rate at 5.25% for a third meeting, quietly closing the easing cycle. What the June pause means for the rupee, bonds and your portfolio.",
       "datePublished": "2026-06-05T09:00:00+05:30",
-      "dateModified": "2026-06-05T12:15:16+00:00",
+      "dateModified": "2026-06-05T12:27:53+00:00",
       "url": "https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/",
       "mainEntityOfPage": {
         "@type": "WebPage",
@@ -308,6 +308,23 @@ p{margin:0 0 18px}
 .inline-figure-dual .dark-only{opacity:1;position:relative}
 html[data-theme="light"] .inline-figure-dual .light-only{opacity:1;position:relative}
 html[data-theme="light"] .inline-figure-dual .dark-only{opacity:0;position:absolute;inset:0}
+/* Chart hotspots, interactive overlay for inline figures */
+.chart-img-wrap{position:relative}
+.chart-overlay{position:absolute;inset:0;pointer-events:none;z-index:2}
+.chart-hotspot{position:absolute;width:5.5%;aspect-ratio:1;border-radius:50%;border:none;background:transparent;cursor:help;pointer-events:auto;transform:translate(-50%,-50%);transition:background-color .15s ease,box-shadow .15s ease;padding:0}
+.chart-hotspot:hover.chart-hotspot:focus-visible{background:rgba(212,166,74,0.25);box-shadow:0 0 0 2px var(--accent);outline:none}
+html[data-theme="light"] .chart-hotspot:hover,html[data-theme="light"] .chart-hotspot:focus-visible{background:rgba(184,133,43,0.22)}
+.chart-tooltip{position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:var(--bg-2);color:var(--ink);padding:9px 13px;border:1px solid var(--rule);border-radius:8px;font-size:13px;line-height:1.45;white-space:nowrap;opacity:0;visibility:hidden;transition:opacity .15s,visibility .15s;pointer-events:none;z-index:10;box-shadow:0 6px 18px rgba(0,0,0,0.28);text-align:left}
+html[data-theme="light"] .chart-tooltip{box-shadow:0 6px 18px rgba(26,52,88,0.12)}
+.chart-tooltip strong{color:var(--accent);font-weight:700;display:inline-block;margin-bottom:2px;font-size:12.5px;letter-spacing:0.2px}
+.chart-hotspot:hover .chart-tooltip.chart-hotspot:focus-visible .chart-tooltip{opacity:1;visibility:visible}
+/* Tooltip arrow */
+.chart-tooltip::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--bg-2)}
+/* Mobile: pin tooltips to viewport instead of trying to stay above the hotspot */
+@media (max-width: 600px){
+  .chart-hotspot{width:8%}
+  .chart-tooltip{font-size:12px;padding:7px 10px}
+}
 /* Tables, editorial design, theme-aware, horizontal scroll on narrow viewports.
    Lifted card with rounded corners + subtle shadow; navy header band; gold section dividers;
    tabular-nums right-aligned data columns; hairline row separators only (no full grid). */
@@ -451,7 +468,7 @@ strong{color:var(--ink);font-weight:700}
 <p>On 5 June, the <a href="https://www.wikidata.org/wiki/Q188156" rel="external nofollow noopener" target="_blank">Reserve Bank of India</a> did what almost everyone expected. The Monetary Policy Committee left the <a href="https://www.wikidata.org/wiki/Q1751980" rel="external nofollow noopener" target="_blank">repo rate</a> at 5.25% and kept its stance neutral, the third consecutive policy meeting without a change, across its bi-monthly meetings in February, April and June 2026. For most headlines, that is where the story ends. We think it is where the more interesting story begins, because this pause quietly marks the close of the easing cycle that began in early 2025, and it changes how investors should think about the months ahead.</p>
 <h2 id="how-we-got-here">How we got here</h2>
 <p>To understand the pause, it helps to look at the path that led to it.</p>
-<figure class="inline-figure inline-figure-dual" data-light="img-1.png" data-dark="img-2.png"><img class="light-only" src="img-1.png" alt="India’s repo rate cycle, 2023–2026." loading="lazy" decoding="async"><img class="dark-only" src="img-2.png" alt="India’s repo rate cycle, 2023–2026." loading="lazy" decoding="async"><figcaption class="inline-cap">India’s repo rate cycle, 2023–2026.</figcaption></figure>
+<figure class="inline-figure inline-figure-dual" data-light="img-1.png" data-dark="img-2.png"><div class="chart-img-wrap"><img class="light-only" src="img-1.png" alt="India’s repo rate cycle, 2023–2026." loading="lazy" decoding="async"><img class="dark-only" src="img-2.png" alt="India’s repo rate cycle, 2023–2026." loading="lazy" decoding="async"><div class="chart-overlay" aria-hidden="false"><button type="button" class="chart-hotspot" style="left:53.0%;top:36.0%" aria-label="Cut #1, Feb 2025: −25 bps → 6.25%" tabindex="0"><span class="chart-tooltip" role="tooltip"><strong>Cut #1, Feb 2025</strong><br>−25 bps → 6.25%</span></button><button type="button" class="chart-hotspot" style="left:60.0%;top:45.0%" aria-label="Cut #2, Apr 2025: −25 bps → 6.00%" tabindex="0"><span class="chart-tooltip" role="tooltip"><strong>Cut #2, Apr 2025</strong><br>−25 bps → 6.00%</span></button><button type="button" class="chart-hotspot" style="left:67.0%;top:63.0%" aria-label="Cut #3, Jun 2025: −50 bps → 5.50% · stance → neutral" tabindex="0"><span class="chart-tooltip" role="tooltip"><strong>Cut #3, Jun 2025</strong><br>−50 bps → 5.50% · stance → neutral</span></button><button type="button" class="chart-hotspot" style="left:87.0%;top:72.0%" aria-label="Cut #4, Dec 2025: −25 bps → 5.25%" tabindex="0"><span class="chart-tooltip" role="tooltip"><strong>Cut #4, Dec 2025</strong><br>−25 bps → 5.25%</span></button></div></div><figcaption class="inline-cap">India’s repo rate cycle, 2023–2026.</figcaption></figure>
 <div class="table-wrap"><table class="post-table"><thead><tr><th>#</th><th>When</th><th>Action</th><th>Repo rate</th></tr></thead><tbody><tr><td></td><td>Feb 2023</td><td>Peak, last hike</td><td>6.50%</td></tr><tr><td>1</td><td>Feb 2025</td><td>−25 bps</td><td>6.25%</td></tr><tr><td>2</td><td>Apr 2025</td><td>−25 bps</td><td>6.00%</td></tr><tr><td>3</td><td>Jun 2025</td><td>−50 bps · stance → neutral</td><td>5.50%</td></tr><tr><td>4</td><td>Dec 2025</td><td>−25 bps</td><td>5.25%</td></tr><tr><td></td><td>Feb–Jun 2026</td><td>Held · 3 straight meetings</td><td>5.25%</td></tr></tbody></table></div>
 <p>The four rate cuts (1–4) total 125 bps of easing; the RBI has held at 5.25% since the December 2025 cut.</p>
 <p>After its last hike in February 2023, the RBI held the repo rate at 6.50% for nearly two years while it waited for <a href="https://www.wikidata.org/wiki/Q35069" rel="external nofollow noopener" target="_blank">inflation</a> to settle. The turn came in February 2025, when a newly appointed Governor Sanjay Malhotra delivered the first cut in almost five years, taking the rate to 6.25%. April brought another 25 basis points, and June 2025 a larger 50, pulling the rate down to 5.50% and shifting the stance from accommodative to neutral. The RBI then paused through August and October before a final 25-point cut in December 2025 brought the repo rate to 5.25%. In all, that is 125 basis points of easing in under a year.</p>
