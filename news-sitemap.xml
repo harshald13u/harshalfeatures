@@ -2,17 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
-    <loc>https://harshald13u.github.io/harshalfeatures/blog/posts/crude-oil-india-markets-rupee-inflation/</loc>
-    <news:news>
-      <news:publication>
-        <news:name>Harshal Dasani</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-06-05T09:00:00+05:30</news:publication_date>
-      <news:title>The Oil Shock and India: Crude, the Rupee, and Inflation</news:title>
-    </news:news>
-  </url>
-  <url>
     <loc>https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/</loc>
     <news:news>
       <news:publication>
