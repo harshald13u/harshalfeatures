@@ -618,6 +618,10 @@ html[data-theme="light"] .theme-toggle-btn { background: rgba(26,52,88,0.06); bo
 .feat-filters button#feat-clear { padding: 6px 12px; font-size: 11px; color: var(--blue); background: rgba(212,166,74,0.12);
   border: 1px solid rgba(212,166,74,0.25); border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.15s; }
 .feat-filters button#feat-clear:hover { background: rgba(212,166,74,0.22); }
+.feat-filters button#feat-pdf-btn { padding: 6px 12px; font-size: 11px; color: #ef4444; background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.3); border-radius: 6px; cursor: pointer; font-weight: 700; transition: background 0.15s; }
+.feat-filters button#feat-pdf-btn:hover { background: rgba(239,68,68,0.22); }
+.feat-filters button#feat-pdf-btn:disabled { opacity: 0.6; cursor: default; }
 @media (max-width: 640px) {
   .feat-filters { padding: 8px; gap: 8px; }
   .feat-filters label { font-size: 10px; flex: 1 1 100%; }
@@ -1276,6 +1280,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
           <select id="feat-pub" aria-label="Filter by publication"><option value="">All publications</option></select> <select id="feat-journalist" aria-label="Filter by journalist"><option value="">All journalists</option></select>
         </label>
         <button id="feat-clear" type="button">Clear</button>
+        <button id="feat-pdf-btn" type="button" onclick="downloadFilteredPDF()" title="Download the current filtered list as a PDF (with clickable links)">⬇ PDF</button>
       </div>
       <div class="feat-list" id="latest-list"></div>
     </div>
@@ -3047,6 +3052,119 @@ async function downloadDashboardPDF() {
     alert('PDF generation failed: ' + (e.message || e));
   } finally {
     if (btn) btn.innerHTML = orig;
+  }
+}
+
+async function downloadFilteredPDF() {
+  const btn = document.getElementById('feat-pdf-btn');
+  const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Generating…'; }
+  try {
+    await _loadPdfLibs();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+    const _loadedFonts = await _loadAllIndicFonts(doc);
+    const W = doc.internal.pageSize.getWidth();
+    const H = doc.internal.pageSize.getHeight();
+
+    let rows = filterByWindow(UNIQUE_ROWS, CURRENT_WINDOW)
+      .filter(r => r.Date instanceof Date && !isNaN(r.Date))
+      .sort((a,b)=>{ const d=b.Date-a.Date; return d!==0?d:((b._rowIndex||0)-(a._rowIndex||0)); });
+    const fromDt = FEAT_FROM ? new Date(FEAT_FROM+'T00:00:00Z') : null;
+    const toDt   = FEAT_TO   ? new Date(FEAT_TO+'T00:00:00Z') : null;
+    if (FEAT_FROM || FEAT_TO || FEAT_PUB || FEAT_JOURNALIST) {
+      rows = rows.filter(r => {
+        if (fromDt && r.Date < fromDt) return false;
+        if (toDt){ const t=new Date(toDt); t.setUTCHours(23,59,59,999); if (r.Date>t) return false; }
+        if (FEAT_PUB && (r.Publication||'Unknown')!==FEAT_PUB) return false;
+        if (FEAT_JOURNALIST && (r.Journalist||'')!==FEAT_JOURNALIST) return false;
+        return true;
+      });
+    }
+    const term = (SEARCH_TERM||'').trim().toLowerCase();
+    if (term) {
+      rows = rows.filter(r =>
+        String(r['Heading Of The Article']||r.Heading||'').toLowerCase().includes(term) ||
+        String(r.Publication||'').toLowerCase().includes(term) ||
+        String(r.Language||'').toLowerCase().includes(term) ||
+        String(r.Journalist||'').toLowerCase().includes(term));
+    } else if (typeof DRILL !== 'undefined' && DRILL) {
+      rows = rows.filter(r => {
+        if (DRILL.type==='topic') return getTopic(r['Heading Of The Article']||r.Heading)===DRILL.value;
+        if (DRILL.type==='lang')  return (r.Language||'Unknown')===DRILL.value;
+        if (DRILL.type==='pub')   return (r.Publication||'Unknown')===DRILL.value;
+        if (DRILL.type==='jrn')   return (r.Journalist||'')===DRILL.value;
+        return true;
+      });
+    }
+    if (!rows.length) { alert('No articles match the current filter.'); return; }
+
+    const parts = [];
+    if (FEAT_PUB) parts.push('Publication: '+FEAT_PUB);
+    if (FEAT_JOURNALIST) parts.push('Journalist: '+FEAT_JOURNALIST);
+    if (FEAT_FROM) parts.push('From '+FEAT_FROM);
+    if (FEAT_TO) parts.push('To '+FEAT_TO);
+    if (term) parts.push('Search: "'+SEARCH_TERM+'"');
+    if (typeof DRILL!=='undefined' && DRILL) parts.push(DRILL.type+': '+DRILL.value);
+    if (!parts.length) parts.push('Window: '+windowLabel(CURRENT_WINDOW));
+    const filterDesc = parts.join('   ·   ');
+
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(18,22,42);
+    doc.text('Harshal Dasani — Media Features', 40, 44);
+    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(95,100,128);
+    doc.text(filterDesc, 40, 62);
+    doc.setFontSize(9); doc.setTextColor(140,145,170);
+    doc.text(rows.length+' article'+(rows.length===1?'':'s')+' · generated '+new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+' · tap a headline to open the article', 40, 76);
+
+    const fmtD = d => String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear();
+    const urls = rows.map(r => (typeof r.Link==='string' && r.Link.toLowerCase().startsWith('http')) ? r.Link : '');
+    const body = rows.map(r => [
+      fmtD(r.Date),
+      r.Publication || '',
+      (typeof _getHeading==='function' ? _getHeading(r) : '') || r['Heading Of The Article'] || r.Heading || '',
+      (typeof _getTopicFor==='function' ? _getTopicFor(r) : '') || getTopic(r['Heading Of The Article']||r.Heading) || '',
+      r.Journalist || ''
+    ]);
+
+    const HEAD_COL = 2;
+    doc.autoTable({
+      startY: 90,
+      head: [['Date','Publication','Headline (click to open)','Topic','Journalist']],
+      body,
+      theme: 'striped',
+      styles: { fontSize: 8, cellPadding: 4, overflow: 'linebreak', valign: 'top', textColor: [30,32,48] },
+      headStyles: { fillColor: [40,50,80], textColor: 255, fontStyle:'bold', fontSize: 8.5, halign:'left' },
+      alternateRowStyles: { fillColor: [248,249,252] },
+      columnStyles: { 0:{cellWidth:58}, 1:{cellWidth:112}, 2:{cellWidth:'auto', textColor:[37,99,235]}, 3:{cellWidth:100}, 4:{cellWidth:100} },
+      margin: { left: 28, right: 28, top: 40, bottom: 28 },
+      pageBreak: 'auto', rowPageBreak: 'avoid',
+      willDrawCell: (data) => {
+        const txt = String(data.cell.raw==null?'':data.cell.raw);
+        const f = _fontForText(txt, _loadedFonts);
+        if (f) doc.setFont(f,'normal'); else doc.setFont('helvetica', data.section==='head'?'bold':'normal');
+      },
+      didDrawCell: (data) => {
+        if (data.section==='body' && data.column.index===HEAD_COL) {
+          const u = urls[data.row.index];
+          if (u) doc.link(data.cell.x, data.cell.y, data.cell.width, data.cell.height, { url: u });
+        }
+      },
+      didDrawPage: () => {
+        const pg = doc.internal.getCurrentPageInfo().pageNumber;
+        doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(160,165,180);
+        doc.text('Harshal Dasani — Media Features Tracker · harshald13u.github.io/harshalfeatures', 28, H-12);
+        doc.text('Page '+pg, W-28, H-12, {align:'right'});
+      }
+    });
+
+    const slug = String(FEAT_PUB || FEAT_JOURNALIST || (typeof DRILL!=='undefined'&&DRILL&&DRILL.value) || windowLabel(CURRENT_WINDOW) || 'filtered')
+      .replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'').toLowerCase();
+    doc.save('Harshal_Dasani_'+slug+'_'+new Date().toISOString().slice(0,10)+'.pdf');
+  } catch (e) {
+    console.error('Filtered PDF failed:', e);
+    alert('PDF generation failed: ' + (e.message||e));
+  } finally {
+    if (btn) { btn.disabled=false; btn.innerHTML = orig; }
   }
 }
 </script>
