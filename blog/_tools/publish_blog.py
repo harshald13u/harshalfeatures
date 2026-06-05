@@ -382,6 +382,75 @@ def slugify_anchor(s):
 
 
 # ---------------------------------------------------------------------------
+# SEO standard: Key Takeaways box + FAQ (FAQPage schema). All optional —
+# the publisher emits them only when the .docx contains the named sections.
+# ---------------------------------------------------------------------------
+TAKEAWAYS_TITLES = {"key takeaways", "takeaways", "the takeaways", "tl;dr", "summary"}
+FAQ_TITLES = {"faq", "faqs", "frequently asked questions", "questions and answers", "q&a", "q & a"}
+
+def extract_special_sections(paragraphs):
+    """Pull a 'Key Takeaways' H2 block (bullets) and an 'FAQ' H2 block (H3 question +
+    paragraph answer) out of the body so they render as a styled box / FAQPage.
+
+    Returns (takeaways:list[str], faq:list[(q,a)], skip_idxs:set[int]).
+    """
+    takeaways, faq, skip = [], [], set()
+    n = len(paragraphs)
+    i = 0
+    while i < n:
+        p = paragraphs[i]
+        if p.get("type") == "h2":
+            t = (p.get("text") or "").strip().lower().rstrip(":")
+            if t in TAKEAWAYS_TITLES:
+                skip.add(i); i += 1
+                while i < n and paragraphs[i].get("type") == "p":
+                    txt = re.sub(r"^[\u2022\u2023\u25E6\u2043\u2219*\-]\s*", "", paragraphs[i]["text"].strip())
+                    if txt:
+                        takeaways.append(txt)
+                    skip.add(i); i += 1
+                continue
+            if t in FAQ_TITLES:
+                skip.add(i); i += 1
+                while i < n and paragraphs[i].get("type") != "h2":
+                    pp = paragraphs[i]
+                    if pp.get("type") == "h3":
+                        q = pp["text"].strip()
+                        skip.add(i); i += 1
+                        ans = []
+                        while i < n and paragraphs[i].get("type") == "p":
+                            ans.append(paragraphs[i]["text"].strip())
+                            skip.add(i); i += 1
+                        a = " ".join(x for x in ans if x).strip()
+                        if q and a:
+                            faq.append((q, a))
+                    else:
+                        skip.add(i); i += 1
+                continue
+        i += 1
+    return takeaways, faq, skip
+
+
+def render_takeaways_html(items):
+    if not items:
+        return ""
+    lis = "".join(f"<li>{html_escape(t)}</li>" for t in items)
+    return ('<div class="key-takeaways"><div class="kt-label">Key takeaways</div>'
+            f"<ul>{lis}</ul></div>\n")
+
+
+def render_faq_html(faq):
+    if not faq:
+        return ""
+    items = "\n    ".join(
+        f'<div class="faq-q"><h3>{html_escape(q)}</h3><p>{html_escape(a)}</p></div>'
+        for q, a in faq
+    )
+    return ('  <section class="post-faq" aria-labelledby="faq-heading">\n'
+            '    <h2 id="faq-heading">Frequently asked questions</h2>\n    '
+            + items + "\n  </section>\n")
+
+
+# ---------------------------------------------------------------------------
 # Image saving — light + dark covers, lossless
 # ---------------------------------------------------------------------------
 def save_cover(images, idx, post_dir, basename):
@@ -399,7 +468,7 @@ def save_cover(images, idx, post_dir, basename):
 # ---------------------------------------------------------------------------
 def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover_url,
                    focus_keywords, image_alt, used_entities, entities, word_count, reading_minutes,
-                   article_body_text=None, mentioned_entities=None):
+                   article_body_text=None, mentioned_entities=None, faq_pairs=None):
     today_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
     published_iso = f"{date_str}T09:00:00+05:30"
 
@@ -534,7 +603,18 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         },
     }
 
-    graph = {"@context": "https://schema.org", "@graph": [person, org, website, article, breadcrumb]}
+    nodes = [person, org, website, article, breadcrumb]
+    if faq_pairs:
+        nodes.append({
+            "@type": "FAQPage",
+            "@id": f"{canonical}#faq",
+            "mainEntity": [
+                {"@type": "Question", "name": q,
+                 "acceptedAnswer": {"@type": "Answer", "text": a}}
+                for q, a in faq_pairs
+            ],
+        })
+    graph = {"@context": "https://schema.org", "@graph": nodes}
     return json.dumps(graph, ensure_ascii=False, indent=2)
 
 
@@ -628,7 +708,7 @@ POST_TEMPLATE = """<!DOCTYPE html>
 <meta name="publisher" content="Harshal Dasani">
 <meta name="application-name" content="Harshal Dasani">
 <meta http-equiv="content-language" content="en-IN">
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="googlebot" content="index, follow">
 <meta name="bingbot" content="index, follow">
 <meta name="news_keywords" content="{keywords}">
@@ -856,6 +936,15 @@ strong{{color:var(--ink);font-weight:700}}
   .author-bio{{flex-direction:column;align-items:flex-start}}
   .author-bio img{{width:56px;height:56px}}
 }}
+.key-takeaways{{margin:6px 0 30px;padding:18px 22px;background:var(--bg-2);border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:8px}}
+.key-takeaways .kt-label{{font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}}
+.key-takeaways ul{{margin:0;padding-left:18px}}
+.key-takeaways li{{margin:0 0 8px;color:var(--ink-2);font-size:15px;line-height:1.55}}
+.post-faq{{margin:46px 0 8px}}
+.post-faq>h2{{margin-bottom:2px}}
+.faq-q{{border-top:1px solid var(--rule);padding:16px 0}}
+.faq-q h3{{font-size:16px;font-weight:700;color:var(--ink);margin:0 0 7px}}
+.faq-q p{{margin:0;font-size:15px;line-height:1.6;color:var(--ink-2)}}
 @media print{{.theme-toggle,.share{{display:none}}}}
 </style>
 </head>
@@ -875,7 +964,7 @@ strong{{color:var(--ink);font-weight:700}}
   <article itemprop="articleBody">
 {body_html}
   </article>
-  <div class="share" role="group" aria-label="Share this article">
+{faq_html}  <div class="share" role="group" aria-label="Share this article">
     <span class="share-label">Share</span>
     <a href="https://twitter.com/intent/tweet?url={canonical_enc}&amp;text={share_title_enc}&amp;via=HarshalDasanii" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21l-6.5 7.43L22 22h-6.797l-4.86-6.34L4.6 22H2l7.04-8.04L1.86 2h6.97l4.32 5.71L18.244 2zm-2.39 18h1.604L7.243 4H5.55l10.305 16z"/></svg>
@@ -1139,7 +1228,11 @@ def publish_blog(docx_path):
     entities_with_qid = [e for e in entities if e.get("name") and e.get("wikidata")]
     used_entities = set()
 
-    body_html = render_body_html(
+    takeaways_items, faq_pairs, special_skip = extract_special_sections(paras)
+    skip = set(skip) | special_skip
+    takeaways_html = render_takeaways_html(takeaways_items)
+    faq_html = render_faq_html(faq_pairs)
+    body_html = takeaways_html + render_body_html(
         paras, skip, dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx,
         image_caption, post_dir, entities=entities_with_qid,
     )
@@ -1189,6 +1282,7 @@ def publish_blog(docx_path):
         word_count=wc, reading_minutes=rt,
         article_body_text=plain_body_text,
         mentioned_entities=mentioned_entities,
+        faq_pairs=faq_pairs,
     )
 
     topic_label = {
@@ -1219,6 +1313,7 @@ def publish_blog(docx_path):
         modified_iso=modified_iso,
         modified_pretty=pretty_date(today),
         body_html=body_html,
+        faq_html=faq_html,
         jsonld=jsonld,
         word_count_pretty=f"{wc:,}",
         reading_minutes=rt,
