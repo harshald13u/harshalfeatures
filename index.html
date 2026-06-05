@@ -1286,7 +1286,11 @@ html[data-theme="light"] .latest-card:hover {
   flex-direction: column;
   gap: 12px;
   min-height: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
+}
+.ts-section-grow { flex: 1; display: flex; flex-direction: column; }
+.ts-section-grow .ts-latest { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.tracker-spotlight {
   padding: 20px;
   border: 1px solid rgba(212,166,74,0.30);
   border-radius: 14px;
@@ -1363,13 +1367,13 @@ html[data-theme="light"] .tracker-spotlight {
 }
 .ts-sf-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
 .ts-sf {
-  display: grid; grid-template-columns: 160px minmax(0,1fr); align-items: stretch; overflow: hidden;
+  display: grid; grid-template-columns: 200px minmax(0,1fr); align-items: stretch; overflow: hidden;
   border: 1px solid var(--rule); border-radius: 11px; background: var(--bg);
   text-decoration: none;
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .ts-sf:hover { transform: translateY(-2px); border-color: rgba(212,166,74,0.55); box-shadow: 0 10px 26px rgba(0,0,0,0.30); }
-.ts-sf-thumb { position: relative; height: 100%; min-height: 104px; overflow: hidden; background: var(--bg-2); }
+.ts-sf-thumb { position: relative; height: 100%; min-height: 124px; overflow: hidden; background: var(--bg-2); }
 .ts-sf-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
 .ts-sf:hover .ts-sf-thumb img { transform: scale(1.05); }
 .ts-sf-cap { display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 12px 16px; }
@@ -1985,19 +1989,19 @@ html[data-theme="light"] .tracker-spotlight {
             <div class="ts-kpi-l">Unique feature links</div>
           </div>
           <div class="ts-kpi ts-kpi-special">
-            <div class="ts-kpi-n">2</div>
+            <div class="ts-kpi-n" id="tsSpecialCount">2</div>
             <div class="ts-kpi-l"><span class="ts-star" aria-hidden="true">&#9733;</span> Special features</div>
             <span class="ts-kpi-chev" aria-hidden="true">&rsaquo;</span>
           </div>
           <div class="ts-kpi ts-kpi-bar">
-            <div class="ts-kpi-n">2.52</div>
+            <div class="ts-kpi-n" id="tsAvgDay">2.52</div>
             <div class="ts-kpi-l">Avg / day<span class="ts-kpi-sub">since Apr &rsquo;25</span></div>
           </div>
         </div>
 
         <div class="ts-section">
           <div class="ts-sec-head"><span class="ts-sec-label">Special Features</span><span class="ts-star" aria-hidden="true">&#9733;</span></div>
-          <div class="ts-sf-grid">
+          <div class="ts-sf-grid" id="tsSpecialGrid">
             <a class="ts-sf" href="https://www.livemint.com/market/stock-market-news/gold-prices-at-6-000-silver-rate-at-150-why-harshal-dasani-remains-bullish-on-precious-metals-despite-meltdown-11770370001942.html" target="_blank" rel="noopener">
               <span class="ts-sf-thumb"><img src="special-features-assets/livemint-gold-silver-feb2026.jpg" alt="Live Mint &mdash; Gold at $6,000, silver at $150" loading="lazy" decoding="async"></span>
               <span class="ts-sf-cap"><span class="ts-sf-pub">Live Mint &middot; 7 Feb 2026</span><span class="ts-sf-title">Gold at $6,000, silver at $150: why Harshal Dasani stays bullish on precious metals</span></span>
@@ -2005,9 +2009,9 @@ html[data-theme="light"] .tracker-spotlight {
           </div>
         </div>
 
-        <div class="ts-section">
+        <div class="ts-section ts-section-grow">
           <div class="ts-sec-head"><span class="ts-sec-label">Latest Features</span></div>
-          <div class="ts-latest">
+          <div class="ts-latest" id="tsLatest">
             <a class="ts-tf" href="https://m.economictimes.com/markets/stocks/news/it-stocks-crash-planning-to-buy-the-dip-heres-what-analysts-say/articleshow/131494868.cms" target="_blank" rel="noopener">
               <span class="ts-tf-l">
                 <span class="ts-tf-topic">IT &amp; Tech</span>
@@ -2120,36 +2124,69 @@ function toggleTheme(){
     animateCount(counter);
   }
 
-  // Auto-sync the tracker KPI count from the live tracker dataset (no manual bumps).
+  // Live-sync the Media Tracker spotlight: count/avg/latest from tracker data + special-features.json.
   (function(){
-    var el = document.getElementById('trackerCount');
-    if (!el || !window.fetch) return;
+    if (!window.fetch) return;
+    var num = document.getElementById('trackerCount');
     function canonHome(u){
       u = (u || '').toString().trim().toLowerCase()
-            .replace(/^https?:\/\//, '')
-            .replace(/^(www\.|m\.|amp\.)/, '');
+            .replace(/^https?:\/\//, '').replace(/^(www\.|m\.|amp\.)/, '');
       u = u.replace(/\/+$/, '').replace(/\.+$/, '').split('#')[0];
       return u;
     }
-    function doSync(){
+    function setText(id, v){ var e=document.getElementById(id); if(e) e.textContent=v; }
+    function syncTracker(){
       fetch('Harshal_Dasani_Dashboard.html').then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
         if (!t) return;
         var m = t.match(/EMBEDDED_SNAPSHOT_ROWS\s*=\s*(\[[\s\S]*?\])\s*;/);
         if (!m) return;
         var rows; try { rows = JSON.parse(m[1]); } catch(e){ return; }
-        var seen = {}, n = 0;
-        for (var i = 0; i < rows.length; i++){
-          var c = canonHome(rows[i] && rows[i].Link);
-          if (c && !seen[c]) { seen[c] = 1; n++; }
+        var seen={}, n=0, dates=[];
+        for (var i=0;i<rows.length;i++){
+          var c=canonHome(rows[i] && rows[i].Link); if(c && !seen[c]){seen[c]=1;n++;}
+          var d=new Date(rows[i] && rows[i].Date); if(!isNaN(d)) dates.push(d.getTime());
         }
-        if (n > 0){
-          el.setAttribute('data-target', String(n));
-          el.setAttribute('aria-label', n.toLocaleString('en-IN') + ' unique feature links');
-          if (el.dataset.done) el.textContent = n.toLocaleString('en-IN');
+        if (n>0 && num){
+          num.setAttribute('data-target', String(n));
+          num.setAttribute('aria-label', n.toLocaleString('en-IN') + ' unique feature links');
+          if (num.dataset.done) num.textContent = n.toLocaleString('en-IN');
+        }
+        if (dates.length){
+          var earliest=Math.min.apply(null, dates);
+          var days=Math.max(1,(Date.now()-earliest)/86400000);
+          setText('tsAvgDay', (rows.length/days).toFixed(2));
+        }
+        var box=document.getElementById('tsLatest');
+        if (box){
+          var L=rows.slice().filter(function(x){return x && x.Heading && x.Link;})
+            .sort(function(a,b){return new Date(b.Date||0)-new Date(a.Date||0);}).slice(0,3);
+          if (L.length){
+            box.innerHTML=L.map(function(x){
+              var tp=(x.Topic||'').toString();
+              return '<a class="ts-tf" href="'+escapeHomeHTML(x.Link)+'" target="_blank" rel="noopener">'+
+                '<span class="ts-tf-l">'+(tp?'<span class="ts-tf-topic">'+escapeHomeHTML(tp)+'</span>':'')+
+                '<span class="ts-tf-head">'+escapeHomeHTML(x.Heading)+'</span>'+
+                '<span class="ts-tf-pub">'+escapeHomeHTML((x.Publication||'')+' \u00b7 '+formatHomeDate(x.Date))+'</span></span>'+
+                '<span class="ts-tf-arrow" aria-hidden="true">&rarr;</span></a>';
+            }).join('');
+          }
         }
       }).catch(function(){});
     }
-    if (window.requestIdleCallback) requestIdleCallback(doSync, { timeout: 2500 }); else setTimeout(doSync, 1200);
+    function syncSpecial(){
+      fetch('special-features.json?nc='+Date.now()).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
+        var list=(d && d.special) || []; if(!list.length) return;
+        setText('tsSpecialCount', String(list.length));
+        list.sort(function(a,b){ return new Date(b.date||0)-new Date(a.date||0); });
+        var s=list[0], grid=document.getElementById('tsSpecialGrid'); if(!grid) return;
+        grid.innerHTML='<a class="ts-sf" href="'+escapeHomeHTML(s.url||'#')+'" target="_blank" rel="noopener">'+
+          '<span class="ts-sf-thumb"><img src="'+escapeHomeHTML(s.image||'')+'" alt="'+escapeHomeHTML(s.alt||s.title||'')+'" loading="lazy" decoding="async"></span>'+
+          '<span class="ts-sf-cap"><span class="ts-sf-pub">'+escapeHomeHTML((s.pub||'')+' \u00b7 '+formatHomeDate(s.date))+'</span>'+
+          '<span class="ts-sf-title">'+escapeHomeHTML(s.title||'')+'</span></span></a>';
+      }).catch(function(){});
+    }
+    function run(){ syncTracker(); syncSpecial(); }
+    if (window.requestIdleCallback) requestIdleCallback(run, { timeout: 2500 }); else setTimeout(run, 1200);
   })();
 
   if (!reduced) {
@@ -2212,10 +2249,10 @@ function toggleTheme(){
     if (!list) return;
     var seen = {}, out = [];
     (posts || []).forEach(function(p){ if (p && p.slug) seen[p.slug] = 1; out.push(p); });
-    for (var i = 0; i < HOME_FALLBACK.length && out.length < 4; i++){
+    for (var i = 0; i < HOME_FALLBACK.length && out.length < 3; i++){
       if (!seen[HOME_FALLBACK[i].slug]) out.push(HOME_FALLBACK[i]);
     }
-    out = out.slice(0, 4);
+    out = out.slice(0, 3);
     if (out.length) list.innerHTML = out.map(latestHomePostHTML).join('');
   }
   function loadHomepagePosts(){
