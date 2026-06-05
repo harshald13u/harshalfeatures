@@ -1366,7 +1366,7 @@ html[data-theme="light"] .tracker-spotlight {
   text-transform: uppercase; color: var(--accent);
 }
 .ts-sf-grid { overflow: hidden; border-radius: 11px; border: 1px solid var(--rule); }
-.ts-sf-track { display: flex; align-items: stretch; transition: transform 0.6s cubic-bezier(.2.7.2,1); }
+.ts-sf-track { display: flex; align-items: stretch; will-change: transform; }
 .ts-sf-track .ts-sf { flex: 0 0 100%; border: none; border-radius: 0; }
 .ts-sf-dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
 .ts-sf-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); cursor: pointer; padding: 0; border: 0; transition: background .2s ease, transform .2s ease; }
@@ -2183,22 +2183,27 @@ function toggleTheme(){
         setText('tsSpecialCount', String(list.length));
         list.sort(function(a,b){ return new Date(b.date||0)-new Date(a.date||0); });
         var vp=document.getElementById('tsSpecialGrid'); if(!vp) return;
-        var slides=list.map(function(s){
-          return '<a class="ts-sf" href="'+escapeHomeHTML(s.url||'#')+'" target="_blank" rel="noopener">'+
-            '<span class="ts-sf-thumb"><img src="'+escapeHomeHTML(s.image||'')+'" alt="'+escapeHomeHTML(s.alt||s.title||'')+'" loading="lazy" decoding="async"></span>'+
-            '<span class="ts-sf-cap"><span class="ts-sf-pub">'+escapeHomeHTML((s.pub||'')+' \u00b7 '+formatHomeDate(s.date))+'</span>'+
-            '<span class="ts-sf-title">'+escapeHomeHTML(s.title||'')+'</span></span></a>';
-        }).join('');
-        var dots=list.length>1 ? '<div class="ts-sf-dots">'+list.map(function(_x,i){ return '<button class="ts-sf-dot'+(i===0?' is-on':'')+'" type="button" aria-label="Show special feature '+(i+1)+'"></button>'; }).join('')+'</div>' : '';
-        vp.innerHTML='<div class="ts-sf-track">'+slides+'</div>'+dots;
-        if(list.length<=1) return;
-        var track=vp.querySelector('.ts-sf-track'), dts=vp.querySelectorAll('.ts-sf-dot'), idx=0, n=list.length, timer=null;
-        function go(k){ idx=(k+n)%n; track.style.transform='translateX(-'+(idx*100)+'%)'; for(var j=0;j<dts.length;j++){ dts[j].classList.toggle('is-on', j===idx); } }
-        function start(){ stop(); timer=setInterval(function(){ go(idx+1); }, 4500); }
-        function stop(){ if(timer){ clearInterval(timer); timer=null; } }
-        for(var j=0;j<dts.length;j++){ (function(jj){ dts[jj].addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); go(jj); start(); }); })(j); }
-        vp.addEventListener('mouseenter', stop); vp.addEventListener('mouseleave', start);
-        start();
+        function card(s){ return '<a class="ts-sf" href="'+escapeHomeHTML(s.url||'#')+'" target="_blank" rel="noopener">'+
+          '<span class="ts-sf-thumb"><img src="'+escapeHomeHTML(s.image||'')+'" alt="'+escapeHomeHTML(s.alt||s.title||'')+'" loading="lazy" decoding="async"></span>'+
+          '<span class="ts-sf-cap"><span class="ts-sf-pub">'+escapeHomeHTML((s.pub||'')+' \u00b7 '+formatHomeDate(s.date))+'</span>'+
+          '<span class="ts-sf-title">'+escapeHomeHTML(s.title||'')+'</span></span></a>'; }
+        var one=list.map(card).join('');
+        if(list.length<=1){ vp.innerHTML='<div class="ts-sf-track ts-sf-static">'+one+'</div>'; return; }
+        vp.innerHTML='<div class="ts-sf-track">'+one+one+'</div>';
+        var track=vp.querySelector('.ts-sf-track');
+        var x=0, last=0, paused=false, w=0, speed=45;
+        function measure(){ w=track.scrollWidth/2; }
+        function frame(ts){
+          if(!last) last=ts;
+          var dt=(ts-last)/1000; last=ts;
+          if(!paused && w>0){ x-=speed*dt; if(-x>=w) x+=w; track.style.transform='translate3d('+x+'px,0,0)'; }
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(function(){ measure(); requestAnimationFrame(frame); });
+        window.addEventListener('resize', measure);
+        function pz(){ paused=true; } function pl(){ paused=false; last=0; }
+        vp.addEventListener('mouseenter', pz); vp.addEventListener('mouseleave', pl);
+        vp.addEventListener('touchstart', pz, {passive:true}); vp.addEventListener('touchend', pl); vp.addEventListener('touchcancel', pl);
       }).catch(function(){});
     }
     function run(){ syncTracker(); syncSpecial(); }
