@@ -61,7 +61,7 @@
       "@id": "https://harshald13u.github.io/harshalfeatures/#person",
       "name": "Harshal Dasani",
       "alternateName": ["Harshal Dasani INVasset", "Markets with Harshal"],
-      "description": "Business Head at INVasset PMS (Mumbai). Markets professional and writer. CFA candidate and CA Level II. Featured in 1,049+ articles across The Economic Times, Mint, Moneycontrol, CNBC TV18, Business Standard, NDTV Profit and other publications in 8 languages.",
+      "description": "Business Head at INVasset PMS (Mumbai). Markets professional and writer. CFA candidate and CA Level II. Featured in 1,050+ articles across The Economic Times, Mint, Moneycontrol, CNBC TV18, Business Standard, NDTV Profit and other publications in 8 languages.",
       "givenName": "Harshal",
       "familyName": "Dasani",
       "jobTitle": "Business Head",
@@ -1745,7 +1745,7 @@ html[data-theme="light"] .tracker-spotlight {
       "name": "Who is Harshal Dasani?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Harshal Dasani is Business Head at INVasset PMS, Mumbai. A markets professional with over a decade in Indian equity markets, he is a CFA candidate and has cleared CA Level II. He has been quoted in 1,049+ media features across The Economic Times, Mint, Moneycontrol, CNBC TV18, Business Standard, NDTV Profit and dozens of other outlets in 8 languages."
+        "text": "Harshal Dasani is Business Head at INVasset PMS, Mumbai. A markets professional with over a decade in Indian equity markets, he is a CFA candidate and has cleared CA Level II. He has been quoted in 1,050+ media features across The Economic Times, Mint, Moneycontrol, CNBC TV18, Business Standard, NDTV Profit and dozens of other outlets in 8 languages."
       }
     },
     {
@@ -1982,7 +1982,7 @@ html[data-theme="light"] .tracker-spotlight {
 
         <div class="ts-kpis">
           <div class="ts-kpi">
-            <div class="ts-kpi-n" id="trackerCount" data-target="1049" aria-label="1,049 unique feature links">0</div>
+            <div class="ts-kpi-n" id="trackerCount" data-target="1050" aria-label="1,050 unique feature links">0</div>
             <div class="ts-kpi-l">Unique feature links</div>
           </div>
           <div class="ts-kpi ts-kpi-special">
@@ -2125,6 +2125,38 @@ function toggleTheme(){
     animateCount(counter);
   }
 
+  // Auto-sync the tracker KPI count from the live tracker dataset (no manual bumps).
+  (function(){
+    var el = document.getElementById('trackerCount');
+    if (!el || !window.fetch) return;
+    function canonHome(u){
+      u = (u || '').toString().trim().toLowerCase()
+            .replace(/^https?:\/\//, '')
+            .replace(/^(www\.|m\.|amp\.)/, '');
+      u = u.replace(/\/+$/, '').replace(/\.+$/, '').split('#')[0];
+      return u;
+    }
+    function doSync(){
+      fetch('Harshal_Dasani_Dashboard.html').then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
+        if (!t) return;
+        var m = t.match(/EMBEDDED_SNAPSHOT_ROWS\s*=\s*(\[[\s\S]*?\])\s*;/);
+        if (!m) return;
+        var rows; try { rows = JSON.parse(m[1]); } catch(e){ return; }
+        var seen = {}, n = 0;
+        for (var i = 0; i < rows.length; i++){
+          var c = canonHome(rows[i] && rows[i].Link);
+          if (c && !seen[c]) { seen[c] = 1; n++; }
+        }
+        if (n > 0){
+          el.setAttribute('data-target', String(n));
+          el.setAttribute('aria-label', n.toLocaleString('en-IN') + ' unique feature links');
+          if (el.dataset.done) el.textContent = n.toLocaleString('en-IN');
+        }
+      }).catch(function(){});
+    }
+    if (window.requestIdleCallback) requestIdleCallback(doSync, { timeout: 2500 }); else setTimeout(doSync, 1200);
+  })();
+
   if (!reduced) {
     doors.forEach(function(d){
       d.addEventListener('mousemove', function(e){
@@ -2176,7 +2208,7 @@ function toggleTheme(){
     '</a>';
   }
   var HOME_FALLBACK = [
-    { slug: 'harshal-dasani-media-features', url: 'blog/posts/harshal-dasani-media-features/', topic: 'media', title: 'Harshal Dasani Media Features', excerpt: 'A live archive of 1,049+ articles, quotes, e-paper appearances and press coverage across 150+ outlets.', date: '2026-06-04' },
+    { slug: 'harshal-dasani-media-features', url: 'blog/posts/harshal-dasani-media-features/', topic: 'media', title: 'Harshal Dasani Media Features', excerpt: 'A live archive of 1,050+ articles, quotes, e-paper appearances and press coverage across 150+ outlets.', date: '2026-06-04' },
     { slug: 'harshal-dasani-interviews', url: 'blog/posts/harshal-dasani-interviews/', topic: 'interviews', title: 'Harshal Dasani Interviews', excerpt: 'TV, podcast and markets commentary \u2014 CNBC TV18, NDTV Profit, Goodreturns, Moneycontrol and Markets with Harshal.', date: '2026-06-04' },
     { slug: 'markets-with-harshal', url: 'blog/posts/markets-with-harshal/', topic: 'youtube', title: 'Markets with Harshal', excerpt: 'YouTube channel by Harshal Dasani \u2014 Indian market analysis, gold and silver outlook, macros and geopolitics.', date: '2026-06-04' }
   ];
