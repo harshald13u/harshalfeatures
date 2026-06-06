@@ -1170,33 +1170,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
       <div class="tile kpi teal"><div class="num" id="kpi-avg-day">—</div><div class="label" id="kpi-avg-day-label">avg features / day</div></div>
     </div>
 
-    <div class="recent" id="recent-tiles"></div>
-    <div class="filter-caption" id="filter-caption">Showing <b>all time</b>. Click a window above to filter every panel below.</div>
-
-    <div class="panels">
-      <div class="panel">
-        <h3>Language coverage</h3>
-        <div id="lang-bars"></div>
-        <div class="note" id="lang-note"></div>
-      </div>
-      <div class="panel">
-        <h3 id="monthly-title">Monthly feature flow</h3>
-        <div class="monthly" id="monthly"></div>
-        <div class="note" id="month-note"></div>
-      </div>
-      <div class="panel">
-        <h3>Top outlet families</h3>
-        <input type="text" id="pub-search" placeholder="🔍 Search publications…" autocomplete="off" aria-label="Search publications" style="width:100%;box-sizing:border-box;padding:8px 12px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--txt);background:rgba(255,255,255,0.04);outline:none;">
-        <div id="pub-bars"></div>
-      </div>
-      <div class="panel">
-        <h3>Top journalists</h3>
-        <input type="text" id="jrn-search" placeholder="🔍 Search journalists…" autocomplete="off" aria-label="Search journalists" style="width:100%;box-sizing:border-box;padding:8px 12px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--txt);background:rgba(255,255,255,0.04);outline:none;">
-        <div id="jrn-bars"></div>
-      </div>
-    </div>
-
-    <div class="panel" style="margin-top:28px;margin-bottom:12px">
+<div class="panel" style="margin-bottom:14px">
       <h3 style="text-align:center;letter-spacing:0.8px;font-size:20px;">As Featured On <span style="color:#d4a64a;font-size:18px;font-weight:600;">★</span></h3>
       <div class="sf-marquee">
       <div class="sf-gallery">
@@ -1255,6 +1229,32 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
           </div>
         </a>
       </div>
+      </div>
+    </div>
+
+    <div class="recent" id="recent-tiles"></div>
+    <div class="filter-caption" id="filter-caption">Showing <b>all time</b>. Click a window above to filter every panel below.</div>
+
+    <div class="panels">
+      <div class="panel">
+        <h3>Language coverage</h3>
+        <div id="lang-bars"></div>
+        <div class="note" id="lang-note"></div>
+      </div>
+      <div class="panel">
+        <h3 id="monthly-title">Monthly feature flow</h3>
+        <div class="monthly" id="monthly"></div>
+        <div class="note" id="month-note"></div>
+      </div>
+      <div class="panel">
+        <h3>Top outlet families</h3>
+        <input type="text" id="pub-search" placeholder="🔍 Search publications…" autocomplete="off" aria-label="Search publications" style="width:100%;box-sizing:border-box;padding:8px 12px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--txt);background:rgba(255,255,255,0.04);outline:none;">
+        <div id="pub-bars"></div>
+      </div>
+      <div class="panel">
+        <h3>Top journalists</h3>
+        <input type="text" id="jrn-search" placeholder="🔍 Search journalists…" autocomplete="off" aria-label="Search journalists" style="width:100%;box-sizing:border-box;padding:8px 12px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--txt);background:rgba(255,255,255,0.04);outline:none;">
+        <div id="jrn-bars"></div>
       </div>
     </div>
 
