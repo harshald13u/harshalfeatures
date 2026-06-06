@@ -1127,12 +1127,13 @@ html[data-theme="light"] .decode-chip:hover {
   gap: 22px;
   align-items: stretch;
 }
-.spotlight-grid > div:first-child {
+.spotlight-grid > div {
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
-.spotlight-label { margin-bottom: 12px; }
+.spotlight-colhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 24px; margin-bottom: 12px; }
+.spotlight-label { margin-bottom: 0; }
 .latest-list {
   display: flex;
   flex-direction: column;
@@ -1287,7 +1288,8 @@ html[data-theme="light"] .latest-card:hover {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  min-height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   justify-content: flex-start;
 }
 .ts-section-grow { flex: 1; display: flex; flex-direction: column; }
@@ -1380,7 +1382,7 @@ html[data-theme="light"] .tracker-spotlight {
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .ts-sf:hover { transform: translateY(-2px); border-color: rgba(212,166,74,0.55); box-shadow: 0 10px 26px rgba(0,0,0,0.30); }
-.ts-sf-thumb { display: block; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg); }
+.ts-sf-thumb { display: block; width: 100%; aspect-ratio: 16 / 9; max-height: 190px; overflow: hidden; background: var(--bg); }
 .ts-sf-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .ts-sf-cap { display: flex; flex-direction: column; gap: 5px; padding: 12px 16px; }
 .ts-sf-pub { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
@@ -2043,8 +2045,8 @@ html[data-theme="light"] .tracker-spotlight {
     </div>
 
     <div class="spotlight-grid">
-      <div>
-        <div class="spotlight-label">Latest Blogs</div>
+      <div class="spotlight-col">
+        <div class="spotlight-colhead"><span class="spotlight-label">Latest Blogs</span></div>
         <div class="latest-list" id="latestHomepagePosts" aria-live="polite">
           <a class="latest-card" href="blog/posts/crude-oil-india-markets-rupee-inflation/">
             <span class="latest-thumb">
@@ -2063,12 +2065,9 @@ html[data-theme="light"] .tracker-spotlight {
         </div>
       </div>
 
-      <aside class="tracker-spotlight" data-door aria-labelledby="trackerSpotlightTitle" role="link" tabindex="0" data-href="tracker/">
-        <div class="tracker-spotlight-top">
-          <span class="tracker-kicker" id="trackerSpotlightTitle">Media Tracker</span>
-          <span class="tracker-live"><span class="tracker-live-dot" aria-hidden="true"></span>Live</span>
-        </div>
-
+      <div class="spotlight-col">
+        <div class="spotlight-colhead"><span class="spotlight-label" id="trackerSpotlightTitle">Media Tracker</span><span class="tracker-live"><span class="tracker-live-dot" aria-hidden="true"></span>Live</span></div>
+        <aside class="tracker-spotlight" data-door aria-labelledby="trackerSpotlightTitle" role="link" tabindex="0" data-href="tracker/">
         <div class="ts-kpis">
           <div class="ts-kpi">
             <div class="ts-kpi-n" id="trackerCount" data-target="1054" aria-label="1,050 unique feature links">0</div>
@@ -2126,7 +2125,8 @@ html[data-theme="light"] .tracker-spotlight {
         </div>
 
         <a class="ts-cta" href="tracker/">Open the full media tracker <span class="ts-cta-arrow" aria-hidden="true">&rarr;</span></a>
-      </aside>
+        </aside>
+      </div>
     </div>
   </section>
 
