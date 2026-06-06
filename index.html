@@ -1532,7 +1532,10 @@ html[data-theme="light"] .tracker-spotlight {
   .hero { grid-template-columns: minmax(0, 1fr) 420px; column-gap: 48px; }
   .name { font-size: clamp(50px, 8.6vw, 100px); }
   .about { grid-template-columns: 180px minmax(0, 1fr); gap: 44px; padding: 44px 0 48px; }
-  .about-body { column-gap: 32px; }
+  /* Tablet (iPad / mid-width): collapse the 2-column body to a single readable column
+     so paragraphs flow evenly and align with the About aside on the left — no awkward
+     uneven column ends. Phone (<=820px) already does this; this extends it up to iPad widths. */
+  .about-body { column-count: 1; column-gap: 0; max-width: 720px; }
   .doors { gap: 18px; }
   .door { min-height: 240px; padding: 26px 26px 24px; }
 }
@@ -2461,16 +2464,4 @@ function toggleTheme(){
     return isInteractive(el.parentElement);
   }
   card.addEventListener('click', function(e){
-    if (isInteractive(e.target)) return;  // let the inner form/link handle it
-    window.location.href = href;
-  });
-  card.addEventListener('keydown', function(e){
-    if ((e.key === 'Enter' || e.key === ' ') && !isInteractive(e.target)) {
-      e.preventDefault();
-      window.location.href = href;
-    }
-  });
-})();
-</script>
-</body>
-</html>
+    if (isInteractive(e.target)) return; 

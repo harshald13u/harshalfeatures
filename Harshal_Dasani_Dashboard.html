@@ -1870,6 +1870,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (_urlPub) {
       setTimeout(function(){ setDrill('pub', _urlPub); }, 350);
     }
+    var _urlTopic = _urlParams.get('topic');
+    if (_urlTopic) {
+      setTimeout(function(){ setDrill('topic', _urlTopic); }, 350);
+    }
   } catch(e) {}
   const inp = document.getElementById('feat-search');
   if (inp) {
