@@ -1232,6 +1232,21 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
       </div>
     </div>
 
+<div class="latest">
+      <h3>Latest features <span class="h-count" id="latest-window">all time</span></h3>
+      <input type="text" id="feat-search" placeholder="🔍  Search all features by keyword, publication or language…" autocomplete="off" aria-label="Search all features" />
+      <div id="feat-filters" class="feat-filters">
+        <label>From <input type="date" id="feat-from"></label>
+        <label>To <input type="date" id="feat-to"></label>
+        <label>Publication
+          <select id="feat-pub" aria-label="Filter by publication"><option value="">All publications</option></select> <select id="feat-journalist" aria-label="Filter by journalist"><option value="">All journalists</option></select>
+        </label>
+        <button id="feat-clear" type="button">Clear</button>
+        <button id="feat-pdf-btn" type="button" onclick="downloadFilteredPDF()" title="Download the current filtered list as a PDF (with clickable links)">⬇ PDF</button>
+      </div>
+      <div class="feat-list" id="latest-list"></div>
+    </div>
+
     <div class="recent" id="recent-tiles"></div>
     <div class="filter-caption" id="filter-caption">Showing <b>all time</b>. Click a window above to filter every panel below.</div>
 
@@ -1270,20 +1285,6 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
       <div class="note" id="topic-note"></div>
     </div>
 
-    <div class="latest">
-      <h3>Latest features <span class="h-count" id="latest-window">all time</span></h3>
-      <input type="text" id="feat-search" placeholder="🔍  Search all features by keyword, publication or language…" autocomplete="off" aria-label="Search all features" />
-      <div id="feat-filters" class="feat-filters">
-        <label>From <input type="date" id="feat-from"></label>
-        <label>To <input type="date" id="feat-to"></label>
-        <label>Publication
-          <select id="feat-pub" aria-label="Filter by publication"><option value="">All publications</option></select> <select id="feat-journalist" aria-label="Filter by journalist"><option value="">All journalists</option></select>
-        </label>
-        <button id="feat-clear" type="button">Clear</button>
-        <button id="feat-pdf-btn" type="button" onclick="downloadFilteredPDF()" title="Download the current filtered list as a PDF (with clickable links)">⬇ PDF</button>
-      </div>
-      <div class="feat-list" id="latest-list"></div>
-    </div>
     <div class="footer">
       <div id="footer-source">Source: live read from WhatsApp_Features_Articles.xlsx</div>
       <div class="right" id="footer-generated">—</div>
