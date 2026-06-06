@@ -2467,7 +2467,16 @@ function toggleTheme(){
     return isInteractive(el.parentElement);
   }
   card.addEventListener('click', function(e){
-    if (isInteractive(e.tar
+    if (isInteractive(e.target)) return;
+    if (href) window.location.href = href;
+  });
+  card.addEventListener('keydown', function(e){
+    if ((e.key === 'Enter' || e.key === ' ') && !isInteractive(e.target)) {
+      e.preventDefault();
+      if (href) window.location.href = href;
+    }
+  });
+})();
 </script>
 </body>
 </html>
