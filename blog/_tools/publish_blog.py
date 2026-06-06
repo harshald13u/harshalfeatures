@@ -933,22 +933,58 @@ p{{margin:0 0 18px}}
 .inline-figure-dual .dark-only{{opacity:1;position:relative}}
 html[data-theme="light"] .inline-figure-dual .light-only{{opacity:1;position:relative}}
 html[data-theme="light"] .inline-figure-dual .dark-only{{opacity:0;position:absolute;inset:0}}
-/* Chart hotspots — interactive overlay for inline figures */
-.chart-img-wrap{{position:relative}}
+/* Chart hotspots — interactive overlay for inline figures.
+   Subtly visible at rest (1px gold ring at 35% opacity); brighten + lift tooltip on hover/focus.
+   See Blogs/_system/blog-system.md §10 for the spec and chart_hotspots.json schema. */
+.chart-img-wrap{{position:relative;border-radius:8px;overflow:visible}}
 .chart-overlay{{position:absolute;inset:0;pointer-events:none;z-index:2}}
-.chart-hotspot{{position:absolute;width:5.5%;aspect-ratio:1;border-radius:50%;border:none;background:transparent;cursor:help;pointer-events:auto;transform:translate(-50%,-50%);transition:background-color .15s ease,box-shadow .15s ease;padding:0}}
-.chart-hotspot:hover,.chart-hotspot:focus-visible{{background:rgba(212,166,74,0.25);box-shadow:0 0 0 2px var(--accent);outline:none}}
-html[data-theme="light"] .chart-hotspot:hover,html[data-theme="light"] .chart-hotspot:focus-visible{{background:rgba(184,133,43,0.22)}}
-.chart-tooltip{{position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:var(--bg-2);color:var(--ink);padding:9px 13px;border:1px solid var(--rule);border-radius:8px;font-size:13px;line-height:1.45;white-space:nowrap;opacity:0;visibility:hidden;transition:opacity .15s,visibility .15s;pointer-events:none;z-index:10;box-shadow:0 6px 18px rgba(0,0,0,0.28);text-align:left}}
-html[data-theme="light"] .chart-tooltip{{box-shadow:0 6px 18px rgba(26,52,88,0.12)}}
-.chart-tooltip strong{{color:var(--accent);font-weight:700;display:inline-block;margin-bottom:2px;font-size:12.5px;letter-spacing:0.2px}}
-.chart-hotspot:hover .chart-tooltip,.chart-hotspot:focus-visible .chart-tooltip{{opacity:1;visibility:visible}}
-/* Tooltip arrow */
-.chart-tooltip::after{{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--bg-2)}}
-/* Mobile: pin tooltips to viewport instead of trying to stay above the hotspot */
+.chart-hotspot{{
+  position:absolute;width:5.5%;aspect-ratio:1;
+  border-radius:50%;
+  border:1.5px solid rgba(212,166,74,0.42);
+  background:rgba(212,166,74,0.07);
+  cursor:pointer;pointer-events:auto;
+  transform:translate(-50%,-50%);
+  transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+  padding:0;
+  animation:chartHotspotPulse 2.4s ease-in-out infinite;
+}}
+html[data-theme="light"] .chart-hotspot{{border-color:rgba(184,133,43,0.5);background:rgba(184,133,43,0.06)}}
+.chart-hotspot:hover,.chart-hotspot:focus-visible{{
+  background:rgba(212,166,74,0.32);
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(212,166,74,0.18);
+  transform:translate(-50%,-50%) scale(1.12);
+  outline:none;animation:none;
+}}
+html[data-theme="light"] .chart-hotspot:hover,html[data-theme="light"] .chart-hotspot:focus-visible{{
+  background:rgba(184,133,43,0.28);box-shadow:0 0 0 3px rgba(184,133,43,0.18);
+}}
+@keyframes chartHotspotPulse{{
+  0%,100%{{box-shadow:0 0 0 0 rgba(212,166,74,0.0)}}
+  50%{{box-shadow:0 0 0 4px rgba(212,166,74,0.12)}}
+}}
+@media (prefers-reduced-motion: reduce){{.chart-hotspot{{animation:none}}}}
+.chart-tooltip{{
+  position:absolute;bottom:135%;left:50%;transform:translateX(-50%);
+  background:var(--bg-2);color:var(--ink);
+  padding:10px 14px;border:1px solid var(--rule);border-radius:8px;
+  font-size:13px;line-height:1.45;white-space:nowrap;
+  opacity:0;visibility:hidden;
+  transition:opacity .15s ease,visibility .15s ease,transform .15s ease;
+  pointer-events:none;z-index:10;
+  box-shadow:0 8px 22px rgba(0,0,0,0.32);
+  text-align:left;
+}}
+html[data-theme="light"] .chart-tooltip{{box-shadow:0 8px 22px rgba(26,52,88,0.14)}}
+.chart-tooltip strong{{color:var(--accent);font-weight:700;display:block;margin-bottom:3px;font-size:12.5px;letter-spacing:0.2px}}
+.chart-hotspot:hover .chart-tooltip,
+.chart-hotspot:focus-visible .chart-tooltip{{opacity:1;visibility:visible}}
+.chart-tooltip::after{{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--bg-2)}}
+/* Mobile: larger touch targets, tooltip sized for narrow screens */
 @media (max-width: 600px){{
-  .chart-hotspot{{width:8%}}
-  .chart-tooltip{{font-size:12px;padding:7px 10px}}
+  .chart-hotspot{{width:8.5%;border-width:1px}}
+  .chart-tooltip{{font-size:12px;padding:8px 11px;max-width:200px;white-space:normal}}
 }}
 /* Tables — editorial design, theme-aware, horizontal scroll on narrow viewports.
    Lifted card with rounded corners + subtle shadow; navy header band; gold section dividers;
@@ -1629,31 +1665,4 @@ def publish_blog(docx_path):
         "light_cover": light_cover_filename, "dark_cover": dark_cover_filename,
         "word_count": wc, "reading_minutes": rt,
         "used_entities": sorted(used_entities),
-        "mentioned_entities": sorted(mentioned_entities),
-        "tables": sum(1 for p in paras if p.get("type") == "table"),
-    }
-
-
-def find_latest_blog():
-    blogs_dir = f"{FEATURES}/Blogs"
-    candidates = []
-    for fn in os.listdir(blogs_dir):
-        if fn.startswith("~$") or fn.startswith("."): continue
-        if not fn.lower().endswith(".docx"): continue
-        path = os.path.join(blogs_dir, fn)
-        if not os.path.isfile(path): continue
-        m = re.match(r"(\d{4}-\d{2}-\d{2})_", fn)
-        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(path))
-        candidates.append((key, path))
-    if not candidates:
-        raise SystemExit("No .docx blogs in /Features/Blogs/")
-    candidates.sort(reverse=True)
-    return candidates[0][1]
-
-
-if __name__ == "__main__":
-    target = sys.argv[1] if len(sys.argv) > 1 else find_latest_blog()
-    result = publish_blog(target)
-    print()
-    print("=" * 60)
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+        "mentioned_entities": sorted(mentioned_en
