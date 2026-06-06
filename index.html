@@ -1696,7 +1696,8 @@ html[data-theme="light"] .tracker-spotlight {
   .hero-right { align-items: stretch; }
   .hero-photo { max-width: 300px; margin: 0; }
   .about { grid-template-columns: 170px minmax(0, 1fr); gap: 30px; }
-  .about-body { column-count: 2; }
+  /* iPad portrait: single-col body so paragraphs flow top-to-bottom (no uneven column ends) */
+  .about-body { column-count: 1; column-gap: 0; max-width: 720px; }
   .spotlight-head { grid-template-columns: minmax(0, 1fr) auto; }
   .spotlight-grid { grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr); align-items: start; }
 }
@@ -2466,7 +2467,7 @@ function toggleTheme(){
     return isInteractive(el.parentElement);
   }
   card.addEventListener('click', function(e){
-    if (isInteractive(e.target)) return;  // let the inner form/link handle it
-    window.location.href = href;
-  });
-  card.addEventListener('keydown', fun
+    if (isInteractive(e.tar
+</script>
+</body>
+</html>
