@@ -1,7 +1,8 @@
 {
-  "_doc": "Slug -> figure-index (0-indexed string) -> list of hotspots. x/y are percentages of the figure dimensions (0..100). label = short title shown in bold gold. value = body of the tooltip. See Features/Blogs/_system/blog-system.md §10 'Interactive chart hotspots' for the rules.",
+  "_doc": "Slug -> figure-index (0-indexed string) -> list of hotspots. x/y are percentages of the figure dimensions (0..100). label = short title shown in bold gold. value = body of the tooltip. See Blogs/_system/blog-system.md section 11 for the rules.",
   "rbi-mpc-june-2026-rate-pause": {
     "0": [
-      {"x": 60.6, "y": 39.2, "label": "Cut #1 — Feb 2025", "value": "−25 bps → 6.25%"},
-      {"x": 65.0, "y": 46.6, "label": "Cut #2 — Apr 2025", "value": "−25 bps → 6.00%"},
-      {"x": 69.4, "y": 61.3, "label": "Cut #3 — Jun 2025", "value": "−50 bps → 5.50% · sta
+      {"x": 60.6, "y": 39.2, "label": "Cut #1 - Feb 2025", "value": "-25 bps to 6.25%"},
+      {"x": 65.0, "y": 46.6, "label": "Cut #2 - Apr 2025", "value": "-25 bps to 6.00%"},
+      {"x": 69.4, "y": 61.3, "label": "Cut #3 - Jun 2025", "value": "-50 bps to 5.50% (stance to neutral)"},
+      {"x": 82.3, "y": 68.7, "
