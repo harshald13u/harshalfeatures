@@ -954,48 +954,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<style id="hd2-css">
-.headboard{ background:transparent !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; overflow:visible !important; }
-.hd2{ display:flex; justify-content:space-between; align-items:flex-start; gap:24px; padding:6px 2px 20px; border-bottom:1px solid rgba(236,228,211,0.12); margin-bottom:8px; }
-.hd2-main{ min-width:0; }
-.hd2-kicker{ font-family:'Inter',sans-serif; font-size:11px; font-weight:800; letter-spacing:.26em; text-transform:uppercase; color:#d4a64a; }
-.hd2-title{ font-family:'Noto Serif',Georgia,serif; font-weight:700; font-size:clamp(30px,4.6vw,50px); line-height:1.05; letter-spacing:-.01em; color:#ece4d3; margin:8px 0 0; }
-.hd2-sub{ font-family:'Inter',sans-serif; font-size:13px; color:#8a8273; margin-top:9px; }
-.hd2-nav{ display:flex; gap:8px; margin-top:15px; flex-wrap:wrap; }
-.hd2-nav a{ font-family:'Inter',sans-serif; font-size:12px; font-weight:700; letter-spacing:.03em; color:#c9c0ad; text-decoration:none; border:1px solid rgba(236,228,211,0.16); border-radius:999px; padding:7px 16px; transition:color .15s,border-color .15s,background .15s; }
-.hd2-nav a:hover{ color:#d4a64a; border-color:#d4a64a; }
-.hd2-nav a.on{ color:#0e0c0a; background:#d4a64a; border-color:#d4a64a; }
-.hd2-actions{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
-.hd2-live{ display:inline-flex; align-items:center; gap:7px; font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#d4a64a; border:1px solid #d4a64a; border-radius:999px; padding:6px 12px; }
-.hd2-live::before{ content:''; width:6px; height:6px; border-radius:50%; background:#d4a64a; box-shadow:0 0 8px #d4a64a; animation:pulse 1.6s ease-in-out infinite; }
-.hd2-pdf{ font-family:'Inter',sans-serif; font-size:12px; font-weight:700; color:#ece4d3; background:transparent; border:1px solid rgba(236,228,211,0.20); border-radius:8px; padding:7px 15px; cursor:pointer; transition:color .15s,border-color .15s; }
-.hd2-pdf:hover{ border-color:#d4a64a; color:#d4a64a; }
-.hd2-toggle{ width:34px; height:34px; border-radius:999px; border:1px solid rgba(236,228,211,0.20); background:transparent; color:#ece4d3; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; padding:0; }
-.hd2-toggle:hover{ border-color:#d4a64a; color:#d4a64a; }
-.hd2-toggle svg{ width:17px; height:17px; display:block; }
-.hd2-toggle .icon-sun{ display:none; }
-.hd2-soc{ width:34px; height:34px; border-radius:999px; border:1px solid rgba(236,228,211,0.16); color:#c9c0ad; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; transition:color .15s,border-color .15s; }
-.hd2-soc svg{ width:16px; height:16px; display:block; }
-.hd2-soc:hover{ color:#d4a64a; border-color:#d4a64a; }
-html[data-theme="light"] .hd2{ border-bottom-color:rgba(26,52,88,0.16); }
-html[data-theme="light"] .hd2-kicker{ color:#b8852b; }
-html[data-theme="light"] .hd2-title{ color:#1a3458; }
-html[data-theme="light"] .hd2-sub{ color:#54687f; }
-html[data-theme="light"] .hd2-nav a{ color:#3a527a; border-color:rgba(26,52,88,0.18); }
-html[data-theme="light"] .hd2-nav a:hover{ color:#b8852b; border-color:#b8852b; }
-html[data-theme="light"] .hd2-nav a.on{ color:#fff; background:#b8852b; border-color:#b8852b; }
-html[data-theme="light"] .hd2-live{ color:#b8852b; border-color:#b8852b; }
-html[data-theme="light"] .hd2-live::before{ background:#b8852b; box-shadow:0 0 8px #b8852b; }
-html[data-theme="light"] .hd2-pdf{ color:#1a3458; border-color:rgba(26,52,88,0.20); }
-html[data-theme="light"] .hd2-pdf:hover{ color:#b8852b; border-color:#b8852b; }
-html[data-theme="light"] .hd2-toggle{ color:#1a3458; border-color:rgba(26,52,88,0.20); }
-html[data-theme="light"] .hd2-soc{ color:#3a527a; border-color:rgba(26,52,88,0.16); }
-.hd2-toggle .icon-moon{ display:block; }
-html[data-theme="light"] .hd2-toggle .icon-sun{ display:block; }
-html[data-theme="light"] .hd2-toggle .icon-moon{ display:none; }
-@media(max-width:760px){ .hd2{ flex-direction:column; gap:14px; } .hd2-actions{ flex-wrap:wrap; } }
-</style>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Serif:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script>
 (function(){
   function applyTheme(){
@@ -1026,27 +985,39 @@ html[data-theme="light"] .hd2-toggle .icon-moon{ display:none; }
 
 <div class="wrap">
   <header class="headboard">
-  <div class="hd2">
-    <div class="hd2-main">
-      <div class="hd2-kicker">Media Features · Consolidated Tracker</div>
-      <h1 class="hd2-title">Harshal Dasani</h1>
-      <div class="hd2-sub" id="hd2-sub">—</div>
-      <nav class="hd2-nav" aria-label="Sections">
-        <a href="https://harshald13u.github.io/harshalfeatures/">About</a>
-        <a class="on" aria-current="page" href="https://harshald13u.github.io/harshalfeatures/tracker/">Media Tracker</a>
-        <a href="https://harshald13u.github.io/harshalfeatures/blog/">Blog</a>
-      </nav>
+  <div class="header">
+    <div class="header-left"><a class="header-back" href="https://harshald13u.github.io/harshalfeatures/">&larr; Back to home</a></div>
+    <div class="header-main">
+      <div class="header-kicker">Media Intelligence Dashboard</div>
+      <h1><span class="title-main">Harshal Dasani</span></h1>
+      <div class="header-subtitle">Media Features · Consolidated Tracker</div>
     </div>
-    <div class="hd2-actions">
-      <span class="hd2-live">LIVE</span>
-      <button class="hd2-pdf" onclick="downloadDashboardPDF()" title="Download PDF report (summary + table)">PDF</button>
-      <button class="hd2-toggle" onclick="toggleTrackerTheme()" type="button" aria-label="Toggle light / dark theme" title="Toggle theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
-      <a class="hd2-soc" href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg></a>
-      <a class="hd2-soc" href="https://x.com/HarshalDasanii" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg></a>
-      <a class="hd2-soc" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+    <div class="header-right">
+      <button class="social-link theme-toggle-btn" onclick="toggleTrackerTheme()" aria-label="Toggle light / dark theme" title="Toggle theme" type="button">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <a class="social-link social-linkedin" href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener" aria-label="LinkedIn profile of Harshal Dasani" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.25a1.75 1.75 0 1 1 0-3.5 1.75 1.75 0 0 1 0 3.5zM19 19h-3v-4.74c0-1.42-.6-2.13-1.65-2.13a1.79 1.79 0 0 0-1.83 2V19h-3v-9h3v1.31c.42-.79 1.61-1.59 3.07-1.59 2.13 0 3.41 1.28 3.41 4.06V19z"/></svg>
+      </a>
+      <a class="social-link social-x" href="https://x.com/HarshalDasanii" target="_blank" rel="noopener" aria-label="X / Twitter profile of Harshal Dasani" title="X (Twitter)">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.451-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z"/></svg>
+      </a>
+      <a class="social-link social-youtube" href="https://www.youtube.com/@marketswitharshal" target="_blank" rel="noopener" aria-label="Markets with Harshal — YouTube channel" title="YouTube">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.378.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.873.505 9.378.505 9.378.505s7.505 0 9.378-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
     </div>
-    <span id="meta-line" style="display:none">—</span>
   </div>
+  <div class="header-meta-bar">
+    <div class="header-meta-left"><span class="meta-label">Last updated</span><span class="meta-value" id="meta-line">—</span></div>
+    <div class="header-meta-right">
+        <span class="dl-group">
+          <button class="dl-btn dl-pdf" onclick="downloadDashboardPDF()" title="Download PDF report (summary + table)">PDF</button>
+        </span>
+        <span class="live-pill">LIVE</span>
+      </div>
+  </div>
+  <div class="accent-strip"></div>
 
   <div class="toolbar">
     <button id="btn-pick">Connect Excel</button>
@@ -3210,18 +3181,5 @@ async function downloadFilteredPDF() {
 </div>
 
 
-<script>
-document.addEventListener('DOMContentLoaded',function(){
-  try{
-    var rows = (typeof EMBEDDED_SNAPSHOT_ROWS!=='undefined') ? EMBEDDED_SNAPSHOT_ROWS : [];
-    var n=rows.length, pubs={}, langs={}, maxd='';
-    for(var i=0;i<rows.length;i++){var r=rows[i]; if(r.Publication)pubs[r.Publication]=1; if(r.Language)langs[r.Language]=1; if(r.Date&&r.Date>maxd)maxd=r.Date;}
-    var d=new Date(maxd+'T00:00:00');
-    var when=isNaN(d.getTime())?maxd:d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-    var el=document.getElementById('hd2-sub');
-    if(el) el.textContent = n.toLocaleString()+' features · '+Object.keys(pubs).length+' publications · '+Object.keys(langs).length+' languages · updated '+when;
-  }catch(e){}
-});
-</script>
 </body>
 </html>
