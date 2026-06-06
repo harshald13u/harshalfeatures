@@ -1167,7 +1167,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
         </div>
         <div class="sf-chevron">›</div>
       </div>
-      <div class="tile kpi teal"><div class="num" id="kpi-avg-day">—</div><div class="label" id="kpi-avg-day-label">avg features / day</div></div>
+      <div class="tile kpi teal" id="kpi-epaper-tile" role="button" tabindex="0" style="cursor:pointer" onclick="setDrill('topic','Press / E-papers')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setDrill('topic','Press / E-papers');}"><div class="num" id="kpi-epaper">—</div><div class="label" id="kpi-epaper-label">e-papers</div></div>
     </div>
 
 <div class="panel" style="margin-bottom:14px">
@@ -2757,16 +2757,10 @@ function render(rows, file) {
   const minDate = sortedByDate.length ? fmtDate(sortedByDate[sortedByDate.length - 1].Date) : '';
   const maxDate = sortedByDate.length ? fmtDate(sortedByDate[0].Date) : '';
 
-  if (sortedByDate.length) {
-    const first = sortedByDate[sortedByDate.length - 1].Date;
-    const today0 = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-    const days = Math.max(1, Math.floor((today0 - first) / 86400000) + 1);
-    const avg = unique.length / days;
-    $('kpi-avg-day').textContent = avg.toFixed(2);
-    const firstNice = first.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-    $('kpi-avg-day-label').innerHTML = `avg features / day<br><span style="font-size:10px;color:#9CA3AF">since ${firstNice} . ${days} days</span>`;
-  } else {
-    $('kpi-avg-day').textContent = '-';
+  {
+    const epCount = unique.filter(r => getTopic((r['Heading Of The Article'] || r.Heading) || '') === 'Press / E-papers').length;
+    $('kpi-epaper').textContent = String(epCount);
+    $('kpi-epaper-label').innerHTML = `e-papers<br><span style="font-size:10px;color:#9CA3AF">tap to view &middot; print &amp; PDF</span>`;
   }
 
   $('meta-line').textContent = `${minDate} to ${maxDate}`;
@@ -2914,7 +2908,7 @@ async function downloadDashboardPDF() {
       { num: total.toLocaleString(), label: 'TOTAL FEATURES', color: [212,166,74] },
       { num: Object.keys(pubCounts).length, label: 'PUBLICATIONS', color: [184,133,43] },
       { num: Object.keys(langCounts).length, label: 'LANGUAGES', color: [201,192,173] },
-      { num: avg, label: 'AVG / DAY', color: [201,122,58] }
+      { num: dated.filter(r => getTopic(r._h || '') === 'Press / E-papers').length, label: 'E-PAPERS', color: [201,122,58] }
     ];
     const cardW = (W - 80 - 24) / 4;
     cards.forEach((c, i) => {

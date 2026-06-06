@@ -2464,4 +2464,8 @@ function toggleTheme(){
     return isInteractive(el.parentElement);
   }
   card.addEventListener('click', function(e){
-    if (isInteractive(e.target)) return; 
+    if (isInteractive(e.target)) return;  // let the inner form/link handle it
+    window.location.href = href;
+  });
+  card.addEventListener('keydown', function(e){
+    if ((e.key === 'Enter' || e.key === ' '
