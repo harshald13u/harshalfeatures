@@ -437,6 +437,15 @@ html[data-theme="light"] .post-cover .cover-dark { opacity: 1; }
     }
   });
 
+  // Topic tabs: replace history entry (don't stack) so Back returns to the home page, not the previous tab
+  document.querySelectorAll('.blog-tabs a').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var href = a.getAttribute('href');
+      if (window.location.replace) { window.location.replace(href); } else { window.location.href = href; }
+    });
+  });
+
   function fmtDate(s){
     try {
       var d = new Date(s);
