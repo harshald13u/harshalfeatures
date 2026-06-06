@@ -324,7 +324,9 @@ html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
   color: var(--muted);
   font-weight: 500;
 }
-.mast-meta span + span::before {
+.mast-meta a { color: var(--muted); text-decoration: none; transition: color 0.2s ease; }
+.mast-meta a:hover { color: var(--accent); }
+.mast-meta a + a::before {
   content: '';
   display: inline-block;
   width: 3px; height: 3px;
@@ -1581,7 +1583,7 @@ html[data-theme="light"] .tracker-spotlight {
   .mast-socials a { width: 28px; height: 28px; }
   .mast-socials a svg { width: 13px; height: 13px; }
   /* Hide the 4 topic chip text on phone, they're shown as buttons in the hero anyway */
-  .mast-meta span { display: none; }
+  .mast-meta a { display: none; }
   .mast-meta { font-size: 9.5px; letter-spacing: 1.3px; display: flex; align-items: center; }
   .theme-toggle { margin-right: 0; margin-left: 4px; }
 
@@ -1894,7 +1896,7 @@ html[data-theme="light"] .tracker-spotlight {
       <button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Toggle light/dark theme" title="Toggle light/dark theme">
         <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      </button><span>Stock Market</span><span>Commodities</span><span>Macros</span><span>Geopolitics</span>
+      </button><a href="blog/?topic=stock-market">Stock Market</a><a href="blog/?topic=commodities">Commodities</a><a href="blog/?topic=macros">Macros</a><a href="blog/?topic=geopolitics">Geopolitics</a>
     </div>
   </header>
 
