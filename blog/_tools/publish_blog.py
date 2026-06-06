@@ -968,8 +968,8 @@ html[data-theme="light"] .chart-hotspot:hover,html[data-theme="light"] .chart-ho
 .chart-tooltip{{
   position:absolute;bottom:135%;left:50%;transform:translateX(-50%);
   background:var(--bg-2);color:var(--ink);
-  padding:10px 14px;border:1px solid var(--rule);border-radius:8px;
-  font-size:13px;line-height:1.45;white-space:nowrap;
+  padding:9px 13px;border:1px solid var(--rule);border-radius:9px;
+  font-size:13.5px;line-height:1.4;white-space:nowrap;
   opacity:0;visibility:hidden;
   transition:opacity .15s ease,visibility .15s ease,transform .15s ease;
   pointer-events:none;z-index:10;
@@ -977,7 +977,7 @@ html[data-theme="light"] .chart-hotspot:hover,html[data-theme="light"] .chart-ho
   text-align:left;
 }}
 html[data-theme="light"] .chart-tooltip{{box-shadow:0 8px 22px rgba(26,52,88,0.14)}}
-.chart-tooltip strong{{color:var(--accent);font-weight:700;display:block;margin-bottom:3px;font-size:12.5px;letter-spacing:0.2px}}
+.chart-tooltip strong{{color:var(--accent);font-weight:700;display:block;margin-bottom:4px;font-size:10px;letter-spacing:1.4px;text-transform:uppercase}}
 .chart-hotspot:hover .chart-tooltip,
 .chart-hotspot:focus-visible .chart-tooltip{{opacity:1;visibility:visible}}
 .chart-tooltip::after{{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--bg-2)}}
