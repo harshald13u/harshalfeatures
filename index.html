@@ -2468,4 +2468,9 @@ function toggleTheme(){
     window.location.href = href;
   });
   card.addEventListener('keydown', function(e){
-    if ((e.key === 'Enter' || e.key === ' '
+    if ((e.key === 'Enter' || e.key === ' ') && !isInteractive(e.target)) {
+      e.preventDefault();
+      window.location.href = href;
+    }
+  });
+})(
