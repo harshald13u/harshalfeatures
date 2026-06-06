@@ -1073,6 +1073,8 @@ strong{{color:var(--ink);font-weight:700}}
 .faq-q{{border-top:1px solid var(--rule);padding:16px 0}}
 .faq-q h3{{font-size:16px;font-weight:700;color:var(--ink);margin:0 0 7px}}
 .faq-q p{{margin:0;font-size:15px;line-height:1.6;color:var(--ink-2)}}
+/* safe-area toggle fix */
+@media (max-width:600px){{.theme-toggle{{top:max(46px,env(safe-area-inset-top))}}}}
 @media print{{.theme-toggle,.share{{display:none}}}}
 </style>
 </head>
