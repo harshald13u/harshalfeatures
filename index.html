@@ -1286,14 +1286,14 @@ html[data-theme="light"] .latest-card:hover {
 .tracker-spotlight {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   min-height: 100%;
   justify-content: flex-start;
 }
 .ts-section-grow { flex: 1; display: flex; flex-direction: column; }
 .ts-section-grow .ts-latest { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
 .tracker-spotlight {
-  padding: 18px;
+  padding: 20px;
   border: 1px solid rgba(212,166,74,0.30);
   border-radius: 14px;
   background:
@@ -1338,7 +1338,7 @@ html[data-theme="light"] .tracker-spotlight {
 .ts-kpi {
   position: relative;
   display: flex; flex-direction: column; justify-content: center; gap: 5px;
-  min-height: 50px; padding: 9px 12px;
+  min-height: 56px; padding: 10px 12px;
   border: 1px solid var(--rule); border-radius: 11px;
   background: var(--bg);
 }
@@ -1380,9 +1380,9 @@ html[data-theme="light"] .tracker-spotlight {
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .ts-sf:hover { transform: translateY(-2px); border-color: rgba(212,166,74,0.55); box-shadow: 0 10px 26px rgba(0,0,0,0.30); }
-.ts-sf-thumb { display: block; width: 100%; aspect-ratio: 16 / 9; max-height: 208px; overflow: hidden; background: var(--bg); }
+.ts-sf-thumb { display: block; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg); }
 .ts-sf-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
-.ts-sf-cap { display: flex; flex-direction: column; gap: 4px; padding: 10px 16px; }
+.ts-sf-cap { display: flex; flex-direction: column; gap: 5px; padding: 12px 16px; }
 .ts-sf-pub { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); }
 .ts-sf-title {
   font-size: 13.5px; line-height: 1.35; color: var(--ink-2);
@@ -1407,7 +1407,7 @@ html[data-theme="light"] .tracker-spotlight {
 .ts-cta {
   margin-top: auto;
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  min-height: 36px; border-radius: 999px;
+  min-height: 40px; border-radius: 999px;
   border: 1px solid rgba(212,166,74,0.55); background: rgba(212,166,74,0.10);
   color: var(--accent); text-decoration: none;
   font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
@@ -1689,6 +1689,18 @@ html[data-theme="light"] .tracker-spotlight {
   .about-body { column-count: 2; }
   .spotlight-head { grid-template-columns: minmax(0, 1fr) auto; }
   .spotlight-grid { grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr); align-items: start; }
+}
+
+/* ============================================================
+   iPad / TABLET PORTRAIT FIX
+   In portrait the 2-col spotlight (blogs + tracker) squeezes the
+   blog cards so titles truncate ("The en..."). Stack it in portrait
+   so each blog card spans full width. Landscape stays desktop 2-col.
+   ============================================================ */
+@media (min-width: 641px) and (max-width: 1024px) and (orientation: portrait) {
+  .spotlight-grid { grid-template-columns: 1fr; align-items: start; }
+  .latest-card { grid-template-columns: 300px minmax(0, 1fr); }
+  .tracker-spotlight { max-width: 100%; }
 }
 
 @media (max-width: 640px) {
