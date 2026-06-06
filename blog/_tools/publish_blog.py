@@ -886,7 +886,7 @@ body{{font-family:'Inter',sans-serif;line-height:1.65;-webkit-font-smoothing:ant
 /* No CSS zoom — page renders at native 100% browser zoom. */
 a{{color:var(--accent);text-decoration:none}}
 a:hover{{text-decoration:underline}}
-.theme-toggle{{position:fixed;top:18px;right:18px;width:42px;height:42px;border-radius:50%;border:1px solid var(--rule);background:var(--bg-2);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;z-index:1000}}
+.theme-toggle{{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);background:var(--bg-2);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}}.theme-toggle:hover{{color:var(--accent);border-color:var(--accent)}}.theme-toggle svg{{width:15px;height:15px;display:block}}.theme-toggle .icon-sun{{display:none}}html[data-theme="light"] .theme-toggle .icon-sun{{display:block}}html[data-theme="light"] .theme-toggle .icon-moon{{display:none}}.crumb-right{{display:flex;align-items:center;gap:14px}}
 .page{{width:100%;max-width:1280px;margin:0 auto;padding:56px 24px 96px}}
 .crumb{{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}}
 .crumb a{{color:var(--muted)}}
@@ -1110,14 +1110,13 @@ strong{{color:var(--ink);font-weight:700}}
 .faq-q h3{{font-size:16px;font-weight:700;color:var(--ink);margin:0 0 7px}}
 .faq-q p{{margin:0;font-size:15px;line-height:1.6;color:var(--ink-2)}}
 /* safe-area toggle fix */
-@media (max-width:600px){{.theme-toggle{{top:max(46px,env(safe-area-inset-top))}}}}
+
 @media print{{.theme-toggle,.share{{display:none}}}}
 </style>
 </head>
 <body>
-<button class="theme-toggle" aria-label="Toggle theme" onclick="(function(){{var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{{localStorage.setItem('hd-theme',n)}}catch(e){{}}}})()">☼</button>
 <main class="page" itemscope itemtype="https://schema.org/BlogPosting">
-  <nav class="crumb" aria-label="Breadcrumb"><a class="crumb-back" href="../../">&larr; Back to Blogs</a><span class="crumb-trail"><a href="../../../">Harshal Dasani</a> &middot; <a href="../../">Blogs</a> &middot; <span>{topic_label}</span></span></nav>
+  <nav class="crumb" aria-label="Breadcrumb"><a class="crumb-back" href="../../">&larr; Back to Blogs</a><span class="crumb-right"><span class="crumb-trail"><a href="../../../">Harshal Dasani</a> &middot; <a href="../../">Blogs</a> &middot; <span>{topic_label}</span></span><button class="theme-toggle" aria-label="Toggle light / dark theme" title="Toggle theme" type="button" onclick="(function(){{var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{{localStorage.setItem('hd-theme',n)}}catch(e){{}}}})()"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button></span></nav>
   <span class="topic-pill">{topic_label}</span>
   <h1 itemprop="headline">{title_html}</h1>
   <p class="subtitle" itemprop="description">{excerpt_html}</p>
