@@ -1559,7 +1559,9 @@ html[data-theme="light"] .tracker-spotlight {
     padding: 40px 0 44px;
     margin-bottom: 56px;
   }
-  .about-body { column-count: 2; column-gap: 28px; font-size: 15.5px; }
+  /* Phone / iPad portrait: keep body as single column for clean top-to-bottom flow
+     (was 2 columns; was misaligning the "Outside the desk" paragraph in portrait mode). */
+  .about-body { column-count: 1; column-gap: 0; font-size: 15.5px; max-width: 720px; }
 
   .about-stats { gap: 18px 32px; }
 
@@ -2040,7 +2042,7 @@ html[data-theme="light"] .tracker-spotlight {
     <div class="spotlight-head">
       <div>
         <div class="spotlight-kicker">Blog + Media Tracker</div>
-        <h2 class="spotlight-title" id="spotlightTitle">Latest thinking</h2>
+        <h2 class="spotlight-title" id="spotlightTitle">Latest thinking.</h2>
       </div>
       <div>
         <div class="spotlight-actions">
@@ -2467,13 +2469,4 @@ function toggleTheme(){
     if (isInteractive(e.target)) return;  // let the inner form/link handle it
     window.location.href = href;
   });
-  card.addEventListener('keydown', function(e){
-    if ((e.key === 'Enter' || e.key === ' ') && !isInteractive(e.target)) {
-      e.preventDefault();
-      window.location.href = href;
-    }
-  });
-})();
-</script>
-</body>
-</html>
+  card.addEventListener('keydown', fun
