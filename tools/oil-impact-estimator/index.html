@@ -105,6 +105,11 @@
         </div>
       </div>
 
+      <div id="live-brent" style="font-size:12px; margin:-8px 0 18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span id="live-brent-text" style="color:var(--text-soft);">Fetching today&rsquo;s Brent&hellip;</span>
+        <button id="live-brent-refresh" type="button" style="display:none; border:0; background:transparent; color:var(--accent); font:inherit; font-weight:600; cursor:pointer; padding:0;">↻ Refresh</button>
+      </div>
+
       <!-- Assumptions (collapsible) -->
       <details id="assumptions-panel" style="margin-top:4px;">
         <summary style="cursor:pointer; font-size:13px; font-weight:600; color:var(--text-soft); letter-spacing:.4px; padding:10px 0; list-style:none; display:flex; align-items:center; justify-content:space-between;" aria-controls="assumptions-body">
@@ -287,6 +292,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Wire Brent slider + number via bindInput ── */
   brentCtrl = bindInput('sl-brent', 'num-brent', recompute, { min: 40, max: 160 });
+
+  /* ── Live Brent price (Cloudflare Pages Function /api/brent) ── */
+  function setBrent(v) {
+    v = Math.max(40, Math.min(160, Math.round(v)));
+    var sl = document.getElementById('sl-brent'), nm = document.getElementById('num-brent');
+    if (sl) sl.value = v; if (nm) nm.value = v;
+    recompute();
+  }
+  function fmtAsOf(ms) {
+    try { return new Date(ms).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); }
+    catch (e) { return ''; }
+  }
+  var liveTxt = document.getElementById('live-brent-text');
+  var liveBtn = document.getElementById('live-brent-refresh');
+  function loadLiveBrent() {
+    if (liveTxt) { liveTxt.textContent = "Fetching today\u2019s Brent\u2026"; liveTxt.style.color = 'var(--text-soft)'; }
+    fetch('/api/brent', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (d) {
+        if (!d || typeof d.price !== 'number') throw 0;
+        setBrent(d.price);
+        if (liveTxt) {
+          liveTxt.innerHTML = '<span style="color:var(--pos);">\u25CF Live Brent</span> <b>$' + d.price.toFixed(2) + '</b>'
+            + (d.asOf ? ' <span style="color:var(--text-soft);">\u00B7 as of ' + fmtAsOf(d.asOf) + '</span>' : '');
+        }
+        if (liveBtn) liveBtn.style.display = '';
+      })
+      .catch(function () {
+        if (liveTxt) liveTxt.innerHTML = '<span style="color:var(--text-soft);">Live price unavailable \u2014 showing scenario default. Drag the slider to model any price.</span>';
+        if (liveBtn) liveBtn.style.display = '';
+      });
+  }
+  if (liveBtn) liveBtn.addEventListener('click', loadLiveBrent);
+  loadLiveBrent();
 
   /* ── Main compute ── */
   function recompute() {
