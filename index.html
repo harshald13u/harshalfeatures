@@ -2462,6 +2462,23 @@ function toggleTheme(){
   var card = document.querySelector('.tracker-spotlight[data-href]');
   if (!card) return;
   var href = card.getAttribute('data-href');
-  function isInteractive(el){
-    if (!el || el === card) return false;
-    var tag = (el.tagName || '').toLowerCas
+function isInteractive(el) {
+    if (!el || el === document.body) return false;
+    var tag = (el.tagName || '').toLowerCase();
+    if (tag === 'a' || tag === 'button' || tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+    return isInteractive(el.parentElement);
+  }
+  card.addEventListener('click', function(e){
+    if (isInteractive(e.target)) return;
+    if (href) window.location.href = href;
+  });
+  card.addEventListener('keydown', function(e){
+    if ((e.key === 'Enter' || e.key === ' ') && !isInteractive(e.target)) {
+      e.preventDefault();
+      if (href) window.location.href = href;
+    }
+  });
+})();
+</script>
+</body>
+</html>

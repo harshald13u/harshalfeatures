@@ -522,4 +522,18 @@ html[data-theme="light"] .post-cover .cover-dark { opacity: 1; }
       grid.innerHTML = posts.map(postCardHTML).join('');
     })
     .catch(function(){
-      document.getElementById
+      document.getElementById('postsGrid').innerHTML =
+        '<div class="blog-empty"><h2 class="blog-empty-title">Couldn\u2019t load posts</h2><p class="blog-empty-sub">Refresh the page or check the manifest at <code>posts.json</code>.</p></div>';
+    });
+})();
+</script>
+<script>
+function toggleBlogTheme(){
+  var current = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('hd-theme', next); } catch(e) {}
+}
+</script>
+</body>
+</html>
