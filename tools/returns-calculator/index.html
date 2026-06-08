@@ -81,6 +81,12 @@
   ]
 }
 </script>
+<style>
+/* both panels equal height per tab on desktop/tablet-landscape */
+@media (min-width: 1181px), (min-width: 641px) and (max-width: 1180px) and (orientation: landscape) {
+  .tool-grid { align-items: stretch; }
+}
+</style>
 </head>
 <body>
 
@@ -306,12 +312,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- ==================== ACTIONS ==================== -->
-  <div class="actions">
-    <button class="btn btn-gold" id="copy-btn" type="button" onclick="doCopy()">Copy Result</button>
-    <a class="btn" href="https://harshaldasani.pages.dev/blog/" target="_blank" rel="noopener">Read the Blog</a>
   </div>
 
   <!-- ==================== HOW THIS WORKS ==================== -->
@@ -796,6 +796,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
 }); /* end DOMContentLoaded */
 </script>
-  <script src="/lang-switch.js" defer></script>
 </body>
 </html>
