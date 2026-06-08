@@ -119,6 +119,25 @@
   background: var(--surface-2);
 }
 .chart-wrap svg { display: block; width: 100%; }
+
+/* SIP: 2-col outcome — 3 stacked stat cards on left, donut on right, equal heights */
+.results-panel .outcome-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch; margin-bottom: 0; }
+.results-panel .outcome-split .stat-grid { display: flex; flex-direction: column; grid-template-columns: none; gap: 14px; margin: 0; }
+.results-panel .outcome-split .stat-card { margin: 0; padding: 16px 18px; }
+.results-panel .outcome-split .stat-card.big { grid-column: auto; }
+.results-panel .outcome-split .stat-card.big .stat-value { font-size: clamp(28px, 4vw, 36px); }
+.results-panel .outcome-split .donut-wrap {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px;
+}
+.results-panel .outcome-split .donut-wrap svg { width: 160px; height: 160px; }
+.results-panel .outcome-split .donut-legend { flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 14px; }
+@media (max-width: 720px) {
+  .results-panel .outcome-split { grid-template-columns: 1fr; }
+}
+
 /* SIP: full-width growth-over-time panel below the two top columns */
 .chart-panel { margin-top: 24px; padding: 24px 26px; }
 .chart-panel .chart-wrap { margin-top: 12px; border: none; background: transparent; overflow: visible; width: 100%; padding: 0; position: relative; }
@@ -246,27 +265,16 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
     <!-- RIGHT: results -->
     <div class="panel results-panel" aria-live="polite" aria-atomic="true" id="results-region">
       <h2 class="panel-title">Estimated outcome</h2>
-
-      <!-- Stat cards -->
+      <!-- 2-col outcome: 3 stacked stat cards left + donut right (equal heights) -->
+      <div class="outcome-split">
+        <!-- Stat cards -->
       <div class="stat-grid" id="stat-grid">
         <div class="stat-card" id="card-invested">
           <div class="stat-label">Invested amount</div>
           <div class="stat-value" id="val-invested">—</div>
           <div class="stat-exact" id="exact-invested"></div>
         </div>
-        <div class="stat-card is-gold" id="card-returns">
-          <div class="stat-label">Est. returns</div>
-          <div class="stat-value" id="val-returns">—</div>
-          <div class="stat-exact" id="exact-returns"></div>
-        </div>
-        <div class="stat-card is-gold big" id="card-total">
-          <div class="stat-label">Total value</div>
-          <div class="stat-value" id="val-total">—</div>
-          <div class="stat-exact" id="exact-total"></div>
-        </div>
-      </div>
-
-      <!-- Donut chart -->
+        <!-- Donut chart -->
       <div class="donut-wrap" id="donut-wrap">
         <svg id="donut-svg" width="110" height="110" viewBox="0 0 110 110" aria-label="Donut chart: invested vs returns proportion" role="img">
           <circle id="donut-bg" cx="55" cy="55" r="40" fill="none" stroke="var(--border)" stroke-width="18"/>
@@ -285,6 +293,19 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
             <span>Est. returns &nbsp;<strong id="leg-returns-pct">—</strong></span>
           </div>
         </div>
+      </div>
+
+        <div class="stat-card is-gold" id="card-returns">
+          <div class="stat-label">Est. returns</div>
+          <div class="stat-value" id="val-returns">—</div>
+          <div class="stat-exact" id="exact-returns"></div>
+        </div>
+        <div class="stat-card is-gold big" id="card-total">
+          <div class="stat-label">Total value</div>
+          <div class="stat-value" id="val-total">—</div>
+          <div class="stat-exact" id="exact-total"></div>
+        </div>
+      </div>
       </div>
     </div>
 
