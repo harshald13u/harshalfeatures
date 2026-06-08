@@ -57,8 +57,14 @@
       document.body.appendChild(dd);
     } else {
       var p = tog.parentNode;
-      p.appendChild(tog);   // push theme toggle to the extreme right of its row
-      p.appendChild(dd);    // language dropdown immediately right of it
+      var cluster = document.createElement('span');
+      cluster.className = 'hd-ctrls';
+      cluster.style.cssText = 'display:inline-flex;align-items:center;gap:12px;margin-left:18px;vertical-align:middle';
+      p.appendChild(cluster);
+      tog.style.margin = '0';     // neutralize the old margin-right:14px
+      dd.style.marginLeft = '0';  // spacing handled by the cluster gap
+      cluster.appendChild(tog);   // theme toggle
+      cluster.appendChild(dd);    // language dropdown, immediately right of it
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', build);
