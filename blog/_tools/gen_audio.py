@@ -5,6 +5,7 @@ appends a spoken disclaimer, writes audio.mp3 in the post folder. No API key, no
 Usage: python3 gen_audio.py blog/posts/<slug> [<slug2> ...]"""
 import json, re, sys, os, subprocess, asyncio
 VOICE = "en-IN-NeerjaExpressiveNeural"
+RATE = "+6%"
 DISCLAIMER = "This is general information, not investment advice."
 
 def extract(post_dir):
@@ -39,7 +40,7 @@ def speechify(t):
 
 async def synth(text, out):
     import edge_tts
-    await edge_tts.Communicate(text, VOICE).save(out)
+    await edge_tts.Communicate(text, VOICE, rate=RATE).save(out)
 
 def gen(post_dir):
     headline, body = extract(post_dir)
