@@ -281,9 +281,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   var liveTxt = document.getElementById('live-brent-text');
   var liveBtn = document.getElementById('live-brent-refresh');
-  function showLiveBrent(apply) {
+  function showLiveBrent(apply, fresh) {
     if (liveTxt) { liveTxt.textContent = 'Fetching today’s Brent…'; liveTxt.style.color = 'var(--text-soft)'; }
-    var url = apply ? ('/api/brent?fresh=1&nc=' + Date.now()) : '/api/brent';
+    var url = fresh ? ('/api/brent?fresh=1&nc=' + Date.now()) : '/api/brent';
     fetch(url, { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
       .then(function (d) {
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function () {
           liveTxt.innerHTML = '<span style="color:var(--pos);">● Today’s Brent</span> <b>$' + d.price.toFixed(2) + '</b>'
             + (d.asOf ? ' <span style="color:var(--text-soft);">· as of ' + fmtAsOf(d.asOf) + '</span>' : '')
             + (src ? ' <span style="color:var(--text-soft);">· ' + src + '</span>' : '')
-            + (apply ? '' : ' <span style="color:var(--text-soft);">· slider starts at your baseline — Refresh to model today’s price</span>');
+            + '';
         }
         if (liveBtn) liveBtn.style.display = '';
       })
@@ -303,8 +303,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (liveBtn) liveBtn.style.display = '';
       });
   }
-  if (liveBtn) liveBtn.addEventListener('click', function () { showLiveBrent(true); });
-  showLiveBrent(false);
+  if (liveBtn) liveBtn.addEventListener('click', function () { showLiveBrent(true, true); });
+  showLiveBrent(true, false);
 
   /* ── Main compute ── */
   function recompute() {
