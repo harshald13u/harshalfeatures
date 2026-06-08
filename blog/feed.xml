@@ -7,7 +7,7 @@
     <description>Long-form notes on Indian equity markets, commodities, macros and geopolitics by Harshal Dasani, over a decade in Indian markets, currently Business Head at INVasset PMS, Mumbai.</description>
     <language>en-IN</language>
     <copyright>(c) Harshal Dasani</copyright>
-    <lastBuildDate>Mon, 08 Jun 2026 07:21:31 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 08 Jun 2026 07:34:53 +0000</lastBuildDate>
     <generator>publish_blog.py v2</generator>
     <managingEditor>noreply@harshald13u.github.io (Harshal Dasani)</managingEditor>
     <webMaster>noreply@harshald13u.github.io (Harshal Dasani)</webMaster>
@@ -28,16 +28,6 @@
       <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Harshal Dasani</dc:creator>
     </item>
     <item>
-      <title>The end of the easing cycle: what the RBI’s June pause means for investors</title>
-      <link>https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/</link>
-      <guid isPermaLink="true">https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/</guid>
-      <pubDate>Fri, 05 Jun 2026 09:00:00 +0530</pubDate>
-      <description><![CDATA[The RBI held the repo rate at 5.25% for a third meeting, quietly closing the easing cycle. What the June pause means for the rupee, bonds and your portfolio.]]></description>
-      <category>Macros</category>
-      <enclosure url="https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/cover.png" type="image/png"/>
-      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Harshal Dasani</dc:creator>
-    </item>
-    <item>
       <title>The Oil Shock and India: Crude, the Rupee, and Inflation</title>
       <link>https://harshald13u.github.io/harshalfeatures/blog/posts/crude-oil-india-markets-rupee-inflation/</link>
       <guid isPermaLink="true">https://harshald13u.github.io/harshalfeatures/blog/posts/crude-oil-india-markets-rupee-inflation/</guid>
@@ -45,6 +35,16 @@
       <description><![CDATA[Brent above $100 on the Hormuz crisis, the rupee at record lows, the CAD set to double, how the oil shock is hitting India's markets, rupee and inflation.]]></description>
       <category>Commodities</category>
       <enclosure url="https://harshald13u.github.io/harshalfeatures/blog/posts/crude-oil-india-markets-rupee-inflation/cover.png" type="image/png"/>
+      <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Harshal Dasani</dc:creator>
+    </item>
+    <item>
+      <title>The end of the easing cycle: what the RBI’s June pause means for investors</title>
+      <link>https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/</link>
+      <guid isPermaLink="true">https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/</guid>
+      <pubDate>Fri, 05 Jun 2026 09:00:00 +0530</pubDate>
+      <description><![CDATA[The RBI held the repo rate at 5.25% for a third meeting, quietly closing the easing cycle. What the June pause means for the rupee, bonds and your portfolio.]]></description>
+      <category>Macros</category>
+      <enclosure url="https://harshald13u.github.io/harshalfeatures/blog/posts/rbi-mpc-june-2026-rate-pause/cover.png" type="image/png"/>
       <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Harshal Dasani</dc:creator>
     </item>
     <item>
