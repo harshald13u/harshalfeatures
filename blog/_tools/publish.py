@@ -23,7 +23,7 @@ BLOG_DIR = "/sessions/keen-zen-archimedes/mnt/Features/blog"
 ROOT_HF = "/sessions/keen-zen-archimedes/mnt/Features/ harshal-features"
 
 def render_post_html(slug, title, topic, date_str, excerpt, body_md, cover_filename):
-    canonical = f"https://harshald13u.github.io/blog/posts/{slug}/"
+    canonical = f"https://harshald13u.github.io/harshalfeatures/blog/posts/{slug}/"
     # Convert simple markdown to HTML (paragraphs, headings, bold, italic, links)
     html = []
     for block in body_md.split("\n\n"):
@@ -74,8 +74,8 @@ def render_post_html(slug, title, topic, date_str, excerpt, body_md, cover_filen
 {{
   "@context": "https://schema.org",
   "@graph": [
-    {{"@type": "Person", "@id": "https://harshald13u.github.io/#person", "name": "Harshal Dasani", "url": "https://harshald13u.github.io/"}},
-    {{"@type": "BlogPosting", "headline": "{title}", "description": "{excerpt}", "datePublished": "{date_str}", "image": "{canonical}{cover_filename}", "url": "{canonical}", "author": {{"@id": "https://harshald13u.github.io/#person"}}, "publisher": {{"@id": "https://harshald13u.github.io/#person"}}, "mainEntityOfPage": "{canonical}", "articleSection": "{topic}"}}
+    {{"@type": "Person", "@id": "https://harshald13u.github.io/harshalfeatures/#person", "name": "Harshal Dasani", "url": "https://harshald13u.github.io/harshalfeatures/"}},
+    {{"@type": "BlogPosting", "headline": "{title}", "description": "{excerpt}", "datePublished": "{date_str}", "image": "{canonical}{cover_filename}", "url": "{canonical}", "author": {{"@id": "https://harshald13u.github.io/harshalfeatures/#person"}}, "publisher": {{"@id": "https://harshald13u.github.io/harshalfeatures/#person"}}, "mainEntityOfPage": "{canonical}", "articleSection": "{topic}"}}
   ]
 }}
 </script>
@@ -140,7 +140,7 @@ def publish(slug, title, topic, date_str, excerpt, cover_path, body_md):
     posts_json_path = os.path.join(BLOG_DIR, "posts.json")
     with open(posts_json_path) as f:
         data = json.load(f)
-    canonical = f"https://harshald13u.github.io/blog/posts/{slug}/"
+    canonical = f"https://harshald13u.github.io/harshalfeatures/blog/posts/{slug}/"
     image_url = f"{canonical}{cover_filename}"
     entry = {
         "slug": slug, "title": title, "topic": topic, "date": date_str,
@@ -354,7 +354,7 @@ def publish_from_docx(docx_path, slug, title=None, topic=None, excerpt=None, dat
     posts_json_path = os.path.join(BLOG_DIR, "posts.json")
     with open(posts_json_path) as f:
         data_json = json.load(f)
-    canonical = f"https://harshald13u.github.io/blog/posts/{slug}/"
+    canonical = f"https://harshald13u.github.io/harshalfeatures/blog/posts/{slug}/"
     entry = {
         "slug": slug, "title": title, "topic": topic, "date": date_str,
         "excerpt": excerpt, "image": f"{canonical}{cover_out}", "url": canonical,

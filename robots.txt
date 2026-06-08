@@ -1,9 +1,7 @@
 # Robots policy for the Harshal Dasani official website
-# Allow all reputable crawlers full access; point them at the sitemap.
-
 User-agent: *
 Allow: /
 Disallow:
 
-Sitemap: https://harshald13u.github.io/sitemap.xml
-Sitemap: https://harshald13u.github.io/news-sitemap.xml
+Sitemap: https://harshald13u.github.io/harshalfeatures/sitemap.xml
+Sitemap: https://harshald13u.github.io/harshalfeatures/news-sitemap.xml
