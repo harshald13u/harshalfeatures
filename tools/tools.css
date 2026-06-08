@@ -178,7 +178,9 @@ html[data-theme="dark"] .tool-tile { box-shadow: none; }
 .tool-tile .go { margin-top: auto; padding-top: 10px; font-size: 12px; font-weight: 600; color: var(--accent); }
 
 /* ---- responsive ---- */
-@media (max-width: 860px) {
+@media (max-width: 640px),
+       (min-width: 641px) and (max-width: 1180px) and (orientation: portrait),
+       (orientation: landscape) and (max-height: 520px) {
   .tool-grid { grid-template-columns: 1fr; }
   .page { padding: 22px 20px 56px; }
 }

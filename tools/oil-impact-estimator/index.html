@@ -66,7 +66,8 @@
 </script>
 <style>
 /* equal-height inputs/results panels on desktop; closing line pinned to bottom */
-@media (min-width: 861px) {
+@media (min-width: 1181px),
+       (min-width: 641px) and (max-width: 1180px) and (orientation: landscape) {
   .tool-grid { align-items: stretch; }
   #results-panel { display: flex; flex-direction: column; }
   #results-panel .interp { margin-top: auto; }
