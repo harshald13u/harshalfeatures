@@ -5,7 +5,7 @@ property via the Site Verification API (works around the GSC 'Add user -> Owner'
 Run by the Verify-SA-Owner GitHub Action. Uses GOOGLE_INDEXING_KEY (GitHub secret)."""
 import os, sys, json
 
-SITE = "https://harshald13u.github.io/harshalfeatures/"
+SITE = "https://harshald13u.github.io/"
 SCOPES = ["https://www.googleapis.com/auth/siteverification"]
 
 def _creds():
@@ -24,7 +24,7 @@ def gettoken():
     print("getToken:", r.status_code, r.text[:300])
     r.raise_for_status()
     tok = r.json()["token"]
-    # Host the token file at the site root (= repo root -> /harshalfeatures/<tok>)
+    # Host the token file at the site root (= repo root -> /<tok>)
     with open(tok, "w") as f:
         f.write("google-site-verification: " + tok + "\n")
     out = os.environ.get("GITHUB_OUTPUT")
