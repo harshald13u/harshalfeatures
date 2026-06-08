@@ -97,9 +97,9 @@
       <div class="input-row">
         <label for="num-brent">Brent Crude Price <span class="hint">(current or scenario)</span></label>
         <div class="input-line">
-          <input type="range" id="sl-brent" min="40" max="160" step="1" value="95" aria-label="Brent crude price slider">
+          <input type="range" id="sl-brent" min="40" max="160" step="1" value="75" aria-label="Brent crude price slider">
           <span class="num-wrap">
-            <input type="number" id="num-brent" min="40" max="160" step="1" value="95" aria-label="Brent crude price">
+            <input type="number" id="num-brent" min="40" max="160" step="1" value="75" aria-label="Brent crude price">
             <span class="unit">US$/bbl</span>
           </span>
         </div>
@@ -157,14 +157,14 @@
 
       <!-- Stat cards -->
       <div class="stat-grid" id="stat-grid">
-        <div class="stat-card is-neg" id="card-bill">
+        <div class="stat-card" id="card-bill">
           <div class="stat-label">Extra annual oil import bill</div>
-          <div class="stat-value" id="val-bill">+US$27.0 bn</div>
+          <div class="stat-value" id="val-bill">US$0.0 bn</div>
           <div class="stat-exact" id="val-bill-exact">vs. $75 baseline · annualised</div>
         </div>
-        <div class="stat-card is-neg" id="card-cpi">
+        <div class="stat-card" id="card-cpi">
           <div class="stat-label">Headline CPI impact (illustrative)</div>
-          <div class="stat-value" id="val-cpi">+60 bps</div>
+          <div class="stat-value" id="val-cpi">+0 bps</div>
           <div class="stat-exact" id="val-cpi-exact">basis points added to CPI</div>
         </div>
       </div>
@@ -177,7 +177,7 @@
 
       <!-- Interpretation line -->
       <div class="interp" id="interp-line">
-        At $95 Brent versus a $75 baseline, India’s annual oil import bill is about US$27.0 bn higher and headline inflation about 60 bps higher, all else equal. A lower crude price reverses this.
+        At $75 Brent — exactly at your $75 baseline — there is no net change to India’s import bill or inflation from this framework. Move the slider, or press Refresh to load today’s Brent.
       </div>
     </div>
   </div>
@@ -281,26 +281,30 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   var liveTxt = document.getElementById('live-brent-text');
   var liveBtn = document.getElementById('live-brent-refresh');
-  function loadLiveBrent() {
-    if (liveTxt) { liveTxt.textContent = "Fetching today\u2019s Brent\u2026"; liveTxt.style.color = 'var(--text-soft)'; }
-    fetch('/api/brent', { cache: 'no-store' })
+  function showLiveBrent(apply) {
+    if (liveTxt) { liveTxt.textContent = 'Fetching today’s Brent…'; liveTxt.style.color = 'var(--text-soft)'; }
+    var url = apply ? ('/api/brent?fresh=1&nc=' + Date.now()) : '/api/brent';
+    fetch(url, { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
       .then(function (d) {
         if (!d || typeof d.price !== 'number') throw 0;
-        setBrent(d.price);
+        if (apply) setBrent(d.price);
         if (liveTxt) {
-          liveTxt.innerHTML = '<span style="color:var(--pos);">\u25CF Live Brent</span> <b>$' + d.price.toFixed(2) + '</b>'
-            + (d.asOf ? ' <span style="color:var(--text-soft);">\u00B7 as of ' + fmtAsOf(d.asOf) + '</span>' : '');
+          var src = d.source ? d.source.split(' · ')[0] : '';
+          liveTxt.innerHTML = '<span style="color:var(--pos);">● Today’s Brent</span> <b>$' + d.price.toFixed(2) + '</b>'
+            + (d.asOf ? ' <span style="color:var(--text-soft);">· as of ' + fmtAsOf(d.asOf) + '</span>' : '')
+            + (src ? ' <span style="color:var(--text-soft);">· ' + src + '</span>' : '')
+            + (apply ? '' : ' <span style="color:var(--text-soft);">· slider starts at your baseline — Refresh to model today’s price</span>');
         }
         if (liveBtn) liveBtn.style.display = '';
       })
       .catch(function () {
-        if (liveTxt) liveTxt.innerHTML = '<span style="color:var(--text-soft);">Live price unavailable \u2014 showing scenario default. Drag the slider to model any price.</span>';
+        if (liveTxt) liveTxt.innerHTML = '<span style="color:var(--text-soft);">Live price unavailable — drag the slider to model any price.</span>';
         if (liveBtn) liveBtn.style.display = '';
       });
   }
-  if (liveBtn) liveBtn.addEventListener('click', loadLiveBrent);
-  loadLiveBrent();
+  if (liveBtn) liveBtn.addEventListener('click', function () { showLiveBrent(true); });
+  showLiveBrent(false);
 
   /* ── Main compute ── */
   function recompute() {
