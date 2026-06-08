@@ -120,8 +120,9 @@
 }
 .chart-wrap svg { display: block; width: 100%; }
 
-/* SIP: 2-col outcome — 3 stacked stat cards on left, donut on right, equal heights */
-.results-panel .outcome-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch; margin-bottom: 0; }
+/* SIP: Estimated outcome is now FULL-WIDTH below the inputs row (was cramped inside the right column).
+   2-col split: 3 stacked stat cards on left + donut chart on right, equal heights, lots of room. */
+.results-panel .outcome-split { display: grid; grid-template-columns: 1fr minmax(220px, 280px); gap: 18px; align-items: stretch; margin-bottom: 0; }
 .results-panel .outcome-split .stat-grid { display: flex; flex-direction: column; grid-template-columns: none; gap: 14px; margin: 0; }
 .results-panel .outcome-split .stat-card { margin: 0; padding: 16px 18px; }
 .results-panel .outcome-split .stat-card.big { grid-column: auto; }
@@ -179,9 +180,7 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
 .legend-item strong { color: var(--text); font-variant-numeric: tabular-nums; }
 
 /* result panel sticky on scroll for wide screens */
-@media (min-width: 861px) {
-  .results-panel { position: sticky; top: 68px; }
-}
+/* sticky results removed: panel is now full-width below inputs */
 
 /* "Harshal Dasani" name = always clickable home link (uniform across site) */
 .name-home{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:color .15s ease,border-color .15s ease}
@@ -269,7 +268,8 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
           <p>At 0% return the result is simply <code>P &times; n</code> (no compounding). All values are in nominal (not inflation-adjusted) rupees. The assumed return rate is <strong>fixed for the entire period</strong> — real fund returns fluctuate year to year.</p>
         </div>
       </details>
-    </div>
+    </div></div><!-- /tool-grid -->
+
 
     <!-- RIGHT: results -->
     <div class="panel results-panel" aria-live="polite" aria-atomic="true" id="results-region">
@@ -318,7 +318,7 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
       </div>
     </div>
 
-  </div><!-- /tool-grid -->
+  
 
   <div class="panel chart-panel">
     <div class="chart-head">
