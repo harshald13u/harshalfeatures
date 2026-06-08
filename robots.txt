@@ -5,3 +5,5 @@ Disallow:
 
 Sitemap: https://harshaldasani.pages.dev/sitemap.xml
 Sitemap: https://harshaldasani.pages.dev/news-sitemap.xml
+
+# site live at https://harshaldasani.pages.dev (migrated 2026-06-08)
