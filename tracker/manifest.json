@@ -2,15 +2,15 @@
   "name": "Harshal Dasani — Media Features Tracker",
   "short_name": "HD Tracker",
   "description": "Live dashboard of Harshal Dasani's media features — articles, interviews and quotes across 150+ publications.",
-  "start_url": "https://harshald13u.github.io/harshalfeatures/tracker/",
+  "start_url": "https://harshaldasani.pages.dev/tracker/",
   "display": "standalone",
   "background_color": "#05030f",
   "theme_color": "#0c0a24",
   "orientation": "portrait",
   "icons": [
-    { "src": "https://harshald13u.github.io/harshalfeatures/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "https://harshald13u.github.io/harshalfeatures/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "https://harshaldasani.pages.dev/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "https://harshaldasani.pages.dev/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
-  "scope": "https://harshald13u.github.io/harshalfeatures/tracker/",
-  "id": "https://harshald13u.github.io/harshalfeatures/tracker/"
+  "scope": "https://harshaldasani.pages.dev/tracker/",
+  "id": "https://harshaldasani.pages.dev/tracker/"
 }

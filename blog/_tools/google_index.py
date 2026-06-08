@@ -5,7 +5,7 @@ Reads the service-account JSON from env GOOGLE_INDEXING_KEY (a GitHub secret).
 Safe no-op if the key is absent."""
 import os, json, sys
 
-SITE = "https://harshald13u.github.io/harshalfeatures"
+SITE = "https://harshaldasani.pages.dev"
 
 def post_urls():
     urls = [SITE + "/blog/"]

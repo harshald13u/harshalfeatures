@@ -56,7 +56,7 @@ LEGACY_DEPLOYED = os.path.join(FEATURES, " harshal-features")
 DEPLOYED = LEGACY_DEPLOYED if os.path.isdir(LEGACY_DEPLOYED) else FEATURES
 SITEMAP_PATH = f"{DEPLOYED}/sitemap.xml"
 NEWS_SITEMAP_PATH = f"{DEPLOYED}/news-sitemap.xml"
-SITE_BASE = "https://harshald13u.github.io/harshalfeatures"
+SITE_BASE = "https://harshaldasani.pages.dev"
 ENTITIES_PATH = f"{BLOG_DIR}/_tools/entities.json"
 HOTSPOTS_PATH = f"{BLOG_DIR}/_tools/chart_hotspots.json"
 
@@ -1162,7 +1162,7 @@ strong{{color:var(--ink);font-weight:700}}
     <a href="../../">&larr; All blogs by Harshal Dasani</a>
     <a href="../../../tracker/">Media Features Tracker &rarr;</a>
   </div>
-  <p class="footer-meta">Published {date_pretty} &middot; Updated {modified_pretty} &middot; <a href="../../../">harshald13u.github.io/harshalfeatures</a></p>
+  <p class="footer-meta">Published {date_pretty} &middot; Updated {modified_pretty} &middot; <a href="../../../">harshaldasani.pages.dev</a></p>
 </main>
 <script>
 // Cover swap is CSS-only (opacity keyed on [data-theme]). pageshow keeps bfcache returns in sync.
@@ -1297,8 +1297,8 @@ def build_rss_feed(feed_path, site_base):
     <copyright>(c) Harshal Dasani</copyright>
     <lastBuildDate>{now_rfc822}</lastBuildDate>
     <generator>publish_blog.py v2</generator>
-    <managingEditor>noreply@harshald13u.github.io (Harshal Dasani)</managingEditor>
-    <webMaster>noreply@harshald13u.github.io (Harshal Dasani)</webMaster>
+    <managingEditor>noreply@harshaldasani.pages.dev (Harshal Dasani)</managingEditor>
+    <webMaster>noreply@harshaldasani.pages.dev (Harshal Dasani)</webMaster>
     <ttl>60</ttl>
     <image>
       <url>{site_base}/harshal-dasani.jpg</url>

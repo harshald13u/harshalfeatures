@@ -3,5 +3,5 @@ User-agent: *
 Allow: /
 Disallow:
 
-Sitemap: https://harshald13u.github.io/harshalfeatures/sitemap.xml
-Sitemap: https://harshald13u.github.io/harshalfeatures/news-sitemap.xml
+Sitemap: https://harshaldasani.pages.dev/sitemap.xml
+Sitemap: https://harshaldasani.pages.dev/news-sitemap.xml
