@@ -41,6 +41,7 @@ or as a module:
     entry = publish_blog("/path/to/2026-06-04_slug.docx")
 """
 import os, sys, json, re, shutil, zipfile
+from urllib.parse import quote_plus
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 
@@ -315,7 +316,7 @@ def inline_entity_links(text, entities, used_in_post):
             prefix = out[:m.start()]
             if prefix.rfind("<") > prefix.rfind(">"):
                 continue
-            link = f'<a href="https://www.wikidata.org/wiki/Special:GoToLinkedPage/enwiki/{qid}" rel="external nofollow noopener" target="_blank">{m.group(1)}</a>'
+            link = f'<a href="https://www.google.com/search?q={quote_plus(name)}" rel="external nofollow noopener" target="_blank">{m.group(1)}</a>'
             out = out[:m.start()] + link + out[m.end():]
             used_in_post.add(name)
             break
