@@ -889,7 +889,8 @@ a{{color:var(--accent);text-decoration:none}}
 a:hover{{text-decoration:underline}}
 .theme-toggle{{flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);background:var(--bg-2);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}}.theme-toggle:hover{{color:var(--accent);border-color:var(--accent)}}.theme-toggle svg{{width:15px;height:15px;display:block}}.theme-toggle .icon-sun{{display:none}}html[data-theme="light"] .theme-toggle .icon-sun{{display:block}}html[data-theme="light"] .theme-toggle .icon-moon{{display:none}}.crumb-right{{display:flex;align-items:center;gap:14px}}
 .page{{width:100%;max-width:1280px;margin:0 auto;padding:56px 24px 96px}}
-.crumb{{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}}
+.crumb{{display:flex;justify-content:space-between;align-items:center;gap:16px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin:0 -24px 24px;padding:max(12px,env(safe-area-inset-top)) 24px 14px;border-bottom:1px solid var(--rule);position:sticky;top:0;z-index:100;background:var(--bg)}}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){{.crumb{{background:rgba(14,12,10,0.88);backdrop-filter:saturate(140%) blur(14px);-webkit-backdrop-filter:saturate(140%) blur(14px)}}html[data-theme="light"] .crumb{{background:rgba(235,229,215,0.88)}}}}
 .crumb a{{color:var(--muted)}}
 .crumb a:hover{{color:var(--accent)}}
 .crumb-back{{white-space:nowrap}}
@@ -1679,17 +1680,4 @@ def find_latest_blog():
         path = os.path.join(blogs_dir, fn)
         if not os.path.isfile(path): continue
         m = re.match(r"(\d{4}-\d{2}-\d{2})_", fn)
-        key = (m.group(1) if m else "0000-00-00", os.path.getmtime(path))
-        candidates.append((key, path))
-    if not candidates:
-        raise SystemExit("No .docx blogs in /Features/Blogs/")
-    candidates.sort(reverse=True)
-    return candidates[0][1]
-
-
-if __name__ == "__main__":
-    target = sys.argv[1] if len(sys.argv) > 1 else find_latest_blog()
-    result = publish_blog(target)
-    print()
-    print("=" * 60)
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+        key = (m.group(1) if m else "0000-00-00", os.pat

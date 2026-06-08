@@ -108,8 +108,23 @@ a { color: inherit; text-decoration: none; }
 .masthead {
   display: grid; grid-template-columns: auto 1fr auto; align-items: center;
   gap: 18px;
-  padding-bottom: 18px; border-bottom: 1px solid var(--rule);
+  padding: max(12px, env(safe-area-inset-top)) 0 18px;
+  border-bottom: 1px solid var(--rule);
   margin-bottom: 40px;
+  /* Lock to top on scroll (all viewports). Solid theme bg fallback + glass
+     blur when the browser supports backdrop-filter. */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .masthead {
+    background: rgba(14, 12, 10, 0.88);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+  }
+  html[data-theme="light"] .masthead { background: rgba(235, 229, 215, 0.88); }
 }
 .mast-trail { justify-self: end; text-align: right; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted); font-weight: 500; white-space: nowrap; }
 .mast-trail a { color: var(--muted); transition: color 0.2s ease; }
@@ -507,18 +522,4 @@ html[data-theme="light"] .post-cover .cover-dark { opacity: 1; }
       grid.innerHTML = posts.map(postCardHTML).join('');
     })
     .catch(function(){
-      document.getElementById('postsGrid').innerHTML =
-        '<div class="blog-empty"><h2 class="blog-empty-title">Couldn’t load posts</h2><p class="blog-empty-sub">Refresh the page or check the manifest at <code>posts.json</code>.</p></div>';
-    });
-})();
-</script>
-<script>
-function toggleBlogTheme(){
-  var current = document.documentElement.getAttribute('data-theme') || 'dark';
-  var next = current === 'light' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', next);
-  try { localStorage.setItem('hd-theme', next); } catch(e) {}
-}
-</script>
-</body>
-</html>
+      document.getElementById

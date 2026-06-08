@@ -243,9 +243,23 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 18px;
+  padding: max(12px, env(safe-area-inset-top)) 0 18px;
   border-bottom: 1px solid var(--rule);
   margin-bottom: 56px;
+  /* Lock to top on scroll (all viewports). Solid theme bg fallback + glass
+     blur when the browser supports backdrop-filter. */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .masthead {
+    background: rgba(14, 12, 10, 0.88);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+  }
+  html[data-theme="light"] .masthead { background: rgba(235, 229, 215, 0.88); }
 }
 .mast-socials {
   display: flex;
@@ -2450,21 +2464,4 @@ function toggleTheme(){
   var href = card.getAttribute('data-href');
   function isInteractive(el){
     if (!el || el === card) return false;
-    var tag = (el.tagName || '').toLowerCase();
-    if (tag === 'a' || tag === 'button' || tag === 'input' || tag === 'form' || tag === 'textarea' || tag === 'select') return true;
-    return isInteractive(el.parentElement);
-  }
-  card.addEventListener('click', function(e){
-    if (isInteractive(e.target)) return;
-    if (href) window.location.href = href;
-  });
-  card.addEventListener('keydown', function(e){
-    if ((e.key === 'Enter' || e.key === ' ') && !isInteractive(e.target)) {
-      e.preventDefault();
-      if (href) window.location.href = href;
-    }
-  });
-})();
-</script>
-</body>
-</html>
+    var tag = (el.tagName || '').toLowerCas
