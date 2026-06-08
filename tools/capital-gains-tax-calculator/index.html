@@ -184,6 +184,17 @@
 /* "Harshal Dasani" name = always clickable home link (uniform across site) */
 .name-home{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:color .15s ease,border-color .15s ease}
 .name-home:hover,.name-home:focus{color:var(--accent);border-bottom-color:var(--accent);text-decoration:none}
+/* cap-gains 3-block layout: inputs + notes fill the left column; results spans the right */
+.cgt-grid { display: grid; grid-template-columns: minmax(0,0.92fr) minmax(0,1.08fr);
+  grid-template-areas: "inputs results" "notes results"; grid-template-rows: auto 1fr;
+  gap: 24px; align-items: stretch; }
+#cgt-inputs { grid-area: inputs; } #cgt-results { grid-area: results; } #cgt-notes { grid-area: notes; }
+.cgt-notes-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 18px; color: var(--text); margin: 0 0 14px; }
+@media (max-width: 640px),
+       (min-width: 641px) and (max-width: 1180px) and (orientation: portrait),
+       (orientation: landscape) and (max-height: 520px) {
+  .cgt-grid { grid-template-columns: 1fr; grid-template-areas: "inputs" "results" "notes"; grid-template-rows: auto; }
+}
 </style>
 </head>
 <body>
@@ -209,10 +220,10 @@
     <p class="tool-byline">By <b><a href="/" class="name-home">Harshal Dasani</a></b> &middot; Markets professional</p>
   </div>
 
-  <div class="tool-grid">
+  <div class="cgt-grid">
 
     <!-- LEFT: INPUTS -->
-    <div class="panel" role="form" aria-label="Capital gains tax inputs">
+    <div class="panel" id="cgt-inputs" role="form" aria-label="Capital gains tax inputs">
       <h2 class="panel-title">Inputs</h2>
 
       <!-- Asset type -->
@@ -319,7 +330,7 @@
     </div><!-- end panel inputs -->
 
     <!-- RIGHT: RESULTS -->
-    <div class="panel" role="region" aria-label="Capital gains tax results" aria-live="polite">
+    <div class="panel" id="cgt-results" role="region" aria-label="Capital gains tax results" aria-live="polite">
       <h2 class="panel-title">Results</h2>
 
       <!-- Classification badge -->
@@ -365,19 +376,6 @@
         </table>
       </div>
 
-      <!-- Important notes -->
-      <details class="how" style="margin-top:20px;" open>
-        <summary>Important notes (read before filing)</summary>
-        <div class="how-body">
-          <ul class="note-list">
-            <li><strong>₹1.25L exemption is LTCG-only:</strong> The annual ₹1.25 lakh exemption (Sec 112A) applies exclusively to Long-Term Capital Gains on equity. It does NOT reduce STCG — every rupee of short-term gain is taxable at 20%.</li>
-            <li><strong>Section 87A rebate does NOT apply:</strong> Even if your total income is under ₹12 lakh, the Sec 87A rebate cannot be used to offset STCG (Sec 111A) or LTCG (Sec 112A). These are special-rate gains outside the rebate's scope — confirmed by CBDT and court rulings.</li>
-            <li><strong>Rate applicability:</strong> The 20% STCG and 12.5% LTCG rates apply to transfers on or after 23 July 2024 (post-Budget 2024). Older transfers may be taxed at previous rates (STCG 15%, LTCG 10%). Verify your transfer date carefully.</li>
-            <li><strong>Surcharge:</strong> If your total income exceeds ₹50 lakh, a surcharge applies on the tax (10% to 15% of tax). This calculator does not include surcharge — it is indicative only and depends on your total income slab.</li>
-          </ul>
-        </div>
-      </details>
-
       <!-- Actions -->
       <div class="actions">
         <button class="btn btn-gold" id="copy-btn" type="button" onclick="doCopy()">Copy result</button>
@@ -385,6 +383,17 @@
       </div>
 
     </div><!-- end panel results -->
+
+    <!-- Important notes (third block — fills the space below inputs) -->
+    <div class="panel" id="cgt-notes">
+      <h2 class="cgt-notes-title">Important notes (read before filing)</h2>
+      <ul class="note-list">
+        <li><strong>₹1.25L exemption is LTCG-only:</strong> The annual ₹1.25 lakh exemption (Sec 112A) applies exclusively to Long-Term Capital Gains on equity. It does NOT reduce STCG — every rupee of short-term gain is taxable at 20%.</li>
+        <li><strong>Section 87A rebate does NOT apply:</strong> Even if your total income is under ₹12 lakh, the Sec 87A rebate cannot be used to offset STCG (Sec 111A) or LTCG (Sec 112A). These are special-rate gains outside the rebate’s scope — confirmed by CBDT and court rulings.</li>
+        <li><strong>Rate applicability:</strong> The 20% STCG and 12.5% LTCG rates apply to transfers on or after 23 July 2024 (post-Budget 2024). Older transfers may be taxed at previous rates (STCG 15%, LTCG 10%). Verify your transfer date carefully.</li>
+        <li><strong>Surcharge:</strong> If your total income exceeds ₹50 lakh, a surcharge applies on the tax (10% to 15% of tax). This calculator does not include surcharge — it is indicative only and depends on your total income slab.</li>
+      </ul>
+    </div>
 
   </div><!-- end tool-grid -->
 
@@ -734,12 +743,22 @@ document.addEventListener('DOMContentLoaded', function () {
   sellDateEl.addEventListener('change', compute);
   cessEl.addEventListener('change', compute);
 
+  // ---- Advanced options: open on desktop / tablet-landscape, closed on phone & tablet-portrait ----
+  (function () {
+    var desktop = window.matchMedia('(min-width:641px)').matches
+      && !window.matchMedia('(max-width:1180px) and (orientation:portrait)').matches
+      && !window.matchMedia('(orientation:landscape) and (max-height:520px)').matches;
+    if (desktop) {
+      var t = document.getElementById('adv-toggle'), b = document.getElementById('adv-body');
+      if (t && b) { b.classList.add('open'); t.classList.add('open'); t.setAttribute('aria-expanded', 'true'); }
+    }
+  })();
+
   // ---- Initial compute ----
   compute();
 
 });
 </script>
 
-  <script src="/lang-switch.js" defer></script>
 </body>
 </html>
