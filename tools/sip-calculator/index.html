@@ -120,24 +120,10 @@
 }
 .chart-wrap svg { display: block; width: 100%; }
 
-/* SIP: Estimated outcome is now FULL-WIDTH below the inputs row (was cramped inside the right column).
-   2-col split: 3 stacked stat cards on left + donut chart on right, equal heights, lots of room. */
-.results-panel .outcome-split { display: grid; grid-template-columns: 1fr minmax(220px, 280px); gap: 18px; align-items: stretch; margin-bottom: 0; }
-.results-panel .outcome-split .stat-grid { display: flex; flex-direction: column; grid-template-columns: none; gap: 14px; margin: 0; }
-.results-panel .outcome-split .stat-card { margin: 0; padding: 16px 18px; }
-.results-panel .outcome-split .stat-card.big { grid-column: auto; }
-.results-panel .outcome-split .stat-card.big .stat-value { font-size: clamp(28px, 4vw, 36px); }
-.results-panel .outcome-split .donut-wrap {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 16px;
-  background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px;
-  padding: 18px;
-}
-.results-panel .outcome-split .donut-wrap svg { width: 160px; height: 160px; }
-.results-panel .outcome-split .donut-legend { flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 14px; }
-@media (max-width: 720px) {
-  .results-panel .outcome-split { grid-template-columns: 1fr; }
-}
+/* SIP: in the results panel (right column), stack the 3 stat cards vertically (no auto-fit grid) */
+.results-panel .stat-grid { display: flex; flex-direction: column; gap: 14px; margin: 0 0 16px; }
+.results-panel .stat-card { margin: 0; }
+.results-panel .stat-card.big { grid-column: auto; }
 
 /* SIP: full-width growth-over-time panel below the two top columns */
 .chart-panel { margin-top: 24px; padding: 24px 26px; }
@@ -180,7 +166,6 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
 .legend-item strong { color: var(--text); font-variant-numeric: tabular-nums; }
 
 /* result panel sticky on scroll for wide screens */
-/* sticky results removed: panel is now full-width below inputs */
 
 /* "Harshal Dasani" name = always clickable home link (uniform across site) */
 .name-home{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:color .15s ease,border-color .15s ease}
@@ -268,40 +253,19 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
           <p>At 0% return the result is simply <code>P &times; n</code> (no compounding). All values are in nominal (not inflation-adjusted) rupees. The assumed return rate is <strong>fixed for the entire period</strong> — real fund returns fluctuate year to year.</p>
         </div>
       </details>
-    </div></div><!-- /tool-grid -->
-
+    </div>
 
     <!-- RIGHT: results -->
     <div class="panel results-panel" aria-live="polite" aria-atomic="true" id="results-region">
       <h2 class="panel-title">Estimated outcome</h2>
       <!-- 2-col outcome: 3 stacked stat cards left + donut right (equal heights) -->
-      <div class="outcome-split">
-        <!-- Stat cards -->
       <div class="stat-grid" id="stat-grid">
         <div class="stat-card" id="card-invested">
           <div class="stat-label">Invested amount</div>
           <div class="stat-value" id="val-invested">—</div>
           <div class="stat-exact" id="exact-invested"></div>
-        </div>
-        <!-- Donut chart -->
-      <div class="donut-wrap" id="donut-wrap">
-        <svg id="donut-svg" width="110" height="110" viewBox="0 0 110 110" aria-label="Donut chart: invested vs returns proportion" role="img">
-          <circle id="donut-bg" cx="55" cy="55" r="40" fill="none" stroke="var(--border)" stroke-width="18"/>
-          <circle id="donut-invested" cx="55" cy="55" r="40" fill="none" stroke="var(--chart-inv)" stroke-width="18"
-            stroke-dasharray="0 251.2" stroke-linecap="butt" transform="rotate(-90 55 55)"/>
-          <circle id="donut-returns" cx="55" cy="55" r="40" fill="none" stroke="var(--gold,#A67D3E)" stroke-width="18"
-            stroke-dasharray="0 251.2" stroke-linecap="butt" transform="rotate(-90 55 55)"/>
-        </svg>
-        <div class="donut-legend">
-          <div class="legend-item">
-            <span class="legend-dot invested"></span>
-            <span>Invested &nbsp;<strong id="leg-invested-pct">—</strong></span>
-          </div>
-          <div class="legend-item">
-            <span class="legend-dot returns"></span>
-            <span>Est. returns &nbsp;<strong id="leg-returns-pct">—</strong></span>
-          </div>
-        </div>
+        
+  </div><!-- /tool-grid -->
       </div>
 
         <div class="stat-card is-gold" id="card-returns">
