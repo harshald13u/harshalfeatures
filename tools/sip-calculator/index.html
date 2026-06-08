@@ -140,30 +140,6 @@
 #growth-svg { cursor: crosshair; }
 
 
-.donut-wrap {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  margin: 18px 0 0;
-  flex-wrap: wrap;
-}
-.donut-wrap svg { flex-shrink: 0; }
-.donut-legend { display: flex; flex-direction: column; gap: 10px; }
-.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-soft); }
-.legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-.legend-dot.invested { background: var(--chart-inv); }
-/* chart heading row: centered title + top-right legend */
-.chart-head { position: relative; text-align: center; margin-bottom: 6px; }
-.chart-head .panel-title { margin: 0; }
-.chart-legend { position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: flex; gap: 16px; font-size: 12px; color: var(--text-soft); }
-.chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
-.chart-legend .sw { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
-.chart-legend .sw-gold { background: var(--gold, #A67D3E); }
-.chart-legend .sw-inv { background: var(--chart-inv); }
-@media (max-width: 640px) { .chart-head { position: static; } .chart-legend { position: static; transform: none; justify-content: center; margin-top: 8px; } }
-html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
-.legend-dot.returns { background: var(--gold, #A67D3E); }
-.legend-item strong { color: var(--text); font-variant-numeric: tabular-nums; }
 
 /* result panel sticky on scroll for wide screens */
 
@@ -258,7 +234,6 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
     <!-- RIGHT: results -->
     <div class="panel results-panel" aria-live="polite" aria-atomic="true" id="results-region">
       <h2 class="panel-title">Estimated outcome</h2>
-      <!-- 2-col outcome: 3 stacked stat cards left + donut right (equal heights) -->
       <div class="stat-grid" id="stat-grid">
         <div class="stat-card" id="card-invested">
           <div class="stat-label">Invested amount</div>
@@ -273,7 +248,7 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
           <div class="stat-value" id="val-returns">—</div>
           <div class="stat-exact" id="exact-returns"></div>
         </div>
-        <div class="stat-card is-gold big" id="card-total">
+        <div class="stat-card is-gold" id="card-total">
           <div class="stat-label">Total value</div>
           <div class="stat-value" id="val-total">—</div>
           <div class="stat-exact" id="exact-total"></div>
