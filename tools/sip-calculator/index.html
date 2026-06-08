@@ -198,14 +198,11 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
 
       <!-- Expected return -->
       <div class="input-row">
-        <label for="num-return">
-          Expected / assumed return
-          <span class="hint">(not guaranteed)</span>
-        </label>
+        <label for="num-return">Expected returns</label>
         <div class="input-line">
-          <input type="range" id="sld-return" min="1" max="30" step="0.5" value="12" aria-label="Expected annual return slider">
+          <input type="range" id="sld-return" min="1" max="50" step="0.5" value="12" aria-label="Expected annual return slider">
           <span class="num-wrap">
-            <input type="number" id="num-return" min="1" max="30" step="0.5" value="12" aria-label="Expected annual return percentage">
+            <input type="number" id="num-return" min="1" max="50" step="0.5" value="12" aria-label="Expected annual return percentage">
             <span class="unit">% p.a.</span>
           </span>
         </div>
@@ -317,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── bind inputs ── */
   var monthly = bindInput('sld-monthly', 'num-monthly', recompute, { min: 500, max: 500000 });
-  var retPct  = bindInput('sld-return',  'num-return',  recompute, { min: 1,   max: 30 });
+  var retPct  = bindInput('sld-return',  'num-return',  recompute, { min: 1,   max: 50 });
   var years   = bindInput('sld-years',   'num-years',   recompute, { min: 1,   max: 40 });
 
   /* ── SIP formula (annuity-due, monthly compounding) ── */
