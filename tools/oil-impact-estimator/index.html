@@ -71,6 +71,10 @@
   #results-panel { display: flex; flex-direction: column; }
   #results-panel .interp { margin-top: auto; }
 }
+
+/* "Harshal Dasani" name = always clickable home link (uniform across site) */
+.name-home{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:color .15s ease,border-color .15s ease}
+.name-home:hover,.name-home:focus{color:var(--accent);border-bottom-color:var(--accent);text-decoration:none}
 </style>
 </head>
 <body>
@@ -91,7 +95,7 @@
   <div class="tool-head">
     <h1 class="tool-h1">Oil-to-India Impact Estimator</h1>
     <p class="tool-dek">Estimates how a sustained Brent crude price affects India's annual oil import bill (USD and INR) and headline CPI inflation, using published rules of thumb for India's crude import volume and the typical pass-through to retail prices.</p>
-    <p class="tool-byline">By <b>Harshal Dasani</b> &middot; Markets professional</p>
+    <p class="tool-byline">By <b><a href="/" class="name-home">Harshal Dasani</a></b> &middot; Markets professional</p>
   </div>
 
   <!-- ── Main grid ── -->
@@ -231,7 +235,7 @@
 
   <!-- ── Footer ── -->
   <footer class="tool-footer">
-    <div>&copy; 2026 Harshal Dasani &middot; Markets professional</div>
+    <div>&copy; 2026 <a href="/" class="name-home">Harshal Dasani</a> &middot; Markets professional</div>
     <div><a href="https://harshaldasani.pages.dev/">harshaldasani.pages.dev</a></div>
   </footer>
 

@@ -810,42 +810,6 @@ def upsert_news_sitemap(news_sitemap_path, post_url, title, date_str, language="
 # ---------------------------------------------------------------------------
 # Post HTML template
 # ---------------------------------------------------------------------------
-AUDIO_PLAYER = '''<style>
-.audio-player{display:flex;align-items:center;gap:12px;margin:20px 0 6px;padding:11px 14px;border:1px solid var(--rule);border-radius:12px;background:var(--bg-2)}
-.audio-player .ap-play{flex:0 0 auto;width:40px;height:40px;border-radius:50%;border:none;background:var(--accent);color:var(--bg);font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.audio-player .ap-mid{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:6px}
-.audio-player .ap-title{font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent)}
-.audio-player .ap-bar{height:5px;border-radius:3px;background:var(--rule);cursor:pointer;position:relative}
-.audio-player .ap-fill{position:absolute;left:0;top:0;height:100%;width:0;border-radius:3px;background:var(--accent)}
-.audio-player .ap-time{flex:0 0 auto;font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink-2);white-space:nowrap}
-.audio-player .ap-speed{flex:0 0 auto;border:1px solid var(--rule);background:transparent;color:var(--ink-2);border-radius:7px;padding:4px 8px;font-size:12px;cursor:pointer;font-variant-numeric:tabular-nums}
-.audio-player .ap-dl{flex:0 0 auto;color:var(--ink-2);text-decoration:none;font-size:17px;line-height:1}
-.audio-player .ap-dl:hover,.audio-player .ap-speed:hover{color:var(--accent);border-color:var(--accent)}
-@media(max-width:560px){.audio-player .ap-dl{display:none}}
-</style>
-<div class="audio-player" role="group" aria-label="Listen to this article">
-  <button class="ap-play" type="button" aria-label="Play article">&#9654;</button>
-  <div class="ap-mid"><span class="ap-title">Listen to this article</span><div class="ap-bar" aria-hidden="true"><div class="ap-fill"></div></div></div>
-  <span class="ap-time"><span class="ap-cur">0:00</span>/<span class="ap-dur">--:--</span></span>
-  <button class="ap-speed" type="button" aria-label="Playback speed">1&times;</button>
-  <a class="ap-dl" href="audio.mp3" download aria-label="Download audio">&#8595;</a>
-  <audio class="ap-audio" src="audio.mp3" preload="metadata"></audio>
-</div>
-<script>
-(function(){var ap=document.querySelector(".audio-player");if(!ap)return;
-var a=ap.querySelector(".ap-audio"),pb=ap.querySelector(".ap-play"),fl=ap.querySelector(".ap-fill"),cu=ap.querySelector(".ap-cur"),du=ap.querySelector(".ap-dur"),sp=ap.querySelector(".ap-speed"),br=ap.querySelector(".ap-bar");
-function f(t){t=Math.max(0,Math.floor(t||0));var m=Math.floor(t/60),s=t%60;return m+":"+(s<10?"0":"")+s;}
-a.addEventListener("loadedmetadata",function(){du.textContent=f(a.duration);});
-a.addEventListener("error",function(){ap.style.display="none";});
-pb.addEventListener("click",function(){a.paused?a.play():a.pause();});
-a.addEventListener("play",function(){pb.innerHTML="&#9208;";pb.setAttribute("aria-label","Pause");});
-a.addEventListener("pause",function(){pb.innerHTML="&#9654;";pb.setAttribute("aria-label","Play");});
-a.addEventListener("timeupdate",function(){cu.textContent=f(a.currentTime);fl.style.width=(a.duration?a.currentTime/a.duration*100:0)+"%";});
-a.addEventListener("ended",function(){fl.style.width="0%";cu.textContent="0:00";});
-br.addEventListener("click",function(e){if(!a.duration)return;var r=br.getBoundingClientRect();a.currentTime=(e.clientX-r.left)/r.width*a.duration;});
-var S=[1,1.25,1.5],i=0;sp.addEventListener("click",function(){i=(i+1)%S.length;a.playbackRate=S[i];sp.innerHTML=S[i]+"&times;";});})();
-</script>'''
-
 POST_TEMPLATE = """<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -1169,6 +1133,9 @@ strong{{color:var(--ink);font-weight:700}}
 .faq-q p{{margin:0;font-size:15px;line-height:1.6;color:var(--ink-2)}}
 /* safe-area toggle fix */
 
+/* "Harshal Dasani" name = always clickable home link (uniform across site) */
+.name-home{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:color .15s ease,border-color .15s ease}
+.name-home:hover,.name-home:focus{color:var(--accent);border-bottom-color:var(--accent);text-decoration:none}
 @media print{{.theme-toggle,.share{{display:none}}}}
 </style>
 </head>
@@ -1178,8 +1145,7 @@ strong{{color:var(--ink);font-weight:700}}
   <span class="topic-pill">{topic_label}</span>
   <h1 itemprop="headline">{title_html}</h1>
   <p class="subtitle" itemprop="description">{excerpt_html}</p>
-  <p class="byline">By <strong itemprop="author">Harshal Dasani</strong> &middot; <span>Markets professional</span> &middot; <time itemprop="datePublished" datetime="{date_iso}">{date_pretty}</time> &middot; <span class="reading-time" aria-label="Reading time">{reading_minutes} min read &middot; {word_count_pretty} words</span></p>
-{audio_player}
+  <p class="byline">By <strong itemprop="author"><a href="/" class="name-home">Harshal Dasani</a></strong> &middot; <span>Markets professional</span> &middot; <time itemprop="datePublished" datetime="{date_iso}">{date_pretty}</time> &middot; <span class="reading-time" aria-label="Reading time">{reading_minutes} min read &middot; {word_count_pretty} words</span></p>
   <figure class="cover" role="button" tabindex="0" aria-label="Open cover in full resolution" data-light="{light_cover_filename}" data-dark="{dark_cover_filename}">
     <img src="{light_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" itemprop="image" class="light-only">
     <img src="{dark_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" class="dark-only">
@@ -1206,7 +1172,7 @@ strong{{color:var(--ink);font-weight:700}}
   <aside class="author-bio" itemscope itemtype="https://schema.org/Person">
     <img src="../../../harshal-dasani.jpg" alt="Harshal Dasani — Markets professional" loading="lazy" itemprop="image" width="72" height="72">
     <div class="author-bio-body">
-      <h3 itemprop="name">About Harshal Dasani</h3>
+      <h3 itemprop="name">About <a href="/" class="name-home">Harshal Dasani</a></h3>
       <p itemprop="description">Over a decade in Indian equity markets — equity research, portfolio strategy, capital flows. Currently Business Head at <a href= rel="external" target="_blank" itemprop="worksFor"></a>, Mumbai. CFA candidate · CA Level II. Long-form notes on equities, commodities, macros and geopolitics. <a href="../../../tracker/">See media features &rarr;</a></p>
       <div class="author-links">
         <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener noreferrer" itemprop="sameAs">LinkedIn</a>
@@ -1658,7 +1624,6 @@ def publish_blog(docx_path):
         image_alt=html_escape(image_alt),
         light_cover_filename=light_cover_filename,
         dark_cover_filename=dark_cover_filename,
-        audio_player=AUDIO_PLAYER,
         topic_label=topic_label,
         title_html=html_escape(title),
         excerpt_html=html_escape(excerpt),
@@ -1683,15 +1648,6 @@ def publish_blog(docx_path):
     with open(os.path.join(post_dir, "index.html"), "w", encoding="utf-8") as f:
         f.write(html)
     print(f"[publish] wrote {post_dir}/index.html  ({len(html)} bytes)")
-    # Generate the "Listen to this article" MP3 (free edge-tts). Never block publishing if TTS is unavailable.
-    try:
-        import importlib.util as _ilu, os as _os
-        _ap = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "gen_audio.py")
-        _spec = _ilu.spec_from_file_location("gen_audio", _ap)
-        _m = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_m)
-        _m.gen(post_dir)
-    except Exception as _e:
-        print(f"[publish] audio generation skipped ({_e})")
 
     # body.md
     body_md_lines = []
