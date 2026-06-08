@@ -9,6 +9,7 @@
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/"/>
     <image:image>
       <image:loc>https://harshaldasani.pages.dev/harshal-dasani.jpg</image:loc>
       <image:title>Harshal Dasani, Business Head, INVasset PMS</image:title>
@@ -99,5 +100,14 @@
       <image:loc>https://harshaldasani.pages.dev/blog/posts/iran-israel-us-war-2026-explained/cover.jpeg</image:loc>
       <image:title>The 2026 Iran war: one strait, one unsigned page, the world&#39;s oil.</image:title>
     </image:image>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/"/>
   </url>
 </urlset>
