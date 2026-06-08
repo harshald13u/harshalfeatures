@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>तेल-भारत प्रभाव अनुमानक | Harshal Dasani</title>
+<meta name="description" content="ब्रेंट क्रूड की कीमत बदलें और देखें कि इसका भारत के तेल आयात बिल और हेडलाइन CPI पर क्या असर पड़ता है — Harshal Dasani के प्रकाशित फ्रेमवर्क पर आधारित।">
+<meta name="author" content="Harshal Dasani">
+<meta http-equiv="content-language" content="hi-IN">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<link rel="canonical" href="https://harshaldasani.pages.dev/hi/tools/oil-impact-estimator/">
+<link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/oil-impact-estimator/">
+<link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/oil-impact-estimator/">
+<link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/oil-impact-estimator/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Harshal Dasani">
+<meta property="og:title" content="तेल-भारत प्रभाव अनुमानक | Harshal Dasani">
+<meta property="og:description" content="ब्रेंट क्रूड की कीमत बदलें और देखें कि इसका भारत के तेल आयात बिल और हेडलाइन CPI पर क्या असर पड़ता है।">
+<meta property="og:url" content="https://harshaldasani.pages.dev/hi/tools/oil-impact-estimator/">
+<meta property="og:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="516">
+<meta property="og:image:alt" content="Harshal Dasani — तेल-भारत प्रभाव अनुमानक">
+<meta property="og:locale" content="hi_IN">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@HarshalDasanii">
+<meta name="twitter:creator" content="@HarshalDasanii">
+<meta name="twitter:title" content="तेल-भारत प्रभाव अनुमानक | Harshal Dasani">
+<meta name="twitter:description" content="ब्रेंट क्रूड की कीमत बदलें और देखें कि इसका भारत के तेल आयात बिल और हेडलाइन CPI पर दीर्घकालिक रूप से क्या असर पड़ता है।">
+<meta name="twitter:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
+
+<meta name="theme-color" content="#0E0C0A">
+
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="stylesheet" href="/tools/tools.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "तेल-भारत प्रभाव अनुमानक",
+  "url": "https://harshaldasani.pages.dev/hi/tools/oil-impact-estimator/",
+  "applicationCategory": "FinanceApplication",
+  "description": "ब्रेंट क्रूड की कीमत बदलें और देखें कि इसका भारत के तेल आयात बिल और हेडलाइन CPI पर दीर्घकालिक रूप से क्या असर पड़ता है।",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Harshal Dasani",
+    "url": "https://harshaldasani.pages.dev/"
+  }
+}
+</script>
+<style>
+/* equal-height inputs/results panels on desktop; closing line pinned to bottom */
+@media (min-width: 1181px),
+       (min-width: 641px) and (max-width: 1180px) and (orientation: landscape) {
+  .tool-grid { align-items: stretch; }
+  #results-panel { display: flex; flex-direction: column; }
+  #results-panel .interp { margin-top: auto; }
+}
+
+/* "Harshal Dasani" name = always clickable home link (uniform across site) */
+.name-home{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:color .15s ease,border-color .15s ease}
+.name-home:hover,.name-home:focus{color:var(--accent);border-bottom-color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ── Masthead ── -->
+  <header class="masthead">
+    <a class="mast-back" href="/hi/tools/">&larr; टूल्स</a>
+    <div class="mast-trail"><a href="/hi/">Harshal Dasani</a> &middot; <a href="/hi/tools/">टूल्स</a> &middot; <span>तेल प्रभाव</span></div>
+    <button class="theme-toggle" onclick="HDtoggleTheme()" aria-label="Toggle theme" type="button">
+      <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <!-- ── Tool header ── -->
+  <div class="tool-head">
+    <h1 class="tool-h1">तेल-भारत प्रभाव अनुमानक</h1>
+    <p class="tool-dek">यह अनुमानक बताता है कि ब्रेंट क्रूड की किसी स्थिर कीमत पर भारत का वार्षिक तेल आयात बिल (USD और INR में) और हेडलाइन CPI महंगाई किस हद तक प्रभावित होती है — भारत की कच्चे तेल की आयात मात्रा और खुदरा कीमतों तक सामान्य पास-थ्रू के प्रकाशित अनुमानों के आधार पर।</p>
+    <p class="tool-byline">लेखक: <b><a href="/hi/" class="name-home">Harshal Dasani</a></b> &middot; बाजार विशेषज्ञ</p>
+  </div>
+
+  <!-- ── Main grid ── -->
+  <div class="tool-grid">
+
+    <!-- LEFT: Inputs -->
+    <div class="panel">
+      <p class="panel-title">इनपुट</p>
+
+      <!-- Brent Price -->
+      <div class="input-row">
+        <label for="num-brent">ब्रेंट क्रूड की कीमत <span class="hint">(वर्तमान या परिदृश्य)</span></label>
+        <div class="input-line">
+          <input type="range" id="sl-brent" min="40" max="160" step="1" value="75" aria-label="Brent crude price slider">
+          <span class="num-wrap">
+            <input type="number" id="num-brent" min="40" max="160" step="1" value="75" aria-label="Brent crude price">
+            <span class="unit">US$/bbl</span>
+          </span>
+        </div>
+      </div>
+
+      <div id="live-brent" style="font-size:12px; margin:-8px 0 18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span id="live-brent-text" style="color:var(--text-soft);">आज का ब्रेंट लोड हो रहा है&hellip;</span>
+        <button id="live-brent-refresh" type="button" style="display:none; border:0; background:transparent; color:var(--accent); font:inherit; font-weight:600; cursor:pointer; padding:0;">↻ रीफ़्रेश</button>
+      </div>
+
+      <!-- Assumptions (collapsible) -->
+      <details id="assumptions-panel" style="margin-top:4px;">
+        <summary style="cursor:pointer; font-size:13px; font-weight:600; color:var(--text-soft); letter-spacing:.4px; padding:10px 0; list-style:none; display:flex; align-items:center; justify-content:space-between;" aria-controls="assumptions-body">
+          <span>मान्यताएँ</span>
+          <span class="assump-arrow" style="font-size:16px; color:var(--accent); transition:transform .2s;">+</span>
+        </summary>
+        <div id="assumptions-body" style="padding-bottom:8px;">
+          <p class="note" style="margin-bottom:16px;">ये प्रकाशित अनुमानों पर आधारित हैं। वैकल्पिक परिदृश्य चलाने के लिए इन्हें बदलें।</p>
+
+          <div class="input-row">
+            <label for="num-baseline">दीर्घकालिक आधार मूल्य <span class="hint">(आपकी संदर्भ कीमत)</span></label>
+            <div class="input-line">
+              <span class="num-wrap" style="flex:1; min-width:0;">
+                <input type="number" id="num-baseline" min="40" max="120" step="1" value="75" aria-label="Baseline Brent price">
+                <span class="unit">US$/bbl</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <label for="num-bill-sens">आयात बिल संवेदनशीलता <span class="hint">(ब्रेंट में प्रति $10 बदलाव पर)</span></label>
+            <div class="input-line">
+              <span class="num-wrap" style="flex:1; min-width:0;">
+                <input type="number" id="num-bill-sens" min="1" max="50" step="0.5" value="13.5" aria-label="Import bill sensitivity per 10 dollars">
+                <span class="unit">US$ bn / yr</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <label for="num-cpi-sens">CPI संवेदनशीलता <span class="hint">(ब्रेंट में प्रति $10 बदलाव पर)</span></label>
+            <div class="input-line">
+              <span class="num-wrap" style="flex:1; min-width:0;">
+                <input type="number" id="num-cpi-sens" min="1" max="100" step="1" value="30" aria-label="CPI sensitivity per 10 dollars">
+                <span class="unit">bps</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- RIGHT: Outputs -->
+    <div class="panel" aria-live="polite" aria-atomic="true" id="results-panel">
+
+      <!-- Stat cards -->
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-card" id="card-bill">
+          <div class="stat-label">अतिरिक्त वार्षिक तेल आयात बिल</div>
+          <div class="stat-value" id="val-bill">US$0.0 bn</div>
+          <div class="stat-exact" id="val-bill-exact">$75 आधार मूल्य की तुलना में · वार्षिक</div>
+        </div>
+        <div class="stat-card" id="card-cpi">
+          <div class="stat-label">हेडलाइन CPI पर असर (संकेतात्मक)</div>
+          <div class="stat-value" id="val-cpi">+0 bps</div>
+          <div class="stat-exact" id="val-cpi-exact">CPI में जुड़े बेसिस पॉइंट</div>
+        </div>
+      </div>
+
+      <!-- Structural transmission note -->
+      <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:16px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--text-soft); margin-bottom:10px;">तेल भारत तक कैसे पहुँचता है (असर की कड़ी)</div>
+        <div style="font-size:13.5px; color:var(--text); line-height:1.6;"><p style="margin:0 0 10px;">भारत अपनी अधिकांश तेल जरूरत आयात से पूरी करता है, इसलिए कच्चे तेल की ऊँची कीमत से आयात बिल बढ़ता है, चालू खाते का घाटा चौड़ा होता है, रुपये पर दबाव पड़ता है, और ईंधन व परिवहन लागत के जरिए महंगाई बढ़ती है &mdash; कम कीमत पर उल्टा होता है। तेल भारत का सबसे बड़ा एकल आयात है, इसलिए क्रूड की कीमत रुपये, व्यापार संतुलन और महंगाई के लिए सबसे अहम बाहरी चरों में से एक है।</p><p style="margin:0;">यह टूल मापता है कि ब्रेंट आपके दीर्घकालिक आधार मूल्य से कितना ऊपर या नीचे है और प्रकाशित अनुमान लागू करता है &mdash; प्रति $10 बदलाव पर वार्षिक आयात बिल में लगभग US$13.5 bn और महंगाई में ~30 bps का असर। किसी भी स्तर को आजमाने के लिए स्लाइडर खींचें।</p></div>
+      </div>
+
+      <!-- Interpretation line -->
+      <div class="interp" id="interp-line">
+        $75 ब्रेंट पर — आपके $75 आधार मूल्य के बिल्कुल बराबर — इस फ्रेमवर्क में भारत के आयात बिल या महंगाई में कोई शुद्ध बदलाव नहीं है। स्लाइडर खींचें या आज का ब्रेंट लोड करने के लिए रीफ़्रेश दबाएँ।
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Winners / Losers strip ── -->
+  <div style="margin-top:24px;">
+    <p class="panel-title" style="font-family:'Fraunces',serif; font-weight:600; font-size:18px; color:var(--text); margin:0 0 12px;">क्षेत्रवार प्रभाव का सारांश</p>
+    <div class="wl-grid">
+      <div class="wl-card neg">
+        <h4>ऊँचे तेल पर दबाव में आने वाले क्षेत्र</h4>
+        <p>तेल विपणन कंपनियाँ (IOC, BPCL, HPCL) जब क्रूड खुदरा मूल्य वृद्धि से तेज चढ़ता है तो मार्जिन दबाव झेलती हैं। पेंट्स (Asian Paints, Berger) को कच्चे माल की लागत बढ़ने का सामना करना पड़ता है। एविएशन पर ईंधन बिल का ढाँचागत बोझ बढ़ता है। टायर, प्लास्टिक और रसायन क्षेत्रों पर फीडस्टॉक की ऊँची लागत का असर पड़ता है।</p>
+      </div>
+      <div class="wl-card pos">
+        <h4>अपेक्षाकृत लाभान्वित होने वाले क्षेत्र</h4>
+        <p>अपस्ट्रीम उत्पादक (ONGC, Oil India) प्रति बैरल अधिक कमाते हैं, जिससे उनकी प्राप्तियाँ सीधे बढ़ती हैं। रुपये में आय अर्जित करने वाली IT और फार्मा निर्यातक कंपनियाँ ऊँचे तेल के बाद कमजोर होने वाले रुपये से लाभान्वित होती हैं, क्योंकि विदेशी राजस्व घरेलू मुद्रा में अधिक बनता है।</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── How this works ── -->
+  <details class="how" style="margin-top:24px;">
+    <summary>यह कैसे काम करता है</summary>
+    <div class="how-body">
+      <p><strong>सूत्र (प्रकाशित अनुमान):</strong></p>
+      <p><code>delta = Brent &minus; Baseline</code></p>
+      <p><code>अतिरिक्त आयात बिल (US$ bn/yr) = (delta &divide; 10) &times; 13.5</code></p>
+      <p><code>CPI प्रभाव (bps) = (delta &divide; 10) &times; 30</code></p>
+      <p><strong>आधार मूल्य:</strong> एक दीर्घकालिक &ldquo;सामान्य&rdquo; ब्रेंट कीमत तय करें (डिफ़ॉल्ट $75)। यह टूल मापता है कि क्रूड उस स्तर से ऊपर या नीचे कितना है &mdash; यह जानबूझकर किसी एक घटना या अल्पकालिक उछाल से नहीं जुड़ा है।</p>
+      <p><strong>सीमाएँ:</strong> संवेदनशीलताएँ प्रकाशित टिप्पणियों से लिए गए औसत अनुमान हैं। वास्तविक पास-थ्रू सब्सिडी नीति, रिफाइनिंग मार्जिन और उस समय के INR/USD दर पर निर्भर करता है। लाइव ब्रेंट केवल एक सुविधाजनक शुरुआती बिंदु के रूप में दिखाया जाता है &mdash; टूल का असली मूल्य किसी भी कीमत को मॉडल करने में है।</p>
+    </div>
+  </details>
+
+  <!-- ── Actions ── -->
+  <div class="actions" style="margin-top:28px;">
+    <a class="btn btn-gold" href="https://harshaldasani.pages.dev/blog/posts/crude-oil-india-markets-rupee-inflation/" target="_blank" rel="noopener">पूरा विश्लेषण पढ़ें &rarr;</a>
+    <button class="btn btn-link" id="btn-copy" type="button" onclick="doCopy(this)">परिणाम कॉपी करें</button>
+  </div>
+
+  <!-- ── Disclaimer ── -->
+  <div class="disclaimer">
+    <b>संकेतात्मक परिदृश्य मॉडल, पूर्वानुमान नहीं।</b> <strong>महत्वपूर्ण:</strong> यह प्रकाशित अनुमानों पर आधारित एक संकेतात्मक परिदृश्य मॉडल है, कोई पूर्वानुमान नहीं। वास्तविक परिणाम तेल की कीमत से परे कई कारकों पर निर्भर करते हैं। यह केवल सामान्य जानकारी के लिए एक निःशुल्क शैक्षिक टूल है। यह निवेश, कर या कानूनी सलाह नहीं है, न ही किसी प्रतिभूति की खरीद-बिक्री या किसी सेवा का लाभ उठाने की कोई सिफारिश या आग्रह है। गणनाएँ संकेतात्मक हैं और आपके द्वारा प्रदान की गई मान्यताओं व इनपुट पर आधारित हैं; वास्तविक परिणाम भिन्न होंगे। प्रतिभूतियाँ और म्यूचुअल फंड निवेश बाजार जोखिमों के अधीन हैं &mdash; सभी संबंधित दस्तावेज ध्यान से पढ़ें। पिछला प्रदर्शन भविष्य के परिणामों का संकेत नहीं है। कोई भी वित्तीय निर्णय लेने से पहले किसी योग्य, पंजीकृत सलाहकार से परामर्श करें। Harshal Dasani बाजार विशेषज्ञ हैं।
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="tool-footer">
+    <div>&copy; 2026 <a href="/hi/" class="name-home">Harshal Dasani</a> &middot; बाजार विशेषज्ञ</div>
+    <div><a href="https://harshaldasani.pages.dev/">harshaldasani.pages.dev</a></div>
+  </footer>
+
+</div><!-- /.page -->
+
+<script defer src="/tools/tools.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* ── State ── */
+  var brentCtrl, baselineEl, billSensEl, cpiSensEl;
+
+  /* ── DOM refs ── */
+  var elCardBill    = document.getElementById('card-bill');
+  var elCardCpi     = document.getElementById('card-cpi');
+  var elValBill     = document.getElementById('val-bill');
+  var elValBillEx   = document.getElementById('val-bill-exact');
+  var elValCpi      = document.getElementById('val-cpi');
+  var elValCpiEx    = document.getElementById('val-cpi-exact');
+  var elInterp      = document.getElementById('interp-line');
+
+  /* ── Assumptions detail arrow ── */
+  var assumPanel = document.getElementById('assumptions-panel');
+  var assumArrow = assumPanel.querySelector('.assump-arrow');
+  assumPanel.addEventListener('toggle', function () {
+    assumArrow.textContent = assumPanel.open ? '−' : '+';
+  });
+  // default-open on desktop, default-closed on mobile (user can still toggle)
+  assumPanel.open = window.matchMedia('(min-width: 861px)').matches;
+  assumArrow.textContent = assumPanel.open ? '−' : '+';
+
+  /* ── Wire assumptions inputs ── */
+  baselineEl = document.getElementById('num-baseline');
+  billSensEl = document.getElementById('num-bill-sens');
+  cpiSensEl  = document.getElementById('num-cpi-sens');
+
+  baselineEl.addEventListener('input', recompute);
+  baselineEl.addEventListener('change', recompute);
+  billSensEl.addEventListener('input', recompute);
+  billSensEl.addEventListener('change', recompute);
+  cpiSensEl.addEventListener('input', recompute);
+  cpiSensEl.addEventListener('change', recompute);
+
+  /* ── Wire Brent slider + number via bindInput ── */
+  brentCtrl = bindInput('sl-brent', 'num-brent', recompute, { min: 40, max: 160 });
+
+  /* ── Live Brent price (Cloudflare Pages Function /api/brent) ── */
+  function setBrent(v) {
+    v = Math.max(40, Math.min(160, Math.round(v)));
+    var sl = document.getElementById('sl-brent'), nm = document.getElementById('num-brent');
+    if (sl) sl.value = v; if (nm) nm.value = v;
+    recompute();
+  }
+  function fmtAsOf(ms) {
+    try { return new Date(ms).toLocaleString('hi-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); }
+    catch (e) { return ''; }
+  }
+  var liveTxt = document.getElementById('live-brent-text');
+  var liveBtn = document.getElementById('live-brent-refresh');
+  function showLiveBrent(apply, fresh) {
+    if (liveTxt) { liveTxt.textContent = 'आज का ब्रेंट लोड हो रहा है…'; liveTxt.style.color = 'var(--text-soft)'; }
+    var url = fresh ? ('/api/brent?fresh=1&nc=' + Date.now()) : '/api/brent';
+    fetch(url, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (d) {
+        if (!d || typeof d.price !== 'number') throw 0;
+        if (apply) setBrent(d.price);
+        if (liveTxt) {
+          var src = d.source ? d.source.split(' · ')[0] : '';
+          liveTxt.innerHTML = '<span style="color:var(--pos);">● आज का ब्रेंट</span> <b>$' + d.price.toFixed(2) + '</b>'
+            + (d.asOf ? ' <span style="color:var(--text-soft);">· के अनुसार ' + fmtAsOf(d.asOf) + '</span>' : '')
+            + (src ? ' <span style="color:var(--text-soft);">· ' + src + '</span>' : '')
+            + '';
+        }
+        if (liveBtn) liveBtn.style.display = '';
+      })
+      .catch(function () {
+        if (liveTxt) liveTxt.innerHTML = '<span style="color:var(--text-soft);">लाइव कीमत उपलब्ध नहीं — कोई भी कीमत मॉडल करने के लिए स्लाइडर खिंचें।</span>';
+        if (liveBtn) liveBtn.style.display = '';
+      });
+  }
+  if (liveBtn) liveBtn.addEventListener('click', function () { showLiveBrent(true, true); });
+  showLiveBrent(true, false);
+
+  /* ── Main compute ── */
+  function recompute() {
+    var brent    = brentCtrl.value();
+    var baseline = parseFloat(baselineEl.value) || 75;
+    var billSens = parseFloat(billSensEl.value) || 13.5;
+    var cpiSens  = parseFloat(cpiSensEl.value)  || 30;
+
+    /* clamp baseline */
+    baseline = Math.max(40, Math.min(120, baseline));
+
+    var delta           = brent - baseline;
+    var importBillDelta = (delta / 10) * billSens;   /* US$ bn/yr */
+    var cpiDeltaBps     = (delta / 10) * cpiSens;    /* bps       */
+
+
+    /* ── Stat card: import bill ── */
+    var billSign  = importBillDelta >= 0 ? '+' : '−';
+    var billAbs   = Math.abs(importBillDelta);
+    var billStr   = (importBillDelta >= 0 ? '+' : '−') + 'US$' + billAbs.toFixed(1) + ' bn';
+
+    elValBill.textContent = billStr;
+    elValBillEx.textContent = '$' + Math.round(baseline) + ' आधार मूल्य की तुलना में · वार्षिक';
+
+    /* colour: positive delta = bad (neg/red); negative delta = good (pos/green) */
+    elCardBill.className = 'stat-card ' + (importBillDelta > 0 ? 'is-neg' : importBillDelta < 0 ? 'is-pos' : '');
+
+    /* ── Stat card: CPI ── */
+    var cpiSign = cpiDeltaBps >= 0 ? '+' : '−';
+    var cpiAbs  = Math.abs(cpiDeltaBps);
+    var cpiStr  = (cpiDeltaBps >= 0 ? '+' : '−') + Math.round(cpiAbs) + ' bps';
+
+    elValCpi.textContent   = cpiStr;
+    elValCpiEx.textContent = 'CPI में जुड़े बेसिस पॉइंट';
+
+    elCardCpi.className = 'stat-card ' + (cpiDeltaBps > 0 ? 'is-neg' : cpiDeltaBps < 0 ? 'is-pos' : '');
+
+
+    /* ── Interpretation line (structural / long-term) ── */
+    var bl = Math.round(baseline);
+    var interpText;
+    if (delta === 0) {
+      interpText = '$' + brent + ' ब्रेंट पर — आपके $' + bl + ' आधार मूल्य के दम पर — इस फ्रेमवर्क में भारत के आयात बिल या महंगाई में कोई शुद्ध बदलाव नहीं है।';
+    } else if (delta < 0) {
+      interpText = '$' + brent + ' ब्रेंट बनाम $' + bl + ' आधार मूल्य पर, भारत का वार्षिक तेल आयात बिल लगभग US$' + billAbs.toFixed(1) + ' bn कम होगा और हेडलाइन महंगाई लगभग ' + Math.round(cpiAbs) + ' bps कम — अन्य सभी बातें समान रहने पर —रुपए और चालू खाता घाटे के लिए एक सहायक तेजी।';
+    } else {
+      interpText = '$' + brent + ' ब्रेंट बनाम $' + bl + ' आधार मूल्य पर, भारत का वार्षिक तेल आयात बिल लगभग US$' + billAbs.toFixed(1) + ' bn अधिक होगा और हेडलाइन महंगाई लगभग ' + Math.round(cpiAbs) + ' bps अधिक — अन्य सभी बातें समान रहने पर — रुपए, घाटे और महंगाई के लिए एक ढाँचागत बाधा।';
+    }
+    elInterp.innerHTML = interpText;
+
+    /* ── Stash for copy ── */
+    window._oilResult = { brent: brent, baseline: bl, bill: billStr, cpi: cpiStr };
+  }
+
+  /* ── Copy handler ── */
+  window.doCopy = function (btn) {
+    var r = window._oilResult || {};
+    var text = 'तेल-भारत प्रभाव अनुमानक (harshaldasani.pages.dev): '
+      + '$' + (r.brent || '—') + ' ब्रेंट बनाम $' + (r.baseline || '—') + ' आधार मूल्य — '
+      + 'अतिरिक्त वार्षिक आयात बिल ' + (r.bill || '—') + ' · महंगाई पर असर ' + (r.cpi || '—') + '।';
+    copyResult(text, btn);
+  };
+
+  /* ── Run once on load ── */
+  recompute();
+});
+</script>
+
+<script src="/lang-switch.js" defer></script>
+</body>
+</html>

@@ -40,7 +40,7 @@
   function makeDropdown(){
     var path = location.pathname || '/';
     var isHi = (path === '/hi' || path.indexOf('/hi/') === 0);
-    var HI_PAGES = ['/'];
+    var HI_PAGES = ['/', '/tools/', '/tools/oil-impact-estimator/', '/tools/sip-calculator/', '/tools/returns-calculator/', '/tools/capital-gains-tax-calculator/'];
     var enPath, hiPath;
     if (isHi){ enPath = path.replace(/^\/hi/, '') || '/'; hiPath = path; }
     else { enPath = path; hiPath = (HI_PAGES.indexOf(path) !== -1) ? ('/hi'+path) : '/hi/'; }

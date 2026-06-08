@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>रिटर्न कैलकुलेटर — एकमुश्त, CAGR और XIRR | Harshal Dasani</title>
+<meta name="description" content="तीन तरीकों से निवेश रिटर्न की गणना करें: एकमुश्त भविष्य मूल्य प्रक्षेपण, किन्हीं दो मूल्यों से CAGR, और अनियमित कैशफ़्लो के लिए XIRR। Harshal Dasani द्वारा निःशुल्क टूल।">
+<meta name="keywords" content="CAGR कैलकुलेटर भारत, XIRR कैलकुलेटर, एकमुश्त रिटर्न कैलकुलेटर, निवेश रिटर्न, Harshal Dasani">
+<meta name="author" content="Harshal Dasani">
+<meta http-equiv="content-language" content="hi-IN">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<link rel="canonical" href="https://harshaldasani.pages.dev/hi/tools/returns-calculator/">
+<link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/returns-calculator/">
+<link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/returns-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/returns-calculator/">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Harshal Dasani">
+<meta name="application-name" content="Harshal Dasani">
+<meta property="og:title" content="रिटर्न कैलकुलेटर — एकमुश्त, CAGR और XIRR | Harshal Dasani">
+<meta property="og:description" content="एकमुश्त भविष्य मूल्य, किन्हीं दो मूल्यों के बीच CAGR, या अनियमित कैशफ़्लो पर XIRR की गणना करें। Harshal Dasani द्वारा निःशुल्क शैक्षणिक टूल।">
+<meta property="og:url" content="https://harshaldasani.pages.dev/hi/tools/returns-calculator/">
+<meta property="og:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="516">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="रिटर्न कैलकुलेटर — Harshal Dasani">
+<meta property="og:locale" content="hi_IN">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@HarshalDasanii">
+<meta name="twitter:creator" content="@HarshalDasanii">
+<meta name="twitter:title" content="रिटर्न कैलकुलेटर — एकमुश्त, CAGR और XIRR | Harshal Dasani">
+<meta name="twitter:description" content="एकमुश्त भविष्य मूल्य, किन्हीं दो मूल्यों के बीच CAGR, या अनियमित कैशफ़्लो पर XIRR की गणना करें। निःशुल्क शैक्षणिक टूल।">
+<meta name="twitter:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
+
+<meta name="theme-color" content="#0E0C0A">
+
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/tools/tools.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://harshaldasani.pages.dev/hi/tools/returns-calculator/#app",
+      "name": "रिटर्न कैलकुलेटर — एकमुश्त, CAGR और XIRR",
+      "url": "https://harshaldasani.pages.dev/hi/tools/returns-calculator/",
+      "description": "तीन तरीकों से निवेश रिटर्न की गणना करें: एकमुश्त भविष्य मूल्य प्रक्षेपण, किन्हीं दो डेटा बिंदुओं से CAGR, और अनियमित बहु-कैशफ़्लो निवेशों के लिए XIRR।",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "inLanguage": "hi-IN",
+      "isAccessibleForFree": true,
+      "author": {
+        "@type": "Person",
+        "@id": "https://harshaldasani.pages.dev/#person",
+        "name": "Harshal Dasani",
+        "jobTitle": "बाज़ार विशेषज्ञ",
+        "url": "https://harshaldasani.pages.dev/"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "होम", "item": "https://harshaldasani.pages.dev/hi/" },
+          { "@type": "ListItem", "position": 2, "name": "टूल्स", "item": "https://harshaldasani.pages.dev/hi/tools/" },
+          { "@type": "ListItem", "position": 3, "name": "रिटर्न कैलकुलेटर", "item": "https://harshaldasani.pages.dev/hi/tools/returns-calculator/" }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<style>
+/* both panels equal height per tab on desktop/tablet-landscape */
+@media (min-width: 1181px), (min-width: 641px) and (max-width: 1180px) and (orientation: landscape) {
+  .tool-grid { align-items: stretch; }
+}
+
+/* Quick-preset chips — fills empty space below Investment Period */
+.preset-block { margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 14px; }
+.preset-row { display: flex; flex-direction: column; gap: 8px; }
+.preset-label { font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-soft); font-weight: 600; }
+.preset-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.preset-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; min-height: 32px;
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border); border-radius: 999px;
+  font-size: 13px; font-weight: 500; line-height: 1;
+  cursor: pointer; transition: background .15s ease, border-color .15s ease, color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.preset-chip:hover { border-color: var(--accent); color: var(--accent); }
+.preset-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.preset-chip.is-active { background: var(--accent); color: #1a1530; border-color: var(--accent); font-weight: 700; }
+.preset-chip-val { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.preset-chip.is-active .preset-chip-val { color: #1a1530; }
+
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="masthead">
+    <a class="mast-back" href="https://harshaldasani.pages.dev/hi/tools/">&larr; टूल्स</a>
+    <div class="mast-trail">
+      <a href="https://harshaldasani.pages.dev/hi/">Harshal Dasani</a> &middot;
+      <a href="https://harshaldasani.pages.dev/hi/tools/">टूल्स</a> &middot;
+      <span>रिटर्न कैलकुलेटर</span>
+    </div>
+    <button class="theme-toggle" onclick="HDtoggleTheme()" aria-label="Toggle theme" type="button">
+      <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <div class="tool-head">
+    <h1 class="tool-h1">रिटर्न कैलकुलेटर</h1>
+    <p class="tool-dek">आपके पैसे ने वास्तव में क्या किया — या क्या कर सकते हैं — यह मापने के तीन तरीके। एकमुश्त प्रक्षेपण, दो बिंदुओं के बीच CAGR, या किसी भी कैशफ़्लो समूह पर XIRR।</p>
+    <p class="tool-byline">एक टूल <b><a href="/hi/" class="name-home">Harshal Dasani</a></b> द्वारा &middot; बाज़ार विशेषज्ञ</p>
+  </div>
+
+  <!-- Segmented Control -->
+  <div class="seg-control" id="modeControl" role="tablist" aria-label="कैलकुलेटर मोड">
+    <button data-seg="a" class="is-active" role="tab" aria-selected="true" aria-controls="panel-a" type="button">एकमुश्त</button>
+    <button data-seg="b" role="tab" aria-selected="false" aria-controls="panel-b" type="button">CAGR</button>
+    <button data-seg="c" role="tab" aria-selected="false" aria-controls="panel-c" type="button">XIRR</button>
+  </div>
+
+  <!-- ==================== TAB A: LUMPSUM ==================== -->
+  <div data-panel="a" id="panel-a" role="tabpanel">
+    <div class="tool-grid">
+
+      <!-- Inputs -->
+      <div class="panel">
+        <p class="panel-title">इनपुट</p>
+
+        <div class="input-row">
+          <label for="ls-principal-num">निवेश राशि</label>
+          <div class="input-line">
+            <input type="range" id="ls-principal-range" min="10000" max="10000000" step="10000" value="1000000" aria-label="निवेश राशि स्लाइडर">
+            <div class="num-wrap">
+              <span class="unit">₹</span>
+              <input type="number" id="ls-principal-num" min="1000" max="100000000" step="1000" value="1000000" aria-label="निवेश राशि">
+            </div>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <label for="ls-rate-num">अपेक्षित वार्षिक रिटर्न <span class="hint">(अनुमानित, गारंटीशुदा नहीं)</span></label>
+          <div class="input-line">
+            <input type="range" id="ls-rate-range" min="1" max="40" step="0.5" value="12" aria-label="वार्षिक रिटर्न स्लाइडर">
+            <div class="num-wrap">
+              <input type="number" id="ls-rate-num" min="0.1" max="100" step="0.5" value="12" aria-label="वार्षिक रिटर्न प्रतिशत">
+              <span class="unit">% प्रति वर्ष</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <label for="ls-years-num">निवेश अवधि</label>
+          <div class="input-line">
+            <input type="range" id="ls-years-range" min="1" max="40" step="1" value="10" aria-label="निवेश अवधि स्लाइडर">
+            <div class="num-wrap">
+              <input type="number" id="ls-years-num" min="1" max="100" step="1" value="10" aria-label="निवेश अवधि वर्षों में">
+              <span class="unit">वर्ष</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick presets -->
+        <div class="preset-block" aria-label="त्वरित प्रीसेट">
+          <div class="preset-row">
+            <span class="preset-label">रिटर्न प्रीसेट</span>
+            <div class="preset-chips" role="group" aria-label="अपेक्षित रिटर्न प्रीसेट">
+              <button type="button" class="preset-chip" data-preset-rate="8"  title="रूढ़िवादी — डेट फंड / FD जैसे रिटर्न के करीब">रूढ़िवादी<span class="preset-chip-val">8%</span></button>
+              <button type="button" class="preset-chip" data-preset-rate="12" title="संतुलित — दीर्घकालिक इक्विटी अनुमान">संतुलित<span class="preset-chip-val">12%</span></button>
+              <button type="button" class="preset-chip" data-preset-rate="15" title="आक्रामक — शीर्ष-चतुर्थांश इक्विटी अपेक्षा, गारंटी नहीं">आक्रामक<span class="preset-chip-val">15%</span></button>
+            </div>
+          </div>
+          <div class="preset-row">
+            <span class="preset-label">अवधि प्रीसेट</span>
+            <div class="preset-chips" role="group" aria-label="निवेश अवधि प्रीसेट">
+              <button type="button" class="preset-chip" data-preset-years="5">5 वर्ष</button>
+              <button type="button" class="preset-chip" data-preset-years="10">10 वर्ष</button>
+              <button type="button" class="preset-chip" data-preset-years="15">15 वर्ष</button>
+              <button type="button" class="preset-chip" data-preset-years="20">20 वर्ष</button>
+              <button type="button" class="preset-chip" data-preset-years="30">30 वर्ष</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Results -->
+      <div class="panel">
+        <p class="panel-title">प्रक्षेपण</p>
+        <div aria-live="polite" aria-atomic="true" id="ls-results">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-label">निवेशित राशि</div>
+              <div class="stat-value tabnum" id="ls-invested">&#8212;</div>
+            </div>
+            <div class="stat-card is-gold">
+              <div class="stat-label">अनुमानित लाभ</div>
+              <div class="stat-value tabnum" id="ls-gain">&#8212;</div>
+            </div>
+            <div class="stat-card big">
+              <div class="stat-label">भविष्य मूल्य</div>
+              <div class="stat-value tabnum" id="ls-fv">&#8212;</div>
+              <div class="stat-exact" id="ls-fv-exact"></div>
+            </div>
+          </div>
+          <div id="ls-chart-wrap" style="margin:0 0 4px;">
+            <!-- inline SVG chart injected by JS -->
+          </div>
+          <div class="interp" id="ls-interp"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB B: CAGR ==================== -->
+  <div data-panel="b" id="panel-b" role="tabpanel" style="display:none">
+    <div class="tool-grid">
+
+      <!-- Inputs -->
+      <div class="panel">
+        <p class="panel-title">इनपुट</p>
+
+        <div class="input-row">
+          <label for="cagr-initial-num">प्रारंभिक मूल्य</label>
+          <div class="input-line">
+            <input type="range" id="cagr-initial-range" min="1000" max="5000000" step="1000" value="100000" aria-label="प्रारंभिक मूल्य स्लाइडर">
+            <div class="num-wrap">
+              <span class="unit">₹</span>
+              <input type="number" id="cagr-initial-num" min="1" max="1000000000" step="1000" value="100000" aria-label="प्रारंभिक मूल्य">
+            </div>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <label for="cagr-final-num">अंतिम मूल्य</label>
+          <div class="input-line">
+            <input type="range" id="cagr-final-range" min="1000" max="10000000" step="1000" value="200000" aria-label="अंतिम मूल्य स्लाइडर">
+            <div class="num-wrap">
+              <span class="unit">₹</span>
+              <input type="number" id="cagr-final-num" min="1" max="1000000000" step="1000" value="200000" aria-label="अंतिम मूल्य">
+            </div>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <label for="cagr-years-num">अवधि <span class="hint">(दशमलव मान्य, जैसे 3.5)</span></label>
+          <div class="input-line">
+            <input type="range" id="cagr-years-range" min="0.25" max="30" step="0.25" value="5" aria-label="अवधि स्लाइडर">
+            <div class="num-wrap">
+              <input type="number" id="cagr-years-num" min="0.01" max="100" step="0.25" value="5" aria-label="अवधि वर्षों में">
+              <span class="unit">वर्ष</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="panel">
+        <p class="panel-title">परिणाम</p>
+        <div aria-live="polite" aria-atomic="true" id="cagr-results">
+          <div class="stat-grid">
+            <div class="stat-card big" id="cagr-card-main">
+              <div class="stat-label">CAGR (वार्षिक चक्रवृद्धि दर)</div>
+              <div class="stat-value tabnum" id="cagr-val">&#8212;</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">कुल रिटर्न</div>
+              <div class="stat-value tabnum" id="cagr-abs">&#8212;</div>
+            </div>
+            <div class="stat-card is-gold">
+              <div class="stat-label">कुल लाभ</div>
+              <div class="stat-value tabnum" id="cagr-gain">&#8212;</div>
+              <div class="stat-exact" id="cagr-gain-exact"></div>
+            </div>
+          </div>
+          <div class="interp" id="cagr-interp"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB C: XIRR ==================== -->
+  <div data-panel="c" id="panel-c" role="tabpanel" style="display:none">
+    <div class="tool-grid">
+
+      <!-- Cashflow Table Panel -->
+      <div class="panel">
+        <p class="panel-title">कैशफ़्लो</p>
+        <p class="note">निवेश को <strong>ऋणात्मक</strong> राशि के रूप में दर्ज करें (पैसा बाहर गया), और रिडेम्पशन तथा वर्तमान मूल्य को <strong>धनात्मक</strong> (पैसा वापस आया)।</p>
+
+        <div style="overflow-x:auto;">
+          <table class="tool-table" id="xirr-table" aria-label="कैशफ़्लो प्रविष्टियाँ">
+            <thead>
+              <tr>
+                <th scope="col">तारीख</th>
+                <th scope="col">राशि (₹)</th>
+                <th scope="col" aria-label="पंक्ति हटाएं"></th>
+              </tr>
+            </thead>
+            <tbody id="xirr-tbody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="actions" style="margin-top:16px;">
+          <button class="btn" id="xirr-add-row" type="button">+ पंक्ति जोड़ें</button>
+        </div>
+      </div>
+
+      <!-- XIRR Results -->
+      <div class="panel">
+        <p class="panel-title">XIRR परिणाम</p>
+        <div aria-live="polite" aria-atomic="true" id="xirr-results">
+          <div class="stat-grid">
+            <div class="stat-card big" id="xirr-card-main">
+              <div class="stat-label">XIRR (वार्षिकीकृत रिटर्न)</div>
+              <div class="stat-value tabnum" id="xirr-val">&#8212;</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">कुल निवेश</div>
+              <div class="stat-value tabnum" id="xirr-invested">&#8212;</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">कुल वापसी</div>
+              <div class="stat-value tabnum" id="xirr-returned">&#8212;</div>
+            </div>
+            <div class="stat-card is-gold">
+              <div class="stat-label">शुद्ध लाभ</div>
+              <div class="stat-value tabnum" id="xirr-gain">&#8212;</div>
+              <div class="stat-exact" id="xirr-gain-exact"></div>
+            </div>
+          </div>
+          <div id="xirr-msg" class="note" style="display:none;"></div>
+          <div class="interp" id="xirr-interp" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HOW THIS WORKS ==================== -->
+  <details class="how">
+    <summary>यह कैसे काम करता है</summary>
+    <div class="how-body">
+      <p><strong>एकमुश्त प्रक्षेपण</strong> मानक चक्रवृद्धि ब्याज सूत्र का उपयोग करता है: <code>FV = P &times; (1 + r/100)<sup>n</sup></code>। P आपका मूलधन है, r वार्षिक रिटर्न दर, और n वर्षों की संख्या। लाभ FV माइनस P है। चार्ट प्रत्येक वर्ष का मूल्य दर्शाता है ताकि आप समय के साथ चक्रवृद्धि की गति देख सकें।</p>
+
+      <p><strong>CAGR (वार्षिक चक्रवृद्धि दर)</strong> इस प्रश्न का उत्तर देता है: "A से B तक पहुँचने के लिए किस स्थिर वार्षिक दर से वृद्धि होनी चाहिए थी?" सूत्र है <code>CAGR = (अंतिम/प्रारंभिक)<sup>1/वर्ष</sup> &minus; 1</code>। यह रास्ते को सुचारू करता है — दो समान CAGR के बीच यात्रा बहुत भिन्न हो सकती है। अवधि के लिए दशमलव मान्य है, इसलिए 3.5-वर्ष का CAGR सटीक रूप से गणना किया जा सकता है। यदि अंतिम मूल्य प्रारंभिक से कम है, तो CAGR ऋणात्मक होगा और लाल रंग में दिखाया जाएगा।</p>
+
+      <p><strong>XIRR (विस्तारित आंतरिक प्रतिफल दर)</strong> उद्योग-मानक तरीका है जब आप अनियमित तारीखों पर निवेश या रिडेम्पशन करते हैं — जैसा अधिकांश वास्तविक पोर्टफोलियो में होता है। यह वह वार्षिकीकृत छूट दर <em>r</em> खोजता है जो सभी कैशफ़्लो के वर्तमान मूल्य को शून्य करती है:</p>
+      <p><code>&Sigma; CF<sub>k</sub> / (1 + r)<sup>((d<sub>k</sub> &minus; d<sub>0</sub>) / 365)</sup> = 0</code></p>
+      <p>सॉल्वर तेज़ अभिसरण के लिए विश्लेषणात्मक प्रथम अवकलज के साथ <strong>Newton&ndash;Raphson</strong> का उपयोग करता है, और यदि Newton&ndash;Raphson अपसारी हो जाए या प्रारंभिक अवकलज बहुत समतल हो, तो [&minus;99.9999%, बहुत बड़ी ऊपरी सीमा] पर <strong>द्विभाजन</strong> विधि पर वापस आता है। अभिसरण सहनशीलता 200 पुनरावृत्तियों तक 1&times;10<sup>&minus;7</sup> है। कैशफ़्लो आंतरिक रूप से तारीख के अनुसार क्रमबद्ध होते हैं — प्रविष्टि का क्रम मायने नहीं रखता।</p>
+      <p>परंपरा (Excel के समान): <strong>निवेश / बहिर्प्रवाह ऋणात्मक</strong>; <strong>रिडेम्पशन / वर्तमान मूल्य धनात्मक</strong>। कम से कम एक प्रत्येक प्रकार का आवश्यक है।</p>
+
+      <p><strong>CAGR बनाम XIRR:</strong> CAGR का उपयोग तब करें जब आपके पास एक प्रारंभिक और एक अंतिम मूल्य हो और आप एक स्पष्ट वार्षिकीकृत संख्या चाहते हों। XIRR का उपयोग तब करें जब आपने कई बार निवेश किया हो (SIP, अतिरिक्त टॉप-अप) या आंशिक निकासी की हो — उन मामलों में CAGR भ्रामक परिणाम देगा, XIRR नहीं देगा।</p>
+    </div>
+  </details>
+
+  <!-- ==================== DISCLAIMER ==================== -->
+  <div class="disclaimer">
+    <b>यह एक उदाहरणात्मक परिदृश्य मॉडल है, पूर्वानुमान नहीं।</b> <b>अस्वीकरण:</b> CAGR और XIRR ऐतिहासिक/उदाहरणात्मक रिटर्न माप हैं, भविष्य के प्रदर्शन का पूर्वानुमान नहीं। यह एक निःशुल्क शैक्षणिक टूल है जो केवल उदाहरणात्मक और सूचनात्मक उद्देश्यों के लिए है। परिणाम आपके द्वारा प्रदान किए गए इनपुट पर आधारित हैं और वित्तीय, निवेश या कर सलाह नहीं हैं। सभी निवेश बाज़ार जोखिमों के अधीन हैं; दिखाए गए रिटर्न की गारंटी नहीं है और पिछला प्रदर्शन भविष्य के परिणाम का संकेत नहीं देता। कोई भी निवेश निर्णय लेने से पहले सभी योजना-संबंधित दस्तावेज़ पढ़ें और SEBI-पंजीकृत निवेश सलाहकार से परामर्श लें। <b><a href="/hi/" class="name-home">Harshal Dasani</a></b> बाज़ार विशेषज्ञ हैं।
+  </div>
+
+  <footer class="tool-footer">
+    <div>&copy; 2026 <a href="/hi/" class="name-home">Harshal Dasani</a> &middot; बाज़ार विशेषज्ञ</div>
+    <div><a href="https://harshaldasani.pages.dev/">harshaldasani.pages.dev</a></div>
+  </footer>
+
+</main>
+
+<script defer src="/tools/tools.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* ============================================================
+     UTILITY: format number full INR (relies on global formatINR / formatINRShort)
+     ============================================================ */
+  function fINR(n) { return typeof formatINR === 'function' ? formatINR(n) : '₹' + Math.round(n).toLocaleString('en-IN'); }
+  function fINRS(n) { return typeof formatINRShort === 'function' ? formatINRShort(n) : fINR(n); }
+  function fPct(n, dp) { return typeof formatPct === 'function' ? formatPct(n, dp) : n.toFixed(dp != null ? dp : 2) + '%'; }
+
+  /* ============================================================
+     SEGMENTED CONTROL
+     ============================================================ */
+  if (typeof initSegmented === 'function') {
+    initSegmented('#modeControl');
+  } else {
+    /* fallback inline */
+    var root = document.getElementById('modeControl');
+    var btns = root ? root.querySelectorAll('[data-seg]') : [];
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.classList.remove('is-active'); x.setAttribute('aria-selected','false'); });
+        b.classList.add('is-active'); b.setAttribute('aria-selected','true');
+        var target = b.getAttribute('data-seg');
+        document.querySelectorAll('[data-panel]').forEach(function (p) {
+          p.style.display = (p.getAttribute('data-panel') === target) ? '' : 'none';
+        });
+      });
+    });
+  }
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function today() {
+    var d = new Date(); return d.toISOString().slice(0, 10);
+  }
+  function dateOffset(days) {
+    var d = new Date(); d.setDate(d.getDate() + days); return d.toISOString().slice(0, 10);
+  }
+  function parseDateStr(s) {
+    /* returns ms timestamp or NaN */
+    var d = new Date(s); return isNaN(d.getTime()) ? NaN : d.getTime();
+  }
+
+  /* ============================================================
+     TAB A — LUMPSUM
+     ============================================================ */
+  var lsPrincipal = { value: function(){ return parseFloat(document.getElementById('ls-principal-num').value) || 0; } };
+  var lsRate      = { value: function(){ return parseFloat(document.getElementById('ls-rate-num').value) || 0; } };
+  var lsYears     = { value: function(){ return parseFloat(document.getElementById('ls-years-num').value) || 0; } };
+
+  function calcLumpsum() {
+    var P = lsPrincipal.value();
+    var r = lsRate.value();
+    var n = lsYears.value();
+    if (P <= 0 || r <= 0 || n <= 0) return;
+    var fv = P * Math.pow(1 + r / 100, n);
+    var gain = fv - P;
+
+    document.getElementById('ls-invested').textContent = fINRS(P);
+    document.getElementById('ls-gain').textContent = fINRS(gain);
+    document.getElementById('ls-fv').textContent = fINRS(fv);
+    document.getElementById('ls-fv-exact').textContent = fv >= 1e5 ? fINR(fv) : '';
+
+    /* growth chart */
+    renderLumpsumChart(P, r, n);
+
+    /* interpretation */
+    var mult = fv / P;
+    var interpEl = document.getElementById('ls-interp');
+    interpEl.textContent = r.toFixed(1) + '% प्रति वर्ष की दर से, आपके ' + fINRS(P) + ' ' +
+      n + ' वर्ष' + (n !== 1 ? 'ों' : '') +
+      ' में ' + mult.toFixed(2) + ' गुना बढ़ते हैं — चक्रवृद्धि से अनुमानित रिटर्न में ' + fINRS(gain) + ' जुड़ते हैं।';
+  }
+
+  function renderLumpsumChart(P, r, n) {
+    var wrap = document.getElementById('ls-chart-wrap');
+    var years = Math.min(Math.round(n), 40);
+    var W = 480, H = 160;
+    var pts = [];
+    for (var i = 0; i <= years; i++) {
+      pts.push({ x: i, y: P * Math.pow(1 + r / 100, i) });
+    }
+    var maxY = pts[pts.length - 1].y;
+    var minY = pts[0].y;
+    var rangeY = maxY - minY || 1;
+    var padL = 6, padR = 10, padT = 10, padB = 20;
+    var cW = W - padL - padR, cH = H - padT - padB;
+
+    function px(i) { return padL + (years > 0 ? (pts[i].x / years) * cW : 0); }
+    function py(i) { return padT + cH - ((pts[i].y - minY) / rangeY) * cH; }
+
+    /* area path */
+    var d = 'M' + px(0) + ',' + py(0);
+    for (var j = 1; j < pts.length; j++) d += ' L' + px(j) + ',' + py(j);
+    var areaD = d + ' L' + px(pts.length - 1) + ',' + (padT + cH) + ' L' + px(0) + ',' + (padT + cH) + ' Z';
+
+    /* year labels (up to 5) */
+    var labelStep = Math.max(1, Math.round(years / 4));
+    var labels = '';
+    for (var k = 0; k <= years; k += labelStep) {
+      var lx = padL + (years > 0 ? (k / years) * cW : 0);
+      labels += '<text x="' + lx.toFixed(1) + '" y="' + (H - 4) + '" text-anchor="middle" font-size="9" fill="var(--text-soft)" font-family="Inter,sans-serif">वर्ष ' + k + '</text>';
+    }
+
+    wrap.innerHTML =
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet" ' +
+      'style="width:100%;height:auto;display:block;margin:16px 0 8px;" aria-hidden="true" role="img">' +
+      '<defs>' +
+      '<linearGradient id="ls-grad" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0%" stop-color="var(--accent)" stop-opacity="0.22"/>' +
+      '<stop offset="100%" stop-color="var(--accent)" stop-opacity="0.02"/>' +
+      '</linearGradient>' +
+      '</defs>' +
+      '<path d="' + areaD + '" fill="url(#ls-grad)"/>' +
+      '<path d="' + d + '" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+      /* dots at first, last and midpoint */
+      '<circle cx="' + px(0).toFixed(1) + '" cy="' + py(0).toFixed(1) + '" r="3.5" fill="var(--accent)" opacity="0.7"/>' +
+      '<circle cx="' + px(pts.length - 1).toFixed(1) + '" cy="' + py(pts.length - 1).toFixed(1) + '" r="4" fill="var(--accent)"/>' +
+      labels +
+      '</svg>';
+  }
+
+  /* bind lumpsum inputs */
+  (function () {
+    function bnd(rangeId, numId) {
+      var r = document.getElementById(rangeId);
+      var n = document.getElementById(numId);
+      if (r) r.addEventListener('input', function () { if (n) n.value = r.value; calcLumpsum(); });
+      if (n) { n.addEventListener('input', calcLumpsum); n.addEventListener('change', calcLumpsum); }
+    }
+    bnd('ls-principal-range', 'ls-principal-num');
+    bnd('ls-rate-range', 'ls-rate-num');
+    bnd('ls-years-range', 'ls-years-num');
+  })();
+
+
+  /* preset chips — one-tap fill for rate + period */
+  (function () {
+    function setPair(rangeId, numId, val) {
+      var r = document.getElementById(rangeId);
+      var n = document.getElementById(numId);
+      if (r) r.value = val;
+      if (n) n.value = val;
+    }
+    function setActive(group, btn) {
+      var btns = document.querySelectorAll('[data-preset-' + group + ']');
+      for (var i = 0; i < btns.length; i++) btns[i].classList.remove('is-active');
+      btn.classList.add('is-active');
+    }
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('[data-preset-rate], [data-preset-years]');
+      if (!t) return;
+      if (t.hasAttribute('data-preset-rate')) {
+        setPair('ls-rate-range', 'ls-rate-num', t.getAttribute('data-preset-rate'));
+        setActive('rate', t);
+      } else if (t.hasAttribute('data-preset-years')) {
+        setPair('ls-years-range', 'ls-years-num', t.getAttribute('data-preset-years'));
+        setActive('years', t);
+      }
+      if (typeof calcLumpsum === 'function') calcLumpsum();
+    });
+    /* mark defaults active on load (12% / 10 yrs) */
+    var defR = document.querySelector('[data-preset-rate="12"]');  if (defR) defR.classList.add('is-active');
+    var defY = document.querySelector('[data-preset-years="10"]'); if (defY) defY.classList.add('is-active');
+  })();
+
+  /* initial render */
+  calcLumpsum();
+
+  /* ============================================================
+     TAB B — CAGR
+     ============================================================ */
+  function calcCAGR() {
+    var initial = parseFloat(document.getElementById('cagr-initial-num').value) || 0;
+    var final_  = parseFloat(document.getElementById('cagr-final-num').value) || 0;
+    var years   = parseFloat(document.getElementById('cagr-years-num').value) || 0;
+
+    if (initial <= 0 || final_ <= 0 || years <= 0) return;
+
+    var cagr    = (Math.pow(final_ / initial, 1 / years) - 1) * 100;
+    var absRet  = ((final_ - initial) / initial) * 100;
+    var gain    = final_ - initial;
+    var isNeg   = cagr < 0;
+
+    var mainCard = document.getElementById('cagr-card-main');
+    mainCard.classList.remove('is-gold', 'is-pos', 'is-neg');
+    mainCard.classList.add(isNeg ? 'is-neg' : 'is-gold');
+
+    document.getElementById('cagr-val').textContent  = fPct(cagr, 2);
+    document.getElementById('cagr-abs').textContent  = fPct(absRet, 2);
+    document.getElementById('cagr-gain').textContent = fINRS(gain);
+    document.getElementById('cagr-gain-exact').textContent = Math.abs(gain) >= 1e5 ? fINR(gain) : '';
+
+    var interpEl = document.getElementById('cagr-interp');
+    if (isNeg) {
+      interpEl.textContent = 'आपका निवेश ' + years + ' वर्ष' + (years !== 1 ? 'ों' : '') +
+        ' में ' + fPct(Math.abs(cagr), 2) + ' प्रति वर्ष की दर से घटा, जिसमें ' + fINRS(Math.abs(gain)) + ' का नुकसान हुआ।';
+    } else {
+      interpEl.textContent = 'आपका निवेश ' + years + ' वर्ष' + (years !== 1 ? 'ों' : '') +
+        ' में ' + fPct(cagr, 2) + ' प्रति वर्ष की दर से चक्रवृद्धि हुआ, ' + fINRS(initial) + ' से बढ़कर ' + fINRS(final_) + ' हो गया।';
+    }
+  }
+
+  (function () {
+    function bnd(rangeId, numId) {
+      var r = document.getElementById(rangeId);
+      var n = document.getElementById(numId);
+      if (r) r.addEventListener('input', function () { if (n) n.value = r.value; calcCAGR(); });
+      if (n) { n.addEventListener('input', calcCAGR); n.addEventListener('change', calcCAGR); }
+    }
+    bnd('cagr-initial-range', 'cagr-initial-num');
+    bnd('cagr-final-range', 'cagr-final-num');
+    bnd('cagr-years-range', 'cagr-years-num');
+  })();
+
+  calcCAGR();
+
+  /* ============================================================
+     TAB C — XIRR
+     ============================================================ */
+
+  /* ---- XIRR solver ---- */
+  function xirr(cashflows) {
+    /* cashflows: [{d: Date ms, cf: number}, ...] sorted by date */
+    if (!cashflows || cashflows.length < 2) return NaN;
+    var d0 = cashflows[0].d;
+    /* validate: need >=1 negative and >=1 positive */
+    var hasNeg = cashflows.some(function (c) { return c.cf < 0; });
+    var hasPos = cashflows.some(function (c) { return c.cf > 0; });
+    if (!hasNeg || !hasPos) return NaN;
+
+    /* NPV at rate r (r is decimal, e.g. 0.12) */
+    function npv(r) {
+      return cashflows.reduce(function (sum, c) {
+        var t = (c.d - d0) / (365 * 24 * 3600 * 1000); /* years */
+        return sum + c.cf / Math.pow(1 + r, t);
+      }, 0);
+    }
+
+    /* dNPV/dr */
+    function dnpv(r) {
+      return cashflows.reduce(function (sum, c) {
+        var t = (c.d - d0) / (365 * 24 * 3600 * 1000);
+        if (t === 0) return sum;
+        return sum - t * c.cf / Math.pow(1 + r, t + 1);
+      }, 0);
+    }
+
+    var MAX_ITER = 200, TOL = 1e-7;
+
+    /* Newton–Raphson starting at 0.1 (10%) */
+    var r = 0.1;
+    for (var i = 0; i < MAX_ITER; i++) {
+      var f  = npv(r);
+      var df = dnpv(r);
+      if (Math.abs(f) < TOL) return r * 100;
+      if (Math.abs(df) < 1e-15) break; /* derivative too flat — fall through to bisection */
+      var rn = r - f / df;
+      /* guard against rate going below -1 (undefined) */
+      if (rn <= -1) rn = (r - 1) / 2;
+      if (Math.abs(rn - r) < TOL) { r = rn; return r * 100; }
+      r = rn;
+    }
+
+    /* Bisection fallback: bracket between -0.9999 and 100 (10000%) */
+    var lo = -0.9999, hi = 100;
+    var flo = npv(lo), fhi = npv(hi);
+    /* ensure bracket */
+    if (flo * fhi > 0) {
+      /* try tighter upper bound */
+      hi = 10; fhi = npv(hi);
+      if (flo * fhi > 0) return NaN;
+    }
+    for (var j = 0; j < MAX_ITER; j++) {
+      var mid = (lo + hi) / 2;
+      var fmid = npv(mid);
+      if (Math.abs(fmid) < TOL || (hi - lo) / 2 < TOL) return mid * 100;
+      if (flo * fmid < 0) { hi = mid; fhi = fmid; }
+      else                { lo = mid; flo = fmid; }
+    }
+    return ((lo + hi) / 2) * 100;
+  }
+
+  /* ---- row management ---- */
+  var xirrRows = [];
+
+  function makeRow(dateVal, amountVal) {
+    return { date: dateVal, amount: amountVal };
+  }
+
+  function renderXirrTable() {
+    var tbody = document.getElementById('xirr-tbody');
+    tbody.innerHTML = '';
+    xirrRows.forEach(function (row, idx) {
+      var tr = document.createElement('tr');
+      tr.className = 'cf-row';
+      tr.innerHTML =
+        '<td><input type="date" value="' + escapeHTML(row.date) + '" aria-label="पंक्ति ' + (idx + 1) + ' की तारीख" data-idx="' + idx + '" class="xirr-date"></td>' +
+        '<td><input type="number" value="' + escapeHTML(String(row.amount)) + '" step="1000" aria-label="पंक्ति ' + (idx + 1) + ' की राशि" data-idx="' + idx + '" class="xirr-amount" placeholder="जैसे -100000"></td>' +
+        '<td><button class="row-del" type="button" aria-label="पंक्ति ' + (idx + 1) + ' हटाएं" data-idx="' + idx + '">&times;</button></td>';
+      tbody.appendChild(tr);
+    });
+    /* bind events */
+    tbody.querySelectorAll('.xirr-date').forEach(function (el) {
+      el.addEventListener('change', function () {
+        var i = parseInt(this.getAttribute('data-idx'), 10);
+        xirrRows[i].date = this.value;
+        calcXIRR();
+      });
+    });
+    tbody.querySelectorAll('.xirr-amount').forEach(function (el) {
+      el.addEventListener('input', function () {
+        var i = parseInt(this.getAttribute('data-idx'), 10);
+        xirrRows[i].amount = parseFloat(this.value) || 0;
+        calcXIRR();
+      });
+    });
+    tbody.querySelectorAll('.row-del').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var i = parseInt(this.getAttribute('data-idx'), 10);
+        if (xirrRows.length <= 2) return; /* keep minimum 2 rows */
+        xirrRows.splice(i, 1);
+        renderXirrTable();
+        calcXIRR();
+      });
+    });
+  }
+
+  function calcXIRR() {
+    var msgEl   = document.getElementById('xirr-msg');
+    var interpEl = document.getElementById('xirr-interp');
+
+    /* parse + sort */
+    var cfs = [];
+    var totalInvested = 0, totalReturned = 0;
+    var validDates = true;
+
+    xirrRows.forEach(function (row) {
+      var d = parseDateStr(row.date);
+      if (isNaN(d)) { validDates = false; return; }
+      var amt = parseFloat(row.amount) || 0;
+      if (amt < 0) totalInvested += Math.abs(amt);
+      if (amt > 0) totalReturned += amt;
+      cfs.push({ d: d, cf: amt });
+    });
+
+    if (!validDates) {
+      showXirrMsg('कृपया सभी पंक्तियों में वैध तारीखें दर्ज करें।'); return;
+    }
+
+    cfs.sort(function (a, b) { return a.d - b.d; });
+
+    var hasNeg = cfs.some(function (c) { return c.cf < 0; });
+    var hasPos = cfs.some(function (c) { return c.cf > 0; });
+
+    if (!hasNeg || !hasPos) {
+      showXirrMsg('कम से कम एक निवेश (ऋणात्मक) और एक रिडेम्पशन या वर्तमान मूल्य (धनात्मक) जोड़ें।'); return;
+    }
+
+    var rate = xirr(cfs);
+    var netGain = totalReturned - totalInvested;
+
+    if (!isFinite(rate)) {
+      showXirrMsg('परिणाम अभिसारित नहीं हो सका। कृपया अपने कैशफ़्लो जाँचें — सुनिश्चित करें कि कम से कम एक चिह्न परिवर्तन हो।'); return;
+    }
+
+    /* update cards */
+    msgEl.style.display = 'none';
+    interpEl.style.display = '';
+
+    var mainCard = document.getElementById('xirr-card-main');
+    mainCard.classList.remove('is-gold', 'is-pos', 'is-neg');
+    mainCard.classList.add(rate < 0 ? 'is-neg' : 'is-gold');
+
+    document.getElementById('xirr-val').textContent      = fPct(rate, 2) + ' प्रति वर्ष';
+    document.getElementById('xirr-invested').textContent = fINRS(totalInvested);
+    document.getElementById('xirr-returned').textContent = fINRS(totalReturned);
+    document.getElementById('xirr-gain').textContent     = fINRS(netGain);
+    document.getElementById('xirr-gain-exact').textContent = Math.abs(netGain) >= 1e5 ? fINR(netGain) : '';
+
+    if (rate < 0) {
+      interpEl.textContent = 'इन कैशफ़्लो में ' + fPct(Math.abs(rate), 2) + ' प्रति वर्ष की हानि निहित है। अपनी निवेश तारीखें और राशियाँ जाँचें।';
+    } else if (rate < 6) {
+      interpEl.textContent = fPct(rate, 2) + ' प्रति वर्ष का XIRR सामान्य फिक्स्ड-इनकम बेंचमार्क से नीचे है। पोर्टफोलियो आवंटन की समीक्षा पर विचार करें।';
+    } else if (rate < 12) {
+      interpEl.textContent = fPct(rate, 2) + ' प्रति वर्ष का XIRR एक ठोस रिटर्न है, जो लंबी अवधि में व्यापक इक्विटी सूचकांकों के अनुरूप है।';
+    } else {
+      interpEl.textContent = fPct(rate, 2) + ' प्रति वर्ष का XIRR मज़बूत अल्फा है। इन कैशफ़्लो ने सूचकांक-स्तर के रिटर्न से काफी ऊपर चक्रवृद्धि की है।';
+    }
+  }
+
+  function showXirrMsg(msg) {
+    var msgEl    = document.getElementById('xirr-msg');
+    var interpEl = document.getElementById('xirr-interp');
+    msgEl.textContent = msg;
+    msgEl.style.display = '';
+    interpEl.style.display = 'none';
+    ['xirr-val','xirr-invested','xirr-returned','xirr-gain'].forEach(function (id) {
+      document.getElementById(id).textContent = '—';
+    });
+    document.getElementById('xirr-gain-exact').textContent = '';
+    document.getElementById('xirr-card-main').classList.remove('is-gold','is-neg','is-pos');
+  }
+
+  /* ---- escapeHTML local helper (tools.js may not have loaded yet at DOMContentLoaded) ---- */
+  function escapeHTML(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* ---- pre-fill sample rows ---- */
+  var t = today();
+  var t3  = dateOffset(-Math.round(3 * 365));
+  var t15 = dateOffset(-Math.round(1.5 * 365));
+
+  xirrRows = [
+    makeRow(t3,  -100000),
+    makeRow(t15, -50000),
+    makeRow(t,    200000)
+  ];
+
+  renderXirrTable();
+  calcXIRR();
+
+  /* ---- add-row button ---- */
+  document.getElementById('xirr-add-row').addEventListener('click', function () {
+    xirrRows.push(makeRow(today(), 0));
+    renderXirrTable();
+    /* focus the new date input */
+    var dates = document.querySelectorAll('.xirr-date');
+    if (dates.length) dates[dates.length - 1].focus();
+  });
+
+  /* ============================================================
+     COPY RESULT
+     ============================================================ */
+  window.doCopy = function () {
+    var btn = document.getElementById('copy-btn');
+    var activePanel = null;
+    document.querySelectorAll('[data-panel]').forEach(function (p) {
+      if (p.style.display !== 'none') activePanel = p.getAttribute('data-panel');
+    });
+    var text = '';
+    if (activePanel === 'a') {
+      text = 'रिटर्न कैलकुलेटर — एकमुश्त\n' +
+        'निवेशित: ' + document.getElementById('ls-invested').textContent + '\n' +
+        'अनु. लाभ: ' + document.getElementById('ls-gain').textContent + '\n' +
+        'भविष्य मूल्य: ' + document.getElementById('ls-fv').textContent + '\n' +
+        document.getElementById('ls-interp').textContent + '\n' +
+        'via harshaldasani.pages.dev/hi/tools/returns-calculator/';
+    } else if (activePanel === 'b') {
+      text = 'रिटर्न कैलकुलेटर — CAGR\n' +
+        'CAGR: ' + document.getElementById('cagr-val').textContent + '\n' +
+        'कुल रिटर्न: ' + document.getElementById('cagr-abs').textContent + '\n' +
+        'लाभ: ' + document.getElementById('cagr-gain').textContent + '\n' +
+        document.getElementById('cagr-interp').textContent + '\n' +
+        'via harshaldasani.pages.dev/hi/tools/returns-calculator/';
+    } else if (activePanel === 'c') {
+      text = 'रिटर्न कैलकुलेटर — XIRR\n' +
+        'XIRR: ' + document.getElementById('xirr-val').textContent + '\n' +
+        'कुल निवेश: ' + document.getElementById('xirr-invested').textContent + '\n' +
+        'कुल वापसी: ' + document.getElementById('xirr-returned').textContent + '\n' +
+        'शुद्ध लाभ: ' + document.getElementById('xirr-gain').textContent + '\n' +
+        document.getElementById('xirr-interp').textContent + '\n' +
+        'via harshaldasani.pages.dev/hi/tools/returns-calculator/';
+    }
+    if (typeof copyResult === 'function') {
+      copyResult(text, btn);
+    } else {
+      try {
+        navigator.clipboard.writeText(text).then(function () {
+          var o = btn.textContent; btn.textContent = 'कॉपी हो गया ✓';
+          setTimeout(function () { btn.textContent = o; }, 1600);
+        });
+      } catch (e) {}
+    }
+  };
+
+}); /* end DOMContentLoaded */
+</script>
+<script src="/lang-switch.js" defer></script>
+</body>
+</html>
