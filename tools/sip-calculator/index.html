@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>SIP Calculator | Harshal Dasani</title>
+<meta name="description" content="Free SIP Calculator — see what a monthly Systematic Investment Plan could grow to. Invested amount, estimated returns, and total value with a growth chart. By Harshal Dasani, INVasset PMS.">
+<meta name="keywords" content="SIP calculator, systematic investment plan, mutual fund SIP, SIP returns, monthly investment calculator, India SIP">
+<meta name="author" content="Harshal Dasani">
+<meta http-equiv="content-language" content="en-IN">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="googlebot" content="index, follow">
+
+<link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/sip-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/sip-calculator/">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link rel="canonical" href="https://harshaldasani.pages.dev/tools/sip-calculator/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Harshal Dasani">
+<meta name="application-name" content="Harshal Dasani">
+<meta name="publisher" content="Harshal Dasani">
+<meta property="og:title" content="SIP Calculator | Harshal Dasani">
+<meta property="og:description" content="See what a monthly SIP could grow to — invested amount, estimated returns, and total value. Free educational tool by Harshal Dasani, INVasset PMS.">
+<meta property="og:url" content="https://harshaldasani.pages.dev/tools/sip-calculator/">
+<meta property="og:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="SIP Calculator by Harshal Dasani">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="516">
+<meta property="og:locale" content="en_IN">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@HarshalDasanii">
+<meta name="twitter:creator" content="@HarshalDasanii">
+<meta name="twitter:title" content="SIP Calculator | Harshal Dasani">
+<meta name="twitter:description" content="See what a monthly SIP could grow to — invested amount, estimated returns, and total value. Free educational tool.">
+<meta name="twitter:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
+
+<meta name="theme-color" content="#0E0C0A">
+
+<link rel="manifest" href="../../manifest.json">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../../icon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="stylesheet" href="../tools.css">
+
+<!-- JSON-LD: WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "SIP Calculator",
+  "url": "https://harshaldasani.pages.dev/tools/sip-calculator/",
+  "description": "Free SIP (Systematic Investment Plan) calculator — see what a monthly investment could grow to over time. Estimate invested amount, returns, and total value.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "isAccessibleForFree": true,
+  "author": {
+    "@type": "Person",
+    "name": "Harshal Dasani",
+    "url": "https://harshaldasani.pages.dev/",
+    "jobTitle": "Business Head",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "INVasset PMS",
+      "url": "https://www.invasset.com/"
+    }
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  }
+}
+</script>
+
+<!-- JSON-LD: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a SIP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A SIP (Systematic Investment Plan) is a method of investing a fixed amount in a mutual fund at regular intervals — typically monthly. Instead of investing a lump sum, you invest a smaller amount each month, which helps average your purchase cost over time and instils financial discipline."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is SIP return calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SIP returns are calculated using the annuity-due formula for future value: FV = P × ((1+i)^n − 1) / i × (1+i), where P is the monthly investment, i is the monthly rate (annual rate ÷ 12), and n is the total number of months. This assumes each instalment is invested at the start of the month and compounds monthly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are SIP returns guaranteed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. SIP returns are not guaranteed. Mutual fund investments are subject to market risks and actual returns will vary depending on the fund's performance, market conditions, and investment horizon. The rate of return used in this calculator is an assumption for illustration purposes only. Past performance is not indicative of future results. Please read all scheme-related documents carefully and consult a registered investment adviser before investing."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+/* ── page-level overrides & chart styles ── */
+.chart-wrap {
+  margin-top: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.chart-wrap svg { display: block; width: 100%; }
+
+.donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin: 18px 0 0;
+  flex-wrap: wrap;
+}
+.donut-wrap svg { flex-shrink: 0; }
+.donut-legend { display: flex; flex-direction: column; gap: 10px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-soft); }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.legend-dot.invested { background: var(--navy, #0A2754); }
+html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
+.legend-dot.returns { background: var(--gold, #A67D3E); }
+.legend-item strong { color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* result panel sticky on scroll for wide screens */
+@media (min-width: 861px) {
+  .results-panel { position: sticky; top: 68px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ── Masthead ── -->
+  <header class="masthead">
+    <a class="mast-back" href="https://harshaldasani.pages.dev/tools/">&larr; Tools</a>
+    <div class="mast-trail">
+      <a href="https://harshaldasani.pages.dev/">Harshal Dasani</a> &middot;
+      <a href="https://harshaldasani.pages.dev/tools/">Tools</a> &middot;
+      <span>SIP Calculator</span>
+    </div>
+    <button class="theme-toggle" onclick="HDtoggleTheme()" aria-label="Toggle theme" type="button">
+      <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <!-- ── Tool header ── -->
+  <div class="tool-head">
+    <h1 class="tool-h1">SIP Calculator</h1>
+    <p class="tool-dek">See what a monthly Systematic Investment Plan could grow to — invested amount, estimated returns, and total value, charted over time.</p>
+    <p class="tool-byline">By <b>Harshal Dasani</b> &middot; Business Head, INVasset PMS &middot; <a href="https://harshaldasani.pages.dev/">harshaldasani.pages.dev</a></p>
+  </div>
+
+  <!-- ── Main grid ── -->
+  <div class="tool-grid">
+
+    <!-- LEFT: inputs -->
+    <div class="panel">
+      <h2 class="panel-title">Your SIP</h2>
+
+      <!-- Monthly investment -->
+      <div class="input-row">
+        <label for="num-monthly">Monthly investment</label>
+        <div class="input-line">
+          <input type="range" id="sld-monthly" min="500" max="500000" step="500" value="25000" aria-label="Monthly investment slider">
+          <span class="num-wrap">
+            <span class="unit">₹</span>
+            <input type="number" id="num-monthly" min="500" max="500000" step="500" value="25000" aria-label="Monthly investment amount">
+          </span>
+        </div>
+      </div>
+
+      <!-- Expected return -->
+      <div class="input-row">
+        <label for="num-return">
+          Expected / assumed return
+          <span class="hint">(not guaranteed)</span>
+        </label>
+        <div class="input-line">
+          <input type="range" id="sld-return" min="1" max="30" step="0.5" value="12" aria-label="Expected annual return slider">
+          <span class="num-wrap">
+            <input type="number" id="num-return" min="1" max="30" step="0.5" value="12" aria-label="Expected annual return percentage">
+            <span class="unit">% p.a.</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Period -->
+      <div class="input-row">
+        <label for="num-years">Investment period</label>
+        <div class="input-line">
+          <input type="range" id="sld-years" min="1" max="40" step="1" value="10" aria-label="Investment period slider">
+          <span class="num-wrap">
+            <input type="number" id="num-years" min="1" max="40" step="1" value="10" aria-label="Investment period in years">
+            <span class="unit">yrs</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <details class="how">
+        <summary>How this works</summary>
+        <div class="how-body">
+          <p>This calculator uses the <strong>annuity-due</strong> formula — each monthly instalment is assumed to be invested at the <em>start</em> of the month and compounds monthly:</p>
+          <p><code>FV = P &times; ((1 + i)&sup;n &minus; 1) / i &times; (1 + i)</code></p>
+          <p>Where <code>P</code> = monthly investment, <code>i</code> = annual rate &divide; 12, <code>n</code> = years &times; 12.</p>
+          <p>At 0% return the result is simply <code>P &times; n</code> (no compounding). All values are in nominal (not inflation-adjusted) rupees. The assumed return rate is <strong>fixed for the entire period</strong> — real fund returns fluctuate year to year.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- RIGHT: results -->
+    <div class="panel results-panel" aria-live="polite" aria-atomic="true" id="results-region">
+      <h2 class="panel-title">Estimated outcome</h2>
+
+      <!-- Stat cards -->
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-card" id="card-invested">
+          <div class="stat-label">Invested amount</div>
+          <div class="stat-value" id="val-invested">—</div>
+          <div class="stat-exact" id="exact-invested"></div>
+        </div>
+        <div class="stat-card is-gold" id="card-returns">
+          <div class="stat-label">Est. returns</div>
+          <div class="stat-value" id="val-returns">—</div>
+          <div class="stat-exact" id="exact-returns"></div>
+        </div>
+        <div class="stat-card is-gold big" id="card-total">
+          <div class="stat-label">Total value</div>
+          <div class="stat-value" id="val-total">—</div>
+          <div class="stat-exact" id="exact-total"></div>
+        </div>
+      </div>
+
+      <!-- Donut chart -->
+      <div class="donut-wrap" id="donut-wrap">
+        <svg id="donut-svg" width="110" height="110" viewBox="0 0 110 110" aria-label="Donut chart: invested vs returns proportion" role="img">
+          <circle id="donut-bg" cx="55" cy="55" r="40" fill="none" stroke="var(--border)" stroke-width="18"/>
+          <circle id="donut-invested" cx="55" cy="55" r="40" fill="none" stroke="#0A2754" stroke-width="18"
+            stroke-dasharray="0 251.2" stroke-linecap="butt" transform="rotate(-90 55 55)"/>
+          <circle id="donut-returns" cx="55" cy="55" r="40" fill="none" stroke="var(--gold,#A67D3E)" stroke-width="18"
+            stroke-dasharray="0 251.2" stroke-linecap="butt" transform="rotate(-90 55 55)"/>
+        </svg>
+        <div class="donut-legend">
+          <div class="legend-item">
+            <span class="legend-dot invested"></span>
+            <span>Invested &nbsp;<strong id="leg-invested-pct">—</strong></span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot returns"></span>
+            <span>Est. returns &nbsp;<strong id="leg-returns-pct">—</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth chart -->
+      <div class="chart-wrap" id="chart-wrap">
+        <svg id="growth-svg" viewBox="0 0 540 220" preserveAspectRatio="xMidYMid meet" aria-label="Growth chart: total value and invested amount over time" role="img"></svg>
+      </div>
+
+      <!-- Interpretation -->
+      <p class="interp" id="interp-line">Enter values above to see your estimate.</p>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button class="btn" id="btn-copy" type="button" onclick="doCopy(this)">Copy result</button>
+        <a class="btn btn-link" href="https://harshaldasani.pages.dev/blog/" target="_blank" rel="noopener">
+          SIPs are about discipline through cycles — read Harshal's market notes &rarr;
+        </a>
+        <a class="btn btn-gold" href="https://www.invasset.com/" target="_blank" rel="noopener">
+          Explore INVasset PMS &rarr;
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /tool-grid -->
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <b>Returns are assumed for illustration and not guaranteed. Mutual-fund investments are subject to market risks; read all scheme-related documents carefully.</b><br><br>
+    This is a free educational tool for general information only. It is not investment, tax or legal advice, nor a recommendation or solicitation to buy or sell any security or to avail of any service. Calculations are illustrative and based on the assumptions and inputs you provide; actual outcomes will differ. Securities and mutual-fund investments are subject to market risks — read all related documents carefully. Past performance is not indicative of future results. Please consult a qualified, registered adviser before making any financial decision. Harshal Dasani is Business Head at INVasset PMS (SEBI Reg. INP000006907).
+  </div>
+
+  <!-- Footer -->
+  <footer class="tool-footer">
+    <div>&copy; 2026 Harshal Dasani &middot; Business Head, INVasset PMS</div>
+    <div><a href="https://harshaldasani.pages.dev/">harshaldasani.pages.dev</a></div>
+  </footer>
+
+</div><!-- /page -->
+
+<script defer src="../tools.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* ── bind inputs ── */
+  var monthly = bindInput('sld-monthly', 'num-monthly', recompute, { min: 500, max: 500000 });
+  var retPct  = bindInput('sld-return',  'num-return',  recompute, { min: 1,   max: 30 });
+  var years   = bindInput('sld-years',   'num-years',   recompute, { min: 1,   max: 40 });
+
+  /* ── SIP formula (annuity-due, monthly compounding) ── */
+  function calcSIP(P, annualPct, n) {
+    var i = annualPct / 100 / 12;
+    if (i === 0) return P * n;
+    return P * ((Math.pow(1 + i, n) - 1) / i) * (1 + i);
+  }
+
+  /* ── main recompute ── */
+  function recompute() {
+    var P  = monthly.value();
+    var r  = retPct.value();
+    var Y  = years.value();
+    var n  = Y * 12;
+
+    var fv       = calcSIP(P, r, n);
+    var invested = P * n;
+    var returns  = fv - invested;
+
+    /* stat cards */
+    document.getElementById('val-invested').textContent  = formatINRShort(invested);
+    document.getElementById('exact-invested').textContent = formatINR(invested);
+    document.getElementById('val-returns').textContent   = formatINRShort(returns);
+    document.getElementById('exact-returns').textContent  = formatINR(returns);
+    document.getElementById('val-total').textContent     = formatINRShort(fv);
+    document.getElementById('exact-total').textContent   = formatINR(fv);
+
+    /* donut */
+    drawDonut(invested, returns, fv);
+
+    /* growth chart */
+    drawGrowthChart(P, r, Y);
+
+    /* interpretation */
+    var interpEl = document.getElementById('interp-line');
+    interpEl.innerHTML =
+      'Investing <strong>' + escapeHTML(formatINR(P)) + '</strong> a month for ' +
+      '<strong>' + escapeHTML(String(Y)) + ' year' + (Y !== 1 ? 's' : '') + '</strong> at an assumed ' +
+      '<strong>' + escapeHTML(String(r)) + '%</strong> could grow to ' +
+      '<strong>' + escapeHTML(formatINR(fv)) + '</strong> — about ' +
+      '<strong>' + escapeHTML(formatINR(returns)) + '</strong> of that is estimated growth.';
+
+    /* store for copy */
+    window._sipResult = {
+      P: P, r: r, Y: Y, fv: fv, invested: invested, returns: returns
+    };
+  }
+
+  /* ── donut chart ── */
+  function drawDonut(invested, returns, total) {
+    var CIRC = 2 * Math.PI * 40; /* 251.33 */
+    var invFrac = total > 0 ? invested / total : 1;
+    var retFrac = total > 0 ? returns / total : 0;
+    var invLen  = invFrac * CIRC;
+    var retLen  = retFrac * CIRC;
+
+    var dInv = document.getElementById('donut-invested');
+    var dRet = document.getElementById('donut-returns');
+
+    /* invested arc starts at -90 (top) */
+    dInv.setAttribute('stroke-dasharray', invLen.toFixed(2) + ' ' + CIRC.toFixed(2));
+    dInv.setAttribute('stroke-dashoffset', '0');
+    dInv.setAttribute('transform', 'rotate(-90 55 55)');
+
+    /* returns arc starts right after invested arc */
+    var retOffset = -(invLen);
+    dRet.setAttribute('stroke-dasharray', retLen.toFixed(2) + ' ' + CIRC.toFixed(2));
+    dRet.setAttribute('stroke-dashoffset', retOffset.toFixed(2));
+    dRet.setAttribute('transform', 'rotate(-90 55 55)');
+
+    document.getElementById('leg-invested-pct').textContent =
+      total > 0 ? formatPct(invFrac * 100, 1) : '—';
+    document.getElementById('leg-returns-pct').textContent =
+      total > 0 ? formatPct(retFrac * 100, 1) : '—';
+  }
+
+  /* ── growth chart ── */
+  function drawGrowthChart(P, r, maxYears) {
+    var W = 540, H = 220;
+    var PAD = { top: 16, right: 20, bottom: 36, left: 62 };
+    var innerW = W - PAD.left - PAD.right;
+    var innerH = H - PAD.top - PAD.bottom;
+
+    /* data: one point per year from 0 to maxYears */
+    var fvPoints = [], invPoints = [];
+    for (var y = 0; y <= maxYears; y++) {
+      var n = y * 12;
+      fvPoints.push(calcSIP(P, r, n));
+      invPoints.push(P * n);
+    }
+
+    var maxVal = fvPoints[fvPoints.length - 1];
+    var minVal = 0;
+    var valRange = maxVal - minVal || 1;
+
+    function xPos(y) { return PAD.left + (y / maxYears) * innerW; }
+    function yPos(v) { return PAD.top + innerH - ((v - minVal) / valRange) * innerH; }
+
+    /* build path strings */
+    function buildPath(pts) {
+      return pts.map(function (v, i) {
+        return (i === 0 ? 'M' : 'L') + xPos(i).toFixed(1) + ',' + yPos(v).toFixed(1);
+      }).join(' ');
+    }
+
+    /* area fill for invested */
+    var areaInv = buildPath(invPoints) + ' L' + xPos(maxYears).toFixed(1) + ',' + (PAD.top + innerH).toFixed(1) +
+                  ' L' + PAD.left.toFixed(1) + ',' + (PAD.top + innerH).toFixed(1) + ' Z';
+
+    /* area fill for FV (total between FV and invested) */
+    var areaFV = buildPath(fvPoints);
+    var areaFVfull = areaFV + ' L' + xPos(maxYears).toFixed(1) + ',' + (PAD.top + innerH).toFixed(1) +
+                     ' L' + PAD.left.toFixed(1) + ',' + (PAD.top + innerH).toFixed(1) + ' Z';
+
+    /* y-axis ticks */
+    var tickCount = 4;
+    var yTicks = [];
+    for (var t = 0; t <= tickCount; t++) {
+      yTicks.push(minVal + (t / tickCount) * maxVal);
+    }
+
+    /* x-axis ticks: up to 8, always include first/last */
+    var xTickStep = maxYears <= 10 ? 2 : maxYears <= 20 ? 5 : 10;
+    var xTicks = [];
+    for (var xt = 0; xt <= maxYears; xt += xTickStep) { xTicks.push(xt); }
+    if (xTicks[xTicks.length - 1] !== maxYears) xTicks.push(maxYears);
+
+    /* SVG string */
+    var defs = '<defs>' +
+      '<linearGradient id="gFV" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="var(--gold,#A67D3E)" stop-opacity="0.28"/>' +
+        '<stop offset="100%" stop-color="var(--gold,#A67D3E)" stop-opacity="0.04"/>' +
+      '</linearGradient>' +
+      '<linearGradient id="gInv" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="#0A2754" stop-opacity="0.22"/>' +
+        '<stop offset="100%" stop-color="#0A2754" stop-opacity="0.04"/>' +
+      '</linearGradient>' +
+    '</defs>';
+
+    /* grid lines */
+    var gridLines = yTicks.map(function (v) {
+      var y = yPos(v).toFixed(1);
+      return '<line x1="' + PAD.left + '" y1="' + y + '" x2="' + (PAD.left + innerW) + '" y2="' + y +
+             '" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 4"/>';
+    }).join('');
+
+    /* y-axis labels */
+    var yLabels = yTicks.map(function (v) {
+      var y = yPos(v).toFixed(1);
+      var label = v >= 1e7 ? (v / 1e7).toFixed(1) + 'Cr' :
+                  v >= 1e5 ? (v / 1e5).toFixed(1) + 'L' :
+                  v >= 1000 ? Math.round(v / 1000) + 'K' : Math.round(v).toString();
+      return '<text x="' + (PAD.left - 6) + '" y="' + (parseFloat(y) + 4) + '" text-anchor="end" ' +
+             'font-size="10" fill="var(--text-soft)" font-family="Inter,sans-serif">' + label + '</text>';
+    }).join('');
+
+    /* x-axis labels */
+    var xLabels = xTicks.map(function (xt) {
+      var x = xPos(xt).toFixed(1);
+      return '<text x="' + x + '" y="' + (PAD.top + innerH + 16) + '" text-anchor="middle" ' +
+             'font-size="10" fill="var(--text-soft)" font-family="Inter,sans-serif">' + xt + 'y</text>';
+    }).join('');
+
+    /* axis labels */
+    var axisLabel = '<text x="' + (PAD.left + innerW / 2) + '" y="' + (H - 2) + '" text-anchor="middle" ' +
+                    'font-size="9" fill="var(--text-soft)" font-family="Inter,sans-serif" letter-spacing="0.5">YEARS</text>';
+
+    /* legend inside chart */
+    var legend = '<g>' +
+      '<rect x="' + (PAD.left + 6) + '" y="' + (PAD.top + 6) + '" width="10" height="10" rx="2" fill="var(--gold,#A67D3E)" opacity="0.8"/>' +
+      '<text x="' + (PAD.left + 20) + '" y="' + (PAD.top + 15) + '" font-size="10" fill="var(--text-soft)" font-family="Inter,sans-serif">Total value</text>' +
+      '<rect x="' + (PAD.left + 86) + '" y="' + (PAD.top + 6) + '" width="10" height="10" rx="2" fill="#0A2754" opacity="0.7"/>' +
+      '<text x="' + (PAD.left + 100) + '" y="' + (PAD.top + 15) + '" font-size="10" fill="var(--text-soft)" font-family="Inter,sans-serif">Invested</text>' +
+    '</g>';
+
+    var svgContent = defs + gridLines + yLabels + xLabels + axisLabel +
+      '<path d="' + areaFVfull + '" fill="url(#gFV)"/>' +
+      '<path d="' + areaInv + '" fill="url(#gInv)"/>' +
+      '<path d="' + buildPath(invPoints) + '" fill="none" stroke="#0A2754" stroke-width="1.8" stroke-opacity="0.7" stroke-dasharray="4 3"/>' +
+      '<path d="' + buildPath(fvPoints) + '" fill="none" stroke="var(--gold,#A67D3E)" stroke-width="2.2"/>' +
+      legend;
+
+    document.getElementById('growth-svg').innerHTML = svgContent;
+  }
+
+  /* ── copy result ── */
+  window.doCopy = function (btn) {
+    var d = window._sipResult;
+    if (!d) return;
+    var text =
+      'SIP Calculator Result (harshaldasani.pages.dev/tools/sip-calculator/)\n' +
+      'Monthly investment: ' + formatINR(d.P) + '\n' +
+      'Assumed annual return: ' + d.r + '%\n' +
+      'Period: ' + d.Y + ' year' + (d.Y !== 1 ? 's' : '') + '\n' +
+      '---\n' +
+      'Total invested: ' + formatINR(d.invested) + '\n' +
+      'Est. returns: ' + formatINR(d.returns) + '\n' +
+      'Total value: ' + formatINR(d.fv) + '\n' +
+      '(Illustrative only. Not a guarantee. Mutual fund investments are subject to market risks.)';
+    copyResult(text, btn);
+  };
+
+  /* ── initial compute ── */
+  recompute();
+
+});
+</script>
+
+</body>
+</html>

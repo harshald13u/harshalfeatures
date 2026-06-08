@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>Oil-to-India Impact Estimator | Harshal Dasani</title>
+<meta name="description" content="Move the Brent crude price and see what it does to India's oil import bill, headline CPI, and equity market regime — based on Harshal Dasani's published framework.">
+<meta name="author" content="Harshal Dasani">
+<meta http-equiv="content-language" content="en-IN">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<link rel="canonical" href="https://harshaldasani.pages.dev/tools/oil-impact-estimator/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Harshal Dasani">
+<meta property="og:title" content="Oil-to-India Impact Estimator | Harshal Dasani">
+<meta property="og:description" content="Move the Brent crude price and see what it does to India's oil import bill, headline CPI, and equity market regime — based on Harshal Dasani's published framework.">
+<meta property="og:url" content="https://harshaldasani.pages.dev/tools/oil-impact-estimator/">
+<meta property="og:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="516">
+<meta property="og:image:alt" content="Harshal Dasani — Oil-to-India Impact Estimator">
+<meta property="og:locale" content="en_IN">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@HarshalDasanii">
+<meta name="twitter:creator" content="@HarshalDasanii">
+<meta name="twitter:title" content="Oil-to-India Impact Estimator | Harshal Dasani">
+<meta name="twitter:description" content="Move the Brent crude price and see what it does to India's oil import bill, headline CPI, and equity market regime.">
+<meta name="twitter:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
+
+<meta name="theme-color" content="#0E0C0A">
+
+<link rel="manifest" href="../../manifest.json">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../../icon-192.png">
+
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="stylesheet" href="../tools.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Oil-to-India Impact Estimator",
+  "url": "https://harshaldasani.pages.dev/tools/oil-impact-estimator/",
+  "applicationCategory": "FinanceApplication",
+  "description": "Move the Brent crude price and see what it does to India's oil import bill, headline CPI, and equity market regime.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Harshal Dasani",
+    "url": "https://harshaldasani.pages.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ── Masthead ── -->
+  <header class="masthead">
+    <a class="mast-back" href="https://harshaldasani.pages.dev/tools/">&larr; Tools</a>
+    <div class="mast-trail"><a href="https://harshaldasani.pages.dev/">Harshal Dasani</a> &middot; <a href="https://harshaldasani.pages.dev/tools/">Tools</a> &middot; <span>Oil Impact</span></div>
+    <button class="theme-toggle" onclick="HDtoggleTheme()" aria-label="Toggle theme" type="button">
+      <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <!-- ── Tool header ── -->
+  <div class="tool-head">
+    <h1 class="tool-h1">Oil-to-India Impact Estimator</h1>
+    <p class="tool-dek">Move the Brent crude price and see — on Harshal's own published framework — what it does to India's oil import bill, headline inflation, and the market's directional regime.</p>
+    <p class="tool-byline">By <b>Harshal Dasani</b> &middot; Business Head, INVasset PMS &middot; Illustrative scenario model, not a forecast</p>
+  </div>
+
+  <!-- ── Main grid ── -->
+  <div class="tool-grid">
+
+    <!-- LEFT: Inputs -->
+    <div class="panel">
+      <p class="panel-title">Inputs</p>
+
+      <!-- Brent Price -->
+      <div class="input-row">
+        <label for="num-brent">Brent Crude Price <span class="hint">(current or scenario)</span></label>
+        <div class="input-line">
+          <input type="range" id="sl-brent" min="40" max="160" step="1" value="95" aria-label="Brent crude price slider">
+          <span class="num-wrap">
+            <input type="number" id="num-brent" min="40" max="160" step="1" value="95" aria-label="Brent crude price">
+            <span class="unit">US$/bbl</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Assumptions (collapsible) -->
+      <details id="assumptions-panel" style="margin-top:4px;">
+        <summary style="cursor:pointer; font-size:13px; font-weight:600; color:var(--text-soft); letter-spacing:.4px; padding:10px 0; list-style:none; display:flex; align-items:center; justify-content:space-between;" aria-controls="assumptions-body">
+          <span>Assumptions</span>
+          <span class="assump-arrow" style="font-size:16px; color:var(--accent); transition:transform .2s;">+</span>
+        </summary>
+        <div id="assumptions-body" style="padding-bottom:8px;">
+          <p class="note" style="margin-bottom:16px;">These reflect published rules of thumb. Adjust to run alternative scenarios.</p>
+
+          <div class="input-row">
+            <label for="num-baseline">Calm baseline Brent <span class="hint">(for delta calculation)</span></label>
+            <div class="input-line">
+              <span class="num-wrap" style="flex:1; min-width:0;">
+                <input type="number" id="num-baseline" min="40" max="120" step="1" value="75" aria-label="Baseline Brent price">
+                <span class="unit">US$/bbl</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <label for="num-bill-sens">Import-bill sensitivity <span class="hint">(per $10 move in Brent)</span></label>
+            <div class="input-line">
+              <span class="num-wrap" style="flex:1; min-width:0;">
+                <input type="number" id="num-bill-sens" min="1" max="50" step="0.5" value="13.5" aria-label="Import bill sensitivity per 10 dollars">
+                <span class="unit">US$ bn / yr</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <label for="num-cpi-sens">CPI sensitivity <span class="hint">(per $10 move in Brent)</span></label>
+            <div class="input-line">
+              <span class="num-wrap" style="flex:1; min-width:0;">
+                <input type="number" id="num-cpi-sens" min="1" max="100" step="1" value="30" aria-label="CPI sensitivity per 10 dollars">
+                <span class="unit">bps</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- RIGHT: Outputs -->
+    <div class="panel" aria-live="polite" aria-atomic="true" id="results-panel">
+
+      <!-- Regime badge -->
+      <div style="margin-bottom:14px;">
+        <span id="regime-badge" class="regime-badge pos">Relief Rally</span>
+      </div>
+
+      <!-- Regime band -->
+      <div class="regime-band" role="img" aria-label="Brent price regime zones" id="regime-band">
+        <span class="zone z-pos" title="Below $90 — Relief Rally">Below $90</span>
+        <span class="zone z-warn" title="$90–$100 — Range-Bound">$90–$100</span>
+        <span class="zone z-neg" title="Above $100 — Downward Pressure">Above $100</span>
+        <span class="regime-marker" id="regime-marker" style="left:45.8%;" aria-hidden="true"></span>
+      </div>
+      <p class="note" style="margin-bottom:16px; font-size:11px;">Current Brent vs. three market regimes. Marker tracks your input.</p>
+
+      <!-- Stat cards -->
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-card is-neg" id="card-bill">
+          <div class="stat-label">Extra annual oil import bill</div>
+          <div class="stat-value" id="val-bill">+US$27.0 bn</div>
+          <div class="stat-exact" id="val-bill-exact">vs. $75 baseline · annualised</div>
+        </div>
+        <div class="stat-card is-neg" id="card-cpi">
+          <div class="stat-label">Headline CPI impact (illustrative)</div>
+          <div class="stat-value" id="val-cpi">+60 bps</div>
+          <div class="stat-exact" id="val-cpi-exact">basis points added to CPI</div>
+        </div>
+      </div>
+
+      <!-- Qualitative macro context -->
+      <div style="background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:16px;" id="macro-context">
+        <div style="font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--text-soft); margin-bottom:10px;">Macro Context <span style="font-weight:400; text-transform:none; letter-spacing:0;">(from Harshal's analysis, not live data)</span></div>
+        <div id="macro-flags" style="font-size:13.5px; color:var(--text); line-height:1.6;"></div>
+        <div style="margin-top:10px; font-size:12px; color:var(--text-soft);">FY26 anchors: oil trade deficit ~$120 bn &middot; rupee near &#8377;96/$ &middot; CAD trending 2.0–2.2% of GDP</div>
+      </div>
+
+      <!-- Interpretation line -->
+      <div class="interp" id="interp-line">
+        At $95 Brent, India sits in the range-bound zone — the import bill rises by ~US$27.0 bn a year and adds ~60 bps to inflation, with the rupee under modest pressure.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Winners / Losers strip ── -->
+  <div style="margin-top:24px;">
+    <p class="panel-title" style="font-family:'Fraunces',serif; font-weight:600; font-size:18px; color:var(--text); margin:0 0 12px;">Sector Impact Snapshot</p>
+    <div class="wl-grid">
+      <div class="wl-card neg">
+        <h4>Pressured at Higher Oil</h4>
+        <p>Oil marketing companies (IOC, BPCL, HPCL) face margin compression when crude rises faster than retail price hikes. Paints (Asian Paints, Berger) see raw-material cost pressure. Aviation faces a structurally higher fuel bill. Tyre, plastics, and chemicals sectors bear elevated feedstock costs.</p>
+      </div>
+      <div class="wl-card pos">
+        <h4>Relative Beneficiaries</h4>
+        <p>Upstream producers (ONGC, Oil India) earn more per barrel, directly boosting realisations. Rupee-earning IT and pharma exporters benefit from a weaker rupee that follows higher oil, translating overseas revenues into more domestic currency.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── How this works ── -->
+  <details class="how" style="margin-top:24px;">
+    <summary>How this works</summary>
+    <div class="how-body">
+      <p><strong>Formulas (published rules of thumb):</strong></p>
+      <p><code>delta = Brent − Baseline</code></p>
+      <p><code>Extra import bill (US$ bn/yr) = (delta ÷ 10) × 13.5</code></p>
+      <p><code>CPI impact (bps) = (delta ÷ 10) × 30</code></p>
+      <p><strong>Regime zones:</strong></p>
+      <ul>
+        <li><strong>Below $90</strong> — Relief Rally: lower crude is an unambiguous positive for India, easing the import bill, CAD, and inflation simultaneously.</li>
+        <li><strong>$90–$100</strong> — Range-Bound: manageable but not comfortable; fiscal and monetary policy stays watchful.</li>
+        <li><strong>Above $100</strong> — Downward Pressure: meaningful macro headwind; rupee weakens, RBI runs tighter for longer, equity risk premium rises.</li>
+      </ul>
+      <p><strong>Limitations:</strong> Sensitivities are average estimates from published commentary. Real pass-through depends on subsidy policy, refining margins, and the INR/USD rate at the time. This is a v1 static tool; a v2 enhancement could pull live Brent via a public API.</p>
+      <p><strong>Default:</strong> Brent $95, Baseline $75, reflecting conditions discussed in Harshal's crude-oil analysis post (mid-2024 to early-2025 window).</p>
+    </div>
+  </details>
+
+  <!-- ── Actions ── -->
+  <div class="actions" style="margin-top:28px;">
+    <a class="btn btn-gold" href="https://harshaldasani.pages.dev/blog/posts/crude-oil-india-markets-rupee-inflation/" target="_blank" rel="noopener">Read the full analysis &rarr;</a>
+    <a class="btn" href="https://www.invasset.com/" target="_blank" rel="noopener">Explore INVasset PMS &rarr;</a>
+    <button class="btn btn-link" id="btn-copy" type="button" onclick="doCopy(this)">Copy result</button>
+  </div>
+
+  <!-- ── Disclaimer ── -->
+  <div class="disclaimer">
+    <strong>Important:</strong> This is an illustrative scenario model built on published rules of thumb, not a forecast. Real outcomes depend on many factors beyond the oil price. This is a free educational tool for general information only. It is not investment, tax or legal advice, nor a recommendation or solicitation to buy or sell any security or to avail of any service. Calculations are illustrative and based on the assumptions and inputs you provide; actual outcomes will differ. Securities and mutual-fund investments are subject to market risks — read all related documents carefully. Past performance is not indicative of future results. Please consult a qualified, registered adviser before making any financial decision. Harshal Dasani is Business Head at INVasset PMS (SEBI Reg. INP000006907).
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="tool-footer">
+    <div>&copy; 2026 Harshal Dasani &middot; Business Head, INVasset PMS</div>
+    <div><a href="https://harshaldasani.pages.dev/">harshaldasani.pages.dev</a></div>
+  </footer>
+
+</div><!-- /.page -->
+
+<script defer src="../tools.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* ── State ── */
+  var brentCtrl, baselineEl, billSensEl, cpiSensEl;
+
+  /* ── DOM refs ── */
+  var elBadge       = document.getElementById('regime-badge');
+  var elMarker      = document.getElementById('regime-marker');
+  var elCardBill    = document.getElementById('card-bill');
+  var elCardCpi     = document.getElementById('card-cpi');
+  var elValBill     = document.getElementById('val-bill');
+  var elValBillEx   = document.getElementById('val-bill-exact');
+  var elValCpi      = document.getElementById('val-cpi');
+  var elValCpiEx    = document.getElementById('val-cpi-exact');
+  var elInterp      = document.getElementById('interp-line');
+  var elMacroFlags  = document.getElementById('macro-flags');
+
+  /* ── Assumptions detail arrow ── */
+  var assumPanel = document.getElementById('assumptions-panel');
+  var assumArrow = assumPanel.querySelector('.assump-arrow');
+  assumPanel.addEventListener('toggle', function () {
+    assumArrow.textContent = assumPanel.open ? '−' : '+';
+  });
+
+  /* ── Wire assumptions inputs ── */
+  baselineEl = document.getElementById('num-baseline');
+  billSensEl = document.getElementById('num-bill-sens');
+  cpiSensEl  = document.getElementById('num-cpi-sens');
+
+  baselineEl.addEventListener('input', recompute);
+  baselineEl.addEventListener('change', recompute);
+  billSensEl.addEventListener('input', recompute);
+  billSensEl.addEventListener('change', recompute);
+  cpiSensEl.addEventListener('input', recompute);
+  cpiSensEl.addEventListener('change', recompute);
+
+  /* ── Wire Brent slider + number via bindInput ── */
+  brentCtrl = bindInput('sl-brent', 'num-brent', recompute, { min: 40, max: 160 });
+
+  /* ── Main compute ── */
+  function recompute() {
+    var brent    = brentCtrl.value();
+    var baseline = parseFloat(baselineEl.value) || 75;
+    var billSens = parseFloat(billSensEl.value) || 13.5;
+    var cpiSens  = parseFloat(cpiSensEl.value)  || 30;
+
+    /* clamp baseline */
+    baseline = Math.max(40, Math.min(120, baseline));
+
+    var delta           = brent - baseline;
+    var importBillDelta = (delta / 10) * billSens;   /* US$ bn/yr */
+    var cpiDeltaBps     = (delta / 10) * cpiSens;    /* bps       */
+
+    /* ── Regime ── */
+    var regimeKey, regimeLabel, regimeCls;
+    if (brent < 90) {
+      regimeKey   = 'pos';
+      regimeLabel = 'Relief Rally';
+      regimeCls   = 'pos';
+    } else if (brent <= 100) {
+      regimeKey   = 'warn';
+      regimeLabel = 'Range-Bound';
+      regimeCls   = 'warn';
+    } else {
+      regimeKey   = 'neg';
+      regimeLabel = 'Downward Pressure';
+      regimeCls   = 'neg';
+    }
+
+    /* ── Regime badge ── */
+    elBadge.textContent = regimeLabel;
+    elBadge.className   = 'regime-badge ' + regimeCls;
+
+    /* ── Regime marker (left% across $40–$160 range) ── */
+    var markerPct = Math.max(0, Math.min(100, (brent - 40) / (160 - 40) * 100));
+    elMarker.style.left = markerPct.toFixed(1) + '%';
+
+    /* ── Stat card: import bill ── */
+    var billSign  = importBillDelta >= 0 ? '+' : '−';
+    var billAbs   = Math.abs(importBillDelta);
+    var billStr   = (importBillDelta >= 0 ? '+' : '−') + 'US$' + billAbs.toFixed(1) + ' bn';
+
+    elValBill.textContent = billStr;
+    elValBillEx.textContent = 'vs. $' + Math.round(baseline) + ' baseline · annualised';
+
+    /* colour: positive delta = bad (neg/red); negative delta = good (pos/green) */
+    elCardBill.className = 'stat-card ' + (importBillDelta > 0 ? 'is-neg' : importBillDelta < 0 ? 'is-pos' : '');
+
+    /* ── Stat card: CPI ── */
+    var cpiSign = cpiDeltaBps >= 0 ? '+' : '−';
+    var cpiAbs  = Math.abs(cpiDeltaBps);
+    var cpiStr  = (cpiDeltaBps >= 0 ? '+' : '−') + Math.round(cpiAbs) + ' bps';
+
+    elValCpi.textContent   = cpiStr;
+    elValCpiEx.textContent = 'basis points added to CPI';
+
+    elCardCpi.className = 'stat-card ' + (cpiDeltaBps > 0 ? 'is-neg' : cpiDeltaBps < 0 ? 'is-pos' : '');
+
+    /* ── Macro flags ── */
+    var flags = [];
+    if (brent >= 100) {
+      flags.push('Rupee pressure &uarr; — current-account deficit widening; CAD likely to breach 2.0–2.2% of GDP at sustained prices above $100.');
+      flags.push('RBI more cautious on rate cuts; higher fuel import costs pass through to transport and food CPI.');
+    } else if (brent >= 90) {
+      flags.push('Rupee modestly pressured — oil trade deficit ($120 bn in FY26) ticks higher; CAD nearing 2.0% of GDP.');
+      flags.push('Fiscal arithmetic tightens if OMCs cannot fully pass through higher crude without subsidies.');
+    } else {
+      flags.push('Rupee relief — lower crude compresses the trade deficit; CAD improvement supports INR stability near &#8377;96/$.');
+      flags.push('Disinflationary tailwind gives RBI room to ease; positive for rate-sensitive sectors like banking and real estate.');
+    }
+    elMacroFlags.innerHTML = flags.map(function (f) { return '<p style="margin:0 0 6px;">' + f + '</p>'; }).join('');
+
+    /* ── Interpretation line ── */
+    var interpText;
+    if (delta === 0) {
+      interpText = 'At $' + brent + ' Brent — exactly at baseline — there is no net change to the import bill or CPI from the baseline assumption.';
+    } else if (delta < 0) {
+      interpText = 'At $' + brent + ' Brent, India sits in the <strong>' + regimeLabel + '</strong> zone — the import bill falls by ~US$' + billAbs.toFixed(1) + ' bn a year and shaves ~' + Math.round(cpiAbs) + ' bps off inflation, easing pressure on the rupee and the current-account deficit.';
+    } else {
+      var pressureLine = brent >= 100
+        ? 'with meaningful rupee weakness and widening current-account pressure.'
+        : (brent >= 90
+            ? 'with modest rupee pressure and a watchful RBI.'
+            : 'though from a comfortable starting point.');
+      interpText = 'At $' + brent + ' Brent, India sits in the <strong>' + regimeLabel + '</strong> zone — the import bill rises by ~US$' + billAbs.toFixed(1) + ' bn a year and adds ~' + Math.round(cpiAbs) + ' bps to inflation, ' + pressureLine;
+    }
+    elInterp.innerHTML = interpText;
+
+    /* ── Stash for copy ── */
+    window._oilResult = {
+      brent: brent, regimeLabel: regimeLabel,
+      bill: billStr, cpi: cpiStr
+    };
+  }
+
+  /* ── Copy handler ── */
+  window.doCopy = function (btn) {
+    var r = window._oilResult || {};
+    var text = 'Oil Impact Estimator (harshaldasani.pages.dev): '
+      + 'At $' + (r.brent || '—') + ' Brent (' + (r.regimeLabel || '') + ') — '
+      + 'extra import bill ' + (r.bill || '—') + ' · CPI impact ' + (r.cpi || '—') + '.';
+    copyResult(text, btn);
+  };
+
+  /* ── Run once on load ── */
+  recompute();
+});
+</script>
+
+</body>
+</html>
