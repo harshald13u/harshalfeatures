@@ -121,9 +121,17 @@
 .chart-wrap svg { display: block; width: 100%; }
 /* SIP: full-width growth-over-time panel below the two top columns */
 .chart-panel { margin-top: 24px; padding: 24px 26px; }
-.chart-panel .chart-wrap { margin-top: 12px; border: none; background: transparent; overflow: visible; width: 100%; padding: 0; }
+.chart-panel .chart-wrap { margin-top: 12px; border: none; background: transparent; overflow: visible; width: 100%; padding: 0; position: relative; }
 .chart-panel .chart-wrap svg { width: 100%; height: auto; min-height: 280px; max-height: 420px; }
 .chart-panel .interp { margin-top: 14px; }
+#chart-tip { position: absolute; top: 6px; left: 0; pointer-events: none; opacity: 0; transition: opacity .12s ease;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px;
+  font-size: 12px; line-height: 1.5; color: var(--text); box-shadow: var(--shadow); white-space: nowrap; z-index: 5; }
+#chart-tip .tip-head { font-weight: 700; margin-bottom: 3px; }
+#chart-tip .tip-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+#chart-tip .tip-sub { color: var(--text-soft); margin-top: 2px; }
+#chart-tip b { font-variant-numeric: tabular-nums; }
+#growth-svg { cursor: crosshair; }
 
 
 .donut-wrap {
@@ -198,11 +206,14 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
 
       <!-- Expected return -->
       <div class="input-row">
-        <label for="num-return">Expected returns</label>
+        <label for="num-return">
+          Expected / assumed return
+          <span class="hint">(not guaranteed)</span>
+        </label>
         <div class="input-line">
-          <input type="range" id="sld-return" min="1" max="50" step="0.5" value="12" aria-label="Expected annual return slider">
+          <input type="range" id="sld-return" min="1" max="30" step="0.5" value="12" aria-label="Expected annual return slider">
           <span class="num-wrap">
-            <input type="number" id="num-return" min="1" max="50" step="0.5" value="12" aria-label="Expected annual return percentage">
+            <input type="number" id="num-return" min="1" max="30" step="0.5" value="12" aria-label="Expected annual return percentage">
             <span class="unit">% p.a.</span>
           </span>
         </div>
@@ -288,6 +299,7 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
     <h2 class="panel-title">Growth over time</h2>
     <div class="chart-wrap" id="chart-wrap">
       <svg id="growth-svg" viewBox="0 0 540 220" preserveAspectRatio="xMidYMid meet" aria-label="Growth chart: total value and invested amount over time" role="img"></svg>
+      <div id="chart-tip" aria-hidden="true"></div>
     </div>
     <p class="interp" id="interp-line">Enter values above to see your estimate.</p>
   </div>
@@ -314,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── bind inputs ── */
   var monthly = bindInput('sld-monthly', 'num-monthly', recompute, { min: 500, max: 500000 });
-  var retPct  = bindInput('sld-return',  'num-return',  recompute, { min: 1,   max: 50 });
+  var retPct  = bindInput('sld-return',  'num-return',  recompute, { min: 1,   max: 30 });
   var years   = bindInput('sld-years',   'num-years',   recompute, { min: 1,   max: 40 });
 
   /* ── SIP formula (annuity-due, monthly compounding) ── */
@@ -491,14 +503,22 @@ document.addEventListener('DOMContentLoaded', function () {
       '<text x="' + (PAD.left + 100) + '" y="' + (PAD.top + 15) + '" font-size="10" fill="var(--text-soft)" font-family="Inter,sans-serif">Invested</text>' +
     '</g>';
 
+    var hoverLayer =
+      '<g id="hover-g" style="display:none">' +
+        '<line id="hover-line" x1="0" x2="0" y1="' + PAD.top + '" y2="' + (PAD.top + innerH) + '" stroke="var(--text-soft)" stroke-width="1" stroke-dasharray="3 3"/>' +
+        '<circle id="hover-inv" r="4" fill="#0A2754" stroke="var(--surface)" stroke-width="1.5"/>' +
+        '<circle id="hover-fv" r="4.5" fill="var(--gold,#A67D3E)" stroke="var(--surface)" stroke-width="1.5"/>' +
+      '</g>' +
+      '<rect id="hover-capture" x="' + PAD.left + '" y="' + PAD.top + '" width="' + innerW + '" height="' + innerH + '" fill="transparent"/>';
     var svgContent = defs + gridLines + yLabels + xLabels + axisLabel +
       '<path d="' + areaFVfull + '" fill="url(#gFV)"/>' +
       '<path d="' + areaInv + '" fill="url(#gInv)"/>' +
       '<path d="' + buildPath(invPoints) + '" fill="none" stroke="#0A2754" stroke-width="1.8" stroke-opacity="0.7" stroke-dasharray="4 3"/>' +
       '<path d="' + buildPath(fvPoints) + '" fill="none" stroke="var(--gold,#A67D3E)" stroke-width="2.2"/>' +
-      legend;
+      legend + hoverLayer;
 
     document.getElementById('growth-svg').innerHTML = svgContent;
+    window._sipChart = { fvPoints: fvPoints, invPoints: invPoints, maxYears: maxYears, xPos: xPos, yPos: yPos, PAD: PAD, innerW: innerW, W: W };
   }
 
   /* ── copy result ── */
@@ -517,6 +537,41 @@ document.addEventListener('DOMContentLoaded', function () {
       '(Illustrative only. Not a guarantee. Mutual fund investments are subject to market risks.)';
     copyResult(text, btn);
   };
+
+  /* ── interactive hover tooltip ── */
+  (function () {
+    var svgEl = document.getElementById('growth-svg');
+    var tip = document.getElementById('chart-tip');
+    var wrap = document.getElementById('chart-wrap');
+    if (!svgEl || !tip || !wrap) return;
+    function move(clientX) {
+      var c = window._sipChart; if (!c) return;
+      var rect = svgEl.getBoundingClientRect();
+      var vbX = (clientX - rect.left) / rect.width * c.W;
+      var yr = Math.round((vbX - c.PAD.left) / c.innerW * c.maxYears);
+      yr = Math.max(0, Math.min(c.maxYears, yr));
+      var fv = c.fvPoints[yr], inv = c.invPoints[yr], x = c.xPos(yr);
+      var g = document.getElementById('hover-g'); if (!g) return;
+      g.style.display = '';
+      var ln = document.getElementById('hover-line'); ln.setAttribute('x1', x); ln.setAttribute('x2', x);
+      var dfv = document.getElementById('hover-fv'); dfv.setAttribute('cx', x); dfv.setAttribute('cy', c.yPos(fv));
+      var din = document.getElementById('hover-inv'); din.setAttribute('cx', x); din.setAttribute('cy', c.yPos(inv));
+      tip.innerHTML = '<div class="tip-head">Year ' + yr + '</div>' +
+        '<div><span class="tip-dot" style="background:var(--gold,#A67D3E)"></span>Total <b>' + formatINR(fv) + '</b></div>' +
+        '<div><span class="tip-dot" style="background:#0A2754"></span>Invested <b>' + formatINR(inv) + '</b></div>' +
+        '<div class="tip-sub">Est. growth ' + formatINR(fv - inv) + '</div>';
+      tip.style.opacity = '1';
+      var wr = wrap.getBoundingClientRect(); var px = clientX - wr.left;
+      var tw = tip.offsetWidth || 150; var left = px + 16;
+      if (left + tw > wrap.clientWidth - 4) left = px - tw - 16;
+      tip.style.left = Math.max(4, left) + 'px';
+    }
+    function hide() { var g = document.getElementById('hover-g'); if (g) g.style.display = 'none'; tip.style.opacity = '0'; }
+    svgEl.addEventListener('mousemove', function (e) { move(e.clientX); });
+    svgEl.addEventListener('mouseleave', hide);
+    svgEl.addEventListener('touchstart', function (e) { if (e.touches[0]) move(e.touches[0].clientX); }, { passive: true });
+    svgEl.addEventListener('touchmove', function (e) { if (e.touches[0]) move(e.touches[0].clientX); }, { passive: true });
+  })();
 
   /* ── initial compute ── */
   recompute();
