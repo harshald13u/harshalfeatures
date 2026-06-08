@@ -4,8 +4,8 @@ Reads the clean articleBody from the post's BlogPosting JSON-LD, preprocesses fi
 appends a spoken disclaimer, writes audio.mp3 in the post folder. No API key, no cost.
 Usage: python3 gen_audio.py blog/posts/<slug> [<slug2> ...]"""
 import json, re, sys, os, subprocess, asyncio
-VOICE = "en-IN-PrabhatNeural"
-DISCLAIMER = "This is general information from INVasset PMS, not investment advice."
+VOICE = "en-IN-NeerjaExpressiveNeural"
+DISCLAIMER = "This is general information, not investment advice."
 
 def extract(post_dir):
     html = open(os.path.join(post_dir, "index.html"), encoding="utf-8").read()
@@ -45,7 +45,7 @@ def gen(post_dir):
     headline, body = extract(post_dir)
     if not body:
         print(f"  ! no articleBody in {post_dir}"); return None
-    spoken = f"{headline}. By Harshal Dasani, Business Head at INVasset PMS. {speechify(body)} {DISCLAIMER}"
+    spoken = f"{headline}. {speechify(body)} {DISCLAIMER}"
     out = os.path.join(post_dir, "audio.mp3")
     asyncio.run(synth(spoken, out))
     dur = subprocess.run(["ffprobe","-v","error","-show_entries","format=duration","-of","csv=p=0",out],
