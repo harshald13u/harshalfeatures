@@ -86,29 +86,6 @@
 @media (min-width: 1181px), (min-width: 641px) and (max-width: 1180px) and (orientation: landscape) {
   .tool-grid { align-items: stretch; }
 }
-
-/* Quick-preset chips — fills empty space below Investment Period */
-.preset-block { margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 14px; }
-.preset-row { display: flex; flex-direction: column; gap: 8px; }
-.preset-label { font-size: 11px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-soft); font-weight: 600; }
-.preset-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.preset-chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 12px; min-height: 32px;
-  background: transparent; color: var(--text);
-  border: 1px solid var(--border); border-radius: 999px;
-  font-size: 13px; font-weight: 500; line-height: 1;
-  cursor: pointer; transition: background .15s ease, border-color .15s ease, color .15s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-.preset-chip:hover { border-color: var(--accent); color: var(--accent); }
-.preset-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.preset-chip.is-active {
-  background: var(--accent); color: #1a1530; border-color: var(--accent);
-  font-weight: 700;
-}
-.preset-chip-val { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
-.preset-chip.is-active .preset-chip-val { color: #1a1530; }
 </style>
 </head>
 <body>
@@ -178,28 +155,6 @@
             <div class="num-wrap">
               <input type="number" id="ls-years-num" min="1" max="100" step="1" value="10" aria-label="Investment period in years">
               <span class="unit">years</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick presets -->
-        <div class="preset-block" aria-label="Quick presets">
-          <div class="preset-row">
-            <span class="preset-label">Return preset</span>
-            <div class="preset-chips" role="group" aria-label="Expected return presets">
-              <button type="button" class="preset-chip" data-preset-rate="8"  title="Conservative — closer to debt funds / FD-like returns">Conservative<span class="preset-chip-val">8%</span></button>
-              <button type="button" class="preset-chip" data-preset-rate="12" title="Balanced — long-run equity assumption">Balanced<span class="preset-chip-val">12%</span></button>
-              <button type="button" class="preset-chip" data-preset-rate="15" title="Aggressive — top-quartile equity expectation, not guaranteed">Aggressive<span class="preset-chip-val">15%</span></button>
-            </div>
-          </div>
-          <div class="preset-row">
-            <span class="preset-label">Period preset</span>
-            <div class="preset-chips" role="group" aria-label="Investment period presets">
-              <button type="button" class="preset-chip" data-preset-years="5">5 yrs</button>
-              <button type="button" class="preset-chip" data-preset-years="10">10 yrs</button>
-              <button type="button" class="preset-chip" data-preset-years="15">15 yrs</button>
-              <button type="button" class="preset-chip" data-preset-years="20">20 yrs</button>
-              <button type="button" class="preset-chip" data-preset-years="30">30 yrs</button>
             </div>
           </div>
         </div>
@@ -526,36 +481,6 @@ document.addEventListener('DOMContentLoaded', function () {
     bnd('ls-years-range', 'ls-years-num');
   })();
 
-  /* preset chips — one-tap fill for rate + period */
-  (function () {
-    function setPair(rangeId, numId, val) {
-      var r = document.getElementById(rangeId);
-      var n = document.getElementById(numId);
-      if (r) r.value = val;
-      if (n) n.value = val;
-    }
-    function setActive(group, btn) {
-      var btns = document.querySelectorAll('[data-preset-' + group + ']');
-      for (var i = 0; i < btns.length; i++) btns[i].classList.remove('is-active');
-      btn.classList.add('is-active');
-    }
-    document.addEventListener('click', function (e) {
-      var t = e.target.closest('[data-preset-rate], [data-preset-years]');
-      if (!t) return;
-      if (t.hasAttribute('data-preset-rate')) {
-        setPair('ls-rate-range', 'ls-rate-num', t.getAttribute('data-preset-rate'));
-        setActive('rate', t);
-      } else if (t.hasAttribute('data-preset-years')) {
-        setPair('ls-years-range', 'ls-years-num', t.getAttribute('data-preset-years'));
-        setActive('years', t);
-      }
-      calcLumpsum();
-    });
-    /* mark defaults active on load (12% / 10 yrs) */
-    var defR = document.querySelector('[data-preset-rate="12"]');  if (defR) defR.classList.add('is-active');
-    var defY = document.querySelector('[data-preset-years="10"]'); if (defY) defY.classList.add('is-active');
-  })();
-
   /* initial render */
   calcLumpsum();
 
@@ -773,4 +698,104 @@ document.addEventListener('DOMContentLoaded', function () {
     if (rate < 0) {
       interpEl.textContent = 'These cashflows imply a loss of ' + fPct(Math.abs(rate), 2) + ' a year. Review your investment dates and amounts.';
     } else if (rate < 6) {
-      interpEl.textContent = 'An XIRR of ' +
+      interpEl.textContent = 'An XIRR of ' + fPct(rate, 2) + ' p.a. is below typical fixed-income benchmarks. Consider reviewing the portfolio allocation.';
+    } else if (rate < 12) {
+      interpEl.textContent = 'An XIRR of ' + fPct(rate, 2) + ' p.a. is a solid return, roughly in line with broad equity indices over longer periods.';
+    } else {
+      interpEl.textContent = 'An XIRR of ' + fPct(rate, 2) + ' p.a. is strong alpha. These cashflows have compounded well above index-level returns.';
+    }
+  }
+
+  function showXirrMsg(msg) {
+    var msgEl    = document.getElementById('xirr-msg');
+    var interpEl = document.getElementById('xirr-interp');
+    msgEl.textContent = msg;
+    msgEl.style.display = '';
+    interpEl.style.display = 'none';
+    ['xirr-val','xirr-invested','xirr-returned','xirr-gain'].forEach(function (id) {
+      document.getElementById(id).textContent = '—';
+    });
+    document.getElementById('xirr-gain-exact').textContent = '';
+    document.getElementById('xirr-card-main').classList.remove('is-gold','is-neg','is-pos');
+  }
+
+  /* ---- escapeHTML local helper (tools.js may not have loaded yet at DOMContentLoaded) ---- */
+  function escapeHTML(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  /* ---- pre-fill sample rows ---- */
+  var t = today();
+  var t3  = dateOffset(-Math.round(3 * 365));
+  var t15 = dateOffset(-Math.round(1.5 * 365));
+
+  xirrRows = [
+    makeRow(t3,  -100000),
+    makeRow(t15, -50000),
+    makeRow(t,    200000)
+  ];
+
+  renderXirrTable();
+  calcXIRR();
+
+  /* ---- add-row button ---- */
+  document.getElementById('xirr-add-row').addEventListener('click', function () {
+    xirrRows.push(makeRow(today(), 0));
+    renderXirrTable();
+    /* focus the new date input */
+    var dates = document.querySelectorAll('.xirr-date');
+    if (dates.length) dates[dates.length - 1].focus();
+  });
+
+  /* ============================================================
+     COPY RESULT
+     ============================================================ */
+  window.doCopy = function () {
+    var btn = document.getElementById('copy-btn');
+    var activePanel = null;
+    document.querySelectorAll('[data-panel]').forEach(function (p) {
+      if (p.style.display !== 'none') activePanel = p.getAttribute('data-panel');
+    });
+    var text = '';
+    if (activePanel === 'a') {
+      text = 'Returns Calculator — Lumpsum\n' +
+        'Invested: ' + document.getElementById('ls-invested').textContent + '\n' +
+        'Est. Gain: ' + document.getElementById('ls-gain').textContent + '\n' +
+        'Future Value: ' + document.getElementById('ls-fv').textContent + '\n' +
+        document.getElementById('ls-interp').textContent + '\n' +
+        'Via harshaldasani.pages.dev/tools/returns-calculator/';
+    } else if (activePanel === 'b') {
+      text = 'Returns Calculator — CAGR\n' +
+        'CAGR: ' + document.getElementById('cagr-val').textContent + '\n' +
+        'Absolute Return: ' + document.getElementById('cagr-abs').textContent + '\n' +
+        'Gain: ' + document.getElementById('cagr-gain').textContent + '\n' +
+        document.getElementById('cagr-interp').textContent + '\n' +
+        'Via harshaldasani.pages.dev/tools/returns-calculator/';
+    } else if (activePanel === 'c') {
+      text = 'Returns Calculator — XIRR\n' +
+        'XIRR: ' + document.getElementById('xirr-val').textContent + '\n' +
+        'Total Invested: ' + document.getElementById('xirr-invested').textContent + '\n' +
+        'Total Returned: ' + document.getElementById('xirr-returned').textContent + '\n' +
+        'Net Gain: ' + document.getElementById('xirr-gain').textContent + '\n' +
+        document.getElementById('xirr-interp').textContent + '\n' +
+        'Via harshaldasani.pages.dev/tools/returns-calculator/';
+    }
+    if (typeof copyResult === 'function') {
+      copyResult(text, btn);
+    } else {
+      try {
+        navigator.clipboard.writeText(text).then(function () {
+          var o = btn.textContent; btn.textContent = 'Copied ✓';
+          setTimeout(function () { btn.textContent = o; }, 1600);
+        });
+      } catch (e) {}
+    }
+  };
+
+}); /* end DOMContentLoaded */
+</script>
+  <script src="/lang-switch.js" defer></script>
+</body>
+</html>
