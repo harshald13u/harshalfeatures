@@ -160,7 +160,7 @@
         <span class="zone z-pos" title="Below $90 — Relief Rally">Below $90</span>
         <span class="zone z-warn" title="$90–$100 — Range-Bound">$90–$100</span>
         <span class="zone z-neg" title="Above $100 — Downward Pressure">Above $100</span>
-        <span class="regime-marker" id="regime-marker" style="left:45.8%;" aria-hidden="true"></span>
+        <span class="regime-marker" id="regime-marker" style="left:50%;" aria-hidden="true"></span>
       </div>
       <p class="note" style="margin-bottom:16px; font-size:11px;">Current Brent vs. three market regimes. Marker tracks your input.</p>
 
@@ -323,7 +323,12 @@ document.addEventListener('DOMContentLoaded', function () {
     elBadge.className   = 'regime-badge ' + regimeCls;
 
     /* ── Regime marker (left% across $40–$160 range) ── */
-    var markerPct = Math.max(0, Math.min(100, (brent - 40) / (160 - 40) * 100));
+    var markerPct;
+    /* zones are three EQUAL thirds (<$90 / $90-100 / >$100); map price piecewise so the marker sits in the right zone */
+    if (brent <= 90) { markerPct = (brent - 40) / 50 * (100/3); }
+    else if (brent <= 100) { markerPct = (100/3) + (brent - 90) / 10 * (100/3); }
+    else { markerPct = (200/3) + (brent - 100) / 60 * (100/3); }
+    markerPct = Math.max(0, Math.min(100, markerPct));
     elMarker.style.left = markerPct.toFixed(1) + '%';
 
     /* ── Stat card: import bill ── */
