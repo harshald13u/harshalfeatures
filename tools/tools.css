@@ -191,3 +191,8 @@ html[data-theme="dark"] .tool-tile { box-shadow: none; }
   .wl-grid { grid-template-columns: 1fr; }
   .stat-grid { grid-template-columns: 1fr 1fr; }
 }
+
+@media (max-width: 560px) {
+  .masthead { grid-template-columns: 1fr auto; gap: 10px; }
+  .mast-trail { display: none; }
+}
