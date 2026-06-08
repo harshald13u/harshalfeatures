@@ -186,7 +186,7 @@
 .name-home:hover,.name-home:focus{color:var(--accent);border-bottom-color:var(--accent);text-decoration:none}
 /* cap-gains 3-block layout: inputs + notes fill the left column; results spans the right */
 .cgt-grid { display: grid; grid-template-columns: minmax(0,0.92fr) minmax(0,1.08fr);
-  grid-template-areas: "inputs results" "notes results"; grid-template-rows: auto 1fr;
+  grid-template-areas: "inputs results" "notes notes"; grid-template-rows: auto auto;
   gap: 24px; align-items: stretch; }
 #cgt-inputs { grid-area: inputs; } #cgt-results { grid-area: results; } #cgt-notes { grid-area: notes; }
 .cgt-notes-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 18px; color: var(--text); margin: 0 0 14px; }
@@ -374,12 +374,6 @@
         <table class="breakdown-table" id="breakdown-table">
           <tbody id="breakdown-body"></tbody>
         </table>
-      </div>
-
-      <!-- Actions -->
-      <div class="actions">
-        <button class="btn btn-gold" id="copy-btn" type="button" onclick="doCopy()">Copy result</button>
-        <a class="btn" href="https://harshaldasani.pages.dev/blog/" target="_blank" rel="noopener">Read the blog &rarr;</a>
       </div>
 
     </div><!-- end panel results -->
