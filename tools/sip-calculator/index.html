@@ -119,6 +119,12 @@
   background: var(--surface-2);
 }
 .chart-wrap svg { display: block; width: 100%; }
+/* SIP: full-width growth-over-time panel below the two top columns */
+.chart-panel { margin-top: 24px; }
+.chart-panel .chart-wrap { margin-top: 0; border: none; background: transparent; overflow: visible; }
+.chart-panel .chart-wrap svg { max-height: 260px; }
+.chart-panel .interp { margin-top: 14px; }
+
 
 .donut-wrap {
   display: flex;
@@ -273,14 +279,6 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
         </div>
       </div>
 
-      <!-- Growth chart -->
-      <div class="chart-wrap" id="chart-wrap">
-        <svg id="growth-svg" viewBox="0 0 540 220" preserveAspectRatio="xMidYMid meet" aria-label="Growth chart: total value and invested amount over time" role="img"></svg>
-      </div>
-
-      <!-- Interpretation -->
-      <p class="interp" id="interp-line">Enter values above to see your estimate.</p>
-
       <!-- Actions -->
       <div class="actions">
         <button class="btn" id="btn-copy" type="button" onclick="doCopy(this)">Copy result</button>
@@ -291,6 +289,15 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
     </div>
 
   </div><!-- /tool-grid -->
+
+  <div class="panel chart-panel">
+    <h2 class="panel-title">Growth over time</h2>
+    <div class="chart-wrap" id="chart-wrap">
+      <svg id="growth-svg" viewBox="0 0 540 220" preserveAspectRatio="xMidYMid meet" aria-label="Growth chart: total value and invested amount over time" role="img"></svg>
+    </div>
+    <p class="interp" id="interp-line">Enter values above to see your estimate.</p>
+  </div>
+
 
   <!-- Disclaimer -->
   <div class="disclaimer">
