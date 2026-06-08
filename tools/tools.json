@@ -1,3 +1,32 @@
 {
   "tools": [
     {
+      "title": "Oil-to-India Impact Estimator",
+      "description": "Move the Brent price and see what it does to India's oil import bill, inflation and the market regime, on Harshal's published framework.",
+      "url": "oil-impact-estimator/",
+      "tag": "Market tool",
+      "icon": "🛢️"
+    },
+    {
+      "title": "SIP Calculator",
+      "description": "See what a monthly SIP could grow to, invested amount, estimated returns and total value, with a year-by-year growth chart.",
+      "url": "sip-calculator/",
+      "tag": "Calculator",
+      "icon": "📈"
+    },
+    {
+      "title": "Returns Calculator",
+      "description": "Three in one, project a lumpsum, measure CAGR, or compute XIRR across irregular cashflows.",
+      "url": "returns-calculator/",
+      "tag": "Calculator",
+      "icon": "📊"
+    },
+    {
+      "title": "Capital-Gains Tax Calculator",
+      "description": "Estimate tax on listed-equity and equity-fund gains under current Indian rules (FY 2026-27), STCG, LTCG and the Rs 1.25 lakh exemption.",
+      "url": "capital-gains-tax-calculator/",
+      "tag": "Calculator",
+      "icon": "🧾"
+    }
+  ]
+}
