@@ -120,9 +120,9 @@
 }
 .chart-wrap svg { display: block; width: 100%; }
 /* SIP: full-width growth-over-time panel below the two top columns */
-.chart-panel { margin-top: 24px; }
-.chart-panel .chart-wrap { margin-top: 0; border: none; background: transparent; overflow: visible; }
-.chart-panel .chart-wrap svg { max-height: 260px; }
+.chart-panel { margin-top: 24px; padding: 24px 26px; }
+.chart-panel .chart-wrap { margin-top: 12px; border: none; background: transparent; overflow: visible; width: 100%; padding: 0; }
+.chart-panel .chart-wrap svg { width: 100%; height: auto; min-height: 280px; max-height: 420px; }
 .chart-panel .interp { margin-top: 14px; }
 
 
@@ -282,10 +282,7 @@ html[data-theme="dark"] .legend-dot.invested { background: #3a5fa8; }
       <!-- Actions -->
       <div class="actions">
         <button class="btn" id="btn-copy" type="button" onclick="doCopy(this)">Copy result</button>
-        <a class="btn btn-link" href="https://harshaldasani.pages.dev/blog/" target="_blank" rel="noopener">
-          SIPs are about discipline through cycles — read Harshal's market notes &rarr;
-        </a>
-      </div>
+        </div>
     </div>
 
   </div><!-- /tool-grid -->
