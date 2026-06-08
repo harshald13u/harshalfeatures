@@ -1,0 +1,1907 @@
+{
+  "schema_types_legend": {
+    "Corporation": "Listed Indian companies (preferred over Organization)",
+    "FinancialProduct": "Indices, currencies, bond yields",
+    "Product": "Physical commodities (gold, oil, copper)",
+    "Organization": "Exchanges, intl orgs",
+    "GovernmentOrganization": "Central banks, regulators",
+    "DefinedTerm": "Macro concepts (inflation, GDP)"
+  },
+  "stocks": [
+    {
+      "name": "Reliance Industries",
+      "aliases": [
+        "Reliance",
+        "RIL"
+      ],
+      "wikidata": "Q1058948",
+      "type": "Corporation",
+      "ticker": "RELIANCE",
+      "sector": "Conglomerate"
+    },
+    {
+      "name": "Tata Consultancy Services",
+      "aliases": [
+        "TCS"
+      ],
+      "wikidata": "Q1142142",
+      "type": "Corporation",
+      "ticker": "TCS",
+      "sector": "IT Services"
+    },
+    {
+      "name": "HDFC Bank",
+      "aliases": [],
+      "wikidata": "Q631047",
+      "type": "Corporation",
+      "ticker": "HDFCBANK",
+      "sector": "Private Bank"
+    },
+    {
+      "name": "Infosys",
+      "aliases": [
+        "INFY"
+      ],
+      "wikidata": "Q852683",
+      "type": "Corporation",
+      "ticker": "INFY",
+      "sector": "IT Services"
+    },
+    {
+      "name": "ICICI Bank",
+      "aliases": [],
+      "wikidata": "Q448792",
+      "type": "Corporation",
+      "ticker": "ICICIBANK",
+      "sector": "Private Bank"
+    },
+    {
+      "name": "Hindustan Unilever",
+      "aliases": [
+        "HUL"
+      ],
+      "wikidata": "Q1620201",
+      "type": "Corporation",
+      "ticker": "HINDUNILVR",
+      "sector": "FMCG"
+    },
+    {
+      "name": "ITC Limited",
+      "aliases": [
+        "ITC"
+      ],
+      "wikidata": "Q1129383",
+      "type": "Corporation",
+      "ticker": "ITC",
+      "sector": "FMCG"
+    },
+    {
+      "name": "State Bank of India",
+      "aliases": [
+        "SBI"
+      ],
+      "wikidata": "Q487907",
+      "type": "Corporation",
+      "ticker": "SBIN",
+      "sector": "PSU Bank"
+    },
+    {
+      "name": "Bharti Airtel",
+      "aliases": [
+        "Airtel"
+      ],
+      "wikidata": "Q721548",
+      "type": "Corporation",
+      "ticker": "BHARTIARTL",
+      "sector": "Telecom"
+    },
+    {
+      "name": "Larsen & Toubro",
+      "aliases": [
+        "L&T",
+        "LT"
+      ],
+      "wikidata": "Q1799343",
+      "type": "Corporation",
+      "ticker": "LT",
+      "sector": "Capital Goods"
+    },
+    {
+      "name": "Kotak Mahindra Bank",
+      "aliases": [
+        "Kotak"
+      ],
+      "wikidata": "Q2007059",
+      "type": "Corporation",
+      "ticker": "KOTAKBANK",
+      "sector": "Private Bank"
+    },
+    {
+      "name": "Axis Bank",
+      "aliases": [],
+      "wikidata": "Q2003610",
+      "type": "Corporation",
+      "ticker": "AXISBANK",
+      "sector": "Private Bank"
+    },
+    {
+      "name": "Asian Paints",
+      "aliases": [],
+      "wikidata": "Q4806125",
+      "type": "Corporation",
+      "ticker": "ASIANPAINT",
+      "sector": "Paints"
+    },
+    {
+      "name": "Maruti Suzuki India",
+      "aliases": [
+        "Maruti"
+      ],
+      "wikidata": "Q2624447",
+      "type": "Corporation",
+      "ticker": "MARUTI",
+      "sector": "Auto"
+    },
+    {
+      "name": "Bajaj Finance",
+      "aliases": [],
+      "wikidata": "Q15982510",
+      "type": "Corporation",
+      "ticker": "BAJFINANCE",
+      "sector": "NBFC"
+    },
+    {
+      "name": "Sun Pharmaceutical",
+      "aliases": [
+        "Sun Pharma"
+      ],
+      "wikidata": "Q2056188",
+      "type": "Corporation",
+      "ticker": "SUNPHARMA",
+      "sector": "Pharma"
+    },
+    {
+      "name": "Mahindra & Mahindra",
+      "aliases": [
+        "M&M"
+      ],
+      "wikidata": "Q1934108",
+      "type": "Corporation",
+      "ticker": "M&M",
+      "sector": "Auto"
+    },
+    {
+      "name": "Titan Company",
+      "aliases": [
+        "Titan"
+      ],
+      "wikidata": "Q7810194",
+      "type": "Corporation",
+      "ticker": "TITAN",
+      "sector": "Consumer Durables"
+    },
+    {
+      "name": "UltraTech Cement",
+      "aliases": [],
+      "wikidata": "Q7881632",
+      "type": "Corporation",
+      "ticker": "ULTRACEMCO",
+      "sector": "Cement"
+    },
+    {
+      "name": "NTPC Limited",
+      "aliases": [
+        "NTPC"
+      ],
+      "wikidata": "Q2034054",
+      "type": "Corporation",
+      "ticker": "NTPC",
+      "sector": "Power"
+    },
+    {
+      "name": "Power Grid Corporation",
+      "aliases": [
+        "PowerGrid"
+      ],
+      "wikidata": "Q2167103",
+      "type": "Corporation",
+      "ticker": "POWERGRID",
+      "sector": "Power"
+    },
+    {
+      "name": "Nestle India",
+      "aliases": [],
+      "wikidata": "Q7000901",
+      "type": "Corporation",
+      "ticker": "NESTLEIND",
+      "sector": "FMCG"
+    },
+    {
+      "name": "HCL Technologies",
+      "aliases": [
+        "HCLTech",
+        "HCL"
+      ],
+      "wikidata": "Q1006883",
+      "type": "Corporation",
+      "ticker": "HCLTECH",
+      "sector": "IT Services"
+    },
+    {
+      "name": "Wipro",
+      "aliases": [],
+      "wikidata": "Q487725",
+      "type": "Corporation",
+      "ticker": "WIPRO",
+      "sector": "IT Services"
+    },
+    {
+      "name": "Tech Mahindra",
+      "aliases": [],
+      "wikidata": "Q2032635",
+      "type": "Corporation",
+      "ticker": "TECHM",
+      "sector": "IT Services"
+    },
+    {
+      "name": "Tata Steel",
+      "aliases": [],
+      "wikidata": "Q333439",
+      "type": "Corporation",
+      "ticker": "TATASTEEL",
+      "sector": "Metals"
+    },
+    {
+      "name": "Tata Motors",
+      "aliases": [],
+      "wikidata": "Q681721",
+      "type": "Corporation",
+      "ticker": "TATAMOTORS",
+      "sector": "Auto"
+    },
+    {
+      "name": "JSW Steel",
+      "aliases": [],
+      "wikidata": "Q2304245",
+      "type": "Corporation",
+      "ticker": "JSWSTEEL",
+      "sector": "Metals"
+    },
+    {
+      "name": "Coal India",
+      "aliases": [],
+      "wikidata": "Q979275",
+      "type": "Corporation",
+      "ticker": "COALINDIA",
+      "sector": "Mining"
+    },
+    {
+      "name": "Oil and Natural Gas Corporation",
+      "aliases": [
+        "ONGC"
+      ],
+      "wikidata": "Q636450",
+      "type": "Corporation",
+      "ticker": "ONGC",
+      "sector": "Oil & Gas"
+    },
+    {
+      "name": "IndusInd Bank",
+      "aliases": [],
+      "wikidata": "Q6029658",
+      "type": "Corporation",
+      "ticker": "INDUSINDBK",
+      "sector": "Private Bank"
+    },
+    {
+      "name": "Bajaj Finserv",
+      "aliases": [],
+      "wikidata": "Q15999754",
+      "type": "Corporation",
+      "ticker": "BAJAJFINSV",
+      "sector": "Financial Services"
+    },
+    {
+      "name": "Grasim Industries",
+      "aliases": [
+        "Grasim"
+      ],
+      "wikidata": "Q5598894",
+      "type": "Corporation",
+      "ticker": "GRASIM",
+      "sector": "Cement"
+    },
+    {
+      "name": "Dr Reddy's Laboratories",
+      "aliases": [
+        "Dr Reddy's"
+      ],
+      "wikidata": "Q1235660",
+      "type": "Corporation",
+      "ticker": "DRREDDY",
+      "sector": "Pharma"
+    },
+    {
+      "name": "Cipla",
+      "aliases": [],
+      "wikidata": "Q1094820",
+      "type": "Corporation",
+      "ticker": "CIPLA",
+      "sector": "Pharma"
+    },
+    {
+      "name": "Apollo Hospitals",
+      "aliases": [],
+      "wikidata": "Q2041565",
+      "type": "Corporation",
+      "ticker": "APOLLOHOSP",
+      "sector": "Healthcare"
+    },
+    {
+      "name": "Britannia Industries",
+      "aliases": [
+        "Britannia"
+      ],
+      "wikidata": "Q4970131",
+      "type": "Corporation",
+      "ticker": "BRITANNIA",
+      "sector": "FMCG"
+    },
+    {
+      "name": "Eicher Motors",
+      "aliases": [],
+      "wikidata": "Q5349646",
+      "type": "Corporation",
+      "ticker": "EICHERMOT",
+      "sector": "Auto"
+    },
+    {
+      "name": "Hero MotoCorp",
+      "aliases": [],
+      "wikidata": "Q3134963",
+      "type": "Corporation",
+      "ticker": "HEROMOTOCO",
+      "sector": "Auto"
+    },
+    {
+      "name": "Bajaj Auto",
+      "aliases": [],
+      "wikidata": "Q812024",
+      "type": "Corporation",
+      "ticker": "BAJAJ-AUTO",
+      "sector": "Auto"
+    },
+    {
+      "name": "SBI Life Insurance",
+      "aliases": [],
+      "wikidata": "Q24907373",
+      "type": "Corporation",
+      "ticker": "SBILIFE",
+      "sector": "Insurance"
+    },
+    {
+      "name": "HDFC Life Insurance",
+      "aliases": [],
+      "wikidata": "Q23076187",
+      "type": "Corporation",
+      "ticker": "HDFCLIFE",
+      "sector": "Insurance"
+    },
+    {
+      "name": "Divi's Laboratories",
+      "aliases": [],
+      "wikidata": "Q5285632",
+      "type": "Corporation",
+      "ticker": "DIVISLAB",
+      "sector": "Pharma"
+    },
+    {
+      "name": "Adani Enterprises",
+      "aliases": [],
+      "wikidata": "Q4683347",
+      "type": "Corporation",
+      "ticker": "ADANIENT",
+      "sector": "Conglomerate"
+    },
+    {
+      "name": "Adani Ports and SEZ",
+      "aliases": [
+        "Adani Ports"
+      ],
+      "wikidata": "Q4683351",
+      "type": "Corporation",
+      "ticker": "ADANIPORTS",
+      "sector": "Infrastructure"
+    },
+    {
+      "name": "Hindalco Industries",
+      "aliases": [
+        "Hindalco"
+      ],
+      "wikidata": "Q5765895",
+      "type": "Corporation",
+      "ticker": "HINDALCO",
+      "sector": "Metals"
+    },
+    {
+      "name": "Shriram Finance",
+      "aliases": [],
+      "wikidata": "Q7503892",
+      "type": "Corporation",
+      "ticker": "SHRIRAMFIN",
+      "sector": "NBFC"
+    },
+    {
+      "name": "Bharat Petroleum",
+      "aliases": [
+        "BPCL"
+      ],
+      "wikidata": "Q854826",
+      "type": "Corporation",
+      "ticker": "BPCL",
+      "sector": "Oil & Gas"
+    },
+    {
+      "name": "LTIMindtree",
+      "aliases": [],
+      "wikidata": "Q113162790",
+      "type": "Corporation",
+      "ticker": "LTIM",
+      "sector": "IT Services"
+    },
+    {
+      "name": "Tata Consumer Products",
+      "aliases": [],
+      "wikidata": "Q7687156",
+      "type": "Corporation",
+      "ticker": "TATACONSUM",
+      "sector": "FMCG"
+    },
+    {
+      "name": "Trent Limited",
+      "aliases": [
+        "Trent"
+      ],
+      "wikidata": "Q7838879",
+      "type": "Corporation",
+      "ticker": "TRENT",
+      "sector": "Retail"
+    },
+    {
+      "name": "DLF Limited",
+      "aliases": [
+        "DLF"
+      ],
+      "wikidata": "Q5208230",
+      "type": "Corporation",
+      "ticker": "DLF",
+      "sector": "Realty"
+    },
+    {
+      "name": "Godrej Consumer Products",
+      "aliases": [],
+      "wikidata": "Q5577725",
+      "type": "Corporation",
+      "ticker": "GODREJCP",
+      "sector": "FMCG"
+    },
+    {
+      "name": "Pidilite Industries",
+      "aliases": [
+        "Pidilite"
+      ],
+      "wikidata": "Q7191542",
+      "type": "Corporation",
+      "ticker": "PIDILITIND",
+      "sector": "Chemicals"
+    },
+    {
+      "name": "Dabur India",
+      "aliases": [
+        "Dabur"
+      ],
+      "wikidata": "Q5206146",
+      "type": "Corporation",
+      "ticker": "DABUR",
+      "sector": "FMCG"
+    },
+    {
+      "name": "Marico Limited",
+      "aliases": [
+        "Marico"
+      ],
+      "wikidata": "Q6760986",
+      "type": "Corporation",
+      "ticker": "MARICO",
+      "sector": "FMCG"
+    },
+    {
+      "name": "Havells India",
+      "aliases": [
+        "Havells"
+      ],
+      "wikidata": "Q5685312",
+      "type": "Corporation",
+      "ticker": "HAVELLS",
+      "sector": "Consumer Durables"
+    },
+    {
+      "name": "Bank of Baroda",
+      "aliases": [],
+      "wikidata": "Q806645",
+      "type": "Corporation",
+      "ticker": "BANKBARODA",
+      "sector": "PSU Bank"
+    },
+    {
+      "name": "Punjab National Bank",
+      "aliases": [
+        "PNB"
+      ],
+      "wikidata": "Q2103126",
+      "type": "Corporation",
+      "ticker": "PNB",
+      "sector": "PSU Bank"
+    },
+    {
+      "name": "Canara Bank",
+      "aliases": [],
+      "wikidata": "Q2938352",
+      "type": "Corporation",
+      "ticker": "CANBK",
+      "sector": "PSU Bank"
+    },
+    {
+      "name": "Indian Oil Corporation",
+      "aliases": [
+        "IOC",
+        "Indian Oil"
+      ],
+      "wikidata": "Q1419736",
+      "type": "Corporation",
+      "ticker": "IOC",
+      "sector": "Oil & Gas"
+    },
+    {
+      "name": "GAIL India",
+      "aliases": [
+        "GAIL"
+      ],
+      "wikidata": "Q3804759",
+      "type": "Corporation",
+      "ticker": "GAIL",
+      "sector": "Oil & Gas"
+    },
+    {
+      "name": "Vedanta Limited",
+      "aliases": [
+        "Vedanta"
+      ],
+      "wikidata": "Q7896588",
+      "type": "Corporation",
+      "ticker": "VEDL",
+      "sector": "Metals"
+    },
+    {
+      "name": "Ambuja Cements",
+      "aliases": [],
+      "wikidata": "Q4742008",
+      "type": "Corporation",
+      "ticker": "AMBUJACEM",
+      "sector": "Cement"
+    },
+    {
+      "name": "ACC Limited",
+      "aliases": [
+        "ACC"
+      ],
+      "wikidata": "Q367873",
+      "type": "Corporation",
+      "ticker": "ACC",
+      "sector": "Cement"
+    },
+    {
+      "name": "Shree Cement",
+      "aliases": [],
+      "wikidata": "Q7501490",
+      "type": "Corporation",
+      "ticker": "SHREECEM",
+      "sector": "Cement"
+    },
+    {
+      "name": "Lupin Limited",
+      "aliases": [
+        "Lupin"
+      ],
+      "wikidata": "Q6705703",
+      "type": "Corporation",
+      "ticker": "LUPIN",
+      "sector": "Pharma"
+    },
+    {
+      "name": "Aurobindo Pharma",
+      "aliases": [],
+      "wikidata": "Q4821482",
+      "type": "Corporation",
+      "ticker": "AUROPHARMA",
+      "sector": "Pharma"
+    },
+    {
+      "name": "Torrent Pharmaceuticals",
+      "aliases": [],
+      "wikidata": "Q7827881",
+      "type": "Corporation",
+      "ticker": "TORNTPHARM",
+      "sector": "Pharma"
+    },
+    {
+      "name": "Zydus Lifesciences",
+      "aliases": [],
+      "wikidata": "Q5077894",
+      "type": "Corporation",
+      "ticker": "ZYDUSLIFE",
+      "sector": "Pharma"
+    },
+    {
+      "name": "Biocon",
+      "aliases": [],
+      "wikidata": "Q894905",
+      "type": "Corporation",
+      "ticker": "BIOCON",
+      "sector": "Pharma"
+    },
+    {
+      "name": "Adani Green Energy",
+      "aliases": [
+        "Adani Green"
+      ],
+      "wikidata": "Q42306172",
+      "type": "Corporation",
+      "ticker": "ADANIGREEN",
+      "sector": "Renewables"
+    },
+    {
+      "name": "Adani Power",
+      "aliases": [],
+      "wikidata": "Q4683349",
+      "type": "Corporation",
+      "ticker": "ADANIPOWER",
+      "sector": "Power"
+    },
+    {
+      "name": "Adani Total Gas",
+      "aliases": [],
+      "wikidata": null,
+      "type": "Corporation",
+      "ticker": "ATGL",
+      "sector": "Gas Distribution"
+    },
+    {
+      "name": "Adani Energy Solutions",
+      "aliases": [],
+      "wikidata": null,
+      "type": "Corporation",
+      "ticker": "ADANIENSOL",
+      "sector": "Power"
+    },
+    {
+      "name": "Jio Financial Services",
+      "aliases": [
+        "Jio Financial"
+      ],
+      "wikidata": "Q121289891",
+      "type": "Corporation",
+      "ticker": "JIOFIN",
+      "sector": "NBFC"
+    },
+    {
+      "name": "Life Insurance Corporation of India",
+      "aliases": [
+        "LIC"
+      ],
+      "wikidata": "Q1865001",
+      "type": "Corporation",
+      "ticker": "LICI",
+      "sector": "Insurance"
+    },
+    {
+      "name": "InterGlobe Aviation",
+      "aliases": [
+        "IndiGo"
+      ],
+      "wikidata": "Q3656416",
+      "type": "Corporation",
+      "ticker": "INDIGO",
+      "sector": "Aviation"
+    },
+    {
+      "name": "Zomato",
+      "aliases": [
+        "Eternal"
+      ],
+      "wikidata": "Q8074906",
+      "type": "Corporation",
+      "ticker": "ZOMATO",
+      "sector": "Internet"
+    },
+    {
+      "name": "Paytm",
+      "aliases": [
+        "One97 Communications"
+      ],
+      "wikidata": "Q24906925",
+      "type": "Corporation",
+      "ticker": "PAYTM",
+      "sector": "Fintech"
+    },
+    {
+      "name": "Nykaa",
+      "aliases": [
+        "FSN E-Commerce"
+      ],
+      "wikidata": "Q97073453",
+      "type": "Corporation",
+      "ticker": "NYKAA",
+      "sector": "Internet"
+    },
+    {
+      "name": "PB Fintech",
+      "aliases": [
+        "Policybazaar"
+      ],
+      "wikidata": "Q23911230",
+      "type": "Corporation",
+      "ticker": "POLICYBZR",
+      "sector": "Fintech"
+    },
+    {
+      "name": "Avenue Supermarts",
+      "aliases": [
+        "DMart"
+      ],
+      "wikidata": "Q21998086",
+      "type": "Corporation",
+      "ticker": "DMART",
+      "sector": "Retail"
+    },
+    {
+      "name": "Varun Beverages",
+      "aliases": [],
+      "wikidata": "Q15987295",
+      "type": "Corporation",
+      "ticker": "VBL",
+      "sector": "FMCG"
+    },
+    {
+      "name": "Page Industries",
+      "aliases": [],
+      "wikidata": "Q7124897",
+      "type": "Corporation",
+      "ticker": "PAGEIND",
+      "sector": "Apparel"
+    },
+    {
+      "name": "Berger Paints India",
+      "aliases": [
+        "Berger Paints"
+      ],
+      "wikidata": "Q4892207",
+      "type": "Corporation",
+      "ticker": "BERGEPAINT",
+      "sector": "Paints"
+    },
+    {
+      "name": "United Spirits",
+      "aliases": [],
+      "wikidata": "Q3553223",
+      "type": "Corporation",
+      "ticker": "UNITDSPR",
+      "sector": "Liquor"
+    },
+    {
+      "name": "Indian Railway Finance Corporation",
+      "aliases": [
+        "IRFC"
+      ],
+      "wikidata": "Q6020413",
+      "type": "Corporation",
+      "ticker": "IRFC",
+      "sector": "PSU NBFC"
+    },
+    {
+      "name": "Rail Vikas Nigam",
+      "aliases": [
+        "RVNL"
+      ],
+      "wikidata": "Q7283538",
+      "type": "Corporation",
+      "ticker": "RVNL",
+      "sector": "PSU Infra"
+    },
+    {
+      "name": "Hindustan Aeronautics",
+      "aliases": [
+        "HAL"
+      ],
+      "wikidata": "Q738389",
+      "type": "Corporation",
+      "ticker": "HAL",
+      "sector": "Defence"
+    },
+    {
+      "name": "Bharat Electronics",
+      "aliases": [
+        "BEL"
+      ],
+      "wikidata": "Q4901466",
+      "type": "Corporation",
+      "ticker": "BEL",
+      "sector": "Defence"
+    },
+    {
+      "name": "Mazagon Dock Shipbuilders",
+      "aliases": [
+        "Mazagon Dock"
+      ],
+      "wikidata": "Q6720333",
+      "type": "Corporation",
+      "ticker": "MAZDOCK",
+      "sector": "Defence"
+    },
+    {
+      "name": "Power Finance Corporation",
+      "aliases": [
+        "PFC"
+      ],
+      "wikidata": "Q7234375",
+      "type": "Corporation",
+      "ticker": "PFC",
+      "sector": "PSU NBFC"
+    },
+    {
+      "name": "REC Limited",
+      "aliases": [
+        "REC"
+      ],
+      "wikidata": "Q7300972",
+      "type": "Corporation",
+      "ticker": "RECLTD",
+      "sector": "PSU NBFC"
+    },
+    {
+      "name": "NHPC Limited",
+      "aliases": [
+        "NHPC"
+      ],
+      "wikidata": "Q3192257",
+      "type": "Corporation",
+      "ticker": "NHPC",
+      "sector": "Power"
+    },
+    {
+      "name": "Steel Authority of India",
+      "aliases": [
+        "SAIL"
+      ],
+      "wikidata": "Q1377690",
+      "type": "Corporation",
+      "ticker": "SAIL",
+      "sector": "Metals"
+    },
+    {
+      "name": "NMDC Limited",
+      "aliases": [
+        "NMDC"
+      ],
+      "wikidata": "Q6955197",
+      "type": "Corporation",
+      "ticker": "NMDC",
+      "sector": "Mining"
+    },
+    {
+      "name": "Hindustan Zinc",
+      "aliases": [],
+      "wikidata": "Q5772906",
+      "type": "Corporation",
+      "ticker": "HINDZINC",
+      "sector": "Metals"
+    },
+    {
+      "name": "Hindustan Copper",
+      "aliases": [],
+      "wikidata": "Q5772887",
+      "type": "Corporation",
+      "ticker": "HINDCOPPER",
+      "sector": "Metals"
+    },
+    {
+      "name": "Gokaldas Exports",
+      "aliases": [],
+      "wikidata": "Q5577087",
+      "type": "Corporation",
+      "ticker": "GOKEX",
+      "sector": "Textiles"
+    },
+    {
+      "name": "Jaiprakash Power Ventures",
+      "aliases": [
+        "JP Power"
+      ],
+      "wikidata": "Q6116074",
+      "type": "Corporation",
+      "ticker": "JPPOWER",
+      "sector": "Power"
+    },
+    {
+      "name": "Manappuram Finance",
+      "aliases": [],
+      "wikidata": "Q6749247",
+      "type": "Corporation",
+      "ticker": "MANAPPURAM",
+      "sector": "NBFC"
+    },
+    {
+      "name": "Indian Renewable Energy Development Agency",
+      "aliases": [
+        "IREDA"
+      ],
+      "wikidata": "Q6028935",
+      "type": "Corporation",
+      "ticker": "IREDA",
+      "sector": "Renewables"
+    },
+    {
+      "name": "Inox Wind",
+      "aliases": [],
+      "wikidata": "Q22272573",
+      "type": "Corporation",
+      "ticker": "INOXWIND",
+      "sector": "Renewables"
+    }
+  ],
+  "indices": [
+    {
+      "name": "Nifty 50",
+      "aliases": [
+        "Nifty"
+      ],
+      "wikidata": "Q1958057",
+      "type": "FinancialProduct",
+      "ticker": "NIFTY",
+      "sector": "Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "BSE Sensex",
+      "aliases": [
+        "Sensex"
+      ],
+      "wikidata": "Q586585",
+      "type": "FinancialProduct",
+      "ticker": "SENSEX",
+      "sector": "Index",
+      "provider": "BSE"
+    },
+    {
+      "name": "Nifty Next 50",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "NIFTYJR",
+      "sector": "Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Bank",
+      "aliases": [
+        "Bank Nifty"
+      ],
+      "wikidata": "Q6033303",
+      "type": "FinancialProduct",
+      "ticker": "BANKNIFTY",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty IT",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXIT",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Pharma",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXPHARMA",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Auto",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXAUTO",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty FMCG",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXFMCG",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Metal",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXMETAL",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Realty",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXREALTY",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Energy",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXENERGY",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Financial Services",
+      "aliases": [
+        "FinNifty"
+      ],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "FINNIFTY",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Consumer Durables",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXCONSUMDUR",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Media",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXMEDIA",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty PSU Bank",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "CNXPSUBANK",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Private Bank",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "NIFTYPVTBANK",
+      "sector": "Sector Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Midcap 100",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "NIFTYMIDCAP100",
+      "sector": "Cap Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "Nifty Smallcap 100",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "NIFTYSMLCAP100",
+      "sector": "Cap Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "India VIX",
+      "aliases": [
+        "VIX India"
+      ],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "INDIAVIX",
+      "sector": "Volatility Index",
+      "provider": "NSE"
+    },
+    {
+      "name": "BSE Bankex",
+      "aliases": [
+        "Bankex"
+      ],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "BANKEX",
+      "sector": "Sector Index",
+      "provider": "BSE"
+    },
+    {
+      "name": "BSE Midcap",
+      "aliases": [],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "BSEMIDCAP",
+      "sector": "Cap Index",
+      "provider": "BSE"
+    },
+    {
+      "name": "S&P 500",
+      "aliases": [
+        "SPX"
+      ],
+      "wikidata": "Q242345",
+      "type": "FinancialProduct",
+      "ticker": "SPX",
+      "sector": "Global Index"
+    },
+    {
+      "name": "Dow Jones Industrial Average",
+      "aliases": [
+        "Dow"
+      ],
+      "wikidata": "Q319352",
+      "type": "FinancialProduct",
+      "ticker": "DJI",
+      "sector": "Global Index"
+    },
+    {
+      "name": "Nasdaq Composite",
+      "aliases": [
+        "Nasdaq"
+      ],
+      "wikidata": "Q145514",
+      "type": "FinancialProduct",
+      "ticker": "IXIC",
+      "sector": "Global Index"
+    },
+    {
+      "name": "Nasdaq 100",
+      "aliases": [],
+      "wikidata": "Q570873",
+      "type": "FinancialProduct",
+      "ticker": "NDX",
+      "sector": "Global Index"
+    },
+    {
+      "name": "FTSE 100",
+      "aliases": [],
+      "wikidata": "Q170987",
+      "type": "FinancialProduct",
+      "ticker": "UKX",
+      "sector": "Global Index"
+    },
+    {
+      "name": "Nikkei 225",
+      "aliases": [
+        "Nikkei"
+      ],
+      "wikidata": "Q180953",
+      "type": "FinancialProduct",
+      "ticker": "N225",
+      "sector": "Global Index"
+    },
+    {
+      "name": "Hang Seng Index",
+      "aliases": [
+        "Hang Seng"
+      ],
+      "wikidata": "Q170028",
+      "type": "FinancialProduct",
+      "ticker": "HSI",
+      "sector": "Global Index"
+    },
+    {
+      "name": "DAX",
+      "aliases": [],
+      "wikidata": "Q165817",
+      "type": "FinancialProduct",
+      "ticker": "DAX",
+      "sector": "Global Index"
+    },
+    {
+      "name": "Shanghai Composite",
+      "aliases": [],
+      "wikidata": "Q765261",
+      "type": "FinancialProduct",
+      "ticker": "SSEC",
+      "sector": "Global Index"
+    },
+    {
+      "name": "CAC 40",
+      "aliases": [],
+      "wikidata": "Q167028",
+      "type": "FinancialProduct",
+      "ticker": "FCHI",
+      "sector": "Global Index"
+    },
+    {
+      "name": "KOSPI",
+      "aliases": [],
+      "wikidata": "Q484097",
+      "type": "FinancialProduct",
+      "ticker": "KS11",
+      "sector": "Global Index"
+    },
+    {
+      "name": "MSCI Emerging Markets Index",
+      "aliases": [
+        "MSCI EM"
+      ],
+      "wikidata": "Q6731211",
+      "type": "FinancialProduct",
+      "ticker": "MSCIEM",
+      "sector": "Global Index"
+    },
+    {
+      "name": "MSCI World Index",
+      "aliases": [],
+      "wikidata": "Q1718960",
+      "type": "FinancialProduct",
+      "ticker": "MSCIWORLD",
+      "sector": "Global Index"
+    },
+    {
+      "name": "CBOE Volatility Index",
+      "aliases": [
+        "VIX"
+      ],
+      "wikidata": "Q903921",
+      "type": "FinancialProduct",
+      "ticker": "VIX",
+      "sector": "Volatility Index"
+    }
+  ],
+  "regulators": [
+    {
+      "name": "Reserve Bank of India",
+      "aliases": [
+        "RBI"
+      ],
+      "wikidata": "Q188156",
+      "type": "GovernmentOrganization",
+      "sector": "Central Bank"
+    },
+    {
+      "name": "Securities and Exchange Board of India",
+      "aliases": [
+        "SEBI"
+      ],
+      "wikidata": "Q1192853",
+      "type": "GovernmentOrganization",
+      "sector": "Regulator"
+    },
+    {
+      "name": "Insurance Regulatory and Development Authority",
+      "aliases": [
+        "IRDAI"
+      ],
+      "wikidata": "Q2070103",
+      "type": "GovernmentOrganization",
+      "sector": "Regulator"
+    },
+    {
+      "name": "Pension Fund Regulatory and Development Authority",
+      "aliases": [
+        "PFRDA"
+      ],
+      "wikidata": "Q7166030",
+      "type": "GovernmentOrganization",
+      "sector": "Regulator"
+    },
+    {
+      "name": "Ministry of Finance",
+      "aliases": [],
+      "wikidata": "Q1465389",
+      "type": "GovernmentOrganization",
+      "sector": "Government"
+    },
+    {
+      "name": "National Stock Exchange of India",
+      "aliases": [
+        "NSE"
+      ],
+      "wikidata": "Q1142701",
+      "type": "Organization",
+      "sector": "Exchange"
+    },
+    {
+      "name": "Bombay Stock Exchange",
+      "aliases": [
+        "BSE"
+      ],
+      "wikidata": "Q830621",
+      "type": "Organization",
+      "sector": "Exchange"
+    },
+    {
+      "name": "Multi Commodity Exchange",
+      "aliases": [
+        "MCX"
+      ],
+      "wikidata": "Q2070024",
+      "type": "Organization",
+      "sector": "Exchange"
+    },
+    {
+      "name": "National Commodity & Derivatives Exchange",
+      "aliases": [
+        "NCDEX"
+      ],
+      "wikidata": "Q7000855",
+      "type": "Organization",
+      "sector": "Exchange"
+    }
+  ],
+  "global_central_banks": [
+    {
+      "name": "US Federal Reserve",
+      "aliases": [
+        "Fed",
+        "FOMC"
+      ],
+      "wikidata": "Q53536",
+      "type": "GovernmentOrganization",
+      "sector": "Central Bank"
+    },
+    {
+      "name": "European Central Bank",
+      "aliases": [
+        "ECB"
+      ],
+      "wikidata": "Q8901",
+      "type": "GovernmentOrganization",
+      "sector": "Central Bank"
+    },
+    {
+      "name": "Bank of Japan",
+      "aliases": [
+        "BoJ"
+      ],
+      "wikidata": "Q333101",
+      "type": "GovernmentOrganization",
+      "sector": "Central Bank"
+    },
+    {
+      "name": "Bank of England",
+      "aliases": [
+        "BoE"
+      ],
+      "wikidata": "Q23381",
+      "type": "GovernmentOrganization",
+      "sector": "Central Bank"
+    },
+    {
+      "name": "Reserve Bank of Australia",
+      "aliases": [
+        "RBA"
+      ],
+      "wikidata": "Q1187505",
+      "type": "GovernmentOrganization",
+      "sector": "Central Bank"
+    },
+    {
+      "name": "People's Bank of China",
+      "aliases": [
+        "PBoC"
+      ],
+      "wikidata": "Q1158019",
+      "type": "GovernmentOrganization",
+      "sector": "Central Bank"
+    },
+    {
+      "name": "Swiss National Bank",
+      "aliases": [
+        "SNB"
+      ],
+      "wikidata": "Q333362",
+      "type": "GovernmentOrganization",
+      "sector": "Central Bank"
+    },
+    {
+      "name": "Bank of Canada",
+      "aliases": [
+        "BoC"
+      ],
+      "wikidata": "Q806463",
+      "type": "GovernmentOrganization",
+      "sector": "Central Bank"
+    }
+  ],
+  "commodities": [
+    {
+      "name": "Gold",
+      "aliases": [],
+      "wikidata": "Q897",
+      "type": "Product",
+      "ticker": "XAU",
+      "sector": "Precious Metal"
+    },
+    {
+      "name": "Silver",
+      "aliases": [],
+      "wikidata": "Q1090",
+      "type": "Product",
+      "ticker": "XAG",
+      "sector": "Precious Metal"
+    },
+    {
+      "name": "Copper",
+      "aliases": [],
+      "wikidata": "Q753",
+      "type": "Product",
+      "ticker": "HG",
+      "sector": "Base Metal"
+    },
+    {
+      "name": "Brent Crude Oil",
+      "aliases": [
+        "Brent"
+      ],
+      "wikidata": "Q1057969",
+      "type": "Product",
+      "ticker": "BRENT",
+      "sector": "Energy"
+    },
+    {
+      "name": "WTI Crude Oil",
+      "aliases": [
+        "WTI"
+      ],
+      "wikidata": "Q1325344",
+      "type": "Product",
+      "ticker": "WTI",
+      "sector": "Energy"
+    },
+    {
+      "name": "Natural Gas",
+      "aliases": [],
+      "wikidata": "Q39158",
+      "type": "Product",
+      "ticker": "NG",
+      "sector": "Energy"
+    },
+    {
+      "name": "Aluminium",
+      "aliases": [
+        "Aluminum"
+      ],
+      "wikidata": "Q663",
+      "type": "Product",
+      "ticker": "ALI",
+      "sector": "Base Metal"
+    },
+    {
+      "name": "Zinc",
+      "aliases": [],
+      "wikidata": "Q758",
+      "type": "Product",
+      "ticker": "ZN",
+      "sector": "Base Metal"
+    },
+    {
+      "name": "Lead",
+      "aliases": [],
+      "wikidata": "Q708",
+      "type": "Product",
+      "ticker": "PB",
+      "sector": "Base Metal"
+    },
+    {
+      "name": "Nickel",
+      "aliases": [],
+      "wikidata": "Q744",
+      "type": "Product",
+      "ticker": "NI",
+      "sector": "Base Metal"
+    },
+    {
+      "name": "Platinum",
+      "aliases": [],
+      "wikidata": "Q880",
+      "type": "Product",
+      "ticker": "XPT",
+      "sector": "Precious Metal"
+    },
+    {
+      "name": "Palladium",
+      "aliases": [],
+      "wikidata": "Q879",
+      "type": "Product",
+      "ticker": "XPD",
+      "sector": "Precious Metal"
+    },
+    {
+      "name": "Iron Ore",
+      "aliases": [],
+      "wikidata": "Q170596",
+      "type": "Product",
+      "sector": "Bulk Commodity"
+    },
+    {
+      "name": "Cotton",
+      "aliases": [],
+      "wikidata": "Q11457",
+      "type": "Product",
+      "ticker": "CT",
+      "sector": "Agri"
+    },
+    {
+      "name": "Sugar",
+      "aliases": [],
+      "wikidata": "Q11002",
+      "type": "Product",
+      "ticker": "SB",
+      "sector": "Agri"
+    },
+    {
+      "name": "Wheat",
+      "aliases": [],
+      "wikidata": "Q11575",
+      "type": "Product",
+      "ticker": "ZW",
+      "sector": "Agri"
+    },
+    {
+      "name": "Soybean",
+      "aliases": [],
+      "wikidata": "Q11006",
+      "type": "Product",
+      "ticker": "ZS",
+      "sector": "Agri"
+    },
+    {
+      "name": "Crude Palm Oil",
+      "aliases": [
+        "CPO"
+      ],
+      "wikidata": "Q215574",
+      "type": "Product",
+      "ticker": "CPO",
+      "sector": "Agri"
+    },
+    {
+      "name": "Coffee",
+      "aliases": [],
+      "wikidata": "Q8486",
+      "type": "Product",
+      "ticker": "KC",
+      "sector": "Agri"
+    }
+  ],
+  "macro_concepts": [
+    {
+      "name": "Inflation",
+      "aliases": [],
+      "wikidata": "Q35069",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Gross Domestic Product",
+      "aliases": [
+        "GDP"
+      ],
+      "wikidata": "Q41581",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Consumer Price Index",
+      "aliases": [
+        "CPI"
+      ],
+      "wikidata": "Q622664",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Wholesale Price Index",
+      "aliases": [
+        "WPI"
+      ],
+      "wikidata": "Q1810964",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Index of Industrial Production",
+      "aliases": [
+        "IIP"
+      ],
+      "wikidata": "Q1665268",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Purchasing Managers' Index",
+      "aliases": [
+        "PMI"
+      ],
+      "wikidata": "Q1349255",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Fiscal Deficit",
+      "aliases": [],
+      "wikidata": "Q1192867",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Current Account Deficit",
+      "aliases": [
+        "CAD"
+      ],
+      "wikidata": "Q1129857",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Repo Rate",
+      "aliases": [],
+      "wikidata": "Q1751980",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Foreign Institutional Investor",
+      "aliases": [
+        "FII"
+      ],
+      "wikidata": "Q5471374",
+      "type": "DefinedTerm",
+      "sector": "Markets"
+    },
+    {
+      "name": "Foreign Portfolio Investor",
+      "aliases": [
+        "FPI"
+      ],
+      "wikidata": null,
+      "type": "DefinedTerm",
+      "sector": "Markets"
+    },
+    {
+      "name": "Domestic Institutional Investor",
+      "aliases": [
+        "DII"
+      ],
+      "wikidata": null,
+      "type": "DefinedTerm",
+      "sector": "Markets"
+    },
+    {
+      "name": "Quantitative Easing",
+      "aliases": [
+        "QE"
+      ],
+      "wikidata": "Q629161",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Yield Curve",
+      "aliases": [],
+      "wikidata": "Q1138929",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Recession",
+      "aliases": [],
+      "wikidata": "Q176494",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    },
+    {
+      "name": "Stagflation",
+      "aliases": [],
+      "wikidata": "Q193910",
+      "type": "DefinedTerm",
+      "sector": "Macro"
+    }
+  ],
+  "currencies_and_yields": [
+    {
+      "name": "USD/INR",
+      "aliases": [
+        "Rupee",
+        "Dollar Rupee"
+      ],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "USDINR",
+      "sector": "Currency"
+    },
+    {
+      "name": "EUR/USD",
+      "aliases": [
+        "Euro Dollar"
+      ],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "EURUSD",
+      "sector": "Currency"
+    },
+    {
+      "name": "US Dollar Index",
+      "aliases": [
+        "DXY"
+      ],
+      "wikidata": "Q1233151",
+      "type": "FinancialProduct",
+      "ticker": "DXY",
+      "sector": "Currency Index"
+    },
+    {
+      "name": "10-Year US Treasury Yield",
+      "aliases": [
+        "US10Y"
+      ],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "US10Y",
+      "sector": "Bond Yield"
+    },
+    {
+      "name": "10-Year India G-Sec Yield",
+      "aliases": [
+        "IN10Y"
+      ],
+      "wikidata": null,
+      "type": "FinancialProduct",
+      "ticker": "IN10Y",
+      "sector": "Bond Yield"
+    }
+  ],
+  "geopolitical_bodies": [
+    {
+      "name": "G7",
+      "aliases": [],
+      "wikidata": "Q483905",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "G20",
+      "aliases": [],
+      "wikidata": "Q189579",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "BRICS",
+      "aliases": [],
+      "wikidata": "Q189581",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "OPEC",
+      "aliases": [],
+      "wikidata": "Q7795",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "OPEC+",
+      "aliases": [],
+      "wikidata": "Q56245628",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "International Monetary Fund",
+      "aliases": [
+        "IMF"
+      ],
+      "wikidata": "Q7804",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "World Bank",
+      "aliases": [],
+      "wikidata": "Q7164",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "United Nations",
+      "aliases": [
+        "UN"
+      ],
+      "wikidata": "Q1065",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "World Trade Organization",
+      "aliases": [
+        "WTO"
+      ],
+      "wikidata": "Q7825",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "Bank for International Settlements",
+      "aliases": [
+        "BIS"
+      ],
+      "wikidata": "Q654454",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "NATO",
+      "aliases": [],
+      "wikidata": "Q7184",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "European Union",
+      "aliases": [
+        "EU"
+      ],
+      "wikidata": "Q458",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "ASEAN",
+      "aliases": [],
+      "wikidata": "Q7948",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    },
+    {
+      "name": "Shanghai Cooperation Organisation",
+      "aliases": [
+        "SCO"
+      ],
+      "wikidata": "Q188804",
+      "type": "Organization",
+      "sector": "Geopolitical"
+    }
+  ]
+}

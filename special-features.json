@@ -1,0 +1,28 @@
+{
+  "special": [
+    {
+      "pub": "Business Standard",
+      "date": "2026-06-05",
+      "title": "‘Tax exemption on G-Secs may succeed where RBI liquidity cannot’, authored op-ed by Harshal Dasani",
+      "url": "https://www.business-standard.com/markets/news/rbi-repo-rate-unchanged-oil-prices-rupee-inflation-risks-gsec-tax-exemption-fii-126060500279_1.html",
+      "image": "special-features-assets/business-standard-rbi-gsec-jun2026.jpg",
+      "alt": "Business Standard authored op-ed by Harshal Dasani, tax exemption on G-Secs"
+    },
+    {
+      "pub": "Live Mint",
+      "date": "2026-02-07",
+      "title": "Gold at $6,000, silver at $150: why Harshal Dasani stays bullish on precious metals",
+      "url": "https://www.livemint.com/market/stock-market-news/gold-prices-at-6-000-silver-rate-at-150-why-harshal-dasani-remains-bullish-on-precious-metals-despite-meltdown-11770370001942.html",
+      "image": "special-features-assets/livemint-gold-silver-feb2026.jpg",
+      "alt": "Live Mint, Gold at $6,000, silver at $150"
+    },
+    {
+      "pub": "Outlook Business",
+      "date": "2025-12-01",
+      "title": "“The Outliers”, Harshal Dasani on Ranjan Pai building Manipal",
+      "url": "https://earthenconnect.com/wp-content/uploads/2025/12/Outlook-Business-Issue-December-2025-PDF-Double-Spread-2.pdf",
+      "image": "special-features-assets/outlook-business-outliers-dec2025.jpg",
+      "alt": "Outlook Business The Outliers, Harshal Dasani on Manipal"
+    }
+  ]
+}
