@@ -239,10 +239,7 @@
           <div class="stat-label">Invested amount</div>
           <div class="stat-value" id="val-invested">—</div>
           <div class="stat-exact" id="exact-invested"></div>
-        
-  </div><!-- /tool-grid -->
-      </div>
-
+        </div>
         <div class="stat-card is-gold" id="card-returns">
           <div class="stat-label">Est. returns</div>
           <div class="stat-value" id="val-returns">—</div>
@@ -253,13 +250,11 @@
           <div class="stat-value" id="val-total">—</div>
           <div class="stat-exact" id="exact-total"></div>
         </div>
-      </div>
-      </div>
-    </div>
+        </div><!-- /stat-grid -->
+      </div><!-- /results-panel -->
+    </div><!-- /tool-grid -->
 
-  
-
-  <div class="panel chart-panel">
+    <div class="panel chart-panel">
     <div class="chart-head">
       <h2 class="panel-title">Growth over time</h2>
       <div class="chart-legend">
@@ -348,6 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── donut chart ── */
   function drawDonut(invested, returns, total) {
+    if (!document.getElementById("donut-invested")) return;  /* donut chart was removed */
     var CIRC = 2 * Math.PI * 40; /* 251.33 */
     var invFrac = total > 0 ? invested / total : 1;
     var retFrac = total > 0 ? returns / total : 0;
