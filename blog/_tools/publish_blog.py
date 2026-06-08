@@ -1214,6 +1214,7 @@ strong{{color:var(--ink);font-weight:700}}
   }});
 }})();
 </script>
+  <script src="/lang-switch.js" defer></script>
 </body>
 </html>
 """
