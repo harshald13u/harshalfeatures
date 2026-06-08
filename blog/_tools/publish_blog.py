@@ -14,7 +14,7 @@ per the spec in Blogs/_system/blog-system.md, and produces:
 
 Word file format (strict — see Blogs/_system/blog-system.md):
     [Heading 1]   Title
-    [Normal]      By Harshal Dasani — Business Head, INVasset PMS · DD Mon YYYY
+    [Normal]      By Harshal Dasani — Markets professional · DD Mon YYYY
     [Normal]      Topic: <stock-market|commodities|macros|geopolitics>
     [Normal]      Date: YYYY-MM-DD
     [Normal]      Slug: <kebab-case-slug>
@@ -66,7 +66,7 @@ PKG_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 
 METADATA_LABELS = [
     "Topic", "Date", "Slug", "Excerpt", "SEO Title", "Meta Description",
-    "Focus Keywords", "Image Alt", "Image Caption", "Author",
+    "Focus Keywords", "Image Alt", "Image Caption", "Author"
 ]
 DARK_COVER_MARKER = "COVER — DARK MODE"   # em-dash per spec
 
@@ -323,6 +323,25 @@ def inline_entity_links(text, entities, used_in_post):
     return out
 
 
+
+def sanitize_body_text(text):
+    """Strip INVasset / SEBI-registered mentions from any rendered prose.
+    User wants the site to read as personal — no firm employer disclosed.
+    Idempotent; safe to call repeatedly. Operates on plain text BEFORE html_escape.
+    """
+    if not text:
+        return text
+    # Drop whole-sentence references
+    text = re.sub(r" ?This blog reflects the views of INVasset[^.]*\.", "", text)
+    text = re.sub(r" ?That shapes how we are positioned at INVasset[^.]*\.", "", text)
+    # Drop residual standalone references
+    text = re.sub(r"\bINVasset PMS\b", "", text)
+    text = re.sub(r"\bINVasset\b", "", text)
+    # Collapse double spaces / orphan punctuation left behind
+    text = re.sub(r"  +", " ", text)
+    text = re.sub(r" +([.,;:])", r"\1", text)
+    return text.strip()
+
 def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
                      dark_cover_idx, caption_idx, image_caption,
                      post_dir, entities=None, inline_filenames=None, inline_chart_pairs=None,
@@ -453,6 +472,8 @@ def render_body_html(paragraphs, skip_idxs, dark_marker_idx, light_cover_idx,
             parts.append(f'<div class="table-wrap"><table class="post-table">{thead_html}{tbody_html}</table></div>')
             continue
 
+        p["text"] = sanitize_body_text(p["text"])
+
         text = html_escape(p["text"])
         if entities:
             text = inline_entity_links(text, entities, used_entities)
@@ -582,7 +603,7 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
             about.append({
                 "@type": "Thing",
                 "name": name,
-                "sameAs": f"https://www.wikidata.org/wiki/{ent['wikidata']}",
+                "sameAs": f"https://www.wikidata.org/wiki/{ent['wikidata']}"
             })
         for name in mentioned:
             ent = idx.get(name)
@@ -591,7 +612,7 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
             mentions.append({
                 "@type": "Thing",
                 "name": name,
-                "sameAs": f"https://www.wikidata.org/wiki/{ent['wikidata']}",
+                "sameAs": f"https://www.wikidata.org/wiki/{ent['wikidata']}"
             })
 
     keywords_list = [k.strip() for k in focus_keywords.split(",") if k.strip()] if focus_keywords else []
@@ -613,7 +634,7 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
             "height": 900,
             "caption": image_alt or title,
             "license": f"{SITE_BASE}/",
-            "acquireLicensePage": f"{SITE_BASE}/",
+            "acquireLicensePage": f"{SITE_BASE}/"
         },
         "author": {"@id": f"{SITE_BASE}/#person"},
         "publisher": {"@id": f"{SITE_BASE}/#org"},
@@ -627,8 +648,8 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         # Speakable signals to Google Assistant / voice surfaces which parts of the page are summarisable
         "speakable": {
             "@type": "SpeakableSpecification",
-            "cssSelector": ["h1", ".subtitle"],
-        },
+            "cssSelector": ["h1", ".subtitle"]
+        }
     }
     if article_body_text:
         # Truncate huge body to a sane 8000 char window for the schema (Google's accepted limit)
@@ -645,8 +666,8 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Harshal Dasani", "item": f"{SITE_BASE}/"},
             {"@type": "ListItem", "position": 2, "name": "Blogs", "item": f"{SITE_BASE}/blog/"},
-            {"@type": "ListItem", "position": 3, "name": title, "item": canonical},
-        ],
+            {"@type": "ListItem", "position": 3, "name": title, "item": canonical}
+        ]
     }
 
     person = {
@@ -655,15 +676,14 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
         "name": "Harshal Dasani",
         "url": f"{SITE_BASE}/",
         "image": f"{SITE_BASE}/harshal-dasani.jpg",
-        "jobTitle": "Business Head, INVasset PMS",
-        "description": "Harshal Dasani — markets professional and writer with over a decade in Indian equity markets. Business Head at INVasset PMS, Mumbai. CFA candidate; CA Level II.",
-        "worksFor": {"@type": "Organization", "name": "INVasset PMS", "url": "https://invasset.com/"},
+        "jobTitle": "Markets professional",
+        "description": "Harshal Dasani — markets professional and writer with over a decade in Indian equity markets. Markets professional, Mumbai. CFA candidate; CA Level II.",
         "knowsAbout": ["Indian equity markets", "Portfolio Management Services", "Macroeconomics", "Commodities", "Geopolitics"],
         "alumniOf": "The Institute of Chartered Accountants of India",
         "sameAs": [
             "https://www.linkedin.com/in/harshal-dasani-/",
-            "https://x.com/HarshalDasanii",
-        ],
+            "https://x.com/HarshalDasanii"
+        ]
     }
 
     # WebSite with SearchAction so Google can render a site-wide search box in SERPs
@@ -679,10 +699,10 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
             "@type": "SearchAction",
             "target": {
                 "@type": "EntryPoint",
-                "urlTemplate": f"{SITE_BASE}/blog/?q={{search_term_string}}",
+                "urlTemplate": f"{SITE_BASE}/blog/?q={{search_term_string}}"
             },
-            "query-input": "required name=search_term_string",
-        },
+            "query-input": "required name=search_term_string"
+        }
     }
 
     org = {
@@ -694,8 +714,8 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
             "@type": "ImageObject",
             "url": f"{SITE_BASE}/icon-512.png",
             "width": 512,
-            "height": 512,
-        },
+            "height": 512
+        }
     }
 
     nodes = [person, org, website, article, breadcrumb]
@@ -707,7 +727,7 @@ def article_jsonld(title, excerpt, slug, topic, date_str, canonical, light_cover
                 {"@type": "Question", "name": q,
                  "acceptedAnswer": {"@type": "Answer", "text": a}}
                 for q, a in faq_pairs
-            ],
+            ]
         })
     graph = {"@context": "https://schema.org", "@graph": nodes}
     return json.dumps(graph, ensure_ascii=False, indent=2)
@@ -857,7 +877,7 @@ POST_TEMPLATE = """<!DOCTYPE html>
 <meta name="twitter:image" content="{light_cover_url}">
 <meta name="twitter:image:alt" content="{image_alt}">
 <meta name="twitter:label1" content="Author">
-<meta name="twitter:data1" content="Harshal Dasani — Business Head, INVasset PMS">
+<meta name="twitter:data1" content="Harshal Dasani — Markets professional">
 <meta name="twitter:label2" content="Section">
 <meta name="twitter:data2" content="{topic_label}">
 
@@ -1122,7 +1142,7 @@ strong{{color:var(--ink);font-weight:700}}
   <span class="topic-pill">{topic_label}</span>
   <h1 itemprop="headline">{title_html}</h1>
   <p class="subtitle" itemprop="description">{excerpt_html}</p>
-  <p class="byline">By <strong itemprop="author">Harshal Dasani</strong> &middot; <span>Business Head, INVasset PMS</span> &middot; <time itemprop="datePublished" datetime="{date_iso}">{date_pretty}</time> &middot; <span class="reading-time" aria-label="Reading time">{reading_minutes} min read &middot; {word_count_pretty} words</span></p>
+  <p class="byline">By <strong itemprop="author">Harshal Dasani</strong> &middot; <span>Markets professional</span> &middot; <time itemprop="datePublished" datetime="{date_iso}">{date_pretty}</time> &middot; <span class="reading-time" aria-label="Reading time">{reading_minutes} min read &middot; {word_count_pretty} words</span></p>
   <figure class="cover" role="button" tabindex="0" aria-label="Open cover in full resolution" data-light="{light_cover_filename}" data-dark="{dark_cover_filename}">
     <img src="{light_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" itemprop="image" class="light-only">
     <img src="{dark_cover_filename}" alt="{image_alt}" width="1600" height="900" loading="eager" fetchpriority="high" class="dark-only">
@@ -1147,10 +1167,10 @@ strong{{color:var(--ink);font-weight:700}}
     </a>
   </div>
   <aside class="author-bio" itemscope itemtype="https://schema.org/Person">
-    <img src="../../../harshal-dasani.jpg" alt="Harshal Dasani — Business Head, INVasset PMS" loading="lazy" itemprop="image" width="72" height="72">
+    <img src="../../../harshal-dasani.jpg" alt="Harshal Dasani — Markets professional" loading="lazy" itemprop="image" width="72" height="72">
     <div class="author-bio-body">
       <h3 itemprop="name">About Harshal Dasani</h3>
-      <p itemprop="description">Over a decade in Indian equity markets — equity research, portfolio strategy, capital flows. Currently Business Head at <a href="https://invasset.com/" rel="external" target="_blank" itemprop="worksFor">INVasset PMS</a>, Mumbai. CFA candidate · CA Level II. Long-form notes on equities, commodities, macros and geopolitics. <a href="../../../tracker/">See media features &rarr;</a></p>
+      <p itemprop="description">Over a decade in Indian equity markets — equity research, portfolio strategy, capital flows. Currently Business Head at <a href= rel="external" target="_blank" itemprop="worksFor"></a>, Mumbai. CFA candidate · CA Level II. Long-form notes on equities, commodities, macros and geopolitics. <a href="../../../tracker/">See media features &rarr;</a></p>
       <div class="author-links">
         <a href="https://www.linkedin.com/in/harshal-dasani-/" target="_blank" rel="noopener noreferrer" itemprop="sameAs">LinkedIn</a>
         <a href="https://x.com/HarshalDasanii" target="_blank" rel="noopener noreferrer" itemprop="sameAs">X (Twitter)</a>
@@ -1293,7 +1313,7 @@ def build_rss_feed(feed_path, site_base):
     <title>Harshal Dasani — Blog</title>
     <link>{site_base}/blog/</link>
     <atom:link href="{site_base}/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <description>Long-form notes on Indian equity markets, commodities, macros and geopolitics by Harshal Dasani — over a decade in Indian markets, currently Business Head at INVasset PMS, Mumbai.</description>
+    <description>Long-form notes on Indian equity markets, commodities, macros and geopolitics by Harshal Dasani — over a decade in Indian markets, currently Markets professional, Mumbai.</description>
     <language>en-IN</language>
     <copyright>(c) Harshal Dasani</copyright>
     <lastBuildDate>{now_rfc822}</lastBuildDate>
@@ -1546,7 +1566,7 @@ def publish_blog(docx_path):
     modified_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00")
 
     # Word count and reading time (220 wpm — Medium / industry average)
-    plain_body_text = " ".join(p["text"] for i, p in enumerate(paras)
+    plain_body_text = " ".join(sanitize_body_text(p["text"]) for i, p in enumerate(paras)
                                 if i not in skip and p["type"] != "image"
                                 and i not in (dark_marker, light_cover_p_idx, dark_cover_p_idx, caption_idx))
     wc = word_count_of(plain_body_text)
@@ -1586,7 +1606,7 @@ def publish_blog(docx_path):
         "stock-market": "Stock Market",
         "commodities": "Commodities",
         "macros": "Macros",
-        "geopolitics": "Geopolitics",
+        "geopolitics": "Geopolitics"
     }[topic]
 
     html = POST_TEMPLATE.format(
@@ -1613,7 +1633,7 @@ def publish_blog(docx_path):
         faq_html=faq_html,
         related_html=related_html,
         jsonld=jsonld,
-        word_count_pretty=f"{wc:,}",
+        word_count_pretty=f"{wc:}",
         reading_minutes=rt,
         article_tag_meta="\n".join(
             f'<meta property="article:tag" content="{html_escape(k.strip())}">'
@@ -1644,7 +1664,7 @@ def publish_blog(docx_path):
         data = {"posts": []}
     entry = {
         "slug": slug, "title": title, "topic": topic, "date": date_str,
-        "excerpt": excerpt, "image": light_cover_url, "url": canonical,
+        "excerpt": excerpt, "image": light_cover_url, "url": canonical
     }
     data["posts"] = [entry] + [p for p in data.get("posts", []) if p.get("slug") != slug]
     data["posts"].sort(key=lambda p: p.get("date", ""), reverse=True)
@@ -1667,7 +1687,7 @@ def publish_blog(docx_path):
         "word_count": wc, "reading_minutes": rt,
         "used_entities": sorted(used_entities),
         "mentioned_entities": sorted(mentioned_entities),
-        "tables": sum(1 for p in paras if p.get("type") == "table"),
+        "tables": sum(1 for p in paras if p.get("type") == "table")
     }
 
 

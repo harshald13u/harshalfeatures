@@ -38,7 +38,7 @@ This is a significant change. Until now, foreign investors faced a 20% tax on th
 
 For investors, the takeaway is clearer than the unchanged rate suggests. A large part of the market has spent months waiting for the next cut, and we would not build a portfolio around that hope. When the cost of money stays higher for longer, the businesses that do well are the ones that can grow on real demand, capacity, and pricing power, rather than on cheap borrowing.
 
-That shapes how we are positioned at INVasset. We continue to prefer the capex and energy side of the market, including power, metals, and the intermediaries that benefit as more people participate in the markets, where earnings are driven by volume and demand rather than by the RBI’s next move. We are more cautious on the rate-sensitive consumption names whose case depends heavily on borrowing costs coming down. In an environment like this, the quality of a balance sheet and the durability of earnings matter more than the direction of the next policy decision.
+We continue to prefer the capex and energy side of the market, including power, metals, and the intermediaries that benefit as more people participate in the markets, where earnings are driven by volume and demand rather than by the RBI’s next move. We are more cautious on the rate-sensitive consumption names whose case depends heavily on borrowing costs coming down. In an environment like this, the quality of a balance sheet and the durability of earnings matter more than the direction of the next policy decision.
 
 On the fixed-income side, the new tax exemption is the bigger structural change. With both interest and capital gains on government securities now free of tax for foreign institutional investors, Indian bonds become genuinely more attractive to overseas buyers, and a return of foreign demand could gradually pull yields lower even with the RBI on hold.
 
@@ -48,6 +48,6 @@ The next move, in either direction, now looks more like a second-half FY27 quest
 
 For now, the RBI has chosen patience, and given the crosswinds it is facing, that is a reasonable call. The job for investors is not to wait for relief from the central bank, but to own businesses that can do well whether or not it arrives.
 
-This blog reflects the views of INVasset PMS and is for information only. It is not investment advice or a recommendation to buy or sell any security. Please consult your financial adviser before making investment decisions.
+It is not investment advice or a recommendation to buy or sell any security. Please consult your financial adviser before making investment decisions.
 
 India’s repo rate cycle, 2023–2026 (dark version).
