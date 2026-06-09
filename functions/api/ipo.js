@@ -14,6 +14,7 @@ function fyOf(d){ const y=d.getUTCFullYear(), m=d.getUTCMonth()+1; return m>=4 ?
 function stripHTML(s){ return String(s||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(); }
 function slugFrom(html){ const m=String(html||'').match(/\/ipo\/([a-z0-9-]+)\/\d+\//i); return m?m[1]:null; }
 function idFrom(html){ const m=String(html||'').match(/\/ipo\/[a-z0-9-]+\/(\d+)\//i); return m?m[1]:null; }
+function normName(x){ return String(x||'').toLowerCase().replace(/\b(limited|ltd|the)\b/g,'').replace(/[^a-z0-9]/g,''); }
 function num(x){ if(x==null||x==='') return null; const n=parseFloat(String(x).replace(/[^0-9.\-]/g,'')); return isFinite(n)?n:null; }
 function band(s){ if(!s) return null; const n=(String(s).match(/\d+(?:\.\d+)?/g)||[]).map(Number); if(!n.length) return null; return n.length===1?[n[0],n[0]]:[Math.min(n[0],n[1]),Math.max(n[0],n[1])]; }
 function isoDate(s){ if(!s) return null; const d=new Date(s); return isNaN(d)?null:new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())); }
@@ -61,6 +62,28 @@ export async function onRequest(context){
       if(key && (o!=null||q!=null||ni!=null||rt!=null)) subMap.set(key, { overall:o, qib:q, nii:ni, ret:rt });
     }
 
+    // NSE granular subscription for OPEN mainboard only (adds Big-NII vs Small-NII split
+    // that Chittorgarh doesn't break out). Gated on anyOpen; additive; never overrides base.
+    const nseGran = new Map();
+    if(anyOpen){ try{
+      const NSE='https://www.nseindia.com';
+      const boot = await fetch(NSE+'/market-data/all-upcoming-issues-ipo', { headers:{ 'User-Agent':UA, 'Accept':'text/html,*/*', 'Accept-Language':'en-US,en;q=0.9' }, cf:{cacheTtl:0} });
+      const sc = (boot.headers.getSetCookie ? boot.headers.getSetCookie() : [boot.headers.get('set-cookie')]).filter(Boolean);
+      const cookie = sc.map(x=>String(x).split(';')[0]).join('; ');
+      const hdr = { 'User-Agent':UA, 'Accept':'application/json, text/plain, */*', 'Accept-Language':'en-US,en;q=0.9', 'Referer':NSE+'/market-data/all-upcoming-issues-ipo', 'Cookie':cookie };
+      const ci = await fetch(NSE+'/api/ipo-current-issue', { headers:hdr, cf:{cacheTtl:subTtl} }).then(r=>r.ok?r.json():[]).catch(()=>[]);
+      const eq = (Array.isArray(ci)?ci:[]).filter(x=>String(x.series||'').toUpperCase()==='EQ' && x.symbol).slice(0,6);
+      for(const x of eq){ try{
+        const j = await fetch(NSE+'/api/ipo-active-category?symbol='+encodeURIComponent(x.symbol), { headers:hdr, cf:{cacheTtl:subTtl} }).then(r=>r.ok?r.json():null).catch(()=>null);
+        if(!j||!j.dataList) continue;
+        let bigNii=null, smallNii=null;
+        for(const row of j.dataList){ const sr=String(row.srNo||'').trim(), v=num(row.noOfTotalMeant);
+          if(sr==='2.1') bigNii=v; else if(sr==='2.2') smallNii=v; }
+        const r2=v=>v==null?null:Math.round(v*100)/100;
+        if(bigNii!=null||smallNii!=null) nseGran.set(normName(x.companyName||x.company||''), { bigNii:r2(bigNii), smallNii:r2(smallNii) });
+      }catch(e){} }
+    }catch(e){} }
+
     function build(rows, sme){
       const out=[];
       for(const r of rows){
@@ -100,6 +123,8 @@ export async function onRequest(context){
     ipos = [...live, ...listed];
     const PRI = { closing:0, open:1, upcoming:2, listed:3 };
     ipos.sort((a,b)=> (PRI[a.status]-PRI[b.status]));
+    // overlay NSE Big/Small-NII split onto open mainboard (additive only)
+    for(const i of ipos){ if((i.status==='open'||i.status==='closing') && i.seg==='mainboard'){ const g=nseGran.get(normName(i.name)); if(g) i.subDetail=g; } }
 
     // lot size + min investment live only on each IPO's per-page. Fetch them for
     // open/upcoming AND recently-listed, parse the lot + stated min amount.
@@ -116,6 +141,9 @@ export async function onRequest(context){
         const minv = mm ? num(mm[1]) : (lot && i.band ? Math.round(lot * i.band[1]) : null);
         if(lot) i.lot = lot;
         if(minv && i.status!=='listed') i.min = minv;
+        const fv = t.match(/face value[^0-9₹]{0,18}₹?\s*([\d,]+)/i);
+        const fvn = fv ? num(fv[1]) : null;
+        if(fvn && fvn<=1000) i.faceValue = fvn;
       }catch(e){}
     }
     const want = ipos.filter(i => i.slug && i.cgid).slice(0, 30);

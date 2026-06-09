@@ -415,6 +415,7 @@ function detailRows(i){
   else { rows.push(['Price band', bd]); rows.push(['Min investment', inr(i.min)]); }
   rows.push(['Issue size', cr(i.size)]);
   rows.push(['Lot size', i.lot!=null?i.lot+' shares':'—']);
+  if(i.faceValue) rows.push(['Face value','₹'+i.faceValue]);
   if(i.type) rows.push(['Type', i.type]);
   if(i.dates){ if(i.dates.open) rows.push(['Opens', i.dates.open]); if(i.dates.close) rows.push(['Closes', i.dates.close]); if(i.dates.listing&&i.dates.listing!=='TBA') rows.push(['Listing', i.dates.listing]); }
   rows.push(['Exchanges', (i.ex||[]).join(' · ')||'—']);
@@ -425,9 +426,10 @@ function detailHTML(i){
   const hasSub=!!i.sub, listed=i.status==='listed';
   const subBlock=hasSub?`<div class="md-sec">${demand(i.sub)}</div>`:(!listed?`<div class="md-sec"><div class="ipo-soon">Subscription data appears here once bidding is underway.</div></div>`:'');
   const listBlock=(listed&&i.listing&&i.listing.list!=null&&i.listing.cur!=null)?`<div class="md-sec">${listing(i.listing)}</div>`:'';
+  const niiSplit=(i.subDetail&&(i.subDetail.bigNii!=null||i.subDetail.smallNii!=null))?`<div class="md-sec"><div class="ipo-demand"><div class="dh"><span class="t">NII split · live from NSE</span></div><div class="ipo-drow"><span class="lab">Big NII (&gt;₹10L)</span>${fillBar('nii',i.subDetail.bigNii)}<span class="x num">${sx(i.subDetail.bigNii)}</span></div><div class="ipo-drow"><span class="lab">Small NII (₹2–10L)</span>${fillBar('nii',i.subDetail.smallNii)}<span class="x num">${sx(i.subDetail.smallNii)}</span></div></div></div>`:'';
   const nseUrl=(i.status==='listed')?(i.symbol?`https://www.nseindia.com/get-quotes/equity?symbol=${encodeURIComponent(i.symbol)}`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo'):(i.symbol?`https://www.nseindia.com/market-data/issue-information?symbol=${encodeURIComponent(i.symbol)}&series=EQ&type=Active`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo');
   return `<div class="md-head"><div class="ipo-name" id="mdTitle">${i.name}</div><div style="margin-top:10px">${badge(i.status)} ${chip}</div></div>
-    <div class="md-grid">${detailRows(i)}</div>${(i.seg==='sme'&&!i.band&&i.status!=='listed')?`<p class="ipo-soon" style="margin-top:14px">NSE publishes limited pre-listing data (price band, lot, subscription ×) for SME / Emerge issues. These finalise once the issue lists — we show only what NSE makes public.</p>`:''}${subBlock}${listBlock}
+    <div class="md-grid">${detailRows(i)}</div>${(i.seg==='sme'&&!i.band&&i.status!=='listed')?`<p class="ipo-soon" style="margin-top:14px">NSE publishes limited pre-listing data (price band, lot, subscription ×) for SME / Emerge issues. These finalise once the issue lists — we show only what NSE makes public.</p>`:''}${subBlock}${niiSplit}${listBlock}
     <a class="md-link" href="${nseUrl}" target="_blank" rel="noopener">${i.status==='listed'?'View on NSE':'Official issue information on NSE'} &rarr;</a>
     <p class="md-disc">Educational information only &middot; official public data (NSE / BSE / SEBI), may be delayed. Not a recommendation or solicitation. Verify with the RHP and registrar before applying.</p>`;
 }
