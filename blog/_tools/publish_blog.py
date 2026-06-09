@@ -4,8 +4,8 @@ Reads the latest blog .docx in /Features/Blogs/ (top-level only — ignores _sys
 per the spec in Blogs/_system/blog-system.md, and produces:
 
     /Features/blog/posts/<slug>/index.html       (full post page)
-    /Features/blog/posts/<slug>/cover.png        (light theme cover)
-    /Features/blog/posts/<slug>/cover-dark.png   (dark theme cover)
+    /Features/blog/posts/<slug>/cover.jpg        (light theme cover, compressed)
+    /Features/blog/posts/<slug>/cover-dark.jpg   (dark theme cover, compressed)
     /Features/blog/posts/<slug>/body.md          (raw body for re-render)
     /Features/blog/posts.json                    (appends entry)
 
@@ -570,13 +570,22 @@ def render_faq_html(faq):
 # Image saving — light + dark covers, lossless
 # ---------------------------------------------------------------------------
 def save_cover(images, idx, post_dir, basename):
-    """Write image bytes to post_dir/basename + native ext, return filename used."""
+    """Save the cover as a compressed JPG (~250KB) for fast LCP; return filename used.
+    Falls back to writing native bytes if Pillow is unavailable."""
     fname, blob = images[idx]
-    ext = os.path.splitext(fname)[1].lower() or ".png"
-    out_name = f"{basename}{ext}"
-    with open(os.path.join(post_dir, out_name), "wb") as f:
-        f.write(blob)
-    return out_name
+    try:
+        import io
+        from PIL import Image
+        im = Image.open(io.BytesIO(blob)).convert("RGB")
+        out_name = f"{basename}.jpg"
+        im.save(os.path.join(post_dir, out_name), "JPEG", quality=82, optimize=True)
+        return out_name
+    except Exception:
+        ext = os.path.splitext(fname)[1].lower() or ".png"
+        out_name = f"{basename}{ext}"
+        with open(os.path.join(post_dir, out_name), "wb") as fh:
+            fh.write(blob)
+        return out_name
 
 
 # ---------------------------------------------------------------------------
@@ -858,7 +867,7 @@ POST_TEMPLATE = """<!DOCTYPE html>
 <meta property="og:url" content="{canonical}">
 <meta property="og:image" content="{light_cover_url}">
 <meta property="og:image:secure_url" content="{light_cover_url}">
-<meta property="og:image:type" content="image/png">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1600">
 <meta property="og:image:height" content="900">
 <meta property="og:image:alt" content="{image_alt}">

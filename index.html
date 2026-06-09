@@ -2077,7 +2077,7 @@ html[data-theme="light"] .tracker-spotlight {
  <aside class="tracker-spotlight" data-door aria-labelledby="trackerSpotlightTitle" role="link" tabindex="0" data-href="tracker/">
  <div class="ts-kpis">
  <div class="ts-kpi">
- <div class="ts-kpi-n" id="trackerCount" data-target="1063" aria-label="1,063 unique feature links">0</div>
+ <div class="ts-kpi-n" id="trackerCount" data-target="1068" aria-label="1,068 unique feature links">0</div>
  <div class="ts-kpi-l">Unique feature links</div>
  </div>
  <div class="ts-kpi ts-kpi-special">
@@ -2230,40 +2230,44 @@ function toggleTheme(){
  }
  function setText(id, v){ var e=document.getElementById(id); if(e) e.textContent=v; }
  function syncTracker(){
- fetch('Harshal_Dasani_Dashboard.html').then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
- if (!t) return;
- var m = t.match(/EMBEDDED_SNAPSHOT_ROWS\s*=\s*(\[[\s\S]*?\])\s*;/);
- if (!m) return;
- var rows; try { rows = JSON.parse(m[1]); } catch(e){ return; }
- var seen={}, n=0, dates=[];
- for (var i=0;i<rows.length;i++){
- var c=canonHome(rows[i] && rows[i].Link); if(c && !seen[c]){seen[c]=1;n++;}
- var d=new Date(rows[i] && rows[i].Date); if(!isNaN(d)) dates.push(d.getTime());
- }
+ function applyTracker(n, ep, L){
  if (n>0 && num){
  num.setAttribute('data-target', String(n));
  num.setAttribute('aria-label', n.toLocaleString('en-IN') + ' unique feature links');
  if (num.dataset.done) num.textContent = n.toLocaleString('en-IN');
  }
- var EPAPER_RE=/news\s?paper|\bepaper\b|e[\s-]?paper|magazine|\bedition\b|\.pdf$|true point news|outlook business december|outlook business november|wall street cn|stcn article|bhopal english edition|cn article|detailnews|\.shtml/i;
- var _ep=0; for (var _k=0;_k<rows.length;_k++){ if(EPAPER_RE.test(String((rows[_k]&&rows[_k].Heading)||''))) _ep++; }
- setText('tsEpaperCount', String(_ep));
+ if (ep !== null && ep !== undefined) setText('tsEpaperCount', String(ep));
  var box=document.getElementById('tsLatest');
- if (box){
- var L=rows.slice().filter(function(x){return x && x.Heading && x.Link;})
- .sort(function(a,b){return new Date(b.Date||0)-new Date(a.Date||0);}).slice(0,3);
- if (L.length){
+ if (box && L && L.length){
  box.innerHTML=L.map(function(x){
  var tp=(x.Topic||'').toString();
  return '<a class="ts-tf" href="'+escapeHomeHTML(x.Link)+'" target="_blank" rel="noopener">'+
  '<span class="ts-tf-l">'+(tp?'<span class="ts-tf-topic">'+escapeHomeHTML(tp)+'</span>':'')+
  '<span class="ts-tf-head">'+escapeHomeHTML(x.Heading)+'</span>'+
- '<span class="ts-tf-pub">'+escapeHomeHTML((x.Publication||'')+' \u00b7 '+formatHomeDate(x.Date))+'</span></span>'+
+ '<span class="ts-tf-pub">'+escapeHomeHTML((x.Publication||'')+' · '+formatHomeDate(x.Date))+'</span></span>'+
  '<span class="ts-tf-arrow" aria-hidden="true">&rarr;</span></a>';
  }).join('');
  }
  }
+ function fromDashboard(){
+ fetch('Harshal_Dasani_Dashboard.html').then(function(r){ return r.ok ? r.text() : ''; }).then(function(t){
+ if (!t) return;
+ var m = t.match(/EMBEDDED_SNAPSHOT_ROWS\s*=\s*(\[[\s\S]*?\])\s*;/);
+ if (!m) return;
+ var rows; try { rows = JSON.parse(m[1]); } catch(e){ return; }
+ var seen={}, n=0;
+ for (var i=0;i<rows.length;i++){ var c=canonHome(rows[i] && rows[i].Link); if(c && !seen[c]){seen[c]=1;n++;} }
+ var EPAPER_RE=/news\s?paper|\bepaper\b|e[\s-]?paper|magazine|\bedition\b|\.pdf$|true point news|outlook business december|outlook business november|wall street cn|stcn article|bhopal english edition|cn article|detailnews|\.shtml/i;
+ var ep=0; for (var k=0;k<rows.length;k++){ if(EPAPER_RE.test(String((rows[k]&&rows[k].Heading)||''))) ep++; }
+ var L=rows.slice().filter(function(x){return x && x.Heading && x.Link;})
+ .sort(function(a,b){return new Date(b.Date||0)-new Date(a.Date||0);}).slice(0,3);
+ applyTracker(n, ep, L);
  }).catch(function(){});
+ }
+ fetch('tracker-summary.json?nc='+Date.now()).then(function(r){ return r.ok ? r.json() : null; }).then(function(s){
+ if (s && s.count){ applyTracker(s.count, s.epaper, s.latest); }
+ else { fromDashboard(); }
+ }).catch(function(){ fromDashboard(); });
  }
  function syncSpecial(){
  fetch('special-features.json?nc='+Date.now()).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
