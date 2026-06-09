@@ -88,30 +88,31 @@ export async function onRequest(context){
     let ipos = [...build(listMain,false), ...build(listSme,true)];
     // cap recently-listed to the 12 most recent per segment to keep it tidy
     const live = ipos.filter(i=>i.status!=='listed');
-    const listed = ipos.filter(i=>i.status==='listed').slice(0, 24);
+    const listed = ipos.filter(i=>i.status==='listed').slice(0, 18);
     ipos = [...live, ...listed];
     const PRI = { closing:0, open:1, upcoming:2, listed:3 };
     ipos.sort((a,b)=> (PRI[a.status]-PRI[b.status]));
 
-    // lot size + min investment: only on per-IPO detail pages -> fetch for the
-    // actionable (open/upcoming) issues, parse the lot, compute min = lot x upper band.
-    const wantLot = ipos.filter(i => ['open','closing','upcoming'].includes(i.status) && i.slug && i.cgid).slice(0,10);
-    for(const i of wantLot){
+    // lot size + min investment live only on each IPO's per-page. Fetch them for
+    // open/upcoming AND recently-listed, parse the lot + stated min amount.
+    async function lotFor(i){
       try{
         const r = await fetch('https://www.chittorgarh.com/ipo/'+i.slug+'/'+i.cgid+'/',
           { headers:{ 'User-Agent':UA, 'Accept':'text/html,*/*', 'Accept-Language':'en-US,en;q=0.9', 'Referer':'https://www.chittorgarh.com/' },
-            cf: fresh?{cacheTtl:0}:{ cacheTtl:900, cacheEverything:true } });
-        if(r.ok){ const raw = await r.text();
-          const t = raw.replace(/<[^>]+>/g,' ').replace(/&#8377;|&#x20B9;/gi,'₹').replace(/\s+/g,' ');
-          const lm = t.match(/(?:minimum order quantity is|lot size is|lot size for an application is)\s*([\d,]+)/i);
-          const lot = lm ? num(lm[1]) : null;
-          const mm = t.match(/minimum amount (?:required for application|of investment)[^₹]{0,40}₹\s*([\d,]+)/i);
-          const minv = mm ? num(mm[1]) : (lot && i.band ? Math.round(lot * i.band[1]) : null);
-          if(lot) i.lot = lot;
-          if(minv) i.min = minv;
-        }
+            cf: fresh?{cacheTtl:0}:{ cacheTtl:1800, cacheEverything:true } });
+        if(!r.ok) return; const raw = await r.text();
+        const t = raw.replace(/<[^>]+>/g,' ').replace(/&#8377;|&#x20B9;/gi,'₹').replace(/\s+/g,' ');
+        const lm = t.match(/(?:minimum order quantity is|lot size is|lot size for an application is)\s*([\d,]+)/i);
+        const lot = lm ? num(lm[1]) : null;
+        const mm = t.match(/minimum amount (?:required for application|of investment)[^₹]{0,40}₹\s*([\d,]+)/i);
+        const minv = mm ? num(mm[1]) : (lot && i.band ? Math.round(lot * i.band[1]) : null);
+        if(lot) i.lot = lot;
+        if(minv && i.status!=='listed') i.min = minv;
       }catch(e){}
     }
+    const want = ipos.filter(i => i.slug && i.cgid).slice(0, 30);
+    const q = want.slice();
+    await Promise.all(Array.from({length:4}, async () => { while(q.length){ const it=q.shift(); await lotFor(it); } }));
     for(const i of ipos){ delete i.cgid; }
     const body = { lastUpdated:new Date().toISOString(), source:'Compiled from BSE & NSE public data', ipos };
     if(fresh) body._debug = { listMain:listMain.length, listSme:listSme.length, subMain:subMain.length, subSme:subSme.length };
