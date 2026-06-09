@@ -39,8 +39,11 @@ export async function onRequest(context){
     const now = istNow(); const today = new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()));
     const year = now.getUTCFullYear(), month = now.getUTCMonth()+1, fy = fyOf(now);
     const safe = (rep,cat) => cg(rep,month,year,fy,cat).catch(()=>[]);
-    const [listMain, listSme, subMain, subSme] = await Promise.all([
-      safe(82,'mainboard'), safe(82,'sme'), safe(21,'mainboard'), safe(21,'sme') ]);
+    // sequential — Chittorgarh throttles burst-parallel requests from one IP
+    const listMain = await safe(82,'mainboard');
+    const listSme  = await safe(82,'sme');
+    const subMain  = await safe(21,'mainboard');
+    const subSme   = await safe(21,'sme');
 
     // subscription map by ~id
     const subMap = new Map();
@@ -63,7 +66,9 @@ export async function onRequest(context){
         else if(close && today > close) status='listed';   // closed/awaiting -> show under listed
         else status='upcoming';
         const size = num(r['Total Issue Amount (Incl.Firm reservations) (Rs.cr.)']);
-        const e = { name: stripHTML(r['Company']) || (r['~compare_name']||'IPO').replace(/ IPO$/,''),
+        const am = String(r['Company']||'').match(/<a[^>]*>([\s\S]*?)<\/a>/i);
+        const cleanName = am ? stripHTML(am[1]) : (stripHTML(r['Company']).replace(/\s+(CT|P|U|NEW)$/,''));
+        const e = { name: cleanName || (r['~compare_name']||'IPO').replace(/ IPO$/,''),
           slug: r['~URLRewrite_Folder_Name'] || slugFrom(r['Company']) || null,
           symbol: (r['~nse_symbol']||'')||null, isin:(r['~isin']||'')||null,
           seg: sme?'sme':'mainboard', status, ex: exFromListing(r['Listing at'], sme),
