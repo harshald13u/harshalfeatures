@@ -38,7 +38,8 @@ function parseSub(j){
     if(cat==='total'){ overall=x; offered=num(r.noOfShareOffered); }
     else if(sr==='1') qib=x; else if(sr==='2') nii=x; else if(sr==='3') ret=x;
   }
-  const sub = (overall!=null||qib!=null||nii!=null||ret!=null) ? {overall,qib,nii,ret} : null;
+  const r2 = x => x==null?null:Math.round(x*100)/100;
+  const sub = (overall!=null||qib!=null||nii!=null||ret!=null) ? {overall:r2(overall),qib:r2(qib),nii:r2(nii),ret:r2(ret)} : null;
   return { sub, offered };
 }
 

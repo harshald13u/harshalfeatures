@@ -202,6 +202,27 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
   .ipo-controls { gap:10px; } .ipo-controls input { flex:1; min-width:0; }
 }
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} .ipo-card{opacity:1;transform:none} }
+
+/* ---- detail modal ---- */
+.ipo-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-end;justify-content:center;}
+@media(min-width:640px){.ipo-modal{align-items:center;}}
+.ipo-modal[hidden]{display:none;}
+.ipo-modal-back{position:absolute;inset:0;background:rgba(0,0,0,0.55);opacity:0;transition:opacity .2s ease;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);}
+.ipo-modal.show .ipo-modal-back{opacity:1;}
+.ipo-modal-card{position:relative;width:100%;max-width:560px;max-height:92vh;overflow:auto;background:var(--bg-2);border:1px solid var(--rule);border-radius:16px 16px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.5);padding:26px 24px 30px;transform:translateY(24px);opacity:0;transition:transform .22s ease,opacity .22s ease;}
+@media(min-width:640px){.ipo-modal-card{border-radius:16px;transform:translateY(12px) scale(.98);}}
+.ipo-modal.show .ipo-modal-card{transform:none;opacity:1;}
+.ipo-modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);background:transparent;color:var(--ink-2);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.ipo-modal-x:hover{color:var(--accent);border-color:var(--accent);}
+.md-head .ipo-name{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;padding-right:36px;}
+.md-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin:20px 0 8px;border-top:1px solid var(--rule);}
+.md-row{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--rule-soft);font-size:14px;}
+.md-k{color:var(--muted);}.md-v{color:var(--ink);font-weight:600;text-align:right;}
+.md-sec{margin-top:16px;}
+.md-link{display:inline-block;margin-top:18px;color:var(--accent);font-weight:600;font-size:14px;}
+.md-link:hover{text-decoration:underline;}
+.md-disc{margin-top:16px;font-size:11.5px;line-height:1.5;color:var(--muted);border-top:1px solid var(--rule-soft);padding-top:14px;}
+
 </style>
 
 <script>
@@ -266,6 +287,14 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
     <div><a href="../">harshaldasani.pages.dev</a></div>
   </footer>
 
+
+<div class="ipo-modal" id="ipoModal" hidden>
+  <div class="ipo-modal-back" data-close></div>
+  <div class="ipo-modal-card" role="dialog" aria-modal="true" aria-labelledby="mdTitle">
+    <button class="ipo-modal-x" data-close aria-label="Close details" type="button">&times;</button>
+    <div id="ipoModalBody"></div>
+  </div>
+</div>
 </main>
 
 <script>
@@ -289,29 +318,30 @@ const openish=s=>s==='open'||s==='closing';
 
 function badge(s){const m={open:['open','Open now'],closing:['closing','Closes today'],upcoming:['upcoming','Upcoming'],listed:['listed','Listed']}[s];return `<span class="ipo-badge ${m[0]}">${m[1]}</span>`;}
 function fillBar(c,x){return `<div class="ipo-track"><div class="ipo-fill ${c}" data-w="${Math.min(100,(x/50)*100)}"></div></div>`;}
+function sx(n){return (n==null||isNaN(n))?'—':(+n).toFixed(2)+'×';}
 function demand(d){
   if(!d) return `<div class="ipo-soon">Bidding opens soon — subscription appears here live.</div>`;
   return `<div class="ipo-demand"><div class="dh"><span class="t">Subscription · by category</span>
-    <span class="o num">${d.overall}×<small> overall</small></span></div>
-    <div class="ipo-drow"><span class="lab">QIB</span>${fillBar('qib',d.qib)}<span class="x num">${d.qib}×</span></div>
-    <div class="ipo-drow"><span class="lab">NII</span>${fillBar('nii',d.nii)}<span class="x num">${d.nii}×</span></div>
-    <div class="ipo-drow"><span class="lab">RII</span>${fillBar('ret',d.ret)}<span class="x num">${d.ret}×</span></div></div>`;
+    <span class="o num">${sx(d.overall)}<small> overall</small></span></div>
+    <div class="ipo-drow"><span class="lab">QIB</span>${fillBar('qib',d.qib)}<span class="x num">${sx(d.qib)}</span></div>
+    <div class="ipo-drow"><span class="lab">NII</span>${fillBar('nii',d.nii)}<span class="x num">${sx(d.nii)}</span></div>
+    <div class="ipo-drow"><span class="lab">RII</span>${fillBar('ret',d.ret)}<span class="x num">${sx(d.ret)}</span></div></div>`;
 }
 function listing(l){const g=((l.list-l.issue)/l.issue*100),up=g>=0,w=Math.min(100,Math.abs(g)*3+8);
   return `<div class="ipo-listing"><div class="ipo-lgain ${up?'up':'down'} num">${up?'+':''}${g.toFixed(1)}%</div>
     <div class="ipo-lwrap"><div class="ipo-lseq"><span>Issue <b class="num">₹${l.issue}</b></span><span>List <b class="num">₹${l.list}</b></span><span>Now <b class="num">₹${l.cur}</b></span></div>
     <div class="ipo-lbar"><i class="${up?'up':'down'}" style="width:${w}%"></i></div></div></div>`;
 }
-function card(i){
+function card(i,_idx){
   const chip=i.seg==='sme'?`<span class="ipo-seg-chip sme">SME</span>`:`<span class="ipo-seg-chip mb">Mainboard</span>`;
   const band=i.band?`₹${i.band[0]}–₹${i.band[1]}`:'TBA';
   const facts=i.status==='listed'
     ? `<div class="ipo-fact"><span class="k">Issue price</span><span class="v num">${i.listing&&i.listing.issue!=null?'₹'+i.listing.issue:'—'}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div><div class="ipo-fact"><span class="k">Type</span><span class="v">${i.type}</span></div><div class="ipo-fact"><span class="k">Lot</span><span class="v num">${i.lot??'—'}</span></div>`
     : `<div class="ipo-fact"><span class="k">Price band</span><span class="v num">${band}</span></div><div class="ipo-fact"><span class="k">Min invest</span><span class="v num">${inr(i.min)}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div><div class="ipo-fact"><span class="k">${i.status==='upcoming'?'Opens':'Closes'}</span><span class="v">${i.status==='upcoming'?(i.dates&&i.dates.open):(i.dates&&i.dates.close)}</span></div>`;
   const sig=i.status==='listed'?((i.listing&&i.listing.list!=null&&i.listing.cur!=null)?listing(i.listing):`<div class="ipo-soon">Listed${i.dates&&i.dates.listing&&i.dates.listing!=='TBA'?' on '+i.dates.listing:''}${i.listing&&i.listing.issue!=null?' · issue price ₹'+i.listing.issue:''}.</div>`):demand(i.sub);
-  return `<a class="ipo-card" href="#"><div class="ipo-top"><div class="ipo-name">${i.name}</div>${chip}</div>
+  return `<div class="ipo-card" role="button" tabindex="0" data-idx="${_idx}"><div class="ipo-top"><div class="ipo-name">${i.name}</div>${chip}</div>
     <div style="margin-top:-4px">${badge(i.status)}</div><div class="ipo-facts">${facts}</div>${sig}
-    <div class="ipo-foot"><span class="ipo-ex">${(i.ex||[]).map(e=>`<span>${e}</span>`).join('')}</span><span class="ipo-go">View details →</span></div></a>`;
+    <div class="ipo-foot"><span class="ipo-ex">${(i.ex||[]).map(e=>`<span>${e}</span>`).join('')}</span><span class="ipo-go">View details →</span></div></div>`;
 }
 function render(){
   const g=document.getElementById('ipoGrid');
@@ -320,13 +350,13 @@ function render(){
     const s=STATE.seg==='all'||i.seg===STATE.seg; const q=!STATE.q||i.name.toLowerCase().includes(STATE.q);
     return v&&s&&q;
   });
-  g.innerHTML=rows.length?rows.map(card).join(''):`<div class="blog-empty"><h2 class="blog-empty-title">Nothing in this view</h2><p class="blog-empty-sub">Try another tab — open, upcoming or recently listed.</p></div>`;
+  STATE.rendered=rows; g.innerHTML=rows.length?rows.map((i,n)=>card(i,n)).join(''):`<div class="blog-empty"><h2 class="blog-empty-title">Nothing in this view</h2><p class="blog-empty-sub">Try another tab — open, upcoming or recently listed.</p></div>`;
   requestAnimationFrame(()=>{document.querySelectorAll('.ipo-card').forEach((c,n)=>setTimeout(()=>c.classList.add('in'),n*60));
     setTimeout(()=>document.querySelectorAll('.ipo-fill').forEach(f=>f.style.width=f.dataset.w+'%'),160);});
   document.getElementById('sOpen').textContent=STATE.data.filter(i=>openish(i.status)).length;
   document.getElementById('sUp').textContent=STATE.data.filter(i=>i.status==='upcoming').length;
   document.getElementById('sListed').textContent=STATE.data.filter(i=>i.status==='listed').length;
-  const gains=STATE.data.filter(i=>i.status==='listed'&&i.listing).map(i=>(i.listing.list-i.listing.issue)/i.listing.issue*100);
+  const gains=STATE.data.filter(i=>i.status==='listed'&&i.listing&&i.listing.list!=null&&i.listing.issue!=null).map(i=>(i.listing.list-i.listing.issue)/i.listing.issue*100);
   document.getElementById('sGain').textContent=gains.length?(gains.reduce((a,b)=>a+b,0)/gains.length>=0?'+':'')+(gains.reduce((a,b)=>a+b,0)/gains.length).toFixed(1)+'%':'—';
 }
 function boot(data,isSample){
@@ -341,6 +371,43 @@ document.getElementById('ipoViews').addEventListener('click',e=>{const b=e.targe
   document.querySelectorAll('#ipoViews button').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');STATE.view=b.dataset.view;render();});
 document.getElementById('ipoSegment').onchange=e=>{STATE.seg=e.target.value;render();};
 document.getElementById('ipoSearch').oninput=e=>{STATE.q=e.target.value.toLowerCase();render();};
+
+
+/* ---- detail view (modal) ---- */
+function detailRows(i){
+  const bd=i.band?`₹${i.band[0]}–₹${i.band[1]}`:'TBA', listed=i.status==='listed', rows=[];
+  rows.push(['Segment', i.seg==='sme'?'SME':'Mainboard']);
+  rows.push(['Status', ({open:'Open now',closing:'Closes today',upcoming:'Upcoming',listed:'Listed'})[i.status]||i.status]);
+  if(listed){ rows.push(['Issue price', (i.listing&&i.listing.issue!=null)?'₹'+i.listing.issue:'—']); }
+  else { rows.push(['Price band', bd]); rows.push(['Min investment', inr(i.min)]); }
+  rows.push(['Issue size', cr(i.size)]);
+  rows.push(['Lot size', i.lot!=null?i.lot+' shares':'—']);
+  if(i.type) rows.push(['Type', i.type]);
+  if(i.dates){ if(i.dates.open) rows.push(['Opens', i.dates.open]); if(i.dates.close) rows.push(['Closes', i.dates.close]); if(i.dates.listing&&i.dates.listing!=='TBA') rows.push(['Listing', i.dates.listing]); }
+  rows.push(['Exchanges', (i.ex||[]).join(' · ')||'—']);
+  return rows.map(r=>`<div class="md-row"><span class="md-k">${r[0]}</span><span class="md-v num">${r[1]}</span></div>`).join('');
+}
+function detailHTML(i){
+  const chip=i.seg==='sme'?`<span class="ipo-seg-chip sme">SME</span>`:`<span class="ipo-seg-chip mb">Mainboard</span>`;
+  const hasSub=!!i.sub, listed=i.status==='listed';
+  const subBlock=hasSub?`<div class="md-sec">${demand(i.sub)}</div>`:(!listed?`<div class="md-sec"><div class="ipo-soon">Subscription data appears here once bidding is underway.</div></div>`:'');
+  const listBlock=(listed&&i.listing&&i.listing.list!=null&&i.listing.cur!=null)?`<div class="md-sec">${listing(i.listing)}</div>`:'';
+  const nseUrl=i.symbol?`https://www.nseindia.com/market-data/issue-information?symbol=${encodeURIComponent(i.symbol)}&series=EQ&type=Active`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo';
+  return `<div class="md-head"><div class="ipo-name" id="mdTitle">${i.name}</div><div style="margin-top:10px">${badge(i.status)} ${chip}</div></div>
+    <div class="md-grid">${detailRows(i)}</div>${subBlock}${listBlock}
+    <a class="md-link" href="${nseUrl}" target="_blank" rel="noopener">Official issue information on NSE &rarr;</a>
+    <p class="md-disc">Educational information only &middot; official public data (NSE / BSE / SEBI), may be delayed. Not a recommendation or solicitation. Verify with the RHP and registrar before applying.</p>`;
+}
+var _ipoModal=document.getElementById('ipoModal'), _ipoMBody=document.getElementById('ipoModalBody');
+function openDetail(i){ if(!i||!_ipoModal) return; _ipoMBody.innerHTML=detailHTML(i); _ipoModal.hidden=false; document.body.style.overflow='hidden';
+  requestAnimationFrame(()=>{ _ipoModal.classList.add('show'); setTimeout(()=>_ipoMBody.querySelectorAll('.ipo-fill').forEach(f=>f.style.width=f.dataset.w+'%'),60); }); }
+function closeDetail(){ if(!_ipoModal) return; _ipoModal.classList.remove('show'); document.body.style.overflow=''; setTimeout(()=>{_ipoModal.hidden=true;},200); }
+if(_ipoModal){ _ipoModal.addEventListener('click',e=>{ if(e.target.hasAttribute('data-close')) closeDetail(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!_ipoModal.hidden) closeDetail(); }); }
+(function(){ var g=document.getElementById('ipoGrid'); if(!g) return;
+  g.addEventListener('click',e=>{ var c=e.target.closest('.ipo-card'); if(!c)return; e.preventDefault(); openDetail((STATE.rendered||[])[+c.dataset.idx]); });
+  g.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ var c=e.target.closest('.ipo-card'); if(c){ e.preventDefault(); openDetail((STATE.rendered||[])[+c.dataset.idx]); } } });
+})();
 
 /* fetch live data; fall back to sample so the page is never blank */
 fetch('/api/ipo?nc='+Date.now()).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
