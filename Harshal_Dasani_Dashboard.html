@@ -294,6 +294,13 @@ html[data-theme="light"] .theme-toggle-btn { background: rgba(26,52,88,0.06); bo
   .social-link svg { width: 22px; height: 22px; }
 }
 
+@media (min-width: 721px) and (max-width: 900px) {
+  .header { flex-direction: column; gap: 14px; }
+  .header-left, .header-right { position: static; transform: none; }
+  .header-right { justify-content: center; margin-top: 4px; }
+  .header-left { margin-bottom: 2px; }
+}
+
 .header-meta-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px;
                    background: linear-gradient(135deg, rgba(21,17,13,0.7), rgba(21,17,13,0.7));
                    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
