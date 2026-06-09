@@ -60,7 +60,10 @@
       <image:loc>https://harshaldasani.pages.dev/blog/posts/indian-it-stocks-whats-breaking/cover.png</image:loc>
       <image:title>Indian IT Stocks: What’s Actually Breaking, and Why the Market Stopped Paying Up</image:title>
     </image:image>
-  </url>
+      <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/posts/indian-it-stocks-whats-breaking/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/posts/indian-it-stocks-whats-breaking/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/blog/posts/indian-it-stocks-whats-breaking/"/>
+</url>
   <url>
     <loc>https://harshaldasani.pages.dev/blog/posts/crude-oil-india-markets-rupee-inflation/</loc>
     <lastmod>2026-06-08</lastmod>
@@ -72,7 +75,10 @@
       <image:loc>https://harshaldasani.pages.dev/blog/posts/crude-oil-india-markets-rupee-inflation/cover.jpg</image:loc>
       <image:title>The Oil Shock and India: Crude, the Rupee, and Inflation</image:title>
     </image:image>
-  </url>
+      <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/posts/crude-oil-india-markets-rupee-inflation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/posts/crude-oil-india-markets-rupee-inflation/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/blog/posts/crude-oil-india-markets-rupee-inflation/"/>
+</url>
   <url>
     <loc>https://harshaldasani.pages.dev/blog/posts/rbi-mpc-june-2026-rate-pause/</loc>
     <lastmod>2026-06-08</lastmod>
@@ -84,7 +90,10 @@
       <image:loc>https://harshaldasani.pages.dev/blog/posts/rbi-mpc-june-2026-rate-pause/cover.jpg</image:loc>
       <image:title>The end of the easing cycle: what the RBI’s June pause means for investors</image:title>
     </image:image>
-  </url>
+      <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/posts/rbi-mpc-june-2026-rate-pause/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/posts/rbi-mpc-june-2026-rate-pause/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/blog/posts/rbi-mpc-june-2026-rate-pause/"/>
+</url>
   <url>
     <loc>https://harshaldasani.pages.dev/blog/posts/iran-israel-us-war-2026-explained/</loc>
     <lastmod>2026-06-08</lastmod>
@@ -94,7 +103,10 @@
       <image:loc>https://harshaldasani.pages.dev/blog/posts/iran-israel-us-war-2026-explained/cover.jpeg</image:loc>
       <image:title>The 2026 Iran war: one strait, one unsigned page, the world&#39;s oil.</image:title>
     </image:image>
-  </url>
+      <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/posts/iran-israel-us-war-2026-explained/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/posts/iran-israel-us-war-2026-explained/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/blog/posts/iran-israel-us-war-2026-explained/"/>
+</url>
   <url>
     <loc>https://harshaldasani.pages.dev/hi/</loc>
     <lastmod>2026-06-08</lastmod>
@@ -109,29 +121,134 @@
     <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
+      <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/"/>
+</url>
   <url>
     <loc>https://harshaldasani.pages.dev/tools/sip-calculator/</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
+      <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/sip-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/sip-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/sip-calculator/"/>
+</url>
   <url>
     <loc>https://harshaldasani.pages.dev/tools/returns-calculator/</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
+      <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/returns-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/returns-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/returns-calculator/"/>
+</url>
   <url>
     <loc>https://harshaldasani.pages.dev/tools/capital-gains-tax-calculator/</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
+      <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/capital-gains-tax-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/capital-gains-tax-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/capital-gains-tax-calculator/"/>
+</url>
   <url>
     <loc>https://harshaldasani.pages.dev/tools/oil-impact-estimator/</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+      <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/oil-impact-estimator/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/oil-impact-estimator/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/oil-impact-estimator/"/>
+</url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/blog/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/blog/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/tools/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/tools/sip-calculator/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/sip-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/sip-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/sip-calculator/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/tools/returns-calculator/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/returns-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/returns-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/returns-calculator/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/tools/capital-gains-tax-calculator/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/capital-gains-tax-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/capital-gains-tax-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/capital-gains-tax-calculator/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/tools/oil-impact-estimator/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/oil-impact-estimator/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/oil-impact-estimator/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/oil-impact-estimator/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/blog/posts/indian-it-stocks-whats-breaking/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/blog/posts/indian-it-stocks-whats-breaking/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/posts/indian-it-stocks-whats-breaking/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/posts/indian-it-stocks-whats-breaking/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/blog/posts/crude-oil-india-markets-rupee-inflation/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/blog/posts/crude-oil-india-markets-rupee-inflation/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/posts/crude-oil-india-markets-rupee-inflation/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/posts/crude-oil-india-markets-rupee-inflation/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/blog/posts/rbi-mpc-june-2026-rate-pause/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/blog/posts/rbi-mpc-june-2026-rate-pause/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/posts/rbi-mpc-june-2026-rate-pause/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/posts/rbi-mpc-june-2026-rate-pause/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/blog/posts/iran-israel-us-war-2026-explained/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/blog/posts/iran-israel-us-war-2026-explained/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/posts/iran-israel-us-war-2026-explained/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/posts/iran-israel-us-war-2026-explained/"/>
   </url>
 </urlset>

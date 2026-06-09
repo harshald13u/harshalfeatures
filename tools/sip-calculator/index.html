@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <title>SIP Calculator | Harshal Dasani</title>
-<meta name="description" content="Free SIP Calculator — see what a monthly Systematic Investment Plan could grow to. Invested amount, estimated returns, and total value with a growth chart. By Harshal Dasani.">
+<meta name="description" content="Free SIP calculator — see what a monthly SIP could grow to: invested amount, estimated returns and total value, with a year-by-year growth chart.">
 <meta name="keywords" content="SIP calculator, systematic investment plan, mutual fund SIP, SIP returns, monthly investment calculator, India SIP">
 <meta name="author" content="Harshal Dasani">
 <meta http-equiv="content-language" content="en-IN">
@@ -14,6 +14,7 @@
 
 <link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/tools/sip-calculator/">
 <link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/tools/sip-calculator/">
+<link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/tools/sip-calculator/">
 <link rel="dns-prefetch" href="//fonts.googleapis.com">
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
 <link rel="canonical" href="https://harshaldasani.pages.dev/tools/sip-calculator/">
@@ -321,9 +322,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('val-total').textContent     = formatINRShort(fv);
     document.getElementById('exact-total').textContent   = formatINR(fv);
 
-    /* donut */
-    drawDonut(invested, returns, fv);
-
     /* growth chart */
     drawGrowthChart(P, r, Y);
 
@@ -340,35 +338,6 @@ document.addEventListener('DOMContentLoaded', function () {
     window._sipResult = {
       P: P, r: r, Y: Y, fv: fv, invested: invested, returns: returns
     };
-  }
-
-  /* ── donut chart ── */
-  function drawDonut(invested, returns, total) {
-    if (!document.getElementById("donut-invested")) return;  /* donut chart was removed */
-    var CIRC = 2 * Math.PI * 40; /* 251.33 */
-    var invFrac = total > 0 ? invested / total : 1;
-    var retFrac = total > 0 ? returns / total : 0;
-    var invLen  = invFrac * CIRC;
-    var retLen  = retFrac * CIRC;
-
-    var dInv = document.getElementById('donut-invested');
-    var dRet = document.getElementById('donut-returns');
-
-    /* invested arc starts at -90 (top) */
-    dInv.setAttribute('stroke-dasharray', invLen.toFixed(2) + ' ' + CIRC.toFixed(2));
-    dInv.setAttribute('stroke-dashoffset', '0');
-    dInv.setAttribute('transform', 'rotate(-90 55 55)');
-
-    /* returns arc starts right after invested arc */
-    var retOffset = -(invLen);
-    dRet.setAttribute('stroke-dasharray', retLen.toFixed(2) + ' ' + CIRC.toFixed(2));
-    dRet.setAttribute('stroke-dashoffset', retOffset.toFixed(2));
-    dRet.setAttribute('transform', 'rotate(-90 55 55)');
-
-    document.getElementById('leg-invested-pct').textContent =
-      total > 0 ? formatPct(invFrac * 100, 1) : '—';
-    document.getElementById('leg-returns-pct').textContent =
-      total > 0 ? formatPct(retFrac * 100, 1) : '—';
   }
 
   /* ── growth chart ── */
@@ -481,23 +450,6 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('growth-svg').innerHTML = svgContent;
     window._sipChart = { fvPoints: fvPoints, invPoints: invPoints, maxYears: maxYears, xPos: xPos, yPos: yPos, PAD: PAD, innerW: innerW, W: W };
   }
-
-  /* ── copy result ── */
-  window.doCopy = function (btn) {
-    var d = window._sipResult;
-    if (!d) return;
-    var text =
-      'SIP Calculator Result (harshaldasani.pages.dev/tools/sip-calculator/)\n' +
-      'Monthly investment: ' + formatINR(d.P) + '\n' +
-      'Assumed annual return: ' + d.r + '%\n' +
-      'Period: ' + d.Y + ' year' + (d.Y !== 1 ? 's' : '') + '\n' +
-      '---\n' +
-      'Total invested: ' + formatINR(d.invested) + '\n' +
-      'Est. returns: ' + formatINR(d.returns) + '\n' +
-      'Total value: ' + formatINR(d.fv) + '\n' +
-      '(Illustrative only. Not a guarantee. Mutual fund investments are subject to market risks.)';
-    copyResult(text, btn);
-  };
 
   /* ── interactive hover tooltip ── */
   (function () {
