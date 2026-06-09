@@ -49,7 +49,8 @@ export async function onRequest(context){
     const subMap = new Map();
     for(const r of [...subMain, ...subSme]){
       const o = num(r['Total (x)']), q = num(r['QIB (x)']), ni = num(r['NII (x)']), rt = num(r['Retail (x)']);
-      if(o!=null||q!=null||ni!=null||rt!=null) subMap.set(r['~id'], { overall:o, qib:q, nii:ni, ret:rt });
+      const key = r['~URLRewrite_Folder_Name'] || null;
+      if(key && (o!=null||q!=null||ni!=null||rt!=null)) subMap.set(key, { overall:o, qib:q, nii:ni, ret:rt });
     }
 
     function build(rows, sme){
@@ -75,7 +76,7 @@ export async function onRequest(context){
           band: bd, lot:null, size: size,
           type: (r['Pricing Method']||'')||'',
           dates: { open: pretty(open), close: pretty(close), listing: list?pretty(list):undefined },
-          sub: subMap.get(r['~id']) || null,
+          sub: subMap.get(r['~URLRewrite_Folder_Name'] || slugFrom(r['Company'])) || null,
           listing: status==='listed' ? (bd?{issue:bd[1]}:null) : undefined };
         out.push(e);
       }
