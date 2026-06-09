@@ -321,6 +321,7 @@ function fillBar(c,x){return `<div class="ipo-track"><div class="ipo-fill ${c}" 
 function sx(n){return (n==null||isNaN(n))?'—':(+n).toFixed(2)+'×';}
 function demand(d){
   if(!d) return `<div class="ipo-soon">Bidding opens soon — subscription appears here live.</div>`;
+  if(d.pending){ const sh=d.bidShares; const t=sh==null?'':(sh>=1e7?(sh/1e7).toFixed(2)+' Cr shares':(sh/1e5).toFixed(2)+' L shares'); return `<div class="ipo-soon">Bidding underway — NSE hasn’t published the ×subscription for this SME issue yet${t?'. Total bids so far: '+t:''}.</div>`; }
   return `<div class="ipo-demand"><div class="dh"><span class="t">Subscription · by category</span>
     <span class="o num">${sx(d.overall)}<small> overall</small></span></div>
     <div class="ipo-drow"><span class="lab">QIB</span>${fillBar('qib',d.qib)}<span class="x num">${sx(d.qib)}</span></div>

@@ -32,15 +32,21 @@ async function jget(path, cookie){
 }
 // subscription multiples from /api/ipo-active-category (srNo: 1=QIB, 2=NII, 3=RII, category 'Total'=overall)
 function parseSub(j){
-  const rows = (j&&j.dataList)||[]; let overall=null,qib=null,nii=null,ret=null,offered=null;
+  const rows=(j&&j.dataList)||[]; const r2=x=>x==null?null:Math.round(x*100)/100;
+  let mult={overall:null,qib:null,nii:null,ret:null}, bid={overall:null,qib:null,nii:null,ret:null}, offered=null;
   for(const r of rows){
-    const sr=String(r.srNo||'').trim(); const cat=String(r.category||'').toLowerCase(); const x=num(r.noOfTotalMeant);
-    if(cat==='total'){ overall=x; offered=num(r.noOfShareOffered); }
-    else if(sr==='1') qib=x; else if(sr==='2') nii=x; else if(sr==='3') ret=x;
+    const sr=String(r.srNo||'').trim(), cat=String(r.category||'').toLowerCase();
+    const m=num(r.noOfTotalMeant), b=num(r.noOfSharesBid), o=num(r.noOfShareOffered);
+    if(cat==='total'){ mult.overall=m; bid.overall=b; offered=o; }
+    else if(sr==='1'){ mult.qib=m; bid.qib=b; }
+    else if(sr==='2'){ mult.nii=m; bid.nii=b; }
+    else if(sr==='3'){ mult.ret=m; bid.ret=b; }
   }
-  const r2 = x => x==null?null:Math.round(x*100)/100;
-  const sub = (overall!=null||qib!=null||nii!=null||ret!=null) ? {overall:r2(overall),qib:r2(qib),nii:r2(nii),ret:r2(ret)} : null;
-  return { sub, offered };
+  const maxMult=Math.max(mult.overall||0,mult.qib||0,mult.nii||0,mult.ret||0);
+  if(maxMult>0) return { sub:{overall:r2(mult.overall),qib:r2(mult.qib),nii:r2(mult.nii),ret:r2(mult.ret)}, offered };
+  const anyBid=(bid.overall||bid.qib||bid.nii||bid.ret);
+  if(anyBid) return { sub:{pending:true, bidShares:bid.overall||null}, offered };  // NSE published bids but no offered-base (common for SME)
+  return { sub:null, offered };
 }
 
 export async function onRequest(context){
