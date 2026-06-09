@@ -306,9 +306,9 @@ function card(i){
   const chip=i.seg==='sme'?`<span class="ipo-seg-chip sme">SME</span>`:`<span class="ipo-seg-chip mb">Mainboard</span>`;
   const band=i.band?`₹${i.band[0]}–₹${i.band[1]}`:'TBA';
   const facts=i.status==='listed'
-    ? `<div class="ipo-fact"><span class="k">Issue price</span><span class="v num">₹${i.listing.issue}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div><div class="ipo-fact"><span class="k">Type</span><span class="v">${i.type}</span></div><div class="ipo-fact"><span class="k">Lot</span><span class="v num">${i.lot??'—'}</span></div>`
+    ? `<div class="ipo-fact"><span class="k">Issue price</span><span class="v num">${i.listing&&i.listing.issue!=null?'₹'+i.listing.issue:'—'}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div><div class="ipo-fact"><span class="k">Type</span><span class="v">${i.type}</span></div><div class="ipo-fact"><span class="k">Lot</span><span class="v num">${i.lot??'—'}</span></div>`
     : `<div class="ipo-fact"><span class="k">Price band</span><span class="v num">${band}</span></div><div class="ipo-fact"><span class="k">Min invest</span><span class="v num">${inr(i.min)}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div><div class="ipo-fact"><span class="k">${i.status==='upcoming'?'Opens':'Closes'}</span><span class="v">${i.status==='upcoming'?(i.dates&&i.dates.open):(i.dates&&i.dates.close)}</span></div>`;
-  const sig=i.status==='listed'?listing(i.listing):demand(i.sub);
+  const sig=i.status==='listed'?((i.listing&&i.listing.list!=null&&i.listing.cur!=null)?listing(i.listing):`<div class="ipo-soon">Listed${i.dates&&i.dates.listing&&i.dates.listing!=='TBA'?' on '+i.dates.listing:''}${i.listing&&i.listing.issue!=null?' · issue price ₹'+i.listing.issue:''}.</div>`):demand(i.sub);
   return `<a class="ipo-card" href="#"><div class="ipo-top"><div class="ipo-name">${i.name}</div>${chip}</div>
     <div style="margin-top:-4px">${badge(i.status)}</div><div class="ipo-facts">${facts}</div>${sig}
     <div class="ipo-foot"><span class="ipo-ex">${(i.ex||[]).map(e=>`<span>${e}</span>`).join('')}</span><span class="ipo-go">View details →</span></div></a>`;
@@ -343,7 +343,7 @@ document.getElementById('ipoSegment').onchange=e=>{STATE.seg=e.target.value;rend
 document.getElementById('ipoSearch').oninput=e=>{STATE.q=e.target.value.toLowerCase();render();};
 
 /* fetch live data; fall back to sample so the page is never blank */
-fetch('ipo.json?nc='+Date.now()).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
+fetch('/api/ipo?nc='+Date.now()).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
   if(d&&((d.ipos&&d.ipos.length)||(d.items&&d.items.length))) boot(d,false); else boot(SAMPLE,true);
 }).catch(()=>boot(SAMPLE,true));
 </script>
