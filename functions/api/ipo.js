@@ -43,8 +43,15 @@ export async function onRequest(context){
     // sequential — Chittorgarh throttles burst-parallel requests from one IP
     const listMain = await safe(82,'mainboard', 21600);  // band/dates/size: ~static -> 6h
     const listSme  = await safe(82,'sme', 21600);
-    const subMain  = await safe(21,'mainboard', 1800);   // subscription: changes when open -> 30m
-    const subSme   = await safe(21,'sme', 1800);
+    // ADAPTIVE: subscription only moves while an IPO is open. Poll 30 min when something
+    // is open; cache 6h when nothing is open -> far fewer Chittorgarh hits on quiet days.
+    const _td = istNow(); _td.setUTCHours(0,0,0,0);
+    const _isOpen = r => { const o=isoDate(r['~Issue_Open_Date']); const c=isoDate(r['~IssueCloseDate']||r['~Issue_Close_Date']); return !!(o&&c&&_td>=o&&_td<=c); };
+    const anyOpen = [...(Array.isArray(listMain)?listMain:[]), ...(Array.isArray(listSme)?listSme:[])].some(_isOpen);
+    const subTtl = anyOpen ? 1800 : 21600;
+    if(!fresh) H['cache-control'] = 'public, max-age='+subTtl+', s-maxage='+subTtl;
+    const subMain  = await safe(21,'mainboard', subTtl);
+    const subSme   = await safe(21,'sme', subTtl);
 
     // subscription map by ~id
     const subMap = new Map();
@@ -116,7 +123,7 @@ export async function onRequest(context){
     await Promise.all(Array.from({length:3}, async () => { while(q.length){ const it=q.shift(); await lotFor(it); } }));
     for(const i of ipos){ delete i.cgid; delete i._ts; }
     const body = { lastUpdated:new Date().toISOString(), source:'Compiled from BSE & NSE public data', ipos };
-    if(fresh) body._debug = { listMain:listMain.length, listSme:listSme.length, subMain:subMain.length, subSme:subSme.length };
+    if(fresh) body._debug = { listMain:listMain.length, listSme:listSme.length, subMain:subMain.length, subSme:subSme.length, anyOpen, subTtl };
     return new Response(JSON.stringify(body), { headers:H });
   } catch(e){
     return new Response(JSON.stringify({ lastUpdated:new Date().toISOString(), ipos:[], error:String(e&&e.message||e) }), { status:200, headers:H });
