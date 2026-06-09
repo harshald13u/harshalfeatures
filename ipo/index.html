@@ -395,7 +395,7 @@ function detailHTML(i){
   const listBlock=(listed&&i.listing&&i.listing.list!=null&&i.listing.cur!=null)?`<div class="md-sec">${listing(i.listing)}</div>`:'';
   const nseUrl=i.symbol?`https://www.nseindia.com/market-data/issue-information?symbol=${encodeURIComponent(i.symbol)}&series=EQ&type=Active`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo';
   return `<div class="md-head"><div class="ipo-name" id="mdTitle">${i.name}</div><div style="margin-top:10px">${badge(i.status)} ${chip}</div></div>
-    <div class="md-grid">${detailRows(i)}</div>${subBlock}${listBlock}
+    <div class="md-grid">${detailRows(i)}</div>${(i.seg==='sme'&&!i.band&&i.status!=='listed')?`<p class="ipo-soon" style="margin-top:14px">NSE publishes limited pre-listing data (price band, lot, subscription ×) for SME / Emerge issues. These finalise once the issue lists — we show only what NSE makes public.</p>`:''}${subBlock}${listBlock}
     <a class="md-link" href="${nseUrl}" target="_blank" rel="noopener">Official issue information on NSE &rarr;</a>
     <p class="md-disc">Educational information only &middot; official public data (NSE / BSE / SEBI), may be delayed. Not a recommendation or solicitation. Verify with the RHP and registrar before applying.</p>`;
 }
