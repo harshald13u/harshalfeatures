@@ -22,10 +22,10 @@ function exFromListing(s, sme){ const t=String(s||'').toUpperCase();
   const out=[]; if(/NSE/.test(t)) out.push(sme?'NSE SME':'NSE'); if(/BSE/.test(t)) out.push(sme?'BSE SME':'BSE');
   return out.length?out:(sme?['SME']:['NSE','BSE']); }
 
-async function cg(report, month, year, fy, cat, fresh){
+async function cg(report, month, year, fy, cat, fresh, ttl){
   const url = HOST+'/cloud/report/data-read/'+report+'/1/'+month+'/'+year+'/'+fy+'/0/'+cat+'/0';
   const r = await fetch(url, { headers:{ 'User-Agent':UA, 'Accept':'application/json, text/plain, */*',
-    'Accept-Language':'en-US,en;q=0.9', 'Referer':'https://www.chittorgarh.com/' }, cf: fresh?{cacheTtl:0,cacheEverything:false}:{ cacheTtl:900, cacheEverything:true } });
+    'Accept-Language':'en-US,en;q=0.9', 'Referer':'https://www.chittorgarh.com/' }, cf: fresh?{cacheTtl:0,cacheEverything:false}:{ cacheTtl:(ttl||900), cacheEverything:true } });
   if(!r.ok) throw new Error(report+'/'+cat+' -> '+r.status);
   const j = await r.json();
   return (j && j.reportTableData) || [];
@@ -35,16 +35,16 @@ export async function onRequest(context){
   const url = new URL(context.request.url);
   const fresh = url.searchParams.has('fresh');
   const H = { 'content-type':'application/json; charset=utf-8', 'access-control-allow-origin':'*',
-    'cache-control': fresh ? 'no-store' : 'public, max-age=900, s-maxage=900' };
+    'cache-control': fresh ? 'no-store' : 'public, max-age=1800, s-maxage=1800' };
   try {
     const now = istNow(); const today = new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()));
     const year = now.getUTCFullYear(), month = now.getUTCMonth()+1, fy = fyOf(now);
-    const safe = (rep,cat) => cg(rep,month,year,fy,cat,fresh).catch(()=>[]);
+    const safe = (rep,cat,ttl) => cg(rep,month,year,fy,cat,fresh,ttl).catch(()=>[]);
     // sequential — Chittorgarh throttles burst-parallel requests from one IP
-    const listMain = await safe(82,'mainboard');
-    const listSme  = await safe(82,'sme');
-    const subMain  = await safe(21,'mainboard');
-    const subSme   = await safe(21,'sme');
+    const listMain = await safe(82,'mainboard', 21600);  // band/dates/size: ~static -> 6h
+    const listSme  = await safe(82,'sme', 21600);
+    const subMain  = await safe(21,'mainboard', 1800);   // subscription: changes when open -> 30m
+    const subSme   = await safe(21,'sme', 1800);
 
     // subscription map by ~id
     const subMap = new Map();
@@ -100,7 +100,7 @@ export async function onRequest(context){
       try{
         const r = await fetch('https://www.chittorgarh.com/ipo/'+i.slug+'/'+i.cgid+'/',
           { headers:{ 'User-Agent':UA, 'Accept':'text/html,*/*', 'Accept-Language':'en-US,en;q=0.9', 'Referer':'https://www.chittorgarh.com/' },
-            cf: fresh?{cacheTtl:0}:{ cacheTtl:1800, cacheEverything:true } });
+            cf: fresh?{cacheTtl:0}:{ cacheTtl:604800, cacheEverything:true } });  // lot is static -> 7d
         if(!r.ok) return; const raw = await r.text();
         const t = raw.replace(/<[^>]+>/g,' ').replace(/&#8377;|&#x20B9;/gi,'₹').replace(/\s+/g,' ');
         const lm = t.match(/(?:minimum order quantity is|lot size is|lot size for an application is)\s*([\d,]+)/i);
@@ -113,7 +113,7 @@ export async function onRequest(context){
     }
     const want = ipos.filter(i => i.slug && i.cgid).slice(0, 30);
     const q = want.slice();
-    await Promise.all(Array.from({length:4}, async () => { while(q.length){ const it=q.shift(); await lotFor(it); } }));
+    await Promise.all(Array.from({length:3}, async () => { while(q.length){ const it=q.shift(); await lotFor(it); } }));
     for(const i of ipos){ delete i.cgid; delete i._ts; }
     const body = { lastUpdated:new Date().toISOString(), source:'Compiled from BSE & NSE public data', ipos };
     if(fresh) body._debug = { listMain:listMain.length, listSme:listSme.length, subMain:subMain.length, subSme:subSme.length };
