@@ -21,10 +21,10 @@ function exFromListing(s, sme){ const t=String(s||'').toUpperCase();
   const out=[]; if(/NSE/.test(t)) out.push(sme?'NSE SME':'NSE'); if(/BSE/.test(t)) out.push(sme?'BSE SME':'BSE');
   return out.length?out:(sme?['SME']:['NSE','BSE']); }
 
-async function cg(report, month, year, fy, cat){
+async function cg(report, month, year, fy, cat, fresh){
   const url = HOST+'/cloud/report/data-read/'+report+'/1/'+month+'/'+year+'/'+fy+'/0/'+cat+'/0';
   const r = await fetch(url, { headers:{ 'User-Agent':UA, 'Accept':'application/json, text/plain, */*',
-    'Accept-Language':'en-US,en;q=0.9', 'Referer':'https://www.chittorgarh.com/' }, cf:{ cacheTtl:900, cacheEverything:true } });
+    'Accept-Language':'en-US,en;q=0.9', 'Referer':'https://www.chittorgarh.com/' }, cf: fresh?{cacheTtl:0,cacheEverything:false}:{ cacheTtl:900, cacheEverything:true } });
   if(!r.ok) throw new Error(report+'/'+cat+' -> '+r.status);
   const j = await r.json();
   return (j && j.reportTableData) || [];
@@ -38,7 +38,7 @@ export async function onRequest(context){
   try {
     const now = istNow(); const today = new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate()));
     const year = now.getUTCFullYear(), month = now.getUTCMonth()+1, fy = fyOf(now);
-    const safe = (rep,cat) => cg(rep,month,year,fy,cat).catch(()=>[]);
+    const safe = (rep,cat) => cg(rep,month,year,fy,cat,fresh).catch(()=>[]);
     // sequential — Chittorgarh throttles burst-parallel requests from one IP
     const listMain = await safe(82,'mainboard');
     const listSme  = await safe(82,'sme');
@@ -90,8 +90,9 @@ export async function onRequest(context){
     const PRI = { closing:0, open:1, upcoming:2, listed:3 };
     ipos.sort((a,b)=> (PRI[a.status]-PRI[b.status]));
 
-    return new Response(JSON.stringify({ lastUpdated:new Date().toISOString(),
-      source:'Compiled from BSE & NSE public data', ipos }), { headers:H });
+    const body = { lastUpdated:new Date().toISOString(), source:'Compiled from BSE & NSE public data', ipos };
+    if(fresh) body._debug = { listMain:listMain.length, listSme:listSme.length, subMain:subMain.length, subSme:subSme.length };
+    return new Response(JSON.stringify(body), { headers:H });
   } catch(e){
     return new Response(JSON.stringify({ lastUpdated:new Date().toISOString(), ipos:[], error:String(e&&e.message||e) }), { status:200, headers:H });
   }
