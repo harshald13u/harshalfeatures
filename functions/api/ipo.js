@@ -101,10 +101,14 @@ export async function onRequest(context){
         const r = await fetch('https://www.chittorgarh.com/ipo/'+i.slug+'/'+i.cgid+'/',
           { headers:{ 'User-Agent':UA, 'Accept':'text/html,*/*', 'Accept-Language':'en-US,en;q=0.9', 'Referer':'https://www.chittorgarh.com/' },
             cf: fresh?{cacheTtl:0}:{ cacheTtl:900, cacheEverything:true } });
-        if(r.ok){ const t = await r.text();
-          const m = t.match(/minimum order quantity is\s*([\d,]+)/i) || t.match(/lot size is\s*([\d,]+)/i) || t.match(/lot size for an application is\s*([\d,]+)\s*shares/i);
-          const lot = m ? num(m[1]) : null;
-          if(lot){ i.lot = lot; if(i.band) i.min = Math.round(lot * i.band[1]); }
+        if(r.ok){ const raw = await r.text();
+          const t = raw.replace(/<[^>]+>/g,' ').replace(/&#8377;|&#x20B9;/gi,'₹').replace(/\s+/g,' ');
+          const lm = t.match(/(?:minimum order quantity is|lot size is|lot size for an application is)\s*([\d,]+)/i);
+          const lot = lm ? num(lm[1]) : null;
+          const mm = t.match(/minimum amount (?:required for application|of investment)[^₹]{0,40}₹\s*([\d,]+)/i);
+          const minv = mm ? num(mm[1]) : (lot && i.band ? Math.round(lot * i.band[1]) : null);
+          if(lot) i.lot = lot;
+          if(minv) i.min = minv;
         }
       }catch(e){}
     }
