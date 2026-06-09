@@ -181,9 +181,15 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
 .ipo-asof { font-size:11px; color:var(--faint); letter-spacing:.4px; margin-top:18px; }
 .ipo-asof b { color:var(--muted); font-weight:600; }
 
-.ipo-disc { margin:26px 0 0; padding:16px 18px; border:1px solid var(--rule); border-radius:8px;
-  background:var(--bg-2); font-size:11.5px; color:var(--faint); line-height:1.6; }
-.ipo-disc b { color:var(--muted); }
+.ipo-disc { margin:32px 0 0; padding:22px 24px; border:1px solid var(--rule); border-radius:10px;
+  background:var(--bg-2); font-size:12.5px; color:var(--ink-2); line-height:1.65; }
+.ipo-disc .ipo-disc-h { font-weight:800; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:0 0 12px; display:flex; align-items:center; gap:8px; }
+.ipo-disc .ipo-disc-h::before { content:"\26A0"; color:var(--accent); font-size:14px; }
+.ipo-disc p { margin:0 0 10px; }
+.ipo-disc ul { margin:0 0 10px; padding-left:18px; }
+.ipo-disc li { margin:0 0 7px; }
+.ipo-disc b { color:var(--ink); font-weight:700; }
+.ipo-disc .fine { color:var(--faint); font-size:11.5px; margin-top:4px; }
 
 .blog-empty { padding:80px 32px; text-align:center; border:1px dashed var(--rule); border-radius:12px; background:var(--accent-soft); }
 .blog-empty-title { font-weight:700; font-size:22px; color:var(--ink); margin:0 0 8px; letter-spacing:-0.01em; }
@@ -293,7 +299,16 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
   <p class="ipo-asof" id="ipoAsof"></p>
 
   <div class="ipo-disc">
-    <b>Educational information only.</b> IPO data is aggregated from official sources (NSE / BSE / SEBI) and may be delayed — verify with the official RHP and registrar before applying. Investing in IPOs is subject to market risks; read all offer documents carefully. This page is not a recommendation or solicitation to apply for, or refrain from applying for, any IPO.
+    <div class="ipo-disc-h">Important — please read before acting on anything here</div>
+    <p><b>Educational information only.</b> This page is provided for general information and study. It is <b>not</b> investment advice, a research report, or a recommendation, and <b>nothing on it is an offer or solicitation</b> to apply for, subscribe to, buy, sell, or refrain from any IPO, security, or strategy. It is not tailored to your objectives, risk tolerance, or financial circumstances.</p>
+    <ul>
+      <li><b>No advice / no adviser relationship.</b> Harshal Dasani is not acting as your investment adviser through this page. Make your own decisions and, where appropriate, consult a SEBI-registered investment adviser or your broker.</li>
+      <li><b>Data may be delayed, incomplete, or incorrect.</b> Price band, lot size, minimum investment, issue size, dates, and subscription figures are compiled from publicly available exchange and third-party sources and refreshed periodically. They can lag the exchanges, contain errors, or change without notice. Always verify against the official <b>RHP/DRHP</b>, the <b>registrar</b>, and the <b>BSE/NSE</b> websites before you apply.</li>
+      <li><b>No grey-market data.</b> This page deliberately shows <b>no GMP</b> (grey-market premium) or unofficial estimates, and gives no "apply / avoid" calls or ratings.</li>
+      <li><b>Market risk is real.</b> Investing in IPOs — and <b>SME issues in particular</b> — carries high risk, including loss of capital, low liquidity, and sharp price swings. Subscription levels and past performance are <b>not</b> indicative of listing gains or future returns.</li>
+      <li><b>Read the offer documents.</b> Before applying, read the full Red Herring Prospectus and all offer documents carefully, and consider your own due diligence.</li>
+    </ul>
+    <p class="fine">By using this page you accept that Harshal Dasani and this website accept no liability for any loss, damage, or decision made in reliance on the information shown. Data sourced from public exchange and third-party feeds; trademarks and content belong to their respective owners.</p>
   </div>
 
   <footer class="blog-footer">
