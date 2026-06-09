@@ -13,6 +13,7 @@ function istNow(){ return new Date(Date.now() + (330 - new Date().getTimezoneOff
 function fyOf(d){ const y=d.getUTCFullYear(), m=d.getUTCMonth()+1; return m>=4 ? (y+'-'+String((y+1)%100).padStart(2,'0')) : ((y-1)+'-'+String(y%100).padStart(2,'0')); }
 function stripHTML(s){ return String(s||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim(); }
 function slugFrom(html){ const m=String(html||'').match(/\/ipo\/([a-z0-9-]+)\/\d+\//i); return m?m[1]:null; }
+function idFrom(html){ const m=String(html||'').match(/\/ipo\/[a-z0-9-]+\/(\d+)\//i); return m?m[1]:null; }
 function num(x){ if(x==null||x==='') return null; const n=parseFloat(String(x).replace(/[^0-9.\-]/g,'')); return isFinite(n)?n:null; }
 function band(s){ if(!s) return null; const n=(String(s).match(/\d+(?:\.\d+)?/g)||[]).map(Number); if(!n.length) return null; return n.length===1?[n[0],n[0]]:[Math.min(n[0],n[1]),Math.max(n[0],n[1])]; }
 function isoDate(s){ if(!s) return null; const d=new Date(s); return isNaN(d)?null:new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())); }
@@ -71,6 +72,7 @@ export async function onRequest(context){
         const cleanName = am ? stripHTML(am[1]) : (stripHTML(r['Company']).replace(/\s+(CT|P|U|NEW)$/,''));
         const e = { name: cleanName || (r['~compare_name']||'IPO').replace(/ IPO$/,''),
           slug: r['~URLRewrite_Folder_Name'] || slugFrom(r['Company']) || null,
+          cgid: idFrom(r['Company']),
           symbol: (r['~nse_symbol']||'')||null, isin:(r['~isin']||'')||null,
           seg: sme?'sme':'mainboard', status, ex: exFromListing(r['Listing at'], sme),
           band: bd, lot:null, size: size,
@@ -91,6 +93,22 @@ export async function onRequest(context){
     const PRI = { closing:0, open:1, upcoming:2, listed:3 };
     ipos.sort((a,b)=> (PRI[a.status]-PRI[b.status]));
 
+    // lot size + min investment: only on per-IPO detail pages -> fetch for the
+    // actionable (open/upcoming) issues, parse the lot, compute min = lot x upper band.
+    const wantLot = ipos.filter(i => ['open','closing','upcoming'].includes(i.status) && i.slug && i.cgid).slice(0,10);
+    for(const i of wantLot){
+      try{
+        const r = await fetch('https://www.chittorgarh.com/ipo/'+i.slug+'/'+i.cgid+'/',
+          { headers:{ 'User-Agent':UA, 'Accept':'text/html,*/*', 'Accept-Language':'en-US,en;q=0.9', 'Referer':'https://www.chittorgarh.com/' },
+            cf: fresh?{cacheTtl:0}:{ cacheTtl:900, cacheEverything:true } });
+        if(r.ok){ const t = await r.text();
+          const m = t.match(/minimum order quantity is\s*([\d,]+)/i) || t.match(/lot size is\s*([\d,]+)/i) || t.match(/lot size for an application is\s*([\d,]+)\s*shares/i);
+          const lot = m ? num(m[1]) : null;
+          if(lot){ i.lot = lot; if(i.band) i.min = Math.round(lot * i.band[1]); }
+        }
+      }catch(e){}
+    }
+    for(const i of ipos){ delete i.cgid; }
     const body = { lastUpdated:new Date().toISOString(), source:'Compiled from BSE & NSE public data', ipos };
     if(fresh) body._debug = { listMain:listMain.length, listSme:listSme.length, subMain:subMain.length, subSme:subSme.length };
     return new Response(JSON.stringify(body), { headers:H });
