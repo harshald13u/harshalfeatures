@@ -352,10 +352,10 @@ function demand(d){
   if(!d) return `<div class="ipo-soon">Bidding opens soon — subscription appears here live.</div>`;
   if(d.pending){ const sh=d.bidShares; const t=sh==null?'':(sh>=1e7?(sh/1e7).toFixed(2)+' Cr shares':(sh/1e5).toFixed(2)+' L shares'); return `<div class="ipo-soon">Bidding underway — NSE hasn’t published the ×subscription for this SME issue yet${t?'. Total bids so far: '+t:''}.</div>`; }
   return `<div class="ipo-demand"><div class="dh"><span class="t">Subscription · by category</span>
-    <span class="o num">${sx(d.overall)}<small> overall</small></span></div>
-    <div class="ipo-drow"><span class="lab">QIB</span>${fillBar('qib',d.qib)}<span class="x num">${sx(d.qib)}</span></div>
-    <div class="ipo-drow"><span class="lab">NII</span>${fillBar('nii',d.nii)}<span class="x num">${sx(d.nii)}</span></div>
-    <div class="ipo-drow"><span class="lab">RII</span>${fillBar('ret',d.ret)}<span class="x num">${sx(d.ret)}</span></div></div>`;
+    <span class="o num" translate="no">${sx(d.overall)}<small> overall</small></span></div>
+    <div class="ipo-drow"><span class="lab" translate="no">QIB</span>${fillBar('qib',d.qib)}<span class="x num" translate="no">${sx(d.qib)}</span></div>
+    <div class="ipo-drow"><span class="lab" translate="no">NII</span>${fillBar('nii',d.nii)}<span class="x num" translate="no">${sx(d.nii)}</span></div>
+    <div class="ipo-drow"><span class="lab" translate="no">RII</span>${fillBar('ret',d.ret)}<span class="x num" translate="no">${sx(d.ret)}</span></div></div>`;
 }
 function listing(l){const g=((l.list-l.issue)/l.issue*100),up=g>=0,w=Math.min(100,Math.abs(g)*3+8);
   return `<div class="ipo-listing"><div class="ipo-lgain ${up?'up':'down'} num">${up?'+':''}${g.toFixed(1)}%</div>
@@ -381,6 +381,7 @@ function render(){
     return v&&s&&q;
   });
   STATE.rendered=rows; g.innerHTML=rows.length?rows.map((i,n)=>card(i,n)).join(''):`<div class="blog-empty"><h2 class="blog-empty-title">Nothing in this view</h2><p class="blog-empty-sub">Try another tab — open, upcoming or recently listed.</p></div>`;
+  document.querySelectorAll('#ipoGrid .num, #ipoGrid .lab, #ipoGrid .x, #ipoGrid .o, #ipoGrid .ipo-name, #ipoGrid .ipo-seg-chip, #ipoStats .num').forEach(function(e){ e.setAttribute('translate','no'); e.classList.add('notranslate'); });
   requestAnimationFrame(()=>{document.querySelectorAll('.ipo-card').forEach((c,n)=>setTimeout(()=>c.classList.add('in'),n*60));
     setTimeout(()=>document.querySelectorAll('.ipo-fill').forEach(f=>f.style.width=f.dataset.w+'%'),160);});
   document.getElementById('sOpen').textContent=STATE.data.filter(i=>openish(i.status)).length;
@@ -426,7 +427,7 @@ function detailHTML(i){
   const hasSub=!!i.sub, listed=i.status==='listed';
   const subBlock=hasSub?`<div class="md-sec">${demand(i.sub)}</div>`:(!listed?`<div class="md-sec"><div class="ipo-soon">Subscription data appears here once bidding is underway.</div></div>`:'');
   const listBlock=(listed&&i.listing&&i.listing.list!=null&&i.listing.cur!=null)?`<div class="md-sec">${listing(i.listing)}</div>`:'';
-  const niiSplit=(i.subDetail&&(i.subDetail.bigNii!=null||i.subDetail.smallNii!=null))?`<div class="md-sec"><div class="ipo-demand"><div class="dh"><span class="t">NII split · live from NSE</span></div><div class="ipo-drow"><span class="lab">Big NII (&gt;₹10L)</span>${fillBar('nii',i.subDetail.bigNii)}<span class="x num">${sx(i.subDetail.bigNii)}</span></div><div class="ipo-drow"><span class="lab">Small NII (₹2–10L)</span>${fillBar('nii',i.subDetail.smallNii)}<span class="x num">${sx(i.subDetail.smallNii)}</span></div></div></div>`:'';
+  const niiSplit=(i.subDetail&&(i.subDetail.bigNii!=null||i.subDetail.smallNii!=null))?`<div class="md-sec"><div class="ipo-demand"><div class="dh"><span class="t">NII split · live from NSE</span></div><div class="ipo-drow"><span class="lab">Big NII (&gt;₹10L)</span>${fillBar('nii',i.subDetail.bigNii)}<span class="x num" translate="no">${sx(i.subDetail.bigNii)}</span></div><div class="ipo-drow"><span class="lab">Small NII (₹2–10L)</span>${fillBar('nii',i.subDetail.smallNii)}<span class="x num" translate="no">${sx(i.subDetail.smallNii)}</span></div></div></div>`:'';
   const nseUrl=(i.status==='listed')?(i.symbol?`https://www.nseindia.com/get-quotes/equity?symbol=${encodeURIComponent(i.symbol)}`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo'):(i.symbol?`https://www.nseindia.com/market-data/issue-information?symbol=${encodeURIComponent(i.symbol)}&series=EQ&type=Active`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo');
   return `<div class="md-head"><div class="ipo-name" id="mdTitle">${i.name}</div><div style="margin-top:10px">${badge(i.status)} ${chip}</div></div>
     <div class="md-grid">${detailRows(i)}</div>${(i.seg==='sme'&&!i.band&&i.status!=='listed')?`<p class="ipo-soon" style="margin-top:14px">NSE publishes limited pre-listing data (price band, lot, subscription ×) for SME / Emerge issues. These finalise once the issue lists — we show only what NSE makes public.</p>`:''}${subBlock}${niiSplit}${listBlock}
