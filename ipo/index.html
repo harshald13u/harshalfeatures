@@ -209,7 +209,7 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
 .ipo-modal[hidden]{display:none;}
 .ipo-modal-back{position:absolute;inset:0;background:rgba(0,0,0,0.55);opacity:0;transition:opacity .2s ease;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);}
 .ipo-modal.show .ipo-modal-back{opacity:1;}
-.ipo-modal-card{position:relative;width:100%;max-width:560px;max-height:92vh;overflow:auto;background:var(--bg-2);border:1px solid var(--rule);border-radius:16px 16px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.5);padding:26px 24px 30px;transform:translateY(24px);opacity:0;transition:transform .22s ease,opacity .22s ease;}
+.ipo-modal-card{position:relative;width:100%;max-width:560px;max-height:calc(100dvh - 16px - env(safe-area-inset-bottom));overflow:auto;background:var(--bg-2);border:1px solid var(--rule);border-radius:16px 16px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.5);padding:26px 24px calc(30px + env(safe-area-inset-bottom));transform:translateY(24px);opacity:0;transition:transform .22s ease,opacity .22s ease;}
 @media(min-width:640px){.ipo-modal-card{border-radius:16px;transform:translateY(12px) scale(.98);}}
 .ipo-modal.show .ipo-modal-card{transform:none;opacity:1;}
 .ipo-modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);background:transparent;color:var(--ink-2);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
@@ -228,6 +228,17 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
 <script>
 /* apply saved theme before paint (verbatim pattern) */
 (function(){ function a(){ try{var t=localStorage.getItem('hd-theme'); if(t==='light'||t==='dark') document.documentElement.setAttribute('data-theme',t);}catch(e){} } a(); window.addEventListener('pageshow',a); })();
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"CollectionPage","@id":"https://harshaldasani.pages.dev/ipo/#webpage","url":"https://harshaldasani.pages.dev/ipo/","name":"IPOs in India — upcoming & recent | Harshal Dasani","description":"Open, upcoming and recently listed Indian IPOs — official exchange data, subscription by investor category, and an honest listing record. No grey-market noise.","inLanguage":"en-IN","isPartOf":{"@type":"Person","name":"Harshal Dasani","url":"https://harshaldasani.pages.dev/"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://harshaldasani.pages.dev/"},{"@type":"ListItem","position":2,"name":"IPO","item":"https://harshaldasani.pages.dev/ipo/"}]}},
+ {"@type":"FAQPage","@id":"https://harshaldasani.pages.dev/ipo/#faq","mainEntity":[
+   {"@type":"Question","name":"What is the difference between a mainboard IPO and an SME IPO?","acceptedAnswer":{"@type":"Answer","text":"Mainboard IPOs list on the main NSE/BSE platforms and suit a broad investor base; SME IPOs list on the NSE Emerge or BSE SME platforms, are smaller, and have larger minimum lot sizes. Exchanges publish more complete pre-listing data for mainboard issues than for SME issues."}},
+   {"@type":"Question","name":"How is IPO subscription (times) calculated?","acceptedAnswer":{"@type":"Answer","text":"Subscription is the number of shares investors have bid for divided by the number of shares offered, shown per investor category (QIB, NII and retail) and overall. The figures on this page come directly from the exchange's public bid data."}},
+   {"@type":"Question","name":"Where does the IPO data on this page come from?","acceptedAnswer":{"@type":"Answer","text":"Open, upcoming and recently listed issues plus subscription figures are taken from NSE's public market data. It is educational information and may be delayed; verify with the official RHP and registrar before applying."}},
+   {"@type":"Question","name":"Is this page investment advice?","acceptedAnswer":{"@type":"Answer","text":"No. This page presents official public IPO data for information only. It carries no grey-market premium, no apply/avoid calls and no recommendations. Always read the offer documents and consult a registered adviser before investing."}}
+ ]}
+]}
 </script>
 </head>
 <body>
@@ -250,7 +261,7 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
 
   <hr class="tools-divider">
 
-  <div class="ipo-ribbon" id="ipoRibbon">⚙ <b>Preview / sample data</b> — illustrative figures shown until the live feed is connected. Updates automatically once <code>ipo.json</code> is live.</div>
+  <div class="ipo-ribbon" id="ipoRibbon">⚙ <b>Preview / sample data</b> — illustrative figures shown until the live feed responds. Live data loads automatically from the official NSE feed.</div>
 
   <div class="ipo-stats" id="ipoStats">
     <div class="ipo-stat"><div class="v num" id="sOpen">—</div><div class="l">Open now</div></div>
@@ -261,9 +272,9 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
 
   <div class="ipo-controls">
     <div class="ipo-seg" role="tablist" id="ipoViews">
-      <button role="tab" aria-selected="true" data-view="open">Open Now</button>
-      <button role="tab" aria-selected="false" data-view="upcoming">Upcoming</button>
-      <button role="tab" aria-selected="false" data-view="listed">Recently Listed</button>
+      <button type="button" role="tab" aria-selected="true" data-view="open">Open Now</button>
+      <button type="button" role="tab" aria-selected="false" data-view="upcoming">Upcoming</button>
+      <button type="button" role="tab" aria-selected="false" data-view="listed">Recently Listed</button>
     </div>
     <span class="ipo-spacer"></span>
     <select id="ipoSegment" aria-label="Segment">
@@ -298,7 +309,7 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
 </main>
 
 <script>
-/* ---------- SAMPLE FALLBACK (real names; figures illustrative until ipo.json is live) ---------- */
+/* ---------- SAMPLE FALLBACK (real names; figures illustrative until the live feed responds) ---------- */
 const SAMPLE = { lastUpdated:new Date().toISOString(), ipos:[
   {name:"Hexagon Nutrition",seg:"mainboard",status:"closing",ex:["NSE","BSE"],band:[42,45],lot:333,min:14985,size:138.87,type:"OFS",dates:{open:"5 Jun",close:"9 Jun"},sub:{overall:12.4,qib:18.2,nii:9.1,ret:6.7}},
   {name:"CMR Green Technologies",seg:"mainboard",status:"open",ex:["NSE","BSE"],band:[182,192],lot:78,min:14976,size:630.88,type:"OFS",dates:{open:"8 Jun",close:"10 Jun"},sub:{overall:9.8,qib:4.1,nii:21.9,ret:8.0}},
@@ -337,10 +348,10 @@ function card(i,_idx){
   const chip=i.seg==='sme'?`<span class="ipo-seg-chip sme">SME</span>`:`<span class="ipo-seg-chip mb">Mainboard</span>`;
   const band=i.band?`₹${i.band[0]}–₹${i.band[1]}`:'TBA';
   const facts=i.status==='listed'
-    ? `<div class="ipo-fact"><span class="k">Issue price</span><span class="v num">${i.listing&&i.listing.issue!=null?'₹'+i.listing.issue:'—'}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div><div class="ipo-fact"><span class="k">Type</span><span class="v">${i.type}</span></div><div class="ipo-fact"><span class="k">Lot</span><span class="v num">${i.lot??'—'}</span></div>`
+    ? `<div class="ipo-fact"><span class="k">Issue price</span><span class="v num">${i.listing&&i.listing.issue!=null?'₹'+i.listing.issue:'—'}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div>${i.type?`<div class="ipo-fact"><span class="k">Type</span><span class="v">${i.type}</span></div>`:''}<div class="ipo-fact"><span class="k">Lot</span><span class="v num">${i.lot??'—'}</span></div>`
     : `<div class="ipo-fact"><span class="k">Price band</span><span class="v num">${band}</span></div><div class="ipo-fact"><span class="k">Min invest</span><span class="v num">${inr(i.min)}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div><div class="ipo-fact"><span class="k">${i.status==='upcoming'?'Opens':'Closes'}</span><span class="v">${i.status==='upcoming'?(i.dates&&i.dates.open):(i.dates&&i.dates.close)}</span></div>`;
   const sig=i.status==='listed'?((i.listing&&i.listing.list!=null&&i.listing.cur!=null)?listing(i.listing):`<div class="ipo-soon">Listed${i.dates&&i.dates.listing&&i.dates.listing!=='TBA'?' on '+i.dates.listing:''}${i.listing&&i.listing.issue!=null?' · issue price ₹'+i.listing.issue:''}.</div>`):demand(i.sub);
-  return `<div class="ipo-card" role="button" tabindex="0" data-idx="${_idx}"><div class="ipo-top"><div class="ipo-name">${i.name}</div>${chip}</div>
+  return `<div class="ipo-card" role="button" tabindex="0" data-idx="${_idx}" aria-label="View IPO details for ${i.name}"><div class="ipo-top"><div class="ipo-name">${i.name}</div>${chip}</div>
     <div style="margin-top:-4px">${badge(i.status)}</div><div class="ipo-facts">${facts}</div>${sig}
     <div class="ipo-foot"><span class="ipo-ex">${(i.ex||[]).map(e=>`<span>${e}</span>`).join('')}</span><span class="ipo-go">View details →</span></div></div>`;
 }
@@ -365,7 +376,7 @@ function boot(data,isSample){
   document.getElementById('ipoRibbon').classList.toggle('hide',!isSample);
   const lu=data&&data.lastUpdated?new Date(data.lastUpdated):new Date();
   const stamp='Data as of '+lu.toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+' IST';
-  document.getElementById('ipoAsof').innerHTML=(isSample?'Sample preview · ':'')+stamp+' · source: NSE · BSE · SEBI (public data)';
+  document.getElementById('ipoAsof').innerHTML=(isSample?'Sample preview · ':'')+stamp+' · source: '+((data&&data.source)||'NSE (public data)');
   render();
 }
 document.getElementById('ipoViews').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
@@ -393,18 +404,22 @@ function detailHTML(i){
   const hasSub=!!i.sub, listed=i.status==='listed';
   const subBlock=hasSub?`<div class="md-sec">${demand(i.sub)}</div>`:(!listed?`<div class="md-sec"><div class="ipo-soon">Subscription data appears here once bidding is underway.</div></div>`:'');
   const listBlock=(listed&&i.listing&&i.listing.list!=null&&i.listing.cur!=null)?`<div class="md-sec">${listing(i.listing)}</div>`:'';
-  const nseUrl=i.symbol?`https://www.nseindia.com/market-data/issue-information?symbol=${encodeURIComponent(i.symbol)}&series=EQ&type=Active`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo';
+  const nseUrl=(i.status==='listed')?(i.symbol?`https://www.nseindia.com/get-quotes/equity?symbol=${encodeURIComponent(i.symbol)}`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo'):(i.symbol?`https://www.nseindia.com/market-data/issue-information?symbol=${encodeURIComponent(i.symbol)}&series=EQ&type=Active`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo');
   return `<div class="md-head"><div class="ipo-name" id="mdTitle">${i.name}</div><div style="margin-top:10px">${badge(i.status)} ${chip}</div></div>
     <div class="md-grid">${detailRows(i)}</div>${(i.seg==='sme'&&!i.band&&i.status!=='listed')?`<p class="ipo-soon" style="margin-top:14px">NSE publishes limited pre-listing data (price band, lot, subscription ×) for SME / Emerge issues. These finalise once the issue lists — we show only what NSE makes public.</p>`:''}${subBlock}${listBlock}
-    <a class="md-link" href="${nseUrl}" target="_blank" rel="noopener">Official issue information on NSE &rarr;</a>
+    <a class="md-link" href="${nseUrl}" target="_blank" rel="noopener">${i.status==='listed'?'View on NSE':'Official issue information on NSE'} &rarr;</a>
     <p class="md-disc">Educational information only &middot; official public data (NSE / BSE / SEBI), may be delayed. Not a recommendation or solicitation. Verify with the RHP and registrar before applying.</p>`;
 }
-var _ipoModal=document.getElementById('ipoModal'), _ipoMBody=document.getElementById('ipoModalBody');
-function openDetail(i){ if(!i||!_ipoModal) return; _ipoMBody.innerHTML=detailHTML(i); _ipoModal.hidden=false; document.body.style.overflow='hidden';
-  requestAnimationFrame(()=>{ _ipoModal.classList.add('show'); setTimeout(()=>_ipoMBody.querySelectorAll('.ipo-fill').forEach(f=>f.style.width=f.dataset.w+'%'),60); }); }
-function closeDetail(){ if(!_ipoModal) return; _ipoModal.classList.remove('show'); document.body.style.overflow=''; setTimeout(()=>{_ipoModal.hidden=true;},200); }
+var _ipoModal=document.getElementById('ipoModal'), _ipoMBody=document.getElementById('ipoModalBody'), _ipoLastFocus=null;
+function _ipoFocusable(){ return _ipoModal?[].slice.call(_ipoModal.querySelectorAll('button, a[href], [tabindex]:not([tabindex="-1"])')).filter(function(el){return el.offsetParent!==null;}):[]; }
+function openDetail(i){ if(!i||!_ipoModal) return; _ipoLastFocus=document.activeElement; _ipoMBody.innerHTML=detailHTML(i); _ipoModal.hidden=false; document.body.style.overflow='hidden';
+  requestAnimationFrame(()=>{ _ipoModal.classList.add('show'); var x=_ipoModal.querySelector('.ipo-modal-x'); if(x) x.focus(); setTimeout(()=>_ipoMBody.querySelectorAll('.ipo-fill').forEach(f=>f.style.width=f.dataset.w+'%'),60); }); }
+function closeDetail(){ if(!_ipoModal) return; _ipoModal.classList.remove('show'); document.body.style.overflow=''; setTimeout(()=>{_ipoModal.hidden=true;},200); if(_ipoLastFocus&&_ipoLastFocus.focus){ try{_ipoLastFocus.focus();}catch(e){} } }
 if(_ipoModal){ _ipoModal.addEventListener('click',e=>{ if(e.target.hasAttribute('data-close')) closeDetail(); });
-  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!_ipoModal.hidden) closeDetail(); }); }
+  document.addEventListener('keydown',e=>{ if(_ipoModal.hidden) return; if(e.key==='Escape'){ closeDetail(); return; }
+    if(e.key==='Tab'){ var f=_ipoFocusable(); if(!f.length) return; var first=f[0], last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey&&document.activeElement===last){ e.preventDefault(); first.focus(); } } }); }
 (function(){ var g=document.getElementById('ipoGrid'); if(!g) return;
   g.addEventListener('click',e=>{ var c=e.target.closest('.ipo-card'); if(!c)return; e.preventDefault(); openDetail((STATE.rendered||[])[+c.dataset.idx]); });
   g.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ var c=e.target.closest('.ipo-card'); if(c){ e.preventDefault(); openDetail((STATE.rendered||[])[+c.dataset.idx]); } } });
