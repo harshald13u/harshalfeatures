@@ -79,7 +79,8 @@ export async function onRequest(context){
           type: (r['Pricing Method']||'')||'',
           dates: { open: pretty(open), close: pretty(close), listing: list?pretty(list):undefined },
           sub: subMap.get(r['~URLRewrite_Folder_Name'] || slugFrom(r['Company'])) || null,
-          listing: status==='listed' ? (bd?{issue:bd[1]}:null) : undefined };
+          listing: status==='listed' ? (bd?{issue:bd[1]}:null) : undefined,
+          _ts: (list||close||open) ? (list||close||open).getTime() : 0 };
         out.push(e);
       }
       return out;
@@ -88,7 +89,7 @@ export async function onRequest(context){
     let ipos = [...build(listMain,false), ...build(listSme,true)];
     // cap recently-listed to the 12 most recent per segment to keep it tidy
     const live = ipos.filter(i=>i.status!=='listed');
-    const listed = ipos.filter(i=>i.status==='listed').slice(0, 18);
+    const listed = ipos.filter(i=>i.status==='listed').sort((a,b)=>b._ts-a._ts).slice(0, 18);
     ipos = [...live, ...listed];
     const PRI = { closing:0, open:1, upcoming:2, listed:3 };
     ipos.sort((a,b)=> (PRI[a.status]-PRI[b.status]));
@@ -113,7 +114,7 @@ export async function onRequest(context){
     const want = ipos.filter(i => i.slug && i.cgid).slice(0, 30);
     const q = want.slice();
     await Promise.all(Array.from({length:4}, async () => { while(q.length){ const it=q.shift(); await lotFor(it); } }));
-    for(const i of ipos){ delete i.cgid; }
+    for(const i of ipos){ delete i.cgid; delete i._ts; }
     const body = { lastUpdated:new Date().toISOString(), source:'Compiled from BSE & NSE public data', ipos };
     if(fresh) body._debug = { listMain:listMain.length, listSme:listSme.length, subMain:subMain.length, subSme:subSme.length };
     return new Response(JSON.stringify(body), { headers:H });
