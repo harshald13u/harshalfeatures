@@ -100,7 +100,7 @@ html[data-theme="light"] .mast-theme-toggle { background:rgba(26,52,88,0.04); }
 .ipo-ribbon b { color:var(--accent); font-weight:700; }
 .ipo-ribbon.hide { display:none; }
 
-.ipo-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:26px; }
+.ipo-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:26px; }
 .ipo-stat { background:var(--bg-2); border:1px solid var(--rule); border-radius:8px; padding:15px 17px; }
 .ipo-stat .v { font-weight:800; font-size:25px; line-height:1; letter-spacing:-0.02em; color:var(--ink); }
 .ipo-stat .v.acc { color:var(--accent); } .ipo-stat .v.pos { color:var(--pos); }
@@ -267,7 +267,6 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
     <div class="ipo-stat"><div class="v num" id="sOpen">—</div><div class="l">Open now</div></div>
     <div class="ipo-stat"><div class="v num" id="sUp">—</div><div class="l">Upcoming</div></div>
     <div class="ipo-stat"><div class="v acc num" id="sListed">—</div><div class="l">Recently listed</div></div>
-    <div class="ipo-stat"><div class="v pos num" id="sGain">—</div><div class="l">Avg listing gain · 30d</div></div>
   </div>
 
   <div class="ipo-controls">
@@ -368,8 +367,6 @@ function render(){
   document.getElementById('sOpen').textContent=STATE.data.filter(i=>openish(i.status)).length;
   document.getElementById('sUp').textContent=STATE.data.filter(i=>i.status==='upcoming').length;
   document.getElementById('sListed').textContent=STATE.data.filter(i=>i.status==='listed').length;
-  const gains=STATE.data.filter(i=>i.status==='listed'&&i.listing&&i.listing.list!=null&&i.listing.issue!=null).map(i=>(i.listing.list-i.listing.issue)/i.listing.issue*100);
-  document.getElementById('sGain').textContent=gains.length?(gains.reduce((a,b)=>a+b,0)/gains.length>=0?'+':'')+(gains.reduce((a,b)=>a+b,0)/gains.length).toFixed(1)+'%':'—';
 }
 function boot(data,isSample){
   STATE.data=(data&&(data.ipos||data.items))||[];
