@@ -105,6 +105,10 @@ html[data-theme="light"] .mast-theme-toggle { background:rgba(26,52,88,0.04); }
 .ipo-stat .v { font-weight:800; font-size:25px; line-height:1; letter-spacing:-0.02em; color:var(--ink); }
 .ipo-stat .v.acc { color:var(--accent); } .ipo-stat .v.pos { color:var(--pos); }
 .ipo-stat .l { font-size:10.5px; letter-spacing:1.1px; text-transform:uppercase; color:var(--muted); margin-top:9px; }
+.ipo-stat.clickable { cursor:pointer; transition:border-color .15s, background .15s, transform .05s; }
+.ipo-stat.clickable:hover { border-color:var(--accent); background:rgba(255,255,255,0.035); }
+.ipo-stat.clickable:active { transform:translateY(1px); }
+.ipo-stat.clickable:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 
 .ipo-controls { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:22px; }
 .ipo-seg { display:inline-flex; background:var(--bg-2); border:1px solid var(--rule); border-radius:9px; padding:4px; gap:2px; }
@@ -264,9 +268,9 @@ html[data-theme="light"] .ipo-seg button[aria-selected="true"] { color:#fff; }
   <div class="ipo-ribbon" id="ipoRibbon">⚙ <b>Preview / sample data</b> — illustrative figures shown until the live feed responds. Live data loads automatically from the official NSE feed.</div>
 
   <div class="ipo-stats" id="ipoStats">
-    <div class="ipo-stat"><div class="v num" id="sOpen">—</div><div class="l">Open now</div></div>
-    <div class="ipo-stat"><div class="v num" id="sUp">—</div><div class="l">Upcoming</div></div>
-    <div class="ipo-stat"><div class="v acc num" id="sListed">—</div><div class="l">Recently listed</div></div>
+    <div class="ipo-stat clickable" data-jump="open" role="button" tabindex="0" aria-label="Filter: open IPOs"><div class="v num" id="sOpen">—</div><div class="l">Open now</div></div>
+    <div class="ipo-stat clickable" data-jump="upcoming" role="button" tabindex="0" aria-label="Filter: upcoming IPOs"><div class="v num" id="sUp">—</div><div class="l">Upcoming</div></div>
+    <div class="ipo-stat clickable" data-jump="listed" role="button" tabindex="0" aria-label="Filter: recently listed IPOs"><div class="v acc num" id="sListed">—</div><div class="l">Recently listed</div></div>
   </div>
 
   <div class="ipo-controls">
@@ -378,6 +382,11 @@ function boot(data,isSample){
 }
 document.getElementById('ipoViews').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   document.querySelectorAll('#ipoViews button').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');STATE.view=b.dataset.view;render();});
+document.querySelectorAll('.ipo-stat[data-jump]').forEach(function(card){
+  function go(){ var v=card.dataset.jump; var btn=document.querySelector('#ipoViews button[data-view="'+v+'"]'); if(btn) btn.click(); var tgt=document.querySelector('.ipo-controls')||document.getElementById('ipoGrid'); if(tgt) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }
+  card.addEventListener('click',go);
+  card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
+});
 document.getElementById('ipoSegment').onchange=e=>{STATE.seg=e.target.value;render();};
 document.getElementById('ipoSearch').oninput=e=>{STATE.q=e.target.value.toLowerCase();render();};
 
