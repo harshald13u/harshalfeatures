@@ -568,9 +568,17 @@ document.addEventListener('DOMContentLoaded', function () {
     var final_  = parseFloat(document.getElementById('cagr-final-num').value) || 0;
     var years   = parseFloat(document.getElementById('cagr-years-num').value) || 0;
 
-    if (initial <= 0 || final_ <= 0 || years <= 0) return;
+    /* Allow final = 0 (total loss) and final < initial (decline). Reject only initial<=0 or years<=0. */
+    if (initial <= 0 || years <= 0) return;
+    if (final_ < 0) return; /* negative final value is non-physical for an investment */
 
-    var cagr    = (Math.pow(final_ / initial, 1 / years) - 1) * 100;
+    var cagr;
+    if (final_ === 0) {
+      cagr = -100; /* total loss */
+    } else {
+      cagr = (Math.pow(final_ / initial, 1 / years) - 1) * 100;
+    }
+
     var absRet  = ((final_ - initial) / initial) * 100;
     var gain    = final_ - initial;
     var isNeg   = cagr < 0;
@@ -658,11 +666,15 @@ document.addEventListener('DOMContentLoaded', function () {
     /* Bisection fallback: bracket between -0.9999 and 100 (10000%) */
     var lo = -0.9999, hi = 100;
     var flo = npv(lo), fhi = npv(hi);
-    /* ensure bracket */
+    /* ensure bracket — widen if same-sign, do not narrow */
     if (flo * fhi > 0) {
-      /* try tighter upper bound */
-      hi = 10; fhi = npv(hi);
-      if (flo * fhi > 0) return NaN;
+      /* try a much wider upper bound for hyperinflation-like rates */
+      hi = 1000; fhi = npv(hi);
+      if (flo * fhi > 0) {
+        /* and a tighter lower bound near zero if no sign change still */
+        lo = -0.5; flo = npv(lo);
+        if (flo * fhi > 0) return NaN;
+      }
     }
     for (var j = 0; j < MAX_ITER; j++) {
       var mid = (lo + hi) / 2;
