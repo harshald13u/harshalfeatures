@@ -955,6 +955,8 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
   background: radial-gradient(ellipse 100% 80% at 50% 50%, rgba(14,12,10,0.15), rgba(14,12,10,0.55) 95%);
   animation: none; }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* Special Features marquee is content discovery, not decoration — keep moving (slower) even with reduce-motion */
+@media (prefers-reduced-motion: reduce) { .sf-gallery { animation: sfScroll 60s linear infinite !important; } }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
