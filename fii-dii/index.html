@@ -273,7 +273,7 @@ function renderBars(rows,period){
     TT.push({label:periodLabel(d,period),fii:d.fii,dii:d.dii});
   });
   const gl=v=>`<line x1="${padL}" x2="${W-padR}" y1="${(zeroY-sc(v)).toFixed(1)}" y2="${(zeroY-sc(v)).toFixed(1)}" stroke="var(--rule-soft)"></line>
-    <text x="${W-padR}" y="${(zeroY-sc(v)-3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--faint)">${v>0?'+':''}${(v/1000).toFixed(0)}k</text>`;
+    <text x="${W-padR}" y="${(zeroY-sc(v)-3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--faint)">${fmtINR(v)}</text>`;
   const step=niceStep(maxAbs/2);
   document.getElementById('barChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${period} FII and DII net flows">
     ${gl(step)}${gl(-step)}
@@ -291,6 +291,19 @@ function niceStep(rough){
   var f = rough / p;
   var nice = f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10;
   return nice * p;
+}
+
+/* Indian-style currency label: ₹X L Cr / ₹XK Cr / ₹X Cr */
+function fmtINR(v){
+  if(v===0) return '0';
+  var sign = v<0 ? '−' : '+';
+  var a = Math.abs(v);
+  var s;
+  if(a>=100000) s = (a/100000).toFixed(a>=1000000?0:1).replace(/\.0$/,'') + ' L Cr';
+  else if(a>=1000) s = Math.round(a/1000) + 'K Cr';
+  else if(a>=100) s = Math.round(a) + ' Cr';
+  else s = (Math.round(a*10)/10) + ' Cr';
+  return sign+'₹'+s;
 }
 function attachBarTip(TT){
   const svg=document.querySelector('#barChart svg'); const tip=document.getElementById('barTip');
@@ -319,7 +332,7 @@ function renderCumulative(H){
   const path=arr=>arr.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
   const area=arr=>`${path(arr)} L ${x(arr.length-1).toFixed(1)} ${y(0).toFixed(1)} L ${x(0).toFixed(1)} ${y(0).toFixed(1)} Z`;
   const yl=v=>`<line x1="${padL}" x2="${W-padR}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="var(--rule-soft)"></line>
-    <text x="${padL-6}" y="${(y(v)+3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--faint)">${v>0?'+':''}${(v/1000).toFixed(0)}k</text>`;
+    <text x="${padL-6}" y="${(y(v)+3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--faint)">${fmtINR(v)}</text>`;
   const zero=y(0);
   document.getElementById('cumChart').innerHTML=`<svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Cumulative FII and DII flows">
     ${yl(mx*0.66)}${yl(0)}${mn<0?yl(mn*0.66):''}
