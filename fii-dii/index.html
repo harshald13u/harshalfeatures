@@ -85,6 +85,15 @@ html[data-theme="light"] .mast-theme-toggle{background:rgba(26,52,88,0.04);}
 .legend{display:flex;gap:16px;font-size:12px;color:var(--muted);}
 .legend span{display:inline-flex;align-items:center;gap:6px;} .legend i{width:11px;height:11px;border-radius:3px;display:inline-block;}
 .chart-wrap{background:var(--bg-2);border:1px solid var(--rule);border-radius:10px;padding:18px 16px 12px;}
+.period-seg{display:inline-flex;gap:4px;margin:0 0 12px;background:var(--bg-2);border:1px solid var(--rule);border-radius:999px;padding:3px;}
+.period-seg button{appearance:none;border:0;background:transparent;color:var(--muted);font:inherit;font-size:12px;font-weight:600;letter-spacing:.3px;padding:6px 14px;border-radius:999px;cursor:pointer;transition:background .15s,color .15s;}
+.period-seg button:hover{color:var(--ink);}
+.period-seg button.active{background:var(--accent);color:#14110c;}
+.chart-tip{position:absolute;pointer-events:none;z-index:5;background:var(--bg-2);border:1px solid var(--rule);border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.5;color:var(--ink);box-shadow:0 8px 22px rgba(0,0,0,.4);white-space:nowrap;transform:translate(-50%,-118%);}
+.chart-tip .tt-d{font-weight:700;margin-bottom:3px;color:var(--ink);}
+.chart-tip .tt-r{display:flex;align-items:center;gap:6px;}
+.chart-tip .tt-r i{width:8px;height:8px;border-radius:2px;display:inline-block;flex:0 0 8px;}
+#barChart svg rect.hit{cursor:crosshair;}
 svg{display:block;width:100%;height:auto;} text{font-family:'Inter',sans-serif;}
 
 /* stat strip */
@@ -129,9 +138,15 @@ svg{display:block;width:100%;height:auto;} text{font-family:'Inter',sans-serif;}
   <div class="tug" id="tug"></div>
 
   <div class="sec">
-    <div class="sec-head"><h2 class="sec-title">Daily net flows</h2>
+    <div class="sec-head"><h2 class="sec-title" id="barTitle">Daily net flows</h2>
       <div class="legend"><span><i style="background:var(--fii)"></i>FII / FPI</span><span><i style="background:var(--dii)"></i>DII</span></div></div>
-    <div class="chart-wrap"><div id="barChart"></div></div>
+    <div class="period-seg" id="periodSeg" role="tablist" aria-label="Aggregation period">
+      <button type="button" data-p="daily" class="active" role="tab" aria-selected="true">Daily</button>
+      <button type="button" data-p="weekly" role="tab" aria-selected="false">Weekly</button>
+      <button type="button" data-p="monthly" role="tab" aria-selected="false">Monthly</button>
+      <button type="button" data-p="yearly" role="tab" aria-selected="false">Yearly</button>
+    </div>
+    <div class="chart-wrap" style="position:relative"><div id="barChart"></div><div class="chart-tip" id="barTip" hidden></div></div>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -167,10 +182,12 @@ const SAMPLE={ lastUpdated:new Date().toISOString(),
 const F2=new Intl.NumberFormat('en-IN',{maximumFractionDigits:0});
 const cr=n=>(n>=0?'+':'−')+'₹'+F2.format(Math.abs(Math.round(n)))+' cr';
 const dmon=s=>{const d=new Date(s);return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});};
+let HISTORY=[], PERIOD='daily';
 
 function render(data,isSample){
   document.getElementById('ribbon').classList.toggle('hide',!isSample);
   const H=data.history||[], L=data.latest||{};
+  HISTORY=H;
   const fiiNet=L.fii?L.fii.net:(H.length?H[H.length-1].fii.net:0);
   const diiNet=L.dii?L.dii.net:(H.length?H[H.length-1].dii.net:0);
 
@@ -193,36 +210,84 @@ function render(data,isSample){
   document.getElementById('tug').innerHTML=`<h3>The tug-of-war</h3>
     <p>Over the last ${win.length} sessions, foreign investors were net sellers on <b>${sellerDays}</b> of them, while domestic institutions kept buying. So far in ${monthName}, <b>FII have ${mFii<0?'pulled out':'added'} ${cr(mFii).replace('+','').replace('−','−')}</b> while <b>DII have ${mDii>=0?'absorbed':'sold'} ${cr(mDii).replace('+','+')}</b> — the classic domestic-vs-foreign standoff.</p>`;
 
-  renderBars(win);
+  drawBars();
   renderStats({mFii,mDii,sellerDays,win,streak,monthName});
   renderCumulative(H);
   document.getElementById('cumNote').textContent=`running net since ${dmon(H[0].date)}`;
 }
 
-/* ---------- SVG: daily net grouped bars (zero baseline) ---------- */
-function renderBars(rows){
+/* ---------- aggregation by period ---------- */
+function bucketKey(date,period){
+  const d=new Date(date+'T00:00:00');
+  if(period==='yearly') return String(d.getFullYear());
+  if(period==='monthly') return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  if(period==='weekly'){ const t=new Date(d); const day=(t.getDay()+6)%7; t.setDate(t.getDate()-day);
+    return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0'); }
+  return date;
+}
+function aggregate(H,period){
+  if(period==='daily') return H.map(d=>({date:d.date,first:d.date,fii:d.fii.net,dii:d.dii.net}));
+  const m=new Map();
+  H.forEach(d=>{ const k=bucketKey(d.date,period); const o=m.get(k)||{first:d.date,date:d.date,fii:0,dii:0};
+    o.fii+=d.fii.net; o.dii+=d.dii.net; o.date=d.date; m.set(k,o); });
+  return Array.from(m.values());
+}
+function periodLabel(row,period){
+  const d=new Date((row.first||row.date)+'T00:00:00');
+  if(period==='yearly') return String(d.getFullYear());
+  if(period==='monthly') return d.toLocaleDateString('en-IN',{month:'short',year:'2-digit'});
+  return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+}
+function drawBars(){
+  let rows=aggregate(HISTORY,PERIOD);
+  const cap={daily:30,weekly:26,monthly:24,yearly:12}[PERIOD]||30;
+  if(rows.length>cap) rows=rows.slice(-cap);
+  renderBars(rows,PERIOD);
+}
+
+/* ---------- SVG: grouped net bars (zero baseline) + hover tooltip ---------- */
+function renderBars(rows,period){
+  period=period||'daily';
   const W=760,H=280,padL=16,padR=10,padT=14,padB=26;
   const n=rows.length, plotW=W-padL-padR, plotH=H-padT-padB, zeroY=padT+plotH/2, half=plotH/2-6;
-  const maxAbs=Math.max(...rows.flatMap(d=>[Math.abs(d.fii.net),Math.abs(d.dii.net)]))||1;
+  const maxAbs=Math.max(...rows.flatMap(d=>[Math.abs(d.fii),Math.abs(d.dii)]))||1;
   const gw=plotW/n, bw=Math.min(9,gw/2-2);
   const sc=v=>v/maxAbs*half;
-  let bars='';
+  const TT=[]; let bars='';
   rows.forEach((d,i)=>{
     const cx=padL+gw*i+gw/2;
-    const f=sc(d.fii.net), dv=sc(d.dii.net);
-    // FII bar (left of center)
-    bars+=`<rect x="${(cx-bw-1).toFixed(1)}" y="${(d.fii.net>=0?zeroY-f:zeroY).toFixed(1)}" width="${bw}" height="${Math.max(1,Math.abs(f)).toFixed(1)}" rx="1.5" fill="var(--fii)"></rect>`;
-    // DII bar (right of center)
-    bars+=`<rect x="${(cx+1).toFixed(1)}" y="${(d.dii.net>=0?zeroY-dv:zeroY).toFixed(1)}" width="${bw}" height="${Math.max(1,Math.abs(dv)).toFixed(1)}" rx="1.5" fill="var(--dii)"></rect>`;
-    if(i%3===0||i===n-1) bars+=`<text x="${cx.toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="9" fill="var(--faint)">${dmon(d.date)}</text>`;
+    const fv=sc(d.fii), dv=sc(d.dii);
+    bars+=`<rect x="${(cx-bw-1).toFixed(1)}" y="${(d.fii>=0?zeroY-fv:zeroY).toFixed(1)}" width="${bw}" height="${Math.max(1,Math.abs(fv)).toFixed(1)}" rx="1.5" fill="var(--fii)"></rect>`;
+    bars+=`<rect x="${(cx+1).toFixed(1)}" y="${(d.dii>=0?zeroY-dv:zeroY).toFixed(1)}" width="${bw}" height="${Math.max(1,Math.abs(dv)).toFixed(1)}" rx="1.5" fill="var(--dii)"></rect>`;
+    const showLbl = n<=14 ? true : (i%Math.ceil(n/8)===0 || i===n-1);
+    if(showLbl) bars+=`<text x="${cx.toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="9" fill="var(--faint)">${periodLabel(d,period)}</text>`;
+    bars+=`<rect class="hit" x="${(padL+gw*i).toFixed(1)}" y="${padT}" width="${gw.toFixed(1)}" height="${plotH}" fill="transparent" data-i="${i}"></rect>`;
+    TT.push({label:periodLabel(d,period),fii:d.fii,dii:d.dii});
   });
   const gl=v=>`<line x1="${padL}" x2="${W-padR}" y1="${(zeroY-sc(v)).toFixed(1)}" y2="${(zeroY-sc(v)).toFixed(1)}" stroke="var(--rule-soft)"></line>
     <text x="${W-padR}" y="${(zeroY-sc(v)-3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--faint)">${v>0?'+':''}${(v/1000).toFixed(0)}k</text>`;
   const step=Math.round(maxAbs/2/1000)*1000||5000;
-  document.getElementById('barChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Daily FII and DII net flows">
+  document.getElementById('barChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${period} FII and DII net flows">
     ${gl(step)}${gl(-step)}
     <line x1="${padL}" x2="${W-padR}" y1="${zeroY}" y2="${zeroY}" stroke="var(--rule)" stroke-width="1"></line>
     ${bars}</svg>`;
+  attachBarTip(TT);
+}
+
+function attachBarTip(TT){
+  const svg=document.querySelector('#barChart svg'); const tip=document.getElementById('barTip');
+  if(!svg||!tip) return; const wrap=tip.parentElement;
+  const fmt=v=>(v>=0?'+':'−')+'₹'+F2.format(Math.abs(Math.round(v)))+' cr';
+  function pos(e){ const wr=wrap.getBoundingClientRect(); const cx=(e.touches?e.touches[0].clientX:e.clientX); const cy=(e.touches?e.touches[0].clientY:e.clientY);
+    tip.style.left=Math.max(60,Math.min(wr.width-60,cx-wr.left))+'px'; tip.style.top=(cy-wr.top)+'px'; }
+  function show(e){ const i=+e.currentTarget.dataset.i; const t=TT[i]; if(!t) return;
+    tip.innerHTML=`<div class="tt-d">${t.label}</div><div class="tt-r"><i style="background:var(--fii)"></i>FII&nbsp;${fmt(t.fii)}</div><div class="tt-r"><i style="background:var(--dii)"></i>DII&nbsp;${fmt(t.dii)}</div>`;
+    tip.hidden=false; pos(e); }
+  function hide(){ tip.hidden=true; }
+  svg.querySelectorAll('rect.hit').forEach(r=>{
+    r.addEventListener('mouseenter',show); r.addEventListener('mousemove',pos); r.addEventListener('mouseleave',hide);
+    r.addEventListener('touchstart',function(e){show(e);},{passive:true}); r.addEventListener('touchend',hide);
+  });
 }
 
 /* ---------- SVG: cumulative dual line + area ---------- */
@@ -262,6 +327,13 @@ function renderStats(s){
 /* Instant paint: render immediately, then swap to live data the moment /api/fii-dii responds.
    Hard 8s timeout so a slow source can never stall the page. */
 render(SAMPLE,true);
+document.getElementById('periodSeg').addEventListener('click',function(e){
+  const b=e.target.closest('button'); if(!b) return;
+  PERIOD=b.dataset.p;
+  this.querySelectorAll('button').forEach(x=>{const on=x===b; x.classList.toggle('active',on); x.setAttribute('aria-selected',on?'true':'false');});
+  document.getElementById('barTitle').textContent=({daily:'Daily',weekly:'Weekly',monthly:'Monthly',yearly:'Yearly'}[PERIOD])+' net flows';
+  drawBars();
+});
 (function(){
   const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),8000);
   fetch('/api/fii-dii?nc='+Date.now(),{signal:ctl.signal})
