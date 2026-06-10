@@ -89,6 +89,35 @@
   } else {
     injectLegalLinks();
   }
+  /* === Tablist arrow-key navigation (WAI-ARIA pattern) === */
+  function bindTablistArrows(){
+    var lists = document.querySelectorAll('[role="tablist"]');
+    Array.prototype.forEach.call(lists, function(list){
+      if (list.dataset.hdArrowsBound) return;
+      list.dataset.hdArrowsBound = '1';
+      var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+      if (!tabs.length) return;
+      list.addEventListener('keydown', function(e){
+        var idx = tabs.indexOf(document.activeElement);
+        if (idx < 0) return;
+        var next = idx;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % tabs.length;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (idx - 1 + tabs.length) % tabs.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = tabs.length - 1;
+        else return;
+        e.preventDefault();
+        tabs[next].focus();
+        tabs[next].click();
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindTablistArrows);
+  } else {
+    bindTablistArrows();
+  }
+
 
 
   function injectCSS(){
