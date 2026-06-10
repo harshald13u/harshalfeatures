@@ -55,6 +55,41 @@
   } else {
     injectSkipLink();
   }
+  /* === Tasteful legal-links strip at bottom of every page === */
+  function injectLegalLinks(){
+    if (document.getElementById('hd-legal-strip')) return;
+    if (!document.body) return;
+    var st = document.createElement('style');
+    st.id = 'hd-legal-css';
+    st.textContent =
+      '.hd-legal-strip{margin:32px 0 16px;padding:14px 0 0;border-top:1px solid var(--rule,rgba(128,128,128,.18));' +
+      'text-align:center;font:500 11px/1.5 Inter,system-ui,sans-serif;color:var(--muted,#8a8273);letter-spacing:.04em}' +
+      '.hd-legal-strip a{color:var(--ink-2,#c9c0ad);text-decoration:none;margin:0 6px;padding:4px 6px}' +
+      '.hd-legal-strip a:hover{color:var(--accent,#d4a64a);text-decoration:underline}' +
+      '.hd-legal-sep{opacity:.5;margin:0 2px}';
+    document.head.appendChild(st);
+    var d = document.createElement('div');
+    d.id = 'hd-legal-strip';
+    d.className = 'hd-legal-strip';
+    d.innerHTML = '<a href="/legal/disclaimer/">Disclaimer</a>' +
+                  '<span class="hd-legal-sep">·</span>' +
+                  '<a href="/legal/privacy/">Privacy</a>' +
+                  '<span class="hd-legal-sep">·</span>' +
+                  '<a href="/legal/terms/">Terms</a>';
+    // Append to .page or main or body
+    var mount = document.querySelector('main.page') || document.querySelector('.page') || document.querySelector('main') || document.body;
+    if (mount && mount.tagName !== 'BODY') {
+      mount.appendChild(d);
+    } else {
+      document.body.appendChild(d);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectLegalLinks);
+  } else {
+    injectLegalLinks();
+  }
+
 
   function injectCSS(){
     if (document.getElementById('lang-dd-css')) return;
