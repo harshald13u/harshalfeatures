@@ -335,12 +335,19 @@ document.getElementById('periodSeg').addEventListener('click',function(e){
   drawBars();
 });
 (function(){
-  const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),8000);
-  fetch('/api/fii-dii?nc='+Date.now(),{signal:ctl.signal})
+  /* 1) OUR own committed dataset first — independent of any live feed */
+  fetch('history.json?nc='+Date.now())
     .then(r=>r.ok?r.json():Promise.reject())
     .then(d=>{ if(d&&d.history&&d.history.length) render(d,false); })
     .catch(()=>{})
-    .finally(()=>clearTimeout(t));
+    .finally(()=>{
+      /* 2) then overlay today's freshest from the live API if reachable */
+      const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),8000);
+      fetch('/api/fii-dii?nc='+Date.now(),{signal:ctl.signal})
+        .then(r=>r.ok?r.json():Promise.reject())
+        .then(d=>{ if(d&&d.history&&d.history.length) render(d,false); })
+        .catch(()=>{}).finally(()=>clearTimeout(t));
+    });
 })();
 </script>
 <script>function toggleBlogTheme(){var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('hd-theme',n);}catch(e){}}</script>
