@@ -63,16 +63,36 @@ export async function onRequest(context){
     const last=rows[rows.length-1];
     let confidence='single-source', sources=['Groww · NSE-compiled data'];
 
-    // opportunistic NSE confirm (never blocks)
+    // NSE: confirm the latest day, OR extend the series when NSE leads Groww by a day
+    // (NSE publishes provisional cash data the same evening; Groww often lags one day).
     try{
       let cookie='';
       const boot=await fetch('https://www.nseindia.com/',{headers:{'User-Agent':UA,'Accept':'text/html,*/*','Accept-Language':'en-US,en;q=0.9'},signal:AbortSignal.timeout(3500),cf:{cacheTtl:0}});
       const sc=(boot.headers.getSetCookie?boot.headers.getSetCookie():[boot.headers.get('set-cookie')]).filter(Boolean);
       cookie=sc.map(s=>String(s).split(';')[0]).join('; ');
       const nr=await fetch('https://www.nseindia.com/api/fiidiiTradeReact',{headers:{'User-Agent':UA,'Accept':'application/json','Referer':'https://www.nseindia.com/','Cookie':cookie},signal:AbortSignal.timeout(3500),cf:{cacheTtl:1800}});
-      if(nr.ok){ const arr=await nr.json(); const nf=(Array.isArray(arr)?arr:[]).find(x=>/FII|FPI/i.test(x.category||''));
-        if(nf){ const nnet=num(nf.netValue); if(nnet!=null && Math.abs(nnet-last.f.net)<=Math.max(50,Math.abs(last.f.net)*0.01)){ confidence='confirmed'; sources=['Groww','NSE']; }
-          else if(nnet!=null){ confidence='divergent'; sources=['Groww','NSE']; } } }
+      if(nr.ok){
+        const arr=await nr.json(); const A=Array.isArray(arr)?arr:[];
+        const pick=re=>A.find(x=>re.test(x.category||''));
+        const nf=pick(/FII|FPI/i), nd=pick(/DII/i);
+        if(nf){
+          const ndate=toISO(nf.date)||(nd&&toISO(nd.date));
+          const nfn=num(nf.netValue), nfb=num(nf.buyValue), nfs=num(nf.sellValue);
+          const ddn=nd?num(nd.netValue):null, ddb=nd?num(nd.buyValue):null, dds=nd?num(nd.sellValue):null;
+          if(ndate && nfn!=null){
+            if(ndate>last.date && ddn!=null && ndate<=today && Math.abs(nfn)<=300000 && Math.abs(ddn)<=300000){
+              // NSE has a newer day than Groww -> append it (NSE authoritative)
+              if(history.length) history[history.length-1].status='final';
+              history.push({date:ndate, fii:{net:nfn}, dii:{net:ddn}, status:'provisional'});
+              last={date:ndate, f:{buy:nfb,sell:nfs,net:nfn}, d:{buy:ddb,sell:dds,net:ddn}};
+              confidence='confirmed'; sources=['NSE','Groww'];
+            } else if(ndate===last.date){
+              if(Math.abs(nfn-last.f.net)<=Math.max(50,Math.abs(last.f.net)*0.01)){ confidence='confirmed'; sources=['Groww','NSE']; }
+              else { confidence='divergent'; sources=['Groww','NSE']; }
+            }
+          }
+        }
+      }
     }catch(e){}
 
     const body={ lastUpdated:new Date().toISOString(),
