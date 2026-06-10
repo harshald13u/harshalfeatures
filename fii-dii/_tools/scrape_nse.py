@@ -46,95 +46,149 @@ def row(date,fb,fs,fn,db,ds,dn,src):
     if fn is None and fb is not None and fs is not None: fn=fb-fs
     if dn is None and db is not None and ds is not None: dn=db-ds
     if fn is None or dn is None: return None
+    # sanity ceiling: daily cash net never approaches +/-1 lakh cr -> rejects F&O/parse bleed
+    if abs(fn)>100000 or abs(dn)>100000: return None
+    # arithmetic guard: if gross present it must reconcile with net, else the columns are
+    # mis-parsed -> drop the suspect gross but keep the (validated) net.
+    if fb is not None and fs is not None and abs((fb-fs)-fn)>10: fb=fs=None
+    if db is not None and ds is not None and abs((db-ds)-dn)>10: db=ds=None
     return {"Date":date,"FII Buy":fb,"FII Sell":fs,"FII Net":fn,"DII Buy":db,"DII Sell":ds,"DII Net":dn,"Source":src,"Status":"provisional"}
 
 # ---------------- providers ----------------
-def p_moneycontrol():
+def _get(url, tries=3, timeout=15, headers=None, **kw):
+    """GET with retries + backoff and sane default headers."""
     import requests
-    from bs4 import BeautifulSoup
-    url="https://www.moneycontrol.com/stocks/marketstats/fii_dii_activity/index.php"
-    r=requests.get(url,headers={"User-Agent":UA,"Accept-Language":"en-US,en;q=0.9"},timeout=30); r.raise_for_status()
-    soup=BeautifulSoup(r.text,"html.parser"); out=[]
-    for tbl in soup.find_all("table"):
-        for tr in tbl.find_all("tr"):
-            cells=[c.get_text(strip=True) for c in tr.find_all(["td","th"])]
-            if len(cells)<7: continue
-            d=_nd(cells[0])
-            if not d: continue
-            nums=[_f(c) for c in cells[1:]]
-            if sum(1 for n in nums if n is not None)<6: continue
-            # layout: Date, FIIbuy, FIIsell, FIInet, DIIbuy, DIIsell, DIInet
-            rr=row(d,nums[0],nums[1],nums[2],nums[3],nums[4],nums[5],"Moneycontrol")
-            if rr: out.append(rr)
-    if not out: raise ValueError("no rows parsed")
-    return out
-
-def p_nse_direct():
-    import requests
-    s=requests.Session(); s.headers.update({"User-Agent":UA,"Accept":"application/json,text/plain,*/*",
-        "Accept-Language":"en-US,en;q=0.9","Referer":"https://www.nseindia.com/reports-indices-fii-dii-activity"})
-    s.get("https://www.nseindia.com",timeout=20); time.sleep(1)
-    s.get("https://www.nseindia.com/reports-indices-fii-dii-activity",timeout=20); time.sleep(0.5)
-    r=s.get(NSE_API,timeout=20); r.raise_for_status(); return _parse_nse(r.json())
-
-def p_nse_proxy():
-    import requests
-    for prox in ["https://api.allorigins.win/raw?url=","https://corsproxy.io/?url="]:
+    h={"User-Agent":UA,"Accept-Language":"en-US,en;q=0.9"}
+    if headers: h.update(headers)
+    last=None
+    for k in range(tries):
         try:
-            u=prox+urllib.parse.quote(NSE_API,safe="")
-            r=requests.get(u,timeout=30,headers={"User-Agent":UA}); r.raise_for_status()
-            return _parse_nse(r.json())
-        except Exception: continue
-    raise ValueError("proxies failed")
+            r=requests.get(url,headers=h,timeout=timeout,**kw); r.raise_for_status(); return r
+        except Exception as e:
+            last=e; time.sleep(1.0*(k+1))
+    raise last
+
+def _find_series(node,depth=0):
+    """Recursively locate Groww's day-series array inside __NEXT_DATA__."""
+    if depth>10 or node is None: return None
+    if isinstance(node,list):
+        if len(node)>=2 and all(isinstance(x,dict) and isinstance(x.get("fii"),dict) for x in node): return node
+        for x in node:
+            r=_find_series(x,depth+1)
+            if r: return r
+        return None
+    if isinstance(node,dict):
+        for kk in node:
+            r=_find_series(node[kk],depth+1)
+            if r: return r
+    return None
 
 def _parse_nse(data):
     fii=dii=None
-    for rr in data:
+    for rr in (data or []):
         c=str(rr.get("category","")).upper()
         rec=(_nd(rr.get("date")),_f(rr.get("buyValue")),_f(rr.get("sellValue")),_f(rr.get("netValue")))
         if "FII" in c or "FPI" in c: fii=rec
         elif "DII" in c: dii=rec
     if not fii or not dii: raise ValueError("nse missing")
+    # NSE returns FII & DII for the SAME latest day; pair them on FII's date
     return [row(fii[0],fii[1],fii[2],fii[3],dii[1],dii[2],dii[3],"NSE")]
 
-def p_groww():
-    import requests
-    u="https://groww.in/v1/api/stocks_data/v1/accord_points/exchange/NSE/segment/CASH/fii_dii_activity"
-    r=requests.get(u,headers={"User-Agent":UA,"Accept":"application/json"},timeout=25); r.raise_for_status()
-    j=r.json(); arr=j.get("data") or j.get("fiiDiiData") or []
-    out=[]
-    for rr in arr:
-        d=_nd(rr.get("date") or rr.get("tradeDate"))
-        fn=_f(rr.get("fiiNet") or rr.get("fii_net")); dn=_f(rr.get("diiNet") or rr.get("dii_net"))
-        x=row(d,_f(rr.get("fiiBuy")),_f(rr.get("fiiSell")),fn,_f(rr.get("diiBuy")),_f(rr.get("diiSell")),dn,"Groww")
-        if x: out.append(x)
-    if not out: raise ValueError("groww empty")
-    return out
-
+# 1) Our Cloudflare edge (reaches NSE same-day; reachable from GitHub datacenter IPs).
 def p_self_edge():
-    # Our own Cloudflare edge endpoint. Reachable from GitHub datacenter IPs (unlike NSE/Groww
-    # directly), and it now extends to NSE's latest day on the edge. This is the reliable
-    # cloud-cron source. Net for all days; buy/sell for the latest day.
-    import requests
-    u="https://harshaldasani.pages.dev/api/fii-dii?fresh=1"
-    r=requests.get(u,headers={"User-Agent":UA,"Accept":"application/json"},timeout=25); r.raise_for_status()
-    j=r.json(); H=j.get("history") or []
+    j=_get("https://harshaldasani.pages.dev/api/fii-dii?fresh=1",headers={"Accept":"application/json"}).json()
+    H=j.get("history") or []
     if not H: raise ValueError("edge empty")
     L=j.get("latest") or {}; ldate=_nd(L.get("date")) if L.get("date") else None
     out=[]
     for rr in H:
-        d=_nd(rr.get("date"))
-        fn=_f((rr.get("fii") or {}).get("net")); dn=_f((rr.get("dii") or {}).get("net"))
+        dte=_nd(rr.get("date")); fn=_f((rr.get("fii") or {}).get("net")); dn=_f((rr.get("dii") or {}).get("net"))
         fb=fs=db=ds=None
-        if d and ldate and d==ldate:
+        if dte and ldate and dte==ldate:
             f=L.get("fii") or {}; dd=L.get("dii") or {}
             fb=_f(f.get("buy")); fs=_f(f.get("sell")); db=_f(dd.get("buy")); ds=_f(dd.get("sell"))
-        x=row(d,fb,fs,fn,db,ds,dn,"Site-edge")
+        x=row(dte,fb,fs,fn,db,ds,dn,"Site-edge")
         if x: out.append(x)
     if not out: raise ValueError("edge no rows")
     return out
 
-PROVIDERS=[("Site-edge",p_self_edge),("Moneycontrol",p_moneycontrol),("NSE",p_nse_direct),("NSE-proxy",p_nse_proxy),("Groww",p_groww)]
+# 2) NSE direct (authoritative, same-day; works from residential IPs e.g. the watchdog;
+#    403s from GitHub datacenter IPs -> just logged, never fatal).
+def p_nse_direct():
+    import requests
+    s=requests.Session(); s.headers.update({"User-Agent":UA,"Accept":"application/json,text/plain,*/*",
+        "Accept-Language":"en-US,en;q=0.9","Referer":"https://www.nseindia.com/reports-indices-fii-dii-activity"})
+    s.get("https://www.nseindia.com",timeout=20); time.sleep(1)
+    s.get("https://www.nseindia.com/reports-indices-fii-dii-activity",timeout=20); time.sleep(0.4)
+    r=s.get(NSE_API,timeout=20); r.raise_for_status(); return _parse_nse(r.json())
+
+# 3) NSE via public relays (best-effort; helps when direct NSE is IP-blocked).
+def p_nse_proxy():
+    import requests
+    targets=[
+        "https://r.jina.ai/"+NSE_API,
+        "https://api.allorigins.win/raw?url="+urllib.parse.quote(NSE_API,safe=""),
+        "https://api.codetabs.com/v1/proxy/?quest="+NSE_API,
+        "https://thingproxy.freeboard.io/fetch/"+NSE_API,
+    ]
+    for u in targets:
+        try:
+            r=requests.get(u,timeout=20,headers={"User-Agent":UA,"Accept":"application/json,*/*"})
+            if not r.ok: continue
+            data=None
+            try: data=r.json()
+            except Exception:
+                m=re.search(r'(\[\s*\{.*\}\s*\])',r.text,re.S); data=json.loads(m.group(1)) if m else None
+            if isinstance(data,dict): data=data.get("data") if isinstance(data.get("data"),list) else None
+            if isinstance(data,list):
+                try: return _parse_nse(data)
+                except Exception: continue
+        except Exception: continue
+    raise ValueError("all proxies failed")
+
+# 4) Groww page __NEXT_DATA__ (datacenter-friendly; ~21-day history; ~1-day lag).
+def p_groww_page():
+    r=_get("https://groww.in/fii-dii-data",headers={"Accept":"text/html,*/*"})
+    m=re.search(r'<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)</script>',r.text)
+    if not m: raise ValueError("no __NEXT_DATA__")
+    series=_find_series(json.loads(m.group(1)))
+    if not series: raise ValueError("series not found")
+    out=[]
+    for it in series:
+        d=_nd(it.get("date") or it.get("tradeDate"))
+        f=it.get("fii") or {}; dd=it.get("dii") or {}
+        fn=_f(f.get("netBuySell") if f.get("netBuySell") is not None else f.get("net"))
+        dn=_f(dd.get("netBuySell") if dd.get("netBuySell") is not None else dd.get("net"))
+        x=row(d,_f(f.get("grossBuy")),_f(f.get("grossSell")),fn,_f(dd.get("grossBuy")),_f(dd.get("grossSell")),dn,"Groww")
+        if x: out.append(x)
+    if not out: raise ValueError("groww empty")
+    return out
+
+# 5) Upstox (datacenter-friendly server-rendered cash table; ~1-day lag). Independent of Groww.
+def p_upstox():
+    from bs4 import BeautifulSoup
+    r=_get("https://upstox.com/fii-dii-data/",headers={"Accept":"text/html,*/*"})
+    soup=BeautifulSoup(r.text,"html.parser"); out=[]
+    for tb in soup.find_all("table"):
+        trs=tb.find_all("tr")
+        if len(trs)<2: continue
+        hdr=" ".join(c.get_text(" ",strip=True) for c in trs[0].find_all(["td","th"])).lower()
+        if any(b in hdr for b in ("%","long value","fut","opt")): continue          # skip F&O / ratio tables
+        if not ("fii" in hdr and "dii" in hdr and "net purchase" in hdr): continue   # cash table only
+        for tr in trs[1:]:
+            cells=[c.get_text(" ",strip=True) for c in tr.find_all(["td","th"])]
+            if len(cells)<7: continue
+            d=_nd(cells[0])
+            if not d: continue
+            x=row(d,_f(cells[1]),_f(cells[2]),_f(cells[3]),_f(cells[4]),_f(cells[5]),_f(cells[6]),"Upstox")
+            if x: out.append(x)
+        if out: break
+    if not out: raise ValueError("upstox no cash table")
+    return out
+
+# Priority order (all are tried and merged by date; order only breaks ties on equal detail):
+#   Site-edge -> NSE (same-day)  |  Groww-page, Upstox (datacenter-friendly next-day backfill)  |  proxies
+PROVIDERS=[("Site-edge",p_self_edge),("NSE",p_nse_direct),("Groww-page",p_groww_page),("Upstox",p_upstox),("NSE-proxy",p_nse_proxy)]
 
 # ---------------- store ----------------
 def read_csv():
