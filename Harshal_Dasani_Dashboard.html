@@ -2148,7 +2148,8 @@ function renderFallbackCumulativeChart(el, labels, data, perMonth) {
   const xRange = w - padL - padR;
   const yRange = h - padT - padB;
   const x = i => padL + (labels.length === 1 ? xRange / 2 : i * (xRange / (labels.length - 1)));
-  const y = v => padT + yRange - (v / max) * yRange;
+  const _lmax = Math.log10(Math.max(max,10));
+  const y = v => padT + yRange - (Math.log10(Math.max(v,1)) / _lmax) * yRange;
   const points = data.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
   const area = `${padL},${h-padB} ${points} ${x(data.length - 1).toFixed(1)},${h-padB}`;
 
@@ -2289,7 +2290,7 @@ function renderCumulativePanel(unique) {
   else        { grad.addColorStop(0,'rgba(212,166,74,0.55)'); grad.addColorStop(0.55,'rgba(212,166,74,0.22)'); grad.addColorStop(1,'rgba(212,166,74,0.02)'); }
   cumChart = new Chart(ctx, {
     type: 'line',
-    data: { labels, datasets: [{ label:'Cumulative features', data, fill:true, backgroundColor:grad,
+    data: { labels, datasets: [{ label:'Cumulative features', data: data.map(v=>Math.max(v,1)), fill:true, backgroundColor:grad,
       borderColor:_lineColor, borderWidth:2.5, tension:0.35,
       pointRadius: bucketKeys.length > 60 ? 1.5 : 3, pointHoverRadius:6,
       pointBackgroundColor:_dotColor, pointBorderColor:_dotColor,
@@ -2308,7 +2309,7 @@ function renderCumulativePanel(unique) {
           callbacks:{ label:(c)=>`Total: ${c.parsed.y}  (+${c.dataset._perBucket[c.dataIndex]} this ${c.dataset._unit})` } } },
       scales:{ x:{ grid:{color: _light ? 'rgba(26,52,88,0.10)' : GRID_CLR}, ticks:{color: _light ? '#1a3458' : undefined, maxRotation: gran==='day'?45:0, autoSkip:true,
                   maxTicksLimit: gran==='day'?14:(gran==='week'?12:10)} },
-               y:{ beginAtZero:true, grid:{color: _light ? 'rgba(26,52,88,0.10)' : GRID_CLR}, ticks:{color: _light ? '#1a3458' : undefined, precision:0} } } }
+               y:{ type:'logarithmic', min:1, grid:{color: _light ? 'rgba(26,52,88,0.10)' : GRID_CLR}, ticks:{color: _light ? '#1a3458' : undefined, callback:(v)=>{ const l=Math.log10(v); return (Math.abs(l-Math.round(l))<1e-9)?v:''; } } } } }
   });
   $('cumulative-note').textContent = `Running total reached ${data[data.length-1]} features by ${labels[labels.length-1]}. Tap any point for that ${unitName}'s add.`;
 }

@@ -2148,13 +2148,14 @@ function renderFallbackCumulativeChart(el, labels, data, perMonth) {
   const xRange = w - padL - padR;
   const yRange = h - padT - padB;
   const x = i => padL + (labels.length === 1 ? xRange / 2 : i * (xRange / (labels.length - 1)));
-  const y = v => padT + yRange - (v / max) * yRange;
+  const _lmax = Math.log10(Math.max(max,10));
+  const y = v => padT + yRange - (Math.log10(Math.max(v,1)) / _lmax) * yRange;
   const points = data.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
   const area = `${padL},${h-padB} ${points} ${x(data.length - 1).toFixed(1)},${h-padB}`;
 
-  // Y-axis ticks at 0, 25, 50, 75, 100% of max
-  const yTicks = [0, 0.25, 0.5, 0.75, 1].map(p => {
-    const val = Math.round(max * p);
+  // Y-axis ticks at powers of 10 (log scale)
+  const yTickVals = []; for (let pw=0; Math.pow(10,pw) <= max*1.0001; pw++) yTickVals.push(Math.pow(10,pw));
+  const yTicks = yTickVals.map(val => {
     const yy = y(val);
     return `<line class="cum-grid" x1="${padL}" x2="${w-padR}" y1="${yy.toFixed(1)}" y2="${yy.toFixed(1)}"></line>
             <text class="cum-yt" x="${padL-6}" y="${(yy+3).toFixed(1)}" text-anchor="end">${val}</text>`;
@@ -2199,6 +2200,7 @@ function renderCumulativePanel(unique) {
   if (titleEl) titleEl.textContent = gran === 'day' ? 'Daily cumulative growth' :
                                      gran === 'week' ? 'Weekly cumulative growth' :
                                                        'Cumulative coverage growth';
+  if (titleEl) titleEl.textContent += ' · log scale';
 
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const utcDate = d => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
@@ -2287,9 +2289,10 @@ function renderCumulativePanel(unique) {
   const grad = ctx.createLinearGradient(0,0,0,240);
   if (_light) { grad.addColorStop(0,'rgba(37,99,235,0.40)'); grad.addColorStop(0.55,'rgba(37,99,235,0.14)'); grad.addColorStop(1,'rgba(37,99,235,0.02)'); }
   else        { grad.addColorStop(0,'rgba(212,166,74,0.55)'); grad.addColorStop(0.55,'rgba(212,166,74,0.22)'); grad.addColorStop(1,'rgba(212,166,74,0.02)'); }
+  const dataPlot = data.map(v=>Math.max(v,1));  // log scale can't plot 0
   cumChart = new Chart(ctx, {
     type: 'line',
-    data: { labels, datasets: [{ label:'Cumulative features', data, fill:true, backgroundColor:grad,
+    data: { labels, datasets: [{ label:'Cumulative features', data: dataPlot, fill:true, backgroundColor:grad,
       borderColor:_lineColor, borderWidth:2.5, tension:0.35,
       pointRadius: bucketKeys.length > 60 ? 1.5 : 3, pointHoverRadius:6,
       pointBackgroundColor:_dotColor, pointBorderColor:_dotColor,
@@ -2305,10 +2308,10 @@ function renderCumulativePanel(unique) {
       plugins:{ legend:{display:false},
         tooltip:{ backgroundColor:'rgba(21,17,13,0.95)', borderColor:'rgba(212,166,74,0.4)', borderWidth:1,
           titleColor:'#fff', bodyColor:'#ece4d3', padding:10, displayColors:false,
-          callbacks:{ label:(c)=>`Total: ${c.parsed.y}  (+${c.dataset._perBucket[c.dataIndex]} this ${c.dataset._unit})` } } },
+          callbacks:{ label:(c)=>`Total: ${data[c.dataIndex]}  (+${c.dataset._perBucket[c.dataIndex]} this ${c.dataset._unit})` } } },
       scales:{ x:{ grid:{color: _light ? 'rgba(26,52,88,0.10)' : GRID_CLR}, ticks:{color: _light ? '#1a3458' : undefined, maxRotation: gran==='day'?45:0, autoSkip:true,
                   maxTicksLimit: gran==='day'?14:(gran==='week'?12:10)} },
-               y:{ beginAtZero:true, grid:{color: _light ? 'rgba(26,52,88,0.10)' : GRID_CLR}, ticks:{color: _light ? '#1a3458' : undefined, precision:0} } } }
+               y:{ type:'logarithmic', min:1, grid:{color: _light ? 'rgba(26,52,88,0.10)' : GRID_CLR}, ticks:{color: _light ? '#1a3458' : undefined, callback:(v)=>{ const l=Math.log10(v); return (Math.abs(l-Math.round(l))<1e-9)?v:''; } } } } }
   });
   $('cumulative-note').textContent = `Running total reached ${data[data.length-1]} features by ${labels[labels.length-1]}. Tap any point for that ${unitName}'s add.`;
 }
