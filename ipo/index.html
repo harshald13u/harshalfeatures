@@ -347,9 +347,30 @@ const FMT=new Intl.NumberFormat('en-IN',{maximumFractionDigits:0});
 const inr=n=>n==null?'—':'₹'+FMT.format(n);
 const cr=n=>n==null?'TBA':'₹'+n+' Cr';
 let STATE={view:'open',seg:'all',q:'',data:[]};
+/* === Date-aware listing label (auto-flips when the date arrives) === */
+(function(){
+  var _months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+  window.isFutureListingDate = function(dStr) {
+    if (!dStr || dStr === 'TBA') return false;
+    try {
+      var parts = String(dStr).trim().split(/\s+/);
+      if (parts.length < 2) return false;
+      var day = parseInt(parts[0], 10);
+      var mo  = _months[parts[1].slice(0,3)];
+      if (isNaN(day) || mo == null) return false;
+      var today = new Date(); today.setHours(0,0,0,0);
+      var yr = today.getFullYear();
+      var d = new Date(yr, mo, day);
+      if (d < today && (today - d) > 180*86400*1000) d = new Date(yr+1, mo, day);
+      return d.getTime() > today.getTime();
+    } catch(e) { return false; }
+  };
+})();
+
 const openish=s=>s==='open'||s==='closing';
 
-function badge(s){const m={open:['open','Open now'],closing:['closing','Closes today'],upcoming:['upcoming','Upcoming'],listed:['listed','Listed']}[s];return `<span class="ipo-badge ${m[0]}">${m[1]}</span>`;}
+function badgeOf(i){var s=i&&i.status;if(s==='listed' && i&&i.dates && window.isFutureListingDate && window.isFutureListingDate(i.dates.listing)) return badge('awaiting');return badge(s);}
+function badge(s){const m={awaiting:['closing','Closed · awaits listing'],open:['open','Open now'],closing:['closing','Closes today'],upcoming:['upcoming','Upcoming'],listed:['listed','Listed']}[s];return `<span class="ipo-badge ${m[0]}">${m[1]}</span>`;}
 function fillBar(c,x){return `<div class="ipo-track"><div class="ipo-fill ${c}" data-w="${Math.min(100,(x/50)*100)}"></div></div>`;}
 function sx(n){return (n==null||isNaN(n))?'—':(+n).toFixed(2)+'×';}
 function demand(d){
@@ -372,9 +393,9 @@ function card(i,_idx){
   const facts=i.status==='listed'
     ? `<div class="ipo-fact"><span class="k">Issue price</span><span class="v num">${i.listing&&i.listing.issue!=null?'₹'+i.listing.issue:'—'}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div>${i.type?`<div class="ipo-fact"><span class="k">Type</span><span class="v">${i.type}</span></div>`:''}<div class="ipo-fact"><span class="k">Lot</span><span class="v num">${i.lot??'—'}</span></div>`
     : `<div class="ipo-fact"><span class="k">Price band</span><span class="v num">${band}</span></div><div class="ipo-fact"><span class="k">Min invest</span><span class="v num">${inr(i.min)}</span></div><div class="ipo-fact"><span class="k">Issue size</span><span class="v num">${cr(i.size)}</span></div><div class="ipo-fact"><span class="k">${i.status==='upcoming'?'Opens':'Closes'}</span><span class="v">${i.status==='upcoming'?(i.dates&&i.dates.open):(i.dates&&i.dates.close)}</span></div>`;
-  const sig=i.status==='listed'?((i.listing&&i.listing.list!=null&&i.listing.cur!=null)?listing(i.listing):`<div class="ipo-soon">Listed${i.dates&&i.dates.listing&&i.dates.listing!=='TBA'?' on '+i.dates.listing:''}${i.listing&&i.listing.issue!=null?' · issue price ₹'+i.listing.issue:''}.</div>`):demand(i.sub);
+  const sig=i.status==='listed'?((i.listing&&i.listing.list!=null&&i.listing.cur!=null)?listing(i.listing):`<div class="ipo-soon">${(window.isFutureListingDate&&i.dates&&window.isFutureListingDate(i.dates.listing))?'Expected listing':'Listed'}${i.dates&&i.dates.listing&&i.dates.listing!=='TBA'?' on '+i.dates.listing:''}${i.listing&&i.listing.issue!=null?' · issue price ₹'+i.listing.issue:''}.</div>`):demand(i.sub);
   return `<div class="ipo-card" role="button" tabindex="0" data-idx="${_idx}" aria-label="View IPO details for ${i.name}"><div class="ipo-top"><div class="ipo-name">${i.name}</div>${chip}</div>
-    <div style="margin-top:-4px">${badge(i.status)}</div><div class="ipo-facts">${facts}</div>${sig}
+    <div style="margin-top:-4px">${badgeOf(i)}</div><div class="ipo-facts">${facts}</div>${sig}
     <div class="ipo-foot"><span class="ipo-ex">${(i.ex||[]).map(e=>`<span>${e}</span>`).join('')}</span><span class="ipo-go">View details →</span></div></div>`;
 }
 function render(){
@@ -432,7 +453,7 @@ function detailHTML(i){
   const listBlock=(listed&&i.listing&&i.listing.list!=null&&i.listing.cur!=null)?`<div class="md-sec">${listing(i.listing)}</div>`:'';
   const niiSplit=(i.subDetail&&(i.subDetail.bigNii!=null||i.subDetail.smallNii!=null))?`<div class="md-sec"><div class="ipo-demand"><div class="dh"><span class="t">NII split · live from NSE</span></div><div class="ipo-drow"><span class="lab">Big NII (&gt;₹10L)</span>${fillBar('nii',i.subDetail.bigNii)}<span class="x num">${sx(i.subDetail.bigNii)}</span></div><div class="ipo-drow"><span class="lab">Small NII (₹2–10L)</span>${fillBar('nii',i.subDetail.smallNii)}<span class="x num">${sx(i.subDetail.smallNii)}</span></div></div></div>`:'';
   const nseUrl=(i.status==='listed')?(i.symbol?`https://www.nseindia.com/get-quotes/equity?symbol=${encodeURIComponent(i.symbol)}`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo'):(i.symbol?`https://www.nseindia.com/market-data/issue-information?symbol=${encodeURIComponent(i.symbol)}&series=EQ&type=Active`:'https://www.nseindia.com/market-data/all-upcoming-issues-ipo');
-  return `<div class="md-head"><div class="ipo-name" id="mdTitle">${i.name}</div><div style="margin-top:10px">${badge(i.status)} ${chip}</div></div>
+  return `<div class="md-head"><div class="ipo-name" id="mdTitle">${i.name}</div><div style="margin-top:10px">${badgeOf(i)} ${chip}</div></div>
     <div class="md-grid">${detailRows(i)}</div>${(i.seg==='sme'&&!i.band&&i.status!=='listed')?`<p class="ipo-soon" style="margin-top:14px">NSE publishes limited pre-listing data (price band, lot, subscription ×) for SME / Emerge issues. These finalise once the issue lists — we show only what NSE makes public.</p>`:''}${subBlock}${niiSplit}${listBlock}
     <a class="md-link" href="${nseUrl}" target="_blank" rel="noopener">${i.status==='listed'?'View on NSE':'Official issue information on NSE'} &rarr;</a>
     <p class="md-disc">Educational information only &middot; official public data (NSE / BSE / SEBI), may be delayed. Not a recommendation or solicitation. Verify with the RHP and registrar before applying.</p>`;
