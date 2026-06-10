@@ -27,16 +27,13 @@ export async function onRequest(context){
       const g = await grab(u, fresh);
       tried.push({url:u, status:g.status, len:g.html.length});
       if(!g.ok || g.html.length<500) continue;
+      const year = detectYear(g.html);
+      const months = parseNSDL(g.html, year);
       if(debug){
-        const html=g.html;
-        const tables=(html.match(/<table/gi)||[]).length;
-        const eqIdx=html.search(/equity/i);
-        const snip = eqIdx>=0 ? html.slice(Math.max(0,eqIdx-400), eqIdx+1600) : html.slice(0,1600);
-        return new Response(JSON.stringify({debug:true, picked:u, status:g.status, len:html.length,
-          tables, eqIdx, snippet: snip.replace(/\s+/g,' ')}, null, 2), {headers:H});
+        return new Response(JSON.stringify({debug:true, picked:u, status:g.status, len:g.html.length,
+          detectedYear:year, count:months.length, months}, null, 2), {headers:H});
       }
-      const months = parseNSDL(g.html);
-      if(months.length) return new Response(JSON.stringify({source:u, fetchedAt:new Date().toISOString(), months}), {headers:H});
+      if(months.length) return new Response(JSON.stringify({source:u, fetchedAt:new Date().toISOString(), detectedYear:year, months}), {headers:H});
     }catch(e){ tried.push({url:u, error:String(e)}); }
   }
   return new Response(JSON.stringify({error:'NSDL unreachable/unparsed from edge', tried}), {status:502, headers:H});
@@ -51,28 +48,30 @@ function ymOf(t){
 }
 function n(x){ if(x==null) return null; let t=String(x).replace(/[,₹\s]/g,'').replace(/−/g,'-'); let neg=false; if(/^\(.*\)$/.test(t)){neg=true;t=t.slice(1,-1);} if(t===''||t==='-') return null; const v=parseFloat(t); return isFinite(v)?(neg?-v:v):null; }
 function stripTags(s){ return s.replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').trim(); }
-function parseNSDL(html){
-  // crude table parse: split rows, map header to find Rs-crore Equity + Total columns
+function detectYear(html){
+  let m=html.match(/value=['"]?(\d{4})['"]?\s+selected/i); if(m) return +m[1];
+  m=html.match(/selected[^>]*>\s*(\d{4})\s*<\/option/i); if(m) return +m[1];
+  m=html.match(/Calendar Year[^0-9]{0,40}(\d{4})/i); if(m) return +m[1];
+  return new Date().getUTCFullYear();
+}
+const MONTHNAME={january:1,february:2,march:3,april:4,may:5,june:6,july:7,august:8,september:9,october:10,november:11,december:12};
+function cellNum(x){ if(x==null) return null; let t=String(x).replace(/[,₹\s]/g,'').replace(/−/g,'-'); let neg=false; if(/^\(.*\)$/.test(t)){neg=true;t=t.slice(1,-1);} if(t===''||t==='-'||t==='NA') return null; const v=parseFloat(t); return isFinite(v)?(neg?-v:v):null; }
+function parseNSDL(html, year){
+  // NSDL CY report: each data row = <month name> + 12 numeric cells.
+  // Equity = FIRST numeric cell; Total = LAST numeric cell.
   const out={};
   const tables=html.match(/<table[\s\S]*?<\/table>/gi)||[];
   for(const tbl of tables){
     const rows=tbl.match(/<tr[\s\S]*?<\/tr>/gi)||[];
-    if(rows.length<3) continue;
-    let eqCol=null, totCol=null, hdrRow=-1;
-    for(let ri=0; ri<Math.min(4,rows.length); ri++){
-      const cells=(rows[ri].match(/<t[hd][\s\S]*?<\/t[hd]>/gi)||[]).map(c=>stripTags(c).toLowerCase());
-      if(!cells.length) continue;
-      let ec=null, tc=null;
-      cells.forEach((h,ci)=>{ if(/usd|us\$|\$/.test(h))return; if(ec==null && /equity/.test(h))ec=ci; if(/total|grand total/.test(h)||h==='net')tc=ci; });
-      if(ec!=null && tc!=null){ eqCol=ec; totCol=tc; hdrRow=ri; break; }
-    }
-    if(hdrRow<0) continue;
-    for(let ri=hdrRow+1; ri<rows.length; ri++){
-      const cells=(rows[ri].match(/<t[hd][\s\S]*?<\/t[hd]>/gi)||[]).map(stripTags);
-      if(cells.length<=Math.max(eqCol,totCol)) continue;
-      const ym=ymOf(cells[0]); if(!ym) continue;
-      const eq=n(cells[eqCol]), tot=n(cells[totCol]);
-      if(eq==null||tot==null) continue;
+    for(const row of rows){
+      const cells=(row.match(/<t[hd][\s\S]*?<\/t[hd]>/gi)||[]).map(stripTags);
+      if(cells.length<3) continue;
+      const mo=MONTHNAME[String(cells[0]).trim().toLowerCase()];
+      if(!mo) continue;
+      const nums=cells.slice(1).map(cellNum).filter(v=>v!=null);
+      if(nums.length<2) continue;
+      const eq=nums[0], tot=nums[nums.length-1];
+      const ym=`${year}-${String(mo).padStart(2,'0')}`;
       out[ym]={ym, eq:Math.round(eq), tot:Math.round(tot)};
     }
   }
