@@ -35,6 +35,13 @@
       "logoDark": "assets/logos/capital-gains-tax-calculator-dark.png",
       "logoLight": "assets/logos/capital-gains-tax-calculator-light.png",
       "icon": "T@X"
+    },
+    {
+      "title": "FII / FPI Historical Flows",
+      "description": "Three decades of net foreign investment into Indian markets — financial-year, calendar-year and monthly net flows, charted (1992–2026).",
+      "url": "fii-flows/",
+      "tag": "Data",
+      "icon": "FII"
     }
   ]
 }
