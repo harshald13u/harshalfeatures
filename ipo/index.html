@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -12,6 +12,9 @@
 <meta name="robots" content="index, follow, max-image-preview:large">
 
 <link rel="canonical" href="https://harshaldasani.pages.dev/ipo/">
+<link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/ipo/">
+<link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/ipo/">
+<link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/ipo/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -33,7 +36,7 @@
 /* ============ SITE TOKENS (verbatim from the live page) ============ */
 :root {
   --bg:#0e0c0a; --bg-2:#15110d; --ink:#ece4d3; --ink-2:#c9c0ad;
-  --muted:#8a8273; --faint:#5a5447;
+  --muted:#8a8273; --faint:#807866;
   --rule:rgba(236,228,211,0.10); --rule-soft:rgba(236,228,211,0.06);
   --accent:#d4a64a; --accent-soft:rgba(212,166,74,0.08);
   /* dashboard semantics (added; tuned to the palette) */
@@ -42,7 +45,7 @@
 }
 html[data-theme="light"] {
   --bg:#ebe5d7; --bg-2:#ddd4c1; --ink:#1a3458; --ink-2:#3a527a;
-  --muted:#54687f; --faint:#8095a8;
+  --muted:#54687f; --faint:#5f7790;
   --rule:rgba(26,52,88,0.14); --rule-soft:rgba(26,52,88,0.07);
   --accent:#b8852b; --accent-soft:rgba(184,133,43,0.10);
   --pos:#2f7d56; --neg:#bb4a32; --warn:#b8852b; --navy-bar:#27548a;
@@ -115,7 +118,7 @@ html[data-theme="light"] .mast-theme-toggle { background:rgba(26,52,88,0.04); }
 .ipo-seg button { font-family:inherit; font-size:13px; font-weight:700; letter-spacing:-0.01em; color:var(--muted);
   background:transparent; border:0; padding:9px 16px; border-radius:6px; cursor:pointer; transition:.18s; white-space:nowrap; }
 .ipo-seg button[aria-selected="true"] { background:var(--accent); color:#1a1206; }
-html[data-theme="light"] /* removed duplicate aria-selected rule */
+html[data-theme="light"] 
 .ipo-spacer { flex:1; }
 .ipo-controls select, .ipo-controls input { font-family:inherit; font-size:13px; color:var(--ink);
   background:var(--bg-2); border:1px solid var(--rule); border-radius:8px; padding:9px 12px; outline:none; }
@@ -222,7 +225,7 @@ html[data-theme="light"] /* removed duplicate aria-selected rule */
 .ipo-modal-card{position:relative;width:100%;max-width:560px;max-height:calc(100dvh - 16px - env(safe-area-inset-bottom));overflow:auto;background:var(--bg-2);border:1px solid var(--rule);border-radius:16px 16px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.5);padding:26px 24px calc(30px + env(safe-area-inset-bottom));transform:translateY(24px);opacity:0;transition:transform .22s ease,opacity .22s ease;}
 @media(min-width:640px){.ipo-modal-card{border-radius:16px;transform:translateY(12px) scale(.98);}}
 .ipo-modal.show .ipo-modal-card{transform:none;opacity:1;}
-.ipo-modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);background:transparent;color:var(--ink-2);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.ipo-modal-x{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;border:1px solid var(--rule);background:transparent;color:var(--ink-2);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .ipo-modal-x:hover{color:var(--accent);border-color:var(--accent);}
 .md-head .ipo-name{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;padding-right:36px;}
 .md-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin:20px 0 8px;border-top:1px solid var(--rule);}
@@ -237,6 +240,12 @@ html[data-theme="light"] /* removed duplicate aria-selected rule */
 /* === Active-tab fallback styling (works even if aria-selected timing slips) === */
 .ipo-seg button[data-current="true"] { background:var(--accent) !important; color:#1a1206 !important; }
 .ipo-seg button[aria-selected="true"] { color:#1a1206; }
+
+@media (max-width:640px) {
+  .md-grid { grid-template-columns:1fr !important; gap:0 !important; }
+  .blog-title { font-size:clamp(32px,9vw,52px) !important; }
+}
+body { min-height:100dvh; }
 </style>
 
 <script>
@@ -304,15 +313,17 @@ html[data-theme="light"] /* removed duplicate aria-selected rule */
 
   <div class="ipo-disc">
     <div class="ipo-disc-h">Important — please read before acting on anything here</div>
-    <p><b>Educational information only.</b> This page is provided for general information and study. It is <b>not</b> investment advice, a research report, or a recommendation, and <b>nothing on it is an offer or solicitation</b> to apply for, subscribe to, buy, sell, or refrain from any IPO, security, or strategy. It is not tailored to your objectives, risk tolerance, or financial circumstances.</p>
+    <p><b>Author identity.</b> Harshal Dasani is a markets professional writing here in a personal capacity. He is not a SEBI-registered research analyst or investment adviser, and this page is not published in either capacity.</p>
+      <p><b>Holdings disclosure.</b> The author, his family or entities he is associated with may, from time to time, hold, apply for, or trade in the securities referenced on this page. No position is being recommended.</p>
+      <p><b>Educational information only.</b> This page is provided for general information and study. It is <b>not</b> investment advice, a research report, or a recommendation, and <b>nothing on it is an offer or solicitation</b> to apply for, subscribe to, buy, sell, or refrain from any IPO, security, or strategy. It is not tailored to your objectives, risk tolerance, or financial circumstances.</p>
     <ul>
-      <li><b>No advice / no adviser relationship.</b> Harshal Dasani is not acting as your investment adviser through this page. Make your own decisions and, where appropriate, consult a SEBI-registered investment adviser or your broker.</li>
+      <li><b>No advice / no adviser relationship.</b> Harshal Dasani is not acting as your investment adviser through this page. Make your own decisions and, where appropriate, consult a SEBI-registered investment adviser.</li>
       <li><b>Data may be delayed, incomplete, or incorrect.</b> Price band, lot size, minimum investment, issue size, dates, and subscription figures are compiled from publicly available exchange and third-party sources and refreshed periodically. They can lag the exchanges, contain errors, or change without notice. Always verify against the official <b>RHP/DRHP</b>, the <b>registrar</b>, and the <b>BSE/NSE</b> websites before you apply.</li>
       <li><b>No grey-market data.</b> This page deliberately shows <b>no GMP</b> (grey-market premium) or unofficial estimates, and gives no "apply / avoid" calls or ratings.</li>
       <li><b>Market risk is real.</b> Investing in IPOs — and <b>SME issues in particular</b> — carries high risk, including loss of capital, low liquidity, and sharp price swings. Subscription levels and past performance are <b>not</b> indicative of listing gains or future returns.</li>
       <li><b>Read the offer documents.</b> Before applying, read the full Red Herring Prospectus and all offer documents carefully, and consider your own due diligence.</li>
     </ul>
-    <p class="fine">By using this page you accept that Harshal Dasani and this website accept no liability for any loss, damage, or decision made in reliance on the information shown. Data sourced from public exchange and third-party feeds; trademarks and content belong to their respective owners.</p>
+    <p class="fine">By using this page you accept that Harshal Dasani and this website accept no liability for any loss, damage, or decision made in reliance on the information shown. Data sourced from public exchange and third-party feeds; trademarks and content belong to their respective owners. This page is intended for residents of India; any dispute is subject to the exclusive jurisdiction of the courts at Mumbai.</p>
   </div>
 
   <footer class="blog-footer">
@@ -347,6 +358,16 @@ const FMT=new Intl.NumberFormat('en-IN',{maximumFractionDigits:0});
 const inr=n=>n==null?'—':'₹'+FMT.format(n);
 const cr=n=>n==null?'TBA':'₹'+n+' Cr';
 let STATE={view:'open',seg:'all',q:'',data:[]};
+/* search debounce + stagger skip */
+window._ipoSearchT = null;
+window._ipoSearchHook = function(v){
+  clearTimeout(window._ipoSearchT);
+  window._ipoSearchT = setTimeout(function(){
+    if (typeof STATE === 'object') { STATE.q = v.toLowerCase(); }
+    if (typeof render === 'function') render();
+  }, 140);
+};
+
 /* === Date-aware listing label (auto-flips when the date arrives) === */
 (function(){
   var _months = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
@@ -361,7 +382,7 @@ let STATE={view:'open',seg:'all',q:'',data:[]};
       var today = new Date(); today.setHours(0,0,0,0);
       var yr = today.getFullYear();
       var d = new Date(yr, mo, day);
-      if (d < today && (today - d) > 180*86400*1000) d = new Date(yr+1, mo, day);
+      if (d < today && (today - d) > 180*86400*1000) d = new Date(yr+1, mo, day);else if (d > today && (d - today) > 180*86400*1000) d = new Date(yr-1, mo, day);
       return d.getTime() > today.getTime();
     } catch(e) { return false; }
   };
@@ -401,16 +422,16 @@ function card(i,_idx){
 function render(){
   const g=document.getElementById('ipoGrid');
   const rows=STATE.data.filter(i=>{
-    const v=STATE.view==='open'?openish(i.status):STATE.view==='upcoming'?i.status==='upcoming':i.status==='listed';
+    const _awaiting=(i.status==='listed' && i.dates && window.isFutureListingDate && window.isFutureListingDate(i.dates.listing));const v=STATE.view==='open'?(openish(i.status)||_awaiting):STATE.view==='upcoming'?i.status==='upcoming':(i.status==='listed' && !_awaiting);
     const s=STATE.seg==='all'||i.seg===STATE.seg; const q=!STATE.q||i.name.toLowerCase().includes(STATE.q);
     return v&&s&&q;
   });
   STATE.rendered=rows; g.innerHTML=rows.length?rows.map((i,n)=>card(i,n)).join(''):`<div class="blog-empty"><h2 class="blog-empty-title">Nothing in this view</h2><p class="blog-empty-sub">Try another tab — open, upcoming or recently listed.</p></div>`;
   requestAnimationFrame(()=>{document.querySelectorAll('.ipo-card').forEach((c,n)=>setTimeout(()=>c.classList.add('in'),n*60));
     setTimeout(()=>document.querySelectorAll('.ipo-fill').forEach(f=>f.style.width=f.dataset.w+'%'),160);});
-  document.getElementById('sOpen').textContent=STATE.data.filter(i=>openish(i.status)).length;
+  document.getElementById('sOpen').textContent=STATE.data.filter(i=>openish(i.status)||(i.status==='listed' && i.dates && window.isFutureListingDate && window.isFutureListingDate(i.dates.listing))).length;
   document.getElementById('sUp').textContent=STATE.data.filter(i=>i.status==='upcoming').length;
-  document.getElementById('sListed').textContent=STATE.data.filter(i=>i.status==='listed').length;
+  document.getElementById('sListed').textContent=STATE.data.filter(i=>i.status==='listed' && !(i.dates && window.isFutureListingDate && window.isFutureListingDate(i.dates.listing))).length;
 }
 function boot(data,isSample){
   STATE.data=(data&&(data.ipos||data.items))||[];
@@ -420,22 +441,22 @@ function boot(data,isSample){
   document.getElementById('ipoAsof').innerHTML=(isSample?'Sample preview · ':'')+stamp+' · source: '+((data&&data.source)||'NSE (public data)');
   render();
 }
-document.getElementById('ipoViews').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
-  document.querySelectorAll('#ipoViews button').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');STATE.view=b.dataset.view;render();});
+/* original tab listener removed; hardened bindTabs() supersedes — see end of script */
 document.querySelectorAll('.ipo-stat[data-jump]').forEach(function(card){
   function go(){ var v=card.dataset.jump; var btn=document.querySelector('#ipoViews button[data-view="'+v+'"]'); if(btn) btn.click(); var tgt=document.querySelector('.ipo-controls')||document.getElementById('ipoGrid'); if(tgt) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }
   card.addEventListener('click',go);
   card.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); go(); } });
 });
 document.getElementById('ipoSegment').onchange=e=>{STATE.seg=e.target.value;render();};
-document.getElementById('ipoSearch').oninput=e=>{STATE.q=e.target.value.toLowerCase();render();};
+document.getElementById('ipoSearch').oninput=function(e){window._ipoSearchHook(e.target.value);};
+;document.getElementById('ipoSearch')._oldHandled=true;document.getElementById('ipoSearch').__legacy_unused=e=>{STATE.q=e.target.value.toLowerCase();render();};
 
 
 /* ---- detail view (modal) ---- */
 function detailRows(i){
   const bd=i.band?`₹${i.band[0]}–₹${i.band[1]}`:'TBA', listed=i.status==='listed', rows=[];
   rows.push(['Segment', i.seg==='sme'?'SME':'Mainboard']);
-  rows.push(['Status', ({open:'Open now',closing:'Closes today',upcoming:'Upcoming',listed:'Listed'})[i.status]||i.status]);
+  rows.push(['Status', (i.status==='listed' && i.dates && window.isFutureListingDate && window.isFutureListingDate(i.dates.listing)) ? 'Closed · expected listing on '+i.dates.listing : (({open:'Open now',closing:'Closes today',upcoming:'Upcoming',listed:'Listed'+(i.dates&&i.dates.listing?' on '+i.dates.listing:'')})[i.status]||i.status)]);
   if(listed){ rows.push(['Issue price', (i.listing&&i.listing.issue!=null)?'₹'+i.listing.issue:'—']); }
   else { rows.push(['Price band', bd]); rows.push(['Min investment', inr(i.min)]); }
   rows.push(['Issue size', cr(i.size)]);
