@@ -115,6 +115,22 @@ def main():
                    "fii":last["fii"] if "buy" in last["fii"] else {"buy":0,"sell":0,"net":last["fii"]["net"]},
                    "dii":last["dii"] if "buy" in last["dii"] else {"buy":0,"sell":0,"net":last["dii"]["net"]}},
          "history":H}
+    # include the monthly series so Monthly/Yearly tabs keep 2007-2026
+    import csv as _csv
+    MCSV=os.path.join(ROOT,"fii-dii","fii_dii_monthly.csv")
+    if os.path.exists(MCSV):
+        M=[]
+        with open(MCSV,newline="",encoding="utf-8-sig") as fh:
+            for row in _csv.DictReader(fh):
+                ym=(row.get("Month") or "").strip()[:7]
+                if len(ym)!=7: continue
+                fn=num(row.get("FII Net")); dn=num(row.get("DII Net"))
+                if fn is None or dn is None: continue
+                fo={"net":fn}; do={"net":dn}
+                if num(row.get("FII Buy")) is not None: fo.update(buy=num(row["FII Buy"]),sell=num(row["FII Sell"]))
+                if num(row.get("DII Buy")) is not None: do.update(buy=num(row["DII Buy"]),sell=num(row["DII Sell"]))
+                M.append({"date":ym+"-01","fii":fo,"dii":do})
+        out["monthly"]=M
     json.dump(out, open(OUT,"w"), separators=(",",":"))
     print(f"wrote {OUT}: {len(H)} trading days ({H[0]['date']} to {H[-1]['date']})")
 

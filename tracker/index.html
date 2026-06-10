@@ -953,6 +953,7 @@ body::before { content: none; } /* galaxy background removed from dark mode (05-
 body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background: radial-gradient(ellipse 100% 80% at 50% 50%, rgba(14,12,10,0.15), rgba(14,12,10,0.55) 95%);
   animation: none; }
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
