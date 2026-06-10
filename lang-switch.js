@@ -58,7 +58,7 @@
   function makeDropdown(){
     var path = location.pathname || '/';
     var isHi = (path === '/hi' || path.indexOf('/hi/') === 0);
-    var HI_PAGES = ['/', '/tools/', '/ipo/', '/fii-dii/', '/tools/oil-impact-estimator/', '/tools/sip-calculator/', '/tools/returns-calculator/', '/tools/capital-gains-tax-calculator/', '/blog/', '/blog/posts/iran-israel-us-war-2026-explained/', '/blog/posts/rbi-mpc-june-2026-rate-pause/', '/blog/posts/crude-oil-india-markets-rupee-inflation/', '/blog/posts/indian-it-stocks-whats-breaking/'];
+    var HI_PAGES = ['/', '/tools/', '/ipo/', '/fii-dii/', '/tools/oil-impact-estimator/', '/tools/sip-calculator/', '/tools/returns-calculator/', '/tools/capital-gains-tax-calculator/', '/blog/', '/blog/posts/iran-israel-us-war-2026-explained/', '/blog/posts/rbi-mpc-june-2026-rate-pause/', '/blog/posts/crude-oil-india-markets-rupee-inflation/', '/blog/posts/indian-it-stocks-whats-breaking/', '/tracker/', '/tools/fii-flows/', '/blog/posts/harshal-dasani-interviews/', '/blog/posts/harshal-dasani-media-features/', '/blog/posts/markets-with-harshal/'];
     var enPath, hiPath;
     if (isHi){ enPath = path.replace(/^\/hi/, '') || '/'; hiPath = path; }
     else { enPath = path; hiPath = (HI_PAGES.indexOf(path) !== -1) ? ('/hi'+path) : '/hi/'; }
