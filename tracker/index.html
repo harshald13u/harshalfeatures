@@ -1165,7 +1165,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-event
           <div class="sub" id="kpi-sub" style="display:none">—</div>
         </div>
       </div>
-      <div class="tile special" id="special-features-tile" onclick="openSpecialFeaturesModal()">
+      <div class="tile special" id="special-features-tile" role="button" tabindex="0" aria-label="View special features" onclick="openSpecialFeaturesModal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSpecialFeaturesModal();}">
         <div class="sf-count" id="sf-count">0</div>
         <div class="sf-info">
           <div class="sf-label">Special Features</div>
@@ -2081,16 +2081,53 @@ function renderSpecialFeatures() {
   `).join('');
 }
 
+var _sfLastFocus = null;
+function _sfFocusables() {
+  var m = document.getElementById('sf-modal'); if (!m) return [];
+  return Array.prototype.slice.call(m.querySelectorAll(
+    'a[href], button, [tabindex]:not([tabindex="-1"]), input, select, textarea'
+  )).filter(function(el){ return !el.hasAttribute('disabled') && el.offsetParent !== null; });
+}
 function openSpecialFeaturesModal() {
-  const m = document.getElementById('sf-modal');
-  if (m) m.classList.add('open');
+  var m = document.getElementById('sf-modal');
+  if (!m) return;
+  _sfLastFocus = document.activeElement;
+  m.classList.add('open');
+  m.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+  // Move focus into the card so SR announces title
+  var card = m.querySelector('.sf-modal-card');
+  if (card) { try { card.focus(); } catch(_) {} }
 }
 function closeSpecialFeaturesModal() {
-  const m = document.getElementById('sf-modal');
-  if (m) m.classList.remove('open');
+  var m = document.getElementById('sf-modal');
+  if (!m) return;
+  m.classList.remove('open');
+  m.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+  if (_sfLastFocus && typeof _sfLastFocus.focus === 'function') {
+    try { _sfLastFocus.focus(); } catch(_) {}
+  }
+  _sfLastFocus = null;
 }
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeSpecialFeaturesModal();
+document.addEventListener('keydown', function(e){
+  var m = document.getElementById('sf-modal');
+  var open = m && m.classList.contains('open');
+  if (e.key === 'Escape' && open) {
+    e.preventDefault();
+    closeSpecialFeaturesModal();
+    return;
+  }
+  if (e.key === 'Tab' && open) {
+    var f = _sfFocusables();
+    if (!f.length) return;
+    var first = f[0], last = f[f.length-1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
+  }
 });
 
 // ===== Topic classification =====
@@ -3198,10 +3235,10 @@ async function downloadFilteredPDF() {
 </script>
 
 <!-- Special Features modal -->
-<div id="sf-modal" onclick="if(event.target.id==='sf-modal') closeSpecialFeaturesModal()">
-  <div class="sf-modal-card">
+<div id="sf-modal" role="dialog" aria-modal="true" aria-labelledby="sf-modal-title" aria-hidden="true" onclick="if(event.target.id==='sf-modal') closeSpecialFeaturesModal()">
+  <div class="sf-modal-card" tabindex="-1">
     <div class="sf-modal-head">
-      <div class="sf-modal-title">Special Features</div>
+      <div class="sf-modal-title" id="sf-modal-title">Special Features</div>
       <button class="sf-close" onclick="closeSpecialFeaturesModal()" aria-label="Close">×</button>
     </div>
     <div class="sf-list" id="sf-modal-list"></div>
