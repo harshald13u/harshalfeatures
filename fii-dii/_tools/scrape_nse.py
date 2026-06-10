@@ -111,7 +111,30 @@ def p_groww():
     if not out: raise ValueError("groww empty")
     return out
 
-PROVIDERS=[("Moneycontrol",p_moneycontrol),("NSE",p_nse_direct),("NSE-proxy",p_nse_proxy),("Groww",p_groww)]
+def p_self_edge():
+    # Our own Cloudflare edge endpoint. Reachable from GitHub datacenter IPs (unlike NSE/Groww
+    # directly), and it now extends to NSE's latest day on the edge. This is the reliable
+    # cloud-cron source. Net for all days; buy/sell for the latest day.
+    import requests
+    u="https://harshaldasani.pages.dev/api/fii-dii?fresh=1"
+    r=requests.get(u,headers={"User-Agent":UA,"Accept":"application/json"},timeout=25); r.raise_for_status()
+    j=r.json(); H=j.get("history") or []
+    if not H: raise ValueError("edge empty")
+    L=j.get("latest") or {}; ldate=_nd(L.get("date")) if L.get("date") else None
+    out=[]
+    for rr in H:
+        d=_nd(rr.get("date"))
+        fn=_f((rr.get("fii") or {}).get("net")); dn=_f((rr.get("dii") or {}).get("net"))
+        fb=fs=db=ds=None
+        if d and ldate and d==ldate:
+            f=L.get("fii") or {}; dd=L.get("dii") or {}
+            fb=_f(f.get("buy")); fs=_f(f.get("sell")); db=_f(dd.get("buy")); ds=_f(dd.get("sell"))
+        x=row(d,fb,fs,fn,db,ds,dn,"Site-edge")
+        if x: out.append(x)
+    if not out: raise ValueError("edge no rows")
+    return out
+
+PROVIDERS=[("Site-edge",p_self_edge),("Moneycontrol",p_moneycontrol),("NSE",p_nse_direct),("NSE-proxy",p_nse_proxy),("Groww",p_groww)]
 
 # ---------------- store ----------------
 def read_csv():
