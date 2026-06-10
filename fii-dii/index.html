@@ -274,7 +274,7 @@ function renderBars(rows,period){
   });
   const gl=v=>`<line x1="${padL}" x2="${W-padR}" y1="${(zeroY-sc(v)).toFixed(1)}" y2="${(zeroY-sc(v)).toFixed(1)}" stroke="var(--rule-soft)"></line>
     <text x="${W-padR}" y="${(zeroY-sc(v)-3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--faint)">${v>0?'+':''}${(v/1000).toFixed(0)}k</text>`;
-  const step=Math.round(maxAbs/2/1000)*1000||5000;
+  const step=niceStep(maxAbs/2);
   document.getElementById('barChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${period} FII and DII net flows">
     ${gl(step)}${gl(-step)}
     <line x1="${padL}" x2="${W-padR}" y1="${zeroY}" y2="${zeroY}" stroke="var(--rule)" stroke-width="1"></line>
@@ -282,6 +282,16 @@ function renderBars(rows,period){
   attachBarTip(TT);
 }
 
+
+/* nice-number axis ticks (1/2/5 × 10^n) — avoids ±394k style labels */
+function niceStep(rough){
+  if(!isFinite(rough) || rough<=0) return 5000;
+  var exp = Math.floor(Math.log10(rough));
+  var p = Math.pow(10, exp);
+  var f = rough / p;
+  var nice = f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10;
+  return nice * p;
+}
 function attachBarTip(TT){
   const svg=document.querySelector('#barChart svg'); const tip=document.getElementById('barTip');
   if(!svg||!tip) return; const wrap=tip.parentElement;
