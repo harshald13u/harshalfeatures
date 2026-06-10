@@ -489,11 +489,11 @@ document.addEventListener('DOMContentLoaded', function () {
   function isLongTermByDates() {
     const buy  = new Date(buyDateEl.value);
     const sell = new Date(sellDateEl.value);
-    if (isNaN(buy) || isNaN(sell)) return true;
-    // Long-term = more than 12 months
-    const cutoff = new Date(buy);
-    cutoff.setMonth(cutoff.getMonth() + LT_HOLDING_MO);
-    return sell > cutoff;
+    if (isNaN(buy) || isNaN(sell)) return false; /* default short-term on invalid input — safer than defaulting to lower-tax long-term */
+    /* Long-term for listed equity / equity MF = sale held MORE THAN 365 days from purchase
+       (matches FAQ schema wording and the conservative Sec 2(42A) reading). */
+    const days = Math.floor((sell - buy) / (24 * 60 * 60 * 1000));
+    return days > 365;
   }
 
   function datesValid() {
