@@ -369,7 +369,7 @@ html[data-theme="light"] .tool-logo-light { display: block; }
         '<img class="tool-logo-img tool-logo-light" src="'+logoLight+'" alt="" loading="lazy" decoding="async" aria-hidden="true">'
       : '<span class="tool-icon-fallback">'+icon+'</span>';
     var tag = tool.tag ? '<div class="tool-tag">'+escapeHTML(tool.tag)+'</div>' : '';
-    var attrs = external ? ' target="_blank" rel="noopener"' : '';
+    var attrs = external ? ' target="_blank" rel="noopener noreferrer"' : '';
     return '<a class="tool-card" href="'+escapeHTML(url)+'"'+attrs+'>' +
       '<div class="tool-icon">'+logoHTML+'</div>' +
       '<div class="tool-body">' +

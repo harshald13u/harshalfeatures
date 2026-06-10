@@ -2107,7 +2107,7 @@ html[data-theme="light"] .tracker-spotlight {
  <div class="ts-section">
  <div class="ts-sec-head"><span class="ts-sec-label">As Featured In</span><span class="ts-star" aria-hidden="true">&#9733;</span></div>
  <div class="ts-sf-grid" id="tsSpecialGrid">
- <a class="ts-sf" href="https://www.livemint.com/market/stock-market-news/gold-prices-at-6-000-silver-rate-at-150-why-harshal-dasani-remains-bullish-on-precious-metals-despite-meltdown-11770370001942.html" target="_blank" rel="noopener">
+ <a class="ts-sf" href="https://www.livemint.com/market/stock-market-news/gold-prices-at-6-000-silver-rate-at-150-why-harshal-dasani-remains-bullish-on-precious-metals-despite-meltdown-11770370001942.html" target="_blank" rel="noopener noreferrer">
  <span class="ts-sf-thumb"><img src="special-features-assets/livemint-gold-silver-feb2026.jpg" alt="Live Mint, Gold at $6,000, silver at $150" loading="lazy" decoding="async"></span>
  <span class="ts-sf-cap"><span class="ts-sf-pub">Live Mint &middot; 7 Feb 2026</span><span class="ts-sf-title">Gold at $6,000, silver at $150: why Harshal Dasani stays bullish on precious metals</span></span>
  </a>
@@ -2117,7 +2117,7 @@ html[data-theme="light"] .tracker-spotlight {
  <div class="ts-section ts-section-grow">
  <div class="ts-sec-head"><span class="ts-sec-label">Latest Features</span></div>
  <div class="ts-latest" id="tsLatest">
- <a class="ts-tf" href="https://m.economictimes.com/markets/stocks/news/it-stocks-crash-planning-to-buy-the-dip-heres-what-analysts-say/articleshow/131494868.cms" target="_blank" rel="noopener">
+ <a class="ts-tf" href="https://m.economictimes.com/markets/stocks/news/it-stocks-crash-planning-to-buy-the-dip-heres-what-analysts-say/articleshow/131494868.cms" target="_blank" rel="noopener noreferrer">
  <span class="ts-tf-l">
  <span class="ts-tf-topic">IT &amp; Tech</span>
  <span class="ts-tf-head">IT stocks crash! Planning to buy the dip? Here&rsquo;s what analysts say</span>
@@ -2125,7 +2125,7 @@ html[data-theme="light"] .tracker-spotlight {
  </span>
  <span class="ts-tf-arrow" aria-hidden="true">&rarr;</span>
  </a>
- <a class="ts-tf" href="https://www.businesstoday.in/markets/stocks/story/spacex-ipo-price-out-valuation-risks-growth-explains-all-what-investors-should-know-534868-2026-06-04" target="_blank" rel="noopener">
+ <a class="ts-tf" href="https://www.businesstoday.in/markets/stocks/story/spacex-ipo-price-out-valuation-risks-growth-explains-all-what-investors-should-know-534868-2026-06-04" target="_blank" rel="noopener noreferrer">
  <span class="ts-tf-l">
  <span class="ts-tf-topic">IPO</span>
  <span class="ts-tf-head">SpaceX IPO price out: valuation, risks, growth, all investors should know</span>
@@ -2133,7 +2133,7 @@ html[data-theme="light"] .tracker-spotlight {
  </span>
  <span class="ts-tf-arrow" aria-hidden="true">&rarr;</span>
  </a>
- <a class="ts-tf" href="https://www.livemint.com/market/stock-market-news/tcs-wipro-to-infosys-it-stocks-continue-to-fall-amid-ai-jitters-11780546797587.html" target="_blank" rel="noopener">
+ <a class="ts-tf" href="https://www.livemint.com/market/stock-market-news/tcs-wipro-to-infosys-it-stocks-continue-to-fall-amid-ai-jitters-11780546797587.html" target="_blank" rel="noopener noreferrer">
  <span class="ts-tf-l">
  <span class="ts-tf-topic">IT &amp; Tech</span>
  <span class="ts-tf-head">TCS, Wipro to Infosys: IT stocks continue to fall amid AI jitters</span>
@@ -2253,7 +2253,7 @@ function toggleTheme(){
  if (box && L && L.length){
  box.innerHTML=L.map(function(x){
  var tp=(x.Topic||'').toString();
- return '<a class="ts-tf" href="'+escapeHomeHTML(x.Link)+'" target="_blank" rel="noopener">'+
+ return '<a class="ts-tf" href="'+escapeHomeHTML(x.Link)+'" target="_blank" rel="noopener noreferrer">'+
  '<span class="ts-tf-l">'+(tp?'<span class="ts-tf-topic">'+escapeHomeHTML(tp)+'</span>':'')+
  '<span class="ts-tf-head">'+escapeHomeHTML(x.Heading)+'</span>'+
  '<span class="ts-tf-pub">'+escapeHomeHTML((x.Publication||'')+' · '+formatHomeDate(x.Date))+'</span></span>'+
@@ -2287,7 +2287,7 @@ function toggleTheme(){
  setText('tsSpecialCount', String(list.length));
  list.sort(function(a,b){ return new Date(b.date||0)-new Date(a.date||0); });
  var vp=document.getElementById('tsSpecialGrid'); if(!vp) return;
- function card(s){ return '<a class="ts-sf" href="'+escapeHomeHTML(s.url||'#')+'" target="_blank" rel="noopener">'+
+ function card(s){ return '<a class="ts-sf" href="'+escapeHomeHTML(s.url||'#')+'" target="_blank" rel="noopener noreferrer">'+
  '<span class="ts-sf-thumb"><img src="'+escapeHomeHTML(s.image||'')+'" alt="'+escapeHomeHTML(s.alt||s.title||'')+'" loading="lazy" decoding="async"></span>'+
  '<span class="ts-sf-cap"><span class="ts-sf-pub">'+escapeHomeHTML((s.pub||'')+' \u00b7 '+formatHomeDate(s.date))+'</span>'+
  '<span class="ts-sf-title">'+escapeHomeHTML(s.title||'')+'</span></span></a>'; }

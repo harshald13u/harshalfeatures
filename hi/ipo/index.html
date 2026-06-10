@@ -99,7 +99,7 @@ html[data-theme="light"] .tool-icon{background:#ebe5d7}
     var ld=it.logoDark?esc(it.logoDark):'', ll=it.logoLight?esc(it.logoLight):'';
     var logo=ld&&ll?'<img class="tool-logo-img tool-logo-dark" src="'+ld+'" alt="" loading="lazy"><img class="tool-logo-img tool-logo-light" src="'+ll+'" alt="" loading="lazy" aria-hidden="true">':'<span class="tool-icon-fallback">'+icon+'</span>';
     var tag=it.tag?'<div class="tool-tag">'+esc(it.tag)+'</div>':'';
-    return '<a class="tool-card" href="'+esc(url)+'"'+(ext?' target="_blank" rel="noopener"':'')+'><div class="tool-icon">'+logo+'</div><div class="tool-body">'+tag+'<h2 class="tool-title">'+esc(it.title||'')+'</h2><p class="tool-desc">'+esc(it.description||'')+'</p><div class="tool-meta"><span class="tool-arrow">खोलें &rarr;</span></div></div></a>';
+    return '<a class="tool-card" href="'+esc(url)+'"'+(ext?' target="_blank" rel="noopener noreferrer"':'')+'><div class="tool-icon">'+logo+'</div><div class="tool-body">'+tag+'<h2 class="tool-title">'+esc(it.title||'')+'</h2><p class="tool-desc">'+esc(it.description||'')+'</p><div class="tool-meta"><span class="tool-arrow">खोलें &rarr;</span></div></div></a>';
   }
   var EMPTY='<div class="blog-empty"><h2 class="blog-empty-title">आईपीओ कवरेज जल्द आ रहा है</h2><p class="blog-empty-sub">मैं आने वाले और हाल के आईपीओ पर सामग्री तैयार कर रहा हूँ। यह यहाँ लाइव होते ही दिखाई देगी।</p></div>';
   fetch('ipo.json?nc='+Date.now()).then(function(r){return r.ok?r.json():{items:[]};}).then(function(d){
