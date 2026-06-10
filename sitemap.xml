@@ -269,4 +269,22 @@
     <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/ipo/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/ipo/"/>
   </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/fii-dii/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/fii-dii/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/fii-dii/"/>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/fii-dii/"/>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/hi/fii-dii/</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://harshaldasani.pages.dev/hi/fii-dii/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/fii-dii/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/fii-dii/"/>
+  </url>
 </urlset>
