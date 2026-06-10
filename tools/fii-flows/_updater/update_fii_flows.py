@@ -86,7 +86,27 @@ def read_D():
     return html, m.span(1), json.loads(m.group(1))
 
 # ---------------------------------------------------------------- NSDL fetch
-def fetch_nsdl_months():
+EDGE_URL = "https://harshaldasani.pages.dev/api/fii-monthly?fresh=1"
+
+def fetch_months():
+    """Primary: our own Cloudflare edge endpoint (NSDL blocks GitHub datacenter IPs
+    directly, the edge is not). Fallback: scrape NSDL directly (works off-cloud)."""
+    import requests
+    try:
+        r = requests.get(EDGE_URL, timeout=30,
+                         headers={"User-Agent": UA, "Accept": "application/json"})
+        r.raise_for_status(); j = r.json()
+        ms = {m["ym"]: {"eq": round(m["eq"]), "tot": round(m["tot"])}
+              for m in j.get("months", []) if m.get("ym") and m.get("eq") is not None and m.get("tot") is not None}
+        if ms:
+            log(f"  source: edge /api/fii-monthly (year {j.get('detectedYear')})")
+            return ms
+        log("  edge endpoint returned 0 months; falling back to direct NSDL")
+    except Exception as e:
+        log("  edge endpoint failed:", repr(e), "; falling back to direct NSDL")
+    return fetch_nsdl_direct()
+
+def fetch_nsdl_direct():
     """Return {ym: {'eq':float,'tot':float}} for recent months from NSDL CY report."""
     import requests
     from bs4 import BeautifulSoup
@@ -297,7 +317,7 @@ def main():
     csv_arg = None
     if "--from-csv" in sys.argv:
         csv_arg = sys.argv[sys.argv.index("--from-csv")+1]
-    fresh = fetch_csv(csv_arg) if csv_arg else fetch_nsdl_months()
+    fresh = fetch_csv(csv_arg) if csv_arg else fetch_months()
     log(f"Source returned {len(fresh)} month-rows "
         f"({min(fresh)}..{max(fresh)})" if fresh else "Source returned 0 rows")
     changed = apply_updates(D, fresh)
