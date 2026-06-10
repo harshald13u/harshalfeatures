@@ -202,16 +202,16 @@ function render(data,isSample){
   document.getElementById('snapMeta').innerHTML=`<span>Cash market · ${L.date?dmon(L.date):'—'} ${new Date(L.date||Date.now()).getFullYear()}</span>`;
 
   /* tug-of-war narrative (computed) */
-  const win=H.slice(-20); const sellerDays=win.filter(d=>d.fii.net<0).length;
   const mtd=H.filter(d=>d.date>= (H[H.length-1]?H[H.length-1].date.slice(0,7):'')+'-01');
+  const sellerDays=mtd.filter(d=>d.fii.net<0).length;
   const mFii=mtd.reduce((a,d)=>a+d.fii.net,0), mDii=mtd.reduce((a,d)=>a+d.dii.net,0);
   let streak=0; for(let i=H.length-1;i>=0;i--){if(H[i].fii.net<0)streak++;else break;}
   const monthName=new Date((H[H.length-1]||{}).date||Date.now()).toLocaleDateString('en-IN',{month:'long'});
   document.getElementById('tug').innerHTML=`<h3>The tug-of-war</h3>
-    <p>Over the last ${win.length} sessions, foreign investors were net sellers on <b>${sellerDays}</b> of them, while domestic institutions kept buying. So far in ${monthName}, <b>FII have ${mFii<0?'pulled out':'added'} ${cr(mFii).replace('+','').replace('−','−')}</b> while <b>DII have ${mDii>=0?'absorbed':'sold'} ${cr(mDii).replace('+','+')}</b> — the classic domestic-vs-foreign standoff.</p>`;
+    <p>So far in ${monthName} (${mtd.length} session${mtd.length===1?'':'s'}), foreign investors were net sellers on <b>${sellerDays}</b> of them, while domestic institutions kept buying. <b>FII have ${mFii<0?'pulled out':'added'} ${cr(mFii).replace('+','').replace('−','−')}</b> while <b>DII have ${mDii>=0?'absorbed':'sold'} ${cr(mDii).replace('+','+')}</b> — the classic domestic-vs-foreign standoff.</p>`;
 
   drawBars();
-  renderStats({mFii,mDii,sellerDays,win,streak,monthName});
+  renderStats({mFii,mDii,sellerDays,mtdLen:mtd.length,streak,monthName});
   renderCumulative(H);
   document.getElementById('cumNote').textContent=`running net since ${dmon(H[0].date)}`;
 }
@@ -320,7 +320,7 @@ function renderStats(s){
   document.getElementById('stats').innerHTML=`
    <div class="stat"><div class="v sell num">${cr(s.mFii)}</div><div class="l">FII net · ${s.monthName} MTD</div></div>
    <div class="stat"><div class="v buy num">${cr(s.mDii)}</div><div class="l">DII net · ${s.monthName} MTD</div></div>
-   <div class="stat"><div class="v num">${s.sellerDays}/${s.win.length}</div><div class="l">FII net-seller days (last ${s.win.length})</div></div>
+   <div class="stat"><div class="v num">${s.sellerDays}/${s.mtdLen}</div><div class="l">FII net-seller days · ${s.monthName} MTD</div></div>
    <div class="stat"><div class="v sell num">${s.streak}</div><div class="l">Current FII net-sell streak</div></div>`;
 }
 
