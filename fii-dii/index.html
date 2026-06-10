@@ -182,12 +182,13 @@ const SAMPLE={ lastUpdated:new Date().toISOString(),
 const F2=new Intl.NumberFormat('en-IN',{maximumFractionDigits:0});
 const cr=n=>(n>=0?'+':'−')+'₹'+F2.format(Math.abs(Math.round(n)))+' cr';
 const dmon=s=>{const d=new Date(s);return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});};
-let HISTORY=[], PERIOD='daily';
+let HISTORY=[], MONTHLY=[], PERIOD='daily';
 
 function render(data,isSample){
   document.getElementById('ribbon').classList.toggle('hide',!isSample);
   const H=data.history||[], L=data.latest||{};
   HISTORY=H;
+  if (data.monthly && data.monthly.length) MONTHLY=data.monthly;
   const fiiNet=L.fii?L.fii.net:(H.length?H[H.length-1].fii.net:0);
   const diiNet=L.dii?L.dii.net:(H.length?H[H.length-1].dii.net:0);
 
@@ -239,8 +240,10 @@ function periodLabel(row,period){
   return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
 }
 function drawBars(){
-  let rows=aggregate(HISTORY,PERIOD);
-  const cap={daily:30,weekly:26,monthly:24,yearly:12}[PERIOD]||30;
+  /* daily/weekly use the daily series; monthly/yearly use the 20-year monthly series */
+  var src = (PERIOD==='monthly'||PERIOD==='yearly') && MONTHLY.length ? MONTHLY : HISTORY;
+  let rows=aggregate(src,PERIOD);
+  const cap={daily:30,weekly:26,monthly:36,yearly:30}[PERIOD]||30;
   if(rows.length>cap) rows=rows.slice(-cap);
   renderBars(rows,PERIOD);
 }
