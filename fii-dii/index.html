@@ -182,10 +182,7 @@ function render(data,isSample){
    <div class="snap-card"><div class="who"><span class="dot dii"></span>DII · net</div>
      <div class="net ${diiNet<0?'sell':'buy'} num">${cr(diiNet)}</div>
      <div class="bs">Bought <b class="num">₹${F2.format(L.dii?L.dii.buy:0)}</b> · Sold <b class="num">₹${F2.format(L.dii?L.dii.sell:0)}</b> cr</div></div>`;
-  const conf=(L.confidence==='confirmed')?`<span class="badge-conf">✓ Confirmed · ${(L.sources||['NSE']).join(' + ')}</span>`
-            :`<span class="badge-conf" style="color:var(--accent);border-color:var(--accent);background:var(--accent-soft)">${L.confidence||'single source'}</span>`;
-  document.getElementById('snapMeta').innerHTML=`<span>Cash market · ${L.date?dmon(L.date):'—'} ${new Date(L.date||Date.now()).getFullYear()}</span>
-    <span class="badge-prov">${(L.status||'provisional').toUpperCase()}</span>${conf}`;
+  document.getElementById('snapMeta').innerHTML=`<span>Cash market · ${L.date?dmon(L.date):'—'} ${new Date(L.date||Date.now()).getFullYear()}</span>`;
 
   /* tug-of-war narrative (computed) */
   const win=H.slice(-20); const sellerDays=win.filter(d=>d.fii.net<0).length;
