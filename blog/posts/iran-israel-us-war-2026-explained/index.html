@@ -350,10 +350,10 @@ h1{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(30px,4.6vw,46p
 .cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:var(--bg-2)}
 /* Default theme = dark → show dark cover only. Light theme → show light cover only.
    Pure data-theme driven; we DO NOT use prefers-color-scheme (which can disagree with the user's manual theme choice). */
-.cover .light-only{opacity:1}
-.cover .dark-only{opacity:0}
-html[data-theme="light"] .cover .light-only{opacity:0}
-html[data-theme="light"] .cover .dark-only{opacity:1}
+.cover .light-only{opacity:0}
+.cover .dark-only{opacity:1}
+html[data-theme="light"] .cover .light-only{opacity:1}
+html[data-theme="light"] .cover .dark-only{opacity:0}
 @media (max-width: 800px){.cover{margin-left:0;transform:none;width:100%}}
 figcaption{font-size:13px;color:var(--muted);font-style:italic;text-align:center;margin:0 0 32px}
 p, figcaption.subtitle{overflow-wrap:break-word}
