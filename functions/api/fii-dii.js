@@ -36,6 +36,7 @@ export async function onRequest(context){
   try{
     const gr=await fetch('https://groww.in/fii-dii-data',
       { headers:{ 'User-Agent':UA,'Accept':'text/html,*/*','Accept-Language':'en-US,en;q=0.9' },
+        signal: AbortSignal.timeout(8000),
         cf: fresh?{cacheTtl:0}:{ cacheTtl:1800, cacheEverything:true } });
     if(!gr.ok) throw new Error('groww '+gr.status);
     const html=await gr.text();
@@ -65,10 +66,10 @@ export async function onRequest(context){
     // opportunistic NSE confirm (never blocks)
     try{
       let cookie='';
-      const boot=await fetch('https://www.nseindia.com/',{headers:{'User-Agent':UA,'Accept':'text/html,*/*','Accept-Language':'en-US,en;q=0.9'},cf:{cacheTtl:0}});
+      const boot=await fetch('https://www.nseindia.com/',{headers:{'User-Agent':UA,'Accept':'text/html,*/*','Accept-Language':'en-US,en;q=0.9'},signal:AbortSignal.timeout(3500),cf:{cacheTtl:0}});
       const sc=(boot.headers.getSetCookie?boot.headers.getSetCookie():[boot.headers.get('set-cookie')]).filter(Boolean);
       cookie=sc.map(s=>String(s).split(';')[0]).join('; ');
-      const nr=await fetch('https://www.nseindia.com/api/fiidiiTradeReact',{headers:{'User-Agent':UA,'Accept':'application/json','Referer':'https://www.nseindia.com/','Cookie':cookie},cf:{cacheTtl:1800}});
+      const nr=await fetch('https://www.nseindia.com/api/fiidiiTradeReact',{headers:{'User-Agent':UA,'Accept':'application/json','Referer':'https://www.nseindia.com/','Cookie':cookie},signal:AbortSignal.timeout(3500),cf:{cacheTtl:1800}});
       if(nr.ok){ const arr=await nr.json(); const nf=(Array.isArray(arr)?arr:[]).find(x=>/FII|FPI/i.test(x.category||''));
         if(nf){ const nnet=num(nf.netValue); if(nnet!=null && Math.abs(nnet-last.f.net)<=Math.max(50,Math.abs(last.f.net)*0.01)){ confidence='confirmed'; sources=['Groww','NSE']; }
           else if(nnet!=null){ confidence='divergent'; sources=['Groww','NSE']; } } }
