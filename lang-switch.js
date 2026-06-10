@@ -4,6 +4,24 @@
      fixed top-right cluster alongside the dropdown.
    Idempotent. Extend HI_PAGES as more /hi/ pages are built so HI links to the exact twin (else /hi/ home). */
 (function(){
+
+  /* === Site-wide page transitions (View Transitions API) === */
+  function injectVT(){
+    if (document.getElementById('hd-vt-css')) return;
+    var st = document.createElement('style');
+    st.id = 'hd-vt-css';
+    st.textContent =
+      '@view-transition { navigation: auto; }' +
+      '::view-transition-old(root) { animation: hd-vt-out 200ms cubic-bezier(.4,0,.2,1) both; }' +
+      '::view-transition-new(root) { animation: hd-vt-in 280ms cubic-bezier(.4,0,.2,1) both; }' +
+      '@keyframes hd-vt-out { to { opacity: 0; } }' +
+      '@keyframes hd-vt-in  { from { opacity: 0; } }' +
+      '@media (prefers-reduced-motion: reduce) {' +
+        '::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }' +
+      '}';
+    (document.head || document.documentElement).appendChild(st);
+  }
+  injectVT();
   function injectCSS(){
     if (document.getElementById('lang-dd-css')) return;
     var st=document.createElement('style'); st.id='lang-dd-css';
