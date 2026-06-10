@@ -22,6 +22,40 @@
     (document.head || document.documentElement).appendChild(st);
   }
   injectVT();
+  /* === Skip-to-content link (WCAG 2.4.1 Bypass Blocks) — injected on every page === */
+  function injectSkipLink(){
+    if (document.getElementById('hd-skip-link')) return;
+    if (!document.body) return;
+    var st = document.createElement('style');
+    st.id = 'hd-skip-css';
+    st.textContent =
+      '.hd-skip-link{position:absolute;left:-9999px;top:0;z-index:9999;padding:10px 16px;' +
+      'background:var(--accent,#d4a64a);color:#1a1530;text-decoration:none;font-weight:700;' +
+      'font:700 14px/1 Inter,system-ui,sans-serif;border-radius:0 0 8px 0;}' +
+      '.hd-skip-link:focus{left:0;outline:2px solid #fff;outline-offset:2px;}';
+    document.head.appendChild(st);
+    var a = document.createElement('a');
+    a.id = 'hd-skip-link';
+    a.className = 'hd-skip-link';
+    a.href = '#main';
+    a.textContent = 'Skip to content';
+    a.addEventListener('click', function(e){
+      var target = document.getElementById('main') || document.querySelector('main') || document.querySelector('.page');
+      if (target) { 
+        e.preventDefault();
+        target.setAttribute('tabindex','-1');
+        target.focus();
+        try { target.scrollIntoView(); } catch(_) {}
+      }
+    });
+    document.body.insertBefore(a, document.body.firstChild);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectSkipLink);
+  } else {
+    injectSkipLink();
+  }
+
   function injectCSS(){
     if (document.getElementById('lang-dd-css')) return;
     var st=document.createElement('style'); st.id='lang-dd-css';
