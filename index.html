@@ -2275,10 +2275,10 @@ function toggleTheme(){
  applyTracker(n, ep, L);
  }).catch(function(){});
  }
+ // 1) instant paint from the tiny snapshot; 2) ALWAYS refresh from live tracker data so boxes auto-update
  fetch('tracker-summary.json?nc='+Date.now()).then(function(r){ return r.ok ? r.json() : null; }).then(function(s){
  if (s && s.count){ applyTracker(s.count, s.epaper, s.latest); }
- else { fromDashboard(); }
- }).catch(function(){ fromDashboard(); });
+ }).catch(function(){}).then(function(){ fromDashboard(); });
  }
  function syncSpecial(){
  fetch('special-features.json?nc='+Date.now()).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
