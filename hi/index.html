@@ -2075,7 +2075,7 @@ html[data-theme="light"] .tracker-spotlight {
  <a class="latest-card" href="/hi/blog/posts/crude-oil-india-markets-rupee-inflation/">
  <span class="latest-thumb">
  <picture>
- <img src="blog/posts/crude-oil-india-markets-rupee-inflation/cover.jpg" alt="" loading="lazy" decoding="async">
+ <img src="blog/posts/crude-oil-india-markets-rupee-inflation/cover.jpg" alt="ब्लॉग पोस्ट कवर" loading="lazy" decoding="async">
  </picture>
  <span class="latest-index">01</span>
  </span>
@@ -2367,7 +2367,7 @@ function toggleTheme(){
  var num = String(idx + 1).padStart(2, '0');
  var img = post.image || '';
  var webp = post.imageWebp || '';
- var picture = img ? '<picture>' + (webp ? '<source srcset="'+escapeHomeHTML(webp)+'" type="image/webp">' : '') + '<img src="'+escapeHomeHTML(img)+'" alt="" loading="lazy" decoding="async">' + '</picture>' : '';
+ var picture = img ? '<picture>' + (webp ? '<source srcset="'+escapeHomeHTML(webp)+'" type="image/webp">' : '') + '<img src="'+escapeHomeHTML(img)+'" alt="ब्लॉग पोस्ट कवर" loading="lazy" decoding="async">' + '</picture>' : '';
  return '<a class="latest-card" href="'+escapeHomeHTML(href)+'">' +
  '<span class="latest-thumb'+(img ? '' : ' is-empty')+'">' + picture + '<span class="latest-index">'+num+'</span></span>' +
  '<span class="latest-body">' +
