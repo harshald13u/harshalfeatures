@@ -66,7 +66,7 @@ function parseNSDL(html, year){
   const out={};
   const rows = html.split(/<tr[^>]*>/i).slice(1);    // each chunk = one row's content
   for(const r of rows){
-    const cells = rowCells('<td>'+r);                 // re-prefix so first cell is captured
+    const cells = rowCells(r);
     if(cells.length<3) continue;
     const mo = MONTHNAME[String(cells[0]).trim().toLowerCase()];
     if(!mo) continue;
