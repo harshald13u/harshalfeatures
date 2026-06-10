@@ -56,24 +56,24 @@ function detectYear(html){
 }
 const MONTHNAME={january:1,february:2,march:3,april:4,may:5,june:6,july:7,august:8,september:9,october:10,november:11,december:12};
 function cellNum(x){ if(x==null) return null; let t=String(x).replace(/[,₹\s]/g,'').replace(/−/g,'-'); let neg=false; if(/^\(.*\)$/.test(t)){neg=true;t=t.slice(1,-1);} if(t===''||t==='-'||t==='NA') return null; const v=parseFloat(t); return isFinite(v)?(neg?-v:v):null; }
+function rowCells(rowHtml){
+  // split on <td/<th opening tags (NSDL omits closing tags)
+  return rowHtml.split(/<t[dh][^>]*>/i).slice(1).map(c=>stripTags(c.split(/<\/?t[dh]/i)[0]));
+}
 function parseNSDL(html, year){
-  // NSDL CY report: each data row = <month name> + 12 numeric cells.
-  // Equity = FIRST numeric cell; Total = LAST numeric cell.
+  // NSDL CY report: each data row = <month name> + 12 numeric cells (Equity..Total).
+  // HTML omits </tr>/</td>, so split on the opening tags rather than match closed tags.
   const out={};
-  const tables=html.match(/<table[\s\S]*?<\/table>/gi)||[];
-  for(const tbl of tables){
-    const rows=tbl.match(/<tr[\s\S]*?<\/tr>/gi)||[];
-    for(const row of rows){
-      const cells=(row.match(/<t[hd][\s\S]*?<\/t[hd]>/gi)||[]).map(stripTags);
-      if(cells.length<3) continue;
-      const mo=MONTHNAME[String(cells[0]).trim().toLowerCase()];
-      if(!mo) continue;
-      const nums=cells.slice(1).map(cellNum).filter(v=>v!=null);
-      if(nums.length<2) continue;
-      const eq=nums[0], tot=nums[nums.length-1];
-      const ym=`${year}-${String(mo).padStart(2,'0')}`;
-      out[ym]={ym, eq:Math.round(eq), tot:Math.round(tot)};
-    }
+  const rows = html.split(/<tr[^>]*>/i).slice(1);    // each chunk = one row's content
+  for(const r of rows){
+    const cells = rowCells('<td>'+r);                 // re-prefix so first cell is captured
+    if(cells.length<3) continue;
+    const mo = MONTHNAME[String(cells[0]).trim().toLowerCase()];
+    if(!mo) continue;
+    const nums = cells.slice(1).map(cellNum).filter(v=>v!=null);
+    if(nums.length<2) continue;
+    const ym = `${year}-${String(mo).padStart(2,'0')}`;
+    out[ym] = { ym, eq: Math.round(nums[0]), tot: Math.round(nums[nums.length-1]) };
   }
   return Object.values(out).sort((a,b)=>a.ym<b.ym?-1:1);
 }
