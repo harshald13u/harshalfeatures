@@ -1843,7 +1843,8 @@ function fmtDateNice(d) {
 let UNIQUE_ROWS = [];
 let RAW_ROWS = [];
 let CURRENT_FILE = null;
-let CURRENT_WINDOW = 'all'; // 'all', '1d', '7d', '30d', '90d', 'ytd'
+let CURRENT_WINDOW = 'all';
+/* URL state will be applied after parse */ // 'all', '1d', '7d', '30d', '90d', 'ytd'
 let SEARCH_TERM = '';
 let DRILL = null; // {type:'topic'|'lang'|'pub', value:'…'}
 let FEAT_FROM = '', FEAT_TO = '', FEAT_PUB = '', FEAT_JOURNALIST = '';
@@ -1894,7 +1895,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (inp) {
     let t;
     inp.addEventListener('input', e => {
-      SEARCH_TERM = e.target.value;
+      SEARCH_TERM = e.target.value; _trackerSyncUrl();
       if (SEARCH_TERM) DRILL = null;
       clearTimeout(t);
       t = setTimeout(rerenderLatest, 150);
@@ -1929,13 +1930,43 @@ document.addEventListener('DOMContentLoaded', () => {
   const ft = document.getElementById('feat-to');
   const fp = document.getElementById('feat-pub');
   const fc = document.getElementById('feat-clear');
-  if (ff) ff.addEventListener('change', e => { FEAT_FROM = e.target.value; rerenderLatest(); });
-  if (ft) ft.addEventListener('change', e => { FEAT_TO   = e.target.value; rerenderLatest(); });
-  if (fp) fp.addEventListener('change', e => { FEAT_PUB  = e.target.value; rerenderLatest(); });
+
+/* === URL state sync (B12) === */
+function _trackerSyncUrl(){
+  try {
+    var params = new URLSearchParams();
+    if (CURRENT_WINDOW && CURRENT_WINDOW !== 'all') params.set('w', CURRENT_WINDOW);
+    if (SEARCH_TERM) params.set('q', SEARCH_TERM);
+    if (FEAT_PUB) params.set('pub', FEAT_PUB);
+    if (FEAT_JOURNALIST) params.set('journalist', FEAT_JOURNALIST);
+    if (FEAT_FROM) params.set('from', FEAT_FROM);
+    if (FEAT_TO) params.set('to', FEAT_TO);
+    if (DRILL && DRILL.type === 'topic' && DRILL.value) params.set('topic', DRILL.value);
+    var qs = params.toString();
+    var url = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
+    window.history.replaceState({}, '', url);
+  } catch(_) {}
+}
+function _trackerReadUrl(){
+  try {
+    var sp = new URLSearchParams(window.location.search);
+    if (sp.get('w')) CURRENT_WINDOW = sp.get('w');
+    if (sp.get('q')) SEARCH_TERM = sp.get('q');
+    if (sp.get('pub')) FEAT_PUB = sp.get('pub');
+    if (sp.get('journalist')) FEAT_JOURNALIST = sp.get('journalist');
+    if (sp.get('from')) FEAT_FROM = sp.get('from');
+    if (sp.get('to')) FEAT_TO = sp.get('to');
+    /* topic is already handled by existing ?topic= reader */
+  } catch(_) {}
+}
+
+    if (ff) ff.addEventListener('change', e => { FEAT_FROM = e.target.value; _trackerSyncUrl(); rerenderLatest(); });
+  if (ft) ft.addEventListener('change', e => { FEAT_TO   = e.target.value; _trackerSyncUrl(); rerenderLatest(); });
+  if (fp) fp.addEventListener('change', e => { FEAT_PUB  = e.target.value; _trackerSyncUrl(); rerenderLatest(); });
   const fj = document.getElementById('feat-journalist');
-  if (fj) fj.addEventListener('change', e => { FEAT_JOURNALIST = e.target.value; rerenderLatest(); });
+  if (fj) fj.addEventListener('change', e => { FEAT_JOURNALIST = e.target.value; _trackerSyncUrl(); rerenderLatest(); });
   if (fc) fc.addEventListener('click', () => {
-    FEAT_FROM=''; FEAT_TO=''; FEAT_PUB=''; FEAT_JOURNALIST = "";
+    FEAT_FROM=''; FEAT_TO=''; FEAT_PUB=''; FEAT_JOURNALIST = ""; _trackerSyncUrl();
     if (ff) ff.value=''; if (ft) ft.value=''; if (fp) fp.value=''; var _fj = document.getElementById('feat-journalist'); if (_fj) _fj.value='';
     SEARCH_TERM=''; DRILL=null;
     const s = document.getElementById('feat-search'); if (s) s.value='';
@@ -2011,7 +2042,7 @@ function renderRecentTiles() {
   // Attach click handlers (window tiles only)
   document.querySelectorAll('.r-tile[data-win]').forEach(el => {
     el.onclick = () => {
-      CURRENT_WINDOW = el.dataset.win;
+      CURRENT_WINDOW = el.dataset.win; _trackerSyncUrl();
       renderRecentTiles();
       renderPanels();
     };
@@ -2129,6 +2160,9 @@ document.addEventListener('keydown', function(e){
     }
   }
 });
+
+/* B12: read URL state if present */
+try { _trackerReadUrl(); } catch(_) {}
 
 // ===== Topic classification =====
 const TOPIC_RULES = [
