@@ -3,323 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-<title>FII &amp; DII Activity in India — Harshal Dasani</title>
-<meta name="description" content="Foreign (FII/FPI) and domestic (DII) institutional money flow in Indian markets — by Harshal Dasani.">
-<meta name="keywords" content="Harshal Dasani FII DII, FII DII activity India, institutional flows, FPI">
+<title>FII / DII activity — daily flows | Harshal Dasani</title>
+<meta name="description" content="Daily FII and DII activity in Indian markets — foreign vs domestic institutional flows, explained simply, by Harshal Dasani.">
+<meta name="keywords" content="FII DII data, FII DII activity, foreign institutional investors, domestic institutional investors, India market flows">
 <meta name="author" content="Harshal Dasani">
-<meta http-equiv="content-language" content="en-IN">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="googlebot" content="index, follow">
-<meta name="bingbot" content="index, follow">
-
-<link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/fii-dii/">
-<link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/fii-dii/">
-<link rel="dns-prefetch" href="//fonts.googleapis.com">
-<link rel="dns-prefetch" href="//fonts.gstatic.com">
 <link rel="canonical" href="https://harshaldasani.pages.dev/fii-dii/">
-
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Harshal Dasani">
-<meta name="application-name" content="Harshal Dasani">
-<meta name="publisher" content="Harshal Dasani">
-<meta property="og:title" content="FII/DII, Harshal Dasani">
-<meta property="og:description" content="Foreign and domestic institutional money flow in Indian markets.">
-<meta property="og:url" content="https://harshaldasani.pages.dev/fii-dii/">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:alt" content="Harshal Dasani, FII/DII">
-<meta property="og:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
-<meta property="og:image:width" content="1000">
-<meta property="og:image:height" content="516">
-<meta property="og:locale" content="en_IN">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@HarshalDasanii">
-<meta name="twitter:creator" content="@HarshalDasanii">
-<meta name="twitter:title" content="FII/DII, Harshal Dasani">
-<meta name="twitter:description" content="Foreign and domestic institutional money flow in Indian markets.">
-<meta name="twitter:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
-
-<meta name="theme-color" content="#0e0c0a">
-
-<link rel="manifest" href="../manifest.json">
-<link rel="apple-touch-icon" href="../apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="512x512" href="../icon-512.png">
-<link rel="icon" type="image/png" sizes="192x192" href="../icon-192.png">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Harshal Dasani">
+<meta property="og:title" content="FII / DII activity, Harshal Dasani">
+<meta property="og:description" content="Daily foreign vs domestic institutional flows in Indian markets, explained simply.">
+<meta property="og:url" content="https://harshaldasani.pages.dev/fii-dii/">
+<meta property="og:image" content="https://harshaldasani.pages.dev/harshal-dasani.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@HarshalDasanii">
+<meta name="theme-color" content="#0e0c0a">
+<link rel="manifest" href="../manifest.json">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <style>
-:root {
-  --bg: #0e0c0a;
-  --bg-2: #15110d;
-  --ink: #ece4d3;
-  --ink-2: #c9c0ad;
-  --muted: #8a8273;
-  --faint: #5a5447;
-  --rule: rgba(236,228,211,0.10);
-  --rule-soft: rgba(236,228,211,0.06);
-  --accent: #d4a64a;
-  --accent-soft: rgba(212,166,74,0.08);
-}
-html[data-theme="light"] {
-  --bg: #ebe5d7;
-  --bg-2: #ddd4c1;
-  --ink: #1a3458;
-  --ink-2: #3a527a;
-  --muted: #54687f;
-  --faint: #8095a8;
-  --rule: rgba(26, 52, 88, 0.14);
-  --rule-soft: rgba(26, 52, 88, 0.07);
-  --accent: #b8852b;
-  --accent-soft: rgba(184,133,43,0.10);
-}
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background: var(--bg); }
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--bg); color: var(--ink-2);
-  min-height: 100vh; line-height: 1.55;
-  font-feature-settings: "ss01", "cv11";
-  -webkit-text-size-adjust: 100%; overflow-x: hidden;
-}
-body::before {
-  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(1200px 700px at 85% -10%, rgba(212,166,74,0.045), transparent 60%),
-    radial-gradient(900px 600px at -5% 105%, rgba(212,166,74,0.025), transparent 60%);
-}
-a { color: inherit; text-decoration: none; }
+:root{ --bg:#0e0c0a; --bg-2:#15110d; --ink:#ece4d3; --ink-2:#c9c0ad; --muted:#8a8273; --faint:#5a5447;
+  --rule:rgba(236,228,211,0.10); --rule-soft:rgba(236,228,211,0.06); --accent:#d4a64a; --accent-soft:rgba(212,166,74,0.08);
+  --fii:#e0795f; --dii:#5fbf8a; --fii-dim:rgba(224,121,95,0.18); --dii-dim:rgba(95,191,138,0.18); --navy-bar:#3a6db0; }
+html[data-theme="light"]{ --bg:#ebe5d7; --bg-2:#ddd4c1; --ink:#1a3458; --ink-2:#3a527a; --muted:#54687f; --faint:#8095a8;
+  --rule:rgba(26,52,88,0.14); --rule-soft:rgba(26,52,88,0.07); --accent:#b8852b; --accent-soft:rgba(184,133,43,0.10);
+  --fii:#bb4a32; --dii:#2f7d56; --fii-dim:rgba(187,74,50,0.14); --dii-dim:rgba(47,125,86,0.14); --navy-bar:#27548a; }
+*{box-sizing:border-box;} html,body{margin:0;padding:0;} html{-webkit-font-smoothing:antialiased;background:var(--bg);}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink-2);
+  min-height:100vh;line-height:1.55;font-feature-settings:"ss01","cv11";overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(1200px 700px at 85% -10%,rgba(212,166,74,0.045),transparent 60%),radial-gradient(900px 600px at -5% 105%,rgba(212,166,74,0.025),transparent 60%);}
+a{color:inherit;text-decoration:none;} .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1;}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:max(26px,env(safe-area-inset-top)) max(48px,env(safe-area-inset-right)) 72px max(48px,env(safe-area-inset-left));}
+.masthead{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:18px;padding:max(12px,env(safe-area-inset-top)) 0 18px;
+  border-bottom:1px solid var(--rule);margin-bottom:40px;position:sticky;top:0;z-index:100;background:var(--bg);}
+@supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.masthead{background:rgba(14,12,10,0.88);backdrop-filter:saturate(140%) blur(14px);-webkit-backdrop-filter:saturate(140%) blur(14px);}
+  html[data-theme="light"] .masthead{background:rgba(235,229,215,0.88);}}
+.mast-meta{justify-self:start;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);font-weight:500;}
+.mast-meta a:hover{color:var(--accent);}
+.mast-trail{justify-self:end;text-align:right;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap;}
+.mast-trail a:hover{color:var(--accent);}
+.mast-theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,0.04);border:1px solid var(--rule);color:var(--ink-2);cursor:pointer;padding:0;justify-self:end;transition:.2s;}
+.mast-theme-toggle:hover{color:var(--accent);border-color:var(--accent);background:rgba(212,166,74,0.08);transform:translateY(-1px);}
+.mast-theme-toggle .icon-sun{display:none;} html[data-theme="light"] .mast-theme-toggle .icon-sun{display:block;} html[data-theme="light"] .mast-theme-toggle .icon-moon{display:none;}
+html[data-theme="light"] .mast-theme-toggle{background:rgba(26,52,88,0.04);}
+.blog-hero{margin-bottom:22px;text-align:center;}
+.blog-title{font-weight:800;font-size:clamp(40px,5.4vw,70px);line-height:0.97;letter-spacing:-0.035em;margin:0 0 14px;color:var(--ink);}
+.blog-sub{font-size:15.5px;color:var(--ink-2);max-width:640px;line-height:1.5;margin:0 auto;}
+.tools-divider{margin:22px 0 24px;border:0;border-top:1px solid var(--rule);}
+.ribbon{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:12px;color:var(--muted);
+  background:var(--accent-soft);border:1px solid var(--rule);border-radius:8px;padding:8px 14px;margin:0 auto 24px;max-width:780px;text-align:center;}
+.ribbon b{color:var(--accent);font-weight:700;} .ribbon.hide{display:none;}
 
-.page {
-  position: relative; z-index: 1;
-  max-width: 1280px; margin: 0 auto;
-  padding: max(26px, env(safe-area-inset-top)) max(48px, env(safe-area-inset-right)) 72px max(48px, env(safe-area-inset-left));
-}
+/* snapshot */
+.snap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px;}
+.snap-card{background:var(--bg-2);border:1px solid var(--rule);border-radius:10px;padding:20px 22px;}
+.snap-card .who{display:flex;align-items:center;gap:9px;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:600;}
+.snap-card .who .dot{width:9px;height:9px;border-radius:50%;}
+.dot.fii{background:var(--fii);} .dot.dii{background:var(--dii);}
+.snap-card .net{font-weight:800;font-size:34px;letter-spacing:-0.025em;line-height:1;margin:12px 0 4px;}
+.snap-card .net.sell{color:var(--fii);} .snap-card .net.buy{color:var(--dii);}
+.snap-card .bs{font-size:12px;color:var(--muted);} .snap-card .bs b{color:var(--ink-2);font-weight:600;}
+.snap-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--faint);margin-bottom:26px;}
+.badge-conf{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--dii);border:1px solid color-mix(in srgb,var(--dii) 40%,transparent);
+  background:var(--dii-dim);border-radius:99px;padding:3px 9px;}
+.badge-prov{font-size:11px;font-weight:600;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);background:var(--accent-soft);border-radius:99px;padding:3px 9px;}
 
-/* MASTHEAD, same as blog landing */
-.masthead {
-  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
-  gap: 18px;
-  padding: max(12px, env(safe-area-inset-top)) 0 18px;
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 40px;
-  position: sticky; top: 0; z-index: 100; background: var(--bg);
-}
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .masthead {
-    background: rgba(14, 12, 10, 0.88);
-    backdrop-filter: saturate(140%) blur(14px);
-    -webkit-backdrop-filter: saturate(140%) blur(14px);
-  }
-  html[data-theme="light"] .masthead { background: rgba(235, 229, 215, 0.88); }
-}
-.mast-trail { justify-self: end; text-align: right; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--muted); font-weight: 500; white-space: nowrap; }
-.mast-trail a { color: var(--muted); transition: color 0.2s ease; }
-.mast-trail a:hover { color: var(--accent); }
-.mast-meta {
-  justify-self: start;
-  font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase;
-  color: var(--muted); font-weight: 500;
-}
-.mast-meta a { color: var(--muted); transition: color 0.2s ease; }
-.mast-meta a:hover { color: var(--accent); }
+/* narrative */
+.tug{background:var(--bg-2);border:1px solid var(--rule);border-radius:10px;padding:18px 22px;margin-bottom:26px;}
+.tug h3{margin:0 0 6px;font-size:13px;letter-spacing:1.1px;text-transform:uppercase;color:var(--accent);font-weight:700;}
+.tug p{margin:0;font-size:15px;color:var(--ink-2);} .tug p b{color:var(--ink);font-weight:700;}
 
-.mast-theme-toggle {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px; border-radius: 50%;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--rule);
-  color: var(--ink-2); cursor: pointer; padding: 0; margin: 0;
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-  position: relative; justify-self: end;
-}
-.mast-theme-toggle::before { content: ""; position: absolute; inset: -6px; display: block; }
-.mast-theme-toggle:hover { color: var(--accent); border-color: var(--accent); background: rgba(212,166,74,0.08); transform: translateY(-1px); }
-.mast-theme-toggle .icon-sun { display: none; }
-html[data-theme="light"] .mast-theme-toggle .icon-sun { display: block; }
-html[data-theme="light"] .mast-theme-toggle .icon-moon { display: none; }
-html[data-theme="light"] .mast-theme-toggle { background: rgba(26,52,88,0.04); }
+/* section + charts */
+.sec{margin:28px 0;}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:6px;}
+.sec-title{font-weight:700;font-size:18px;letter-spacing:-0.015em;color:var(--ink);margin:0;}
+.sec-note{font-size:12px;color:var(--muted);}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);}
+.legend span{display:inline-flex;align-items:center;gap:6px;} .legend i{width:11px;height:11px;border-radius:3px;display:inline-block;}
+.chart-wrap{background:var(--bg-2);border:1px solid var(--rule);border-radius:10px;padding:18px 16px 12px;}
+svg{display:block;width:100%;height:auto;} text{font-family:'Inter',sans-serif;}
 
-/* HERO */
-.blog-hero { margin-bottom: 30px; text-align: center; }
-.blog-title {
-  font-family: 'Inter', sans-serif; font-weight: 800;
-  font-size: clamp(44px, 5.6vw, 76px);
-  line-height: 0.97; letter-spacing: -0.035em;
-  margin: 0 0 16px; color: var(--ink);
-}
-.blog-sub {
-  font-size: 15.5px; color: var(--ink-2); max-width: 620px;
-  line-height: 1.5; margin: 0 auto;
-}
-.tools-divider { margin: 26px 0 32px; border: 0; border-top: 1px solid var(--rule); }
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:8px 0 4px;}
+.stat{background:var(--bg-2);border:1px solid var(--rule);border-radius:9px;padding:15px 16px;}
+.stat .v{font-weight:800;font-size:22px;letter-spacing:-0.02em;color:var(--ink);line-height:1;}
+.stat .v.sell{color:var(--fii);} .stat .v.buy{color:var(--dii);}
+.stat .l{font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-top:9px;}
 
-/* GRID */
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-.tool-card {
-  display: flex; flex-direction: column;
-  background: var(--bg-2);
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-.tool-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(212,166,74,0.35);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.4);
-}
-.tool-icon {
-  height: 176px;
-  background: #0e0c0a;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 40px; color: var(--accent);
-  padding: 0;
-}
-html[data-theme="light"] .tool-icon { background: #ebe5d7; }
-.tool-logo-img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.tool-logo-light { display: none; }
-html[data-theme="light"] .tool-logo-dark { display: none; }
-html[data-theme="light"] .tool-logo-light { display: block; }
-.tool-icon-fallback {
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: var(--accent);
-}
-.tool-body {
-  padding: 18px 20px 20px;
-  display: flex; flex-direction: column; flex: 1; gap: 10px;
-}
-.tool-tag {
-  font-size: 10px; font-weight: 700; letter-spacing: 1.4px;
-  text-transform: uppercase; color: var(--accent);
-}
-.tool-title {
-  font-family: 'Inter', sans-serif; font-weight: 700;
-  font-size: 18px; line-height: 1.28; letter-spacing: -0.015em;
-  color: var(--ink); margin: 0;
-}
-.tool-desc {
-  font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0;
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-}
-.tool-meta {
-  margin-top: auto; padding-top: 14px;
-  display: flex; justify-content: flex-end; align-items: center;
-  font-size: 11px; color: var(--muted); letter-spacing: 0.6px;
-}
-.tool-meta .tool-arrow { color: var(--accent); transition: transform 0.2s ease; }
-.tool-card:hover .tool-arrow { transform: translateX(3px); }
-
-/* EMPTY STATE */
-.blog-empty {
-  padding: 80px 32px; text-align: center;
-  border: 1px dashed var(--rule); border-radius: 12px;
-  background: rgba(21,17,13,0.5);
-}
-.blog-empty-title {
-  font-family: 'Inter', sans-serif; font-weight: 700;
-  font-size: 22px; color: var(--ink); margin: 0 0 8px; letter-spacing: -0.01em;
-}
-.blog-empty-sub { font-size: 14px; color: var(--ink-2); max-width: 440px; margin: 0 auto; }
-
-/* FOOTER */
-.blog-footer {
-  margin-top: 80px; padding-top: 28px;
-  border-top: 1px solid var(--rule);
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 11px; color: var(--muted); letter-spacing: 0.4px;
-}
-.blog-footer a { color: var(--muted); transition: color 0.2s ease; }
-.blog-footer a:hover { color: var(--accent); }
-
-@media (max-width: 960px) {
-  .page { padding: 24px 32px 64px; }
-  .posts-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
-}
-@media (max-width: 640px) {
-  .page { padding: 18px 20px 52px; }
-  .masthead { padding-bottom: 14px; margin-bottom: 32px; }
-  .mast-trail { display: none; }
-  .mast-meta { font-size: 9.5px; letter-spacing: 1.3px; }
-  .blog-title { font-size: clamp(40px, 11vw, 60px); }
-  .blog-sub { font-size: 15px; }
-  .posts-grid { grid-template-columns: 1fr; gap: 14px; }
-  .tool-icon { height: 168px; }
-  .tool-title { font-size: 17px; }
-  .tool-body { padding: 18px 18px 20px; }
-}
+.disc{margin:30px 0 0;padding:16px 18px;border:1px solid var(--rule);border-radius:8px;background:var(--bg-2);font-size:11.5px;color:var(--faint);line-height:1.6;}
+.disc b{color:var(--muted);}
+.blog-footer{margin-top:56px;padding-top:28px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);}
+.blog-footer a:hover{color:var(--accent);}
+@media(max-width:820px){.page{padding:24px 28px 60px;} .stats{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.page{padding:18px 18px 50px;} .mast-trail{display:none;} .snap{grid-template-columns:1fr;} .blog-title{font-size:clamp(36px,11vw,54px);} .snap-card .net{font-size:30px;}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Person",
-      "@id": "https://harshaldasani.pages.dev/#person",
-      "name": "Harshal Dasani",
-      "jobTitle": "Markets professional",
-      "url": "https://harshaldasani.pages.dev/",
-      "image": "https://harshaldasani.pages.dev/harshal-dasani.jpg",
-      "sameAs": [
-        "https://www.linkedin.com/in/harshal-dasani-/",
-        "https://x.com/HarshalDasanii",
-        "https://www.youtube.com/@marketswitharshal"
-      ]
-    },
-    {
-      "@type": "CollectionPage",
-      "@id": "https://harshaldasani.pages.dev/fii-dii/#webpage",
-      "url": "https://harshaldasani.pages.dev/fii-dii/",
-      "name": "FII/DII, Harshal Dasani",
-      "description": "FII/DII institutional flows, by Harshal Dasani.",
-      "inLanguage": "en-IN",
-      "isPartOf": { "@id": "https://harshaldasani.pages.dev/#person" },
-      "breadcrumb": {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://harshaldasani.pages.dev/" },
-          { "@type": "ListItem", "position": 2, "name": "FII/DII", "item": "https://harshaldasani.pages.dev/fii-dii/" }
-        ]
-      }
-    }
-  ]
-}
-</script>
-<script>
-(function(){
-  function applyTheme(){
-    try {
-      var t = localStorage.getItem('hd-theme');
-      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-    } catch(e) {}
-  }
-  applyTheme();
-  window.addEventListener('pageshow', applyTheme);
-})();
-</script>
+<script>(function(){function a(){try{var t=localStorage.getItem('hd-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}}a();window.addEventListener('pageshow',a);})();</script>
 </head>
 <body>
-
 <main class="page">
-
   <header class="masthead">
     <div class="mast-meta"><a href="https://harshaldasani.pages.dev/">&larr; Back to home</a></div>
-    <div class="mast-trail"><a href="https://harshaldasani.pages.dev/">Harshal Dasani</a> &middot; <span>FII/DII</span></div>
+    <div class="mast-trail"><a href="https://harshaldasani.pages.dev/">Harshal Dasani</a> &middot; <span>FII / DII</span></div>
     <button class="mast-theme-toggle" onclick="toggleBlogTheme()" aria-label="Toggle light / dark theme" title="Toggle theme" type="button">
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -327,30 +116,165 @@ html[data-theme="light"] .tool-logo-light { display: block; }
   </header>
 
   <section class="blog-hero">
-    <h1 class="blog-title">Harshal Dasani, FII/DII.</h1>
-    <p class="blog-sub">Foreign and domestic institutional money flow in Indian markets.</p>
+    <h1 class="blog-title">FII / DII activity.</h1>
+    <p class="blog-sub">Who's moving Indian markets — foreign vs domestic institutions, in ₹ crore. Daily provisional cash flows, the tug-of-war, and the trend. Explained simply.</p>
   </section>
-
   <hr class="tools-divider">
 
-  <div class="posts-grid" id="fdGrid"><div class="blog-empty"><h2 class="blog-empty-title">Coming soon</h2><p class="blog-empty-sub">Institutional money-flow data (FII/FPI &amp; DII) will appear here.</p></div></div>
+  <div class="ribbon" id="ribbon">⚙ <b>Preview / sample data</b> — real recent figures shown until the live feed is connected. Updates automatically once <code>/api/fii-dii</code> is live.</div>
 
-  <footer class="blog-footer">
-    <div>&copy; 2026 Harshal Dasani</div>
-    <div><a href="../">harshaldasani.pages.dev</a></div>
-  </footer>
+  <div class="snap" id="snap"></div>
+  <div class="snap-meta" id="snapMeta"></div>
 
+  <div class="tug" id="tug"></div>
+
+  <div class="sec">
+    <div class="sec-head"><h2 class="sec-title">Daily net flows</h2>
+      <div class="legend"><span><i style="background:var(--fii)"></i>FII / FPI</span><span><i style="background:var(--dii)"></i>DII</span></div></div>
+    <div class="chart-wrap"><div id="barChart"></div></div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="sec">
+    <div class="sec-head"><h2 class="sec-title">Cumulative flows</h2><span class="sec-note" id="cumNote"></span></div>
+    <div class="chart-wrap"><div id="cumChart"></div></div>
+  </div>
+
+  <div class="disc"><b>Educational information only.</b> FII/DII figures are provisional cash-market activity compiled from official public sources (NSE · cross-checked with Groww · NSDL for FPI) and may be revised. This page is descriptive market data, not investment advice or a recommendation — past institutional flows do not predict future returns.</div>
+
+  <footer class="blog-footer"><div>&copy; 2026 Harshal Dasani</div><div><a href="../">harshaldasani.pages.dev</a></div></footer>
 </main>
 
-
 <script>
-function toggleBlogTheme(){
-  var current = document.documentElement.getAttribute('data-theme') || 'dark';
-  var next = current === 'light' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', next);
-  try { localStorage.setItem('hd-theme', next); } catch(e) {}
+/* ---------- REAL sample series (NSE/Groww, 11 May–8 Jun 2026) — replaced by /api/fii-dii ---------- */
+const SAMPLE={ lastUpdated:new Date().toISOString(),
+  latest:{date:"2026-06-09",status:"provisional",confidence:"confirmed",sources:["Groww · NSE-compiled data"],
+    fii:{buy:14735.47,sell:19301.50,net:-4566.03},dii:{buy:17664.98,sell:11505.50,net:6159.48}},
+  history:[
+   {date:"2026-05-11",fii:{net:-8437.56},dii:{net:5939.65}},{date:"2026-05-12",fii:{net:-1959.39},dii:{net:7990.32}},
+   {date:"2026-05-13",fii:{net:-4703.15},dii:{net:5869.05}},{date:"2026-05-14",fii:{net:187.46},dii:{net:684.33}},
+   {date:"2026-05-15",fii:{net:1329.17},dii:{net:-1958.82}},{date:"2026-05-18",fii:{net:2813.69},dii:{net:2682.12}},
+   {date:"2026-05-19",fii:{net:-2457.49},dii:{net:3801.68}},{date:"2026-05-20",fii:{net:-1597.35},dii:{net:1968.35}},
+   {date:"2026-05-21",fii:{net:-1891.21},dii:{net:2492.42}},{date:"2026-05-22",fii:{net:-4440.47},dii:{net:6003.53}},
+   {date:"2026-05-25",fii:{net:821.75},dii:{net:3856.88}},{date:"2026-05-26",fii:{net:-2407.87},dii:{net:1361.43}},
+   {date:"2026-05-27",fii:{net:-1042.70},dii:{net:3821.00}},{date:"2026-05-29",fii:{net:-21105.86},dii:{net:16764.14}},
+   {date:"2026-06-01",fii:{net:-3911.68},dii:{net:5109.13}},{date:"2026-06-02",fii:{net:-8362.92},dii:{net:9589.32}},
+   {date:"2026-06-03",fii:{net:-5616.56},dii:{net:5740.89}},{date:"2026-06-04",fii:{net:-4447.06},dii:{net:4360.14}},
+   {date:"2026-06-05",fii:{net:-8776.25},dii:{net:9133.57}},{date:"2026-06-08",fii:{net:-5555.67},dii:{net:5165.24}},{date:"2026-06-09",fii:{net:-4566.03},dii:{net:6159.48}}
+  ]};
+
+const F2=new Intl.NumberFormat('en-IN',{maximumFractionDigits:0});
+const cr=n=>(n>=0?'+':'−')+'₹'+F2.format(Math.abs(Math.round(n)))+' cr';
+const dmon=s=>{const d=new Date(s);return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});};
+
+function render(data,isSample){
+  document.getElementById('ribbon').classList.toggle('hide',!isSample);
+  const H=data.history||[], L=data.latest||{};
+  const fiiNet=L.fii?L.fii.net:(H.length?H[H.length-1].fii.net:0);
+  const diiNet=L.dii?L.dii.net:(H.length?H[H.length-1].dii.net:0);
+
+  /* snapshot */
+  document.getElementById('snap').innerHTML=`
+   <div class="snap-card"><div class="who"><span class="dot fii"></span>FII / FPI · net</div>
+     <div class="net ${fiiNet<0?'sell':'buy'} num">${cr(fiiNet)}</div>
+     <div class="bs">Bought <b class="num">₹${F2.format(L.fii?L.fii.buy:0)}</b> · Sold <b class="num">₹${F2.format(L.fii?L.fii.sell:0)}</b> cr</div></div>
+   <div class="snap-card"><div class="who"><span class="dot dii"></span>DII · net</div>
+     <div class="net ${diiNet<0?'sell':'buy'} num">${cr(diiNet)}</div>
+     <div class="bs">Bought <b class="num">₹${F2.format(L.dii?L.dii.buy:0)}</b> · Sold <b class="num">₹${F2.format(L.dii?L.dii.sell:0)}</b> cr</div></div>`;
+  const conf=(L.confidence==='confirmed')?`<span class="badge-conf">✓ Confirmed · ${(L.sources||['NSE']).join(' + ')}</span>`
+            :`<span class="badge-conf" style="color:var(--accent);border-color:var(--accent);background:var(--accent-soft)">${L.confidence||'single source'}</span>`;
+  document.getElementById('snapMeta').innerHTML=`<span>Cash market · ${L.date?dmon(L.date):'—'} ${new Date(L.date||Date.now()).getFullYear()}</span>
+    <span class="badge-prov">${(L.status||'provisional').toUpperCase()}</span>${conf}`;
+
+  /* tug-of-war narrative (computed) */
+  const win=H.slice(-20); const sellerDays=win.filter(d=>d.fii.net<0).length;
+  const mtd=H.filter(d=>d.date>= (H[H.length-1]?H[H.length-1].date.slice(0,7):'')+'-01');
+  const mFii=mtd.reduce((a,d)=>a+d.fii.net,0), mDii=mtd.reduce((a,d)=>a+d.dii.net,0);
+  let streak=0; for(let i=H.length-1;i>=0;i--){if(H[i].fii.net<0)streak++;else break;}
+  const monthName=new Date((H[H.length-1]||{}).date||Date.now()).toLocaleDateString('en-IN',{month:'long'});
+  document.getElementById('tug').innerHTML=`<h3>The tug-of-war</h3>
+    <p>Over the last ${win.length} sessions, foreign investors were net sellers on <b>${sellerDays}</b> of them, while domestic institutions kept buying. So far in ${monthName}, <b>FII have ${mFii<0?'pulled out':'added'} ${cr(mFii).replace('+','').replace('−','−')}</b> while <b>DII have ${mDii>=0?'absorbed':'sold'} ${cr(mDii).replace('+','+')}</b> — the classic domestic-vs-foreign standoff.</p>`;
+
+  renderBars(win);
+  renderStats({mFii,mDii,sellerDays,win,streak,monthName});
+  renderCumulative(H);
+  document.getElementById('cumNote').textContent=`running net since ${dmon(H[0].date)}`;
 }
+
+/* ---------- SVG: daily net grouped bars (zero baseline) ---------- */
+function renderBars(rows){
+  const W=760,H=280,padL=16,padR=10,padT=14,padB=26;
+  const n=rows.length, plotW=W-padL-padR, plotH=H-padT-padB, zeroY=padT+plotH/2, half=plotH/2-6;
+  const maxAbs=Math.max(...rows.flatMap(d=>[Math.abs(d.fii.net),Math.abs(d.dii.net)]))||1;
+  const gw=plotW/n, bw=Math.min(9,gw/2-2);
+  const sc=v=>v/maxAbs*half;
+  let bars='';
+  rows.forEach((d,i)=>{
+    const cx=padL+gw*i+gw/2;
+    const f=sc(d.fii.net), dv=sc(d.dii.net);
+    // FII bar (left of center)
+    bars+=`<rect x="${(cx-bw-1).toFixed(1)}" y="${(d.fii.net>=0?zeroY-f:zeroY).toFixed(1)}" width="${bw}" height="${Math.max(1,Math.abs(f)).toFixed(1)}" rx="1.5" fill="var(--fii)"></rect>`;
+    // DII bar (right of center)
+    bars+=`<rect x="${(cx+1).toFixed(1)}" y="${(d.dii.net>=0?zeroY-dv:zeroY).toFixed(1)}" width="${bw}" height="${Math.max(1,Math.abs(dv)).toFixed(1)}" rx="1.5" fill="var(--dii)"></rect>`;
+    if(i%3===0||i===n-1) bars+=`<text x="${cx.toFixed(1)}" y="${H-8}" text-anchor="middle" font-size="9" fill="var(--faint)">${dmon(d.date)}</text>`;
+  });
+  const gl=v=>`<line x1="${padL}" x2="${W-padR}" y1="${(zeroY-sc(v)).toFixed(1)}" y2="${(zeroY-sc(v)).toFixed(1)}" stroke="var(--rule-soft)"></line>
+    <text x="${W-padR}" y="${(zeroY-sc(v)-3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--faint)">${v>0?'+':''}${(v/1000).toFixed(0)}k</text>`;
+  const step=Math.round(maxAbs/2/1000)*1000||5000;
+  document.getElementById('barChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Daily FII and DII net flows">
+    ${gl(step)}${gl(-step)}
+    <line x1="${padL}" x2="${W-padR}" y1="${zeroY}" y2="${zeroY}" stroke="var(--rule)" stroke-width="1"></line>
+    ${bars}</svg>`;
+}
+
+/* ---------- SVG: cumulative dual line + area ---------- */
+function renderCumulative(H){
+  const W=760,Ht=260,padL=44,padR=12,padT=16,padB=24, plotW=W-padL-padR, plotH=Ht-padT-padB;
+  let cf=0,cd=0; const fp=[],dp=[];
+  H.forEach(d=>{cf+=d.fii.net;cd+=d.dii.net;fp.push(cf);dp.push(cd);});
+  const all=fp.concat(dp), mn=Math.min(0,...all), mx=Math.max(0,...all), rng=(mx-mn)||1;
+  const x=i=>padL+(plotW*(i/(Math.max(1,H.length-1))));
+  const y=v=>padT+plotH*(1-(v-mn)/rng);
+  const path=arr=>arr.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
+  const area=arr=>`${path(arr)} L ${x(arr.length-1).toFixed(1)} ${y(0).toFixed(1)} L ${x(0).toFixed(1)} ${y(0).toFixed(1)} Z`;
+  const yl=v=>`<line x1="${padL}" x2="${W-padR}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="var(--rule-soft)"></line>
+    <text x="${padL-6}" y="${(y(v)+3).toFixed(1)}" text-anchor="end" font-size="8.5" fill="var(--faint)">${v>0?'+':''}${(v/1000).toFixed(0)}k</text>`;
+  const zero=y(0);
+  document.getElementById('cumChart').innerHTML=`<svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Cumulative FII and DII flows">
+    ${yl(mx*0.66)}${yl(0)}${mn<0?yl(mn*0.66):''}
+    <line x1="${padL}" x2="${W-padR}" y1="${zero.toFixed(1)}" y2="${zero.toFixed(1)}" stroke="var(--rule)"></line>
+    <path d="${area(dp)}" fill="var(--dii-dim)"></path><path d="${area(fp)}" fill="var(--fii-dim)"></path>
+    <path d="${path(dp)}" fill="none" stroke="var(--dii)" stroke-width="2"></path>
+    <path d="${path(fp)}" fill="none" stroke="var(--fii)" stroke-width="2"></path>
+    <circle cx="${x(dp.length-1).toFixed(1)}" cy="${y(dp[dp.length-1]).toFixed(1)}" r="3" fill="var(--dii)"></circle>
+    <circle cx="${x(fp.length-1).toFixed(1)}" cy="${y(fp[fp.length-1]).toFixed(1)}" r="3" fill="var(--fii)"></circle>
+    <text x="${(x(dp.length-1)-4).toFixed(1)}" y="${(y(dp[dp.length-1])-7).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--dii)">DII ${(cd/1000).toFixed(0)}k</text>
+    <text x="${(x(fp.length-1)-4).toFixed(1)}" y="${(y(fp[fp.length-1])+14).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--fii)">FII ${(cf/1000).toFixed(0)}k</text>
+  </svg>`;
+}
+
+function renderStats(s){
+  document.getElementById('stats').innerHTML=`
+   <div class="stat"><div class="v sell num">${cr(s.mFii)}</div><div class="l">FII net · ${s.monthName} MTD</div></div>
+   <div class="stat"><div class="v buy num">${cr(s.mDii)}</div><div class="l">DII net · ${s.monthName} MTD</div></div>
+   <div class="stat"><div class="v num">${s.sellerDays}/${s.win.length}</div><div class="l">FII net-seller days (last ${s.win.length})</div></div>
+   <div class="stat"><div class="v sell num">${s.streak}</div><div class="l">Current FII net-sell streak</div></div>`;
+}
+
+/* Instant paint: render immediately, then swap to live data the moment /api/fii-dii responds.
+   Hard 8s timeout so a slow source can never stall the page. */
+render(SAMPLE,true);
+(function(){
+  const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),8000);
+  fetch('/api/fii-dii?nc='+Date.now(),{signal:ctl.signal})
+    .then(r=>r.ok?r.json():Promise.reject())
+    .then(d=>{ if(d&&d.history&&d.history.length) render(d,false); })
+    .catch(()=>{})
+    .finally(()=>clearTimeout(t));
+})();
 </script>
-  <script src="/lang-switch.js" defer></script>
+<script>function toggleBlogTheme(){var c=document.documentElement.getAttribute('data-theme')||'dark';var n=c==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('hd-theme',n);}catch(e){}}</script>
+<script src="/lang-switch.js" defer></script>
 </body>
 </html>
