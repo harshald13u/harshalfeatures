@@ -1,11 +1,11 @@
 # Harshal Dasani
 
-> Business Head at INVasset PMS & AIF (Mumbai). Markets professional and writer. CFA candidate, CA Level II cleared. Featured in 1,000+ media features across 145+ publications in 8 languages. Topics: Indian equity markets, commodities, macros, geopolitics.
+> Business Head at INVasset PMS & AIF (Mumbai). Markets professional and writer. CFA candidate, CA Level II cleared. Featured in 1,000+ media features across 150+ publications in 8 languages. Topics: Indian equity markets, commodities, macros, geopolitics.
 
 ## Primary pages
 
 - [About, Harshal Dasani](https://harshaldasani.pages.dev/): personal page with bio, stats and links to social channels.
-- [Media Features Tracker](https://harshaldasani.pages.dev/tracker/): live searchable database of every article, interview and quote across 145+ publications.
+- [Media Features Tracker](https://harshaldasani.pages.dev/tracker/): live searchable database of every article, interview and quote across 150+ publications.
 - [Markets with Harshal - Blog](https://harshaldasani.pages.dev/blog/): long-form notes on stock markets, commodities, macros and geopolitics.
 - [Tools](https://harshaldasani.pages.dev/tools/): free calculators - SIP, returns / CAGR / XIRR, capital-gains tax, and an oil-to-India impact estimator.
 
