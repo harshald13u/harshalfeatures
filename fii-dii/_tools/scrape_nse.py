@@ -150,6 +150,26 @@ def build_json(d):
             "dii":last["dii"] if "buy" in last["dii"] else {"buy":0,"sell":0,"net":last["dii"]["net"]}},
         "history":H}, open(JSON_PATH,"w"), separators=(",",":"))
 
+def build_xlsx():
+    """Regenerate fii-dii/FII_DII_History.xlsx (Daily + Monthly sheets) so the Excel
+    auto-updates alongside the CSV/JSON. Skipped if openpyxl missing."""
+    try:
+        import openpyxl
+    except Exception:
+        print("openpyxl missing; xlsx not written"); return
+    XLSX=os.path.join(ROOT,"fii-dii","FII_DII_History.xlsx")
+    MCSV=os.path.join(ROOT,"fii-dii","fii_dii_monthly.csv")
+    wb=openpyxl.Workbook(); ds=wb.active; ds.title="Daily"; ds.append(HDR); ds.freeze_panes="A2"
+    with open(CSV_PATH,newline="",encoding="utf-8-sig") as fh:
+        rd=csv.DictReader(fh)
+        for r in rd: ds.append([r.get(h,"") for h in HDR])
+    if os.path.exists(MCSV):
+        ms=wb.create_sheet("Monthly")
+        with open(MCSV,newline="",encoding="utf-8-sig") as fh:
+            for row in csv.reader(fh): ms.append(row)
+        ms.freeze_panes="A2"
+    wb.save(XLSX); print("xlsx written:",XLSX)
+
 def main():
     d=read_csv(); before=len(d); fetched={}
     for name,fn in PROVIDERS:
@@ -165,7 +185,7 @@ def main():
         if dt not in d: d[dt]=best; added+=1
         elif detail_score(best)>detail_score(d[dt]): d[dt]=best; upgraded+=1
     if added or upgraded:
-        write_csv(d); build_json(d)
+        write_csv(d); build_json(d); build_xlsx()
         print(f"CSV now {len(d)} days (+{added} new, {upgraded} enriched).")
     else:
         print("No new data (nothing reachable or all already present).")
