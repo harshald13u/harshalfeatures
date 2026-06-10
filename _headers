@@ -9,6 +9,9 @@
 # HTML always revalidates so deploys go live immediately
 /
   Cache-Control: public, max-age=0, must-revalidate
+/*/
+  Cache-Control: public, max-age=0, must-revalidate
+
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 

@@ -1,7 +1,7 @@
 {
   "name": "Harshal Dasani — Media Features Tracker",
   "short_name": "HD Tracker",
-  "description": "Live dashboard of Harshal Dasani's media features — articles, interviews and quotes across 150+ publications.",
+  "description": "Live dashboard of Harshal Dasani's media features — articles, interviews and quotes across 145+ publications.",
   "start_url": "https://harshaldasani.pages.dev/tracker/",
   "display": "standalone",
   "background_color": "#05030f",
