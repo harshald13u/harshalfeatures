@@ -339,4 +339,22 @@
     <xhtml:link rel="alternate" hreflang="en-IN" href="https://harshaldasani.pages.dev/blog/posts/markets-with-harshal/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://harshaldasani.pages.dev/blog/posts/markets-with-harshal/"/>
   </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/legal/disclaimer/</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/legal/privacy/</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://harshaldasani.pages.dev/legal/terms/</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>
