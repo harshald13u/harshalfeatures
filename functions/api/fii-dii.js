@@ -73,7 +73,6 @@ export async function onRequest(context){
       const nr=await fetch('https://www.nseindia.com/api/fiidiiTradeReact',{headers:{'User-Agent':UA,'Accept':'application/json','Referer':'https://www.nseindia.com/','Cookie':cookie},signal:AbortSignal.timeout(3500),cf:fresh?{cacheTtl:0}:{cacheTtl:1800}});
       if(nr.ok){
         const arr=await nr.json(); const A=Array.isArray(arr)?arr:[];
-        if(url.searchParams.has('nsedbg')){ return new Response(JSON.stringify({grewLast:last.date, nseRaw:A.slice(0,6)},null,2),{headers:H}); }
         const pick=re=>A.find(x=>re.test(x.category||''));
         const nf=pick(/FII|FPI/i), nd=pick(/DII/i);
         if(nf){
