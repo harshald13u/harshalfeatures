@@ -382,11 +382,21 @@ function _renderCumNote(H){
 }
 function renderCumulativeForPeriod(){
   var H = HISTORY||[]; if (!H.length) return;
-  var processed = _cumAggregate(H, CUM_PERIOD);
-  /* B-cum window cap: matches the bar chart so each view shows cumulative WITHIN the window
-     (starts from 0 at the window start). Daily=last 30 days, Weekly=last 26 weeks, Monthly=last 24 months. */
-  var cap = ({daily:30, weekly:26, monthly:24})[CUM_PERIOD];
-  if (cap && processed.length > cap) processed = processed.slice(-cap);
+  /* B-cum: time-based windows that GROW with the period button so longer tab → longer history.
+     Daily = last 90 days (3 months), Weekly = last 52 weeks (~1 year), Monthly = ALL history.
+     Custom = user-picked range, no extra slicing. This guarantees the Monthly window includes
+     everything the Weekly window has, and Weekly includes everything the Daily window has —
+     so the absolute end-value should be Monthly ≥ Weekly ≥ Daily for monotonic-direction series. */
+  var H_window = H;
+  if (CUM_PERIOD === 'daily' || CUM_PERIOD === 'weekly') {
+    var dayCutoff = (CUM_PERIOD === 'daily') ? 90 : 365;
+    var anchor = new Date(H[H.length-1].date + 'T00:00:00');
+    var floor = new Date(anchor); floor.setDate(floor.getDate() - dayCutoff);
+    var floorStr = floor.toISOString().slice(0,10);
+    H_window = H.filter(function(d){ return d.date >= floorStr; });
+  }
+  /* CUM_PERIOD === 'monthly' or 'custom' uses full H_window = H */
+  var processed = _cumAggregate(H_window, CUM_PERIOD);
   processed = _cumFilter(processed);
   if (!processed.length) {
     document.getElementById('cumChart').innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--muted);font-size:14px">No data in this range.</div>';
