@@ -29,10 +29,10 @@
 <style>
 :root{ --bg:#0e0c0a; --bg-2:#15110d; --ink:#ece4d3; --ink-2:#c9c0ad; --muted:#8a8273; --faint:#807866;
   --rule:rgba(236,228,211,0.10); --rule-soft:rgba(236,228,211,0.06); --accent:#d4a64a; --accent-soft:rgba(212,166,74,0.08);
-  --fii:#e0795f; --dii:#5fbf8a; --fii-dim:rgba(224,121,95,0.18); --dii-dim:rgba(95,191,138,0.18); --navy-bar:#3a6db0; }
+  --fii:#d4a64a; --dii:#ece4d3; --fii-dim:rgba(212,166,74,0.18); --dii-dim:rgba(236,228,211,0.10); --navy-bar:#3a6db0; }
 html[data-theme="light"]{ --bg:#ebe5d7; --bg-2:#ddd4c1; --ink:#1a3458; --ink-2:#3a527a; --muted:#54687f; --faint:#5f7790;
   --rule:rgba(26,52,88,0.14); --rule-soft:rgba(26,52,88,0.07); --accent:#b8852b; --accent-soft:rgba(184,133,43,0.10);
-  --fii:#bb4a32; --dii:#2f7d56; --fii-dim:rgba(187,74,50,0.14); --dii-dim:rgba(47,125,86,0.14); --navy-bar:#27548a; }
+  --fii:#b8852b; --dii:#1a3458; --fii-dim:rgba(184,133,43,0.16); --dii-dim:rgba(26,52,88,0.12); --navy-bar:#27548a; }
 *{box-sizing:border-box;} html,body{margin:0;padding:0;} html{-webkit-font-smoothing:antialiased;background:var(--bg);}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink-2);
   min-height:100vh;line-height:1.55;font-feature-settings:"ss01","cv11";overflow-x:hidden;}
@@ -415,6 +415,8 @@ function renderCumulative(H){
   }
   /* dedupe consecutive (small datasets) */
   _tickIdx = _tickIdx.filter(function(v,i,a){ return a.indexOf(v) === i; });
+  /* drop the rightmost tick so it doesn't collide with the end-of-line DII/FII labels */
+  if (_tickIdx.length > 1) _tickIdx = _tickIdx.slice(0, -1);
   var xTicks = '';
   _tickIdx.forEach(function(i){
     var lbl = _fmtXTick(H[i].date, _period);
@@ -434,8 +436,8 @@ function renderCumulative(H){
     <path d="${path(fp)}" fill="none" stroke="var(--fii)" stroke-width="2"></path>
     <circle cx="${x(n-1).toFixed(1)}" cy="${y(dp[n-1]).toFixed(1)}" r="3" fill="var(--dii)"></circle>
     <circle cx="${x(n-1).toFixed(1)}" cy="${y(fp[n-1]).toFixed(1)}" r="3" fill="var(--fii)"></circle>
-    <text x="${(x(n-1)-4).toFixed(1)}" y="${(y(dp[n-1])-7).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--dii)">DII ${(cd/1000).toFixed(0)}k</text>
-    <text x="${(x(n-1)-4).toFixed(1)}" y="${(y(fp[n-1])+14).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--fii)">FII ${(cf/1000).toFixed(0)}k</text>
+    <text x="${(x(n-1)-4).toFixed(1)}" y="${(dp[n-1] < 0 ? y(dp[n-1])+14 : y(dp[n-1])-7).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--dii)">DII ${(cd/1000).toFixed(0)}k</text>
+    <text x="${(x(n-1)-4).toFixed(1)}" y="${(fp[n-1] < 0 ? y(fp[n-1])-7 : y(fp[n-1])+14).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--fii)">FII ${(cf/1000).toFixed(0)}k</text>
     <g id="cumCross" style="display:none">
       <line id="cumCrossLine" y1="${padT}" y2="${(padT+plotH).toFixed(1)}" stroke="var(--muted)" stroke-dasharray="3 3" stroke-opacity="0.6"></line>
       <circle id="cumDotD" r="4" fill="var(--dii)" stroke="var(--bg-2)" stroke-width="2"></circle>
