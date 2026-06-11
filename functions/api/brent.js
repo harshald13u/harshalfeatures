@@ -58,5 +58,11 @@ export async function onRequest(context) {
     }
   } catch (e) { /* fall through */ }
 
+  // 3) Last-known-good committed snapshot (refreshed daily) so the price is never blank
+  try {
+    const r = await fetch('https://harshaldasani.pages.dev/data/brent-snapshot.json', { cf: { cacheTtl: 300 } });
+    if (r.ok) { const j = await r.json(); if (j && typeof j.price === 'number') { j.stale = true; j.source = (j.source||'Brent') + ' (cached backup)'; return new Response(JSON.stringify(j), { headers: H }); } }
+  } catch (e) { /* fall through */ }
+
   return new Response(JSON.stringify({ error: 'unavailable' }), { status: 502, headers: H });
 }

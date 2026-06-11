@@ -129,7 +129,10 @@ export async function onRequest(context){
   const history=dates.map((dt,i)=>{ const r=byDate.get(dt); return {date:dt, fii:{net:r.f.net}, dii:{net:r.d.net}, status: i===dates.length-1?'provisional':'final'}; });
 
   if(debug) return new Response(JSON.stringify({today, sources:dbg, used:sourcesUsed, latest:dates[dates.length-1]||null, count:history.length},null,2),{headers:H});
-  if(!history.length) return new Response(JSON.stringify({ lastUpdated:new Date().toISOString(), latest:null, history:[], error:'all sources failed', sources:dbg }),{status:200,headers:H});
+  if(!history.length){
+    try{ const r=await fetch('https://harshaldasani.pages.dev/fii-dii/history.json',{cf:{cacheTtl:300}}); if(r.ok){ const j=await r.json(); if(j&&Array.isArray(j.history)&&j.history.length){ j.stale=true; return new Response(JSON.stringify(j),{headers:H}); } } }catch(e){}
+    return new Response(JSON.stringify({ lastUpdated:new Date().toISOString(), latest:null, history:[], error:'all sources failed', sources:dbg }),{status:200,headers:H});
+  }
 
   const last=byDate.get(dates[dates.length-1]);
   const body={ lastUpdated:new Date().toISOString(),

@@ -32,6 +32,13 @@ async function cg(report, month, year, fy, cat, fresh, ttl){
   return (j && j.reportTableData) || [];
 }
 
+async function ipoSnapshot(H){
+  try{
+    const r=await fetch('https://harshaldasani.pages.dev/ipo/ipo-snapshot.json',{cf:{cacheTtl:300}});
+    if(r.ok){ const j=await r.json(); if(j&&Array.isArray(j.ipos)&&j.ipos.length){ j.stale=true; j.note='last-known-good backup (live sources unavailable)'; return new Response(JSON.stringify(j),{headers:H}); } }
+  }catch(e){}
+  return null;
+}
 export async function onRequest(context){
   const url = new URL(context.request.url);
   const fresh = url.searchParams.has('fresh');
@@ -150,10 +157,12 @@ export async function onRequest(context){
     const q = want.slice();
     await Promise.all(Array.from({length:3}, async () => { while(q.length){ const it=q.shift(); await lotFor(it); } }));
     for(const i of ipos){ delete i.cgid; delete i._ts; }
+    if(!ipos.length){ const fb=await ipoSnapshot(H); if(fb) return fb; }
     const body = { lastUpdated:new Date().toISOString(), source:'Compiled from BSE & NSE public data', ipos };
     if(fresh) body._debug = { listMain:listMain.length, listSme:listSme.length, subMain:subMain.length, subSme:subSme.length, anyOpen, subTtl };
     return new Response(JSON.stringify(body), { headers:H });
   } catch(e){
+    const fb=await ipoSnapshot(H); if(fb) return fb;
     return new Response(JSON.stringify({ lastUpdated:new Date().toISOString(), ipos:[], error:String(e&&e.message||e) }), { status:200, headers:H });
   }
 }
