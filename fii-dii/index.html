@@ -27,7 +27,7 @@
 <link rel="manifest" href="../manifest.json">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <style>
-:root{ --bg:#0e0c0a; --bg-2:#15110d; --ink:#ece4d3; --ink-2:#c9c0ad; --muted:#8a8273; --faint:#807866;
+:root{color-scheme:dark light; --bg:#0e0c0a; --bg-2:#15110d; --ink:#ece4d3; --ink-2:#c9c0ad; --muted:#8a8273; --faint:#807866;
   --rule:rgba(236,228,211,0.10); --rule-soft:rgba(236,228,211,0.06); --accent:#d4a64a; --accent-soft:rgba(212,166,74,0.08);
   --fii:#d4a64a; --dii:#ece4d3; --fii-dim:rgba(212,166,74,0.18); --dii-dim:rgba(236,228,211,0.10); --navy-bar:#3a6db0; }
 html[data-theme="light"]{ --bg:#ebe5d7; --bg-2:#ddd4c1; --ink:#1a3458; --ink-2:#3a527a; --muted:#54687f; --faint:#5f7790;
@@ -165,7 +165,7 @@ svg{display:block;width:100%;height:auto;} text{font-family:'Inter',sans-serif;}
       <div id="cumCustom" style="display:flex;align-items:center;gap:8px;margin-left:auto;font-size:12px;color:var(--muted);flex-wrap:wrap">
         <label>From <input type="date" id="cumFrom" style="background:transparent;border:1px solid var(--rule);color:var(--ink);font:inherit;padding:4px 8px;border-radius:6px;margin-left:4px"></label>
         <label>To <input type="date" id="cumTo" style="background:transparent;border:1px solid var(--rule);color:var(--ink);font:inherit;padding:4px 8px;border-radius:6px;margin-left:4px"></label>
-        <button type="button" id="cumApply" style="background:var(--accent);color:#1a1206;border:0;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer">Apply</button>
+        <button type="button" id="cumApply" style="background:var(--accent);color:#1a1206;border:0;padding:10px 16px;min-height:44px;border-radius:6px;font-weight:700;cursor:pointer">Apply</button>
       </div>
     </div>
     <div class="chart-wrap" style="position:relative"><div id="cumChart"></div><div class="chart-tip" id="cumTip" hidden></div></div>
@@ -236,7 +236,7 @@ function render(data,isSample){
   let streak=0; for(let i=mtd.length-1;i>=0;i--){if(mtd[i].fii.net<0)streak++;else break;}
   const monthName=new Date((H[H.length-1]||{}).date||Date.now()).toLocaleDateString('en-IN',{month:'long'});
   document.getElementById('tug').innerHTML=`<h3>The tug-of-war</h3>
-    <p>So far in ${monthName} (${mtd.length} session${mtd.length===1?'':'s'}), foreign investors were net sellers on <b>${sellerDays}</b> of them, while domestic institutions kept buying. <b>FII have ${mFii<0?'pulled out':'added'} ${cr(mFii).replace('+','').replace('−','−')}</b> while <b>DII have ${mDii>=0?'absorbed':'sold'} ${cr(mDii).replace('+','+')}</b> — the classic domestic-vs-foreign standoff.</p>`;
+    <p>So far in ${monthName} (${mtd.length} session${mtd.length===1?'':'s'}), foreign investors were net sellers on <b>${sellerDays}</b> of them, while domestic institutions kept buying. <b>FII have ${mFii<0?'pulled out':'added'} ${cr(mFii).replace(/^[+−]/,'')}</b> while <b>DII have ${mDii>=0?'absorbed':'sold'} ${cr(mDii).replace('+','+')}</b> — the classic domestic-vs-foreign standoff.</p>`;
 
   drawBars();
   renderStats({mFii,mDii,sellerDays,mtdLen:mtd.length,streak,monthName});
@@ -270,7 +270,7 @@ function drawBars(){
   /* daily/weekly use the daily series; monthly/yearly use the 20-year monthly series */
   var src = (PERIOD==='monthly'||PERIOD==='yearly') && MONTHLY.length ? MONTHLY : HISTORY;
   let rows=aggregate(src,PERIOD);
-  const cap={daily:30,weekly:26,monthly:36,yearly:30}[PERIOD]||30;
+  const cap={daily:30,weekly:26,monthly:24,yearly:12}[PERIOD]||30;
   if(rows.length>cap) rows=rows.slice(-cap);
   renderBars(rows,PERIOD);
 }
@@ -355,7 +355,9 @@ function _cumAggregate(H, period){
     if (period==='weekly') {
       var day = (dt.getDay()+6)%7; /* Mon=0..Sun=6 */
       var monday = new Date(dt); monday.setDate(monday.getDate()-day);
-      key = monday.toISOString().slice(0,10);
+      /* use local date parts to avoid UTC shift in IST (toISOString rolls back a day) */
+      var yy = monday.getFullYear(), mm = String(monday.getMonth()+1).padStart(2,'0'), dd = String(monday.getDate()).padStart(2,'0');
+      key = yy + '-' + mm + '-' + dd;
     } else /* monthly */ {
       key = d.date.slice(0,7)+'-01';
     }
@@ -393,7 +395,7 @@ function renderCumulativeForPeriod(){
     var anchor = new Date(H[H.length-1].date + 'T00:00:00');
     var floor = new Date(anchor); floor.setDate(floor.getDate() - dayCutoff);
     var floorStr = floor.toISOString().slice(0,10);
-    H_window = H.filter(function(d){ return d.date >= floorStr; });
+    H_window = H.filter(function(d){ return d.date > floorStr; });
   }
   /* CUM_PERIOD === 'monthly' or 'custom' uses full H_window = H */
   var processed = _cumAggregate(H_window, CUM_PERIOD);
@@ -461,8 +463,8 @@ function renderCumulative(H){
     <path d="${path(fp)}" fill="none" stroke="var(--fii)" stroke-width="2"></path>
     <circle cx="${x(n-1).toFixed(1)}" cy="${y(dp[n-1]).toFixed(1)}" r="3" fill="var(--dii)"></circle>
     <circle cx="${x(n-1).toFixed(1)}" cy="${y(fp[n-1]).toFixed(1)}" r="3" fill="var(--fii)"></circle>
-    <text x="${(x(n-1)+6).toFixed(1)}" y="${(y(dp[n-1])+4).toFixed(1)}" text-anchor="start" font-size="10" font-weight="700" fill="var(--dii)" stroke="var(--bg)" stroke-width="3" paint-order="stroke">DII ${(cd/1000).toFixed(0)}k</text>
-    <text x="${(x(n-1)+6).toFixed(1)}" y="${(y(fp[n-1])+4).toFixed(1)}" text-anchor="start" font-size="10" font-weight="700" fill="var(--fii)" stroke="var(--bg)" stroke-width="3" paint-order="stroke">FII ${(cf/1000).toFixed(0)}k</text>
+    <text x="${(x(n-1)+6).toFixed(1)}" y="${(y(dp[n-1])+4).toFixed(1)}" text-anchor="start" font-size="10" font-weight="700" fill="var(--dii)" stroke="var(--bg)" stroke-width="3" paint-order="stroke">DII ${fmtINR(cd).replace('+','')}</text>
+    <text x="${(x(n-1)+6).toFixed(1)}" y="${(y(fp[n-1])+4).toFixed(1)}" text-anchor="start" font-size="10" font-weight="700" fill="var(--fii)" stroke="var(--bg)" stroke-width="3" paint-order="stroke">FII ${fmtINR(cf).replace('+','')}</text>
     <g id="cumCross" style="display:none">
       <line id="cumCrossLine" y1="${padT}" y2="${(padT+plotH).toFixed(1)}" stroke="var(--muted)" stroke-dasharray="3 3" stroke-opacity="0.6"></line>
       <circle id="cumDotD" r="4" fill="var(--dii)" stroke="var(--bg-2)" stroke-width="2"></circle>
@@ -556,7 +558,7 @@ document.getElementById('periodSeg').addEventListener('click',function(e){
         render(d,false);
       }
     })
-    .catch(()=>{})
+    .catch(function(e){console.warn('[fii-dii] fetch failed',e);})
     .finally(()=>{
       /* 2) overlay /api/fii-dii ONLY to refresh 'latest' + append newer days; do NOT overwrite the long history */
       const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),8000);
@@ -581,7 +583,7 @@ document.getElementById('periodSeg').addEventListener('click',function(e){
           if(live.fpi) merged.fpi = live.fpi;
           render(merged,false);
         })
-        .catch(()=>{}).finally(()=>clearTimeout(t));
+        .catch(function(e){console.warn('[fii-dii] fetch failed',e);}).finally(()=>clearTimeout(t));
     });
 })();
 </script>
