@@ -21,7 +21,7 @@ export async function onRequest(context) {
     try {
       const r = await fetch(
         'https://' + host + '.finance.yahoo.com/v8/finance/chart/BZ=F?interval=1d&range=1d' + bust,
-        { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' }, cf: cfOpt }
+        { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' }, cf: cfOpt, signal: AbortSignal.timeout(4500) }
       );
       if (r.ok) {
         const j = await r.json();
@@ -41,7 +41,7 @@ export async function onRequest(context) {
 
   // 2) Stooq fallback — Brent continuous (cb.f), CSV: Symbol,Date,Time,Close
   try {
-    const r = await fetch('https://stooq.com/q/l/?s=cb.f&f=sd2t2c&h&e=csv' + bust, { cf: cfOpt });
+    const r = await fetch('https://stooq.com/q/l/?s=cb.f&f=sd2t2c&h&e=csv' + bust, { cf: cfOpt, signal: AbortSignal.timeout(4500) });
     if (r.ok) {
       const rows = (await r.text()).trim().split('\n');
       if (rows.length >= 2) {

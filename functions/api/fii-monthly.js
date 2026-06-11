@@ -22,20 +22,25 @@ export async function onRequest(context){
   const H = { 'content-type':'application/json; charset=utf-8','access-control-allow-origin':'*',
     'cache-control': fresh?'no-store':'public, max-age=43200, s-maxage=43200' };
   const tried=[];
-  for(const u of SOURCES){
-    try{
-      const g = await grab(u, fresh);
-      tried.push({url:u, status:g.status, len:g.html.length});
-      if(!g.ok || g.html.length<500) continue;
-      const year = detectYear(g.html);
-      const months = parseNSDL(g.html, year);
-      if(debug){
-        return new Response(JSON.stringify({debug:true, picked:u, status:g.status, len:g.html.length,
-          detectedYear:year, count:months.length, months}, null, 2), {headers:H});
-      }
-      if(months.length) return new Response(JSON.stringify({source:u, fetchedAt:new Date().toISOString(), detectedYear:year, months}), {headers:H});
-    }catch(e){ tried.push({url:u, error:String(e)}); }
+  async function scan(useFresh){
+    for(const u of SOURCES){
+      try{
+        const g = await grab(u, useFresh);
+        tried.push({url:u, status:g.status, len:g.html.length, fresh:useFresh});
+        if(!g.ok || g.html.length<500) continue;
+        const year = detectYear(g.html);
+        const months = parseNSDL(g.html, year);
+        if(debug) return {debug:true, picked:u, status:g.status, len:g.html.length, detectedYear:year, count:months.length, months, freshPass:useFresh};
+        if(months.length) return {source:u, fetchedAt:new Date().toISOString(), detectedYear:year, months, stale: !useFresh && fresh};
+      }catch(e){ tried.push({url:u, error:String(e), fresh:useFresh}); }
+    }
+    return null;
   }
+  // try the requested freshness first; if a fresh request fails (NSDL slow), fall back to the
+  // edge-cached copy rather than erroring — the monthly updater calls ?fresh=1 and must not break.
+  let res = await scan(fresh);
+  if(!res && fresh) res = await scan(false);
+  if(res) return new Response(JSON.stringify(res, debug?null:undefined, debug?2:undefined), {headers:H});
   return new Response(JSON.stringify({error:'NSDL unreachable/unparsed from edge', tried}), {status:502, headers:H});
 }
 const MON={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
