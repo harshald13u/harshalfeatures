@@ -162,7 +162,7 @@ svg{display:block;width:100%;height:auto;} text{font-family:'Inter',sans-serif;}
       <button type="button" data-cp="weekly" role="tab" aria-selected="false">Weekly</button>
       <button type="button" data-cp="monthly" role="tab" aria-selected="false">Monthly</button>
       <button type="button" data-cp="custom" role="tab" aria-selected="false">Custom range</button>
-      <div id="cumCustom" style="display:none;align-items:center;gap:8px;margin-left:auto;font-size:12px;color:var(--muted)">
+      <div id="cumCustom" style="display:flex;align-items:center;gap:8px;margin-left:auto;font-size:12px;color:var(--muted);flex-wrap:wrap">
         <label>From <input type="date" id="cumFrom" style="background:transparent;border:1px solid var(--rule);color:var(--ink);font:inherit;padding:4px 8px;border-radius:6px;margin-left:4px"></label>
         <label>To <input type="date" id="cumTo" style="background:transparent;border:1px solid var(--rule);color:var(--ink);font:inherit;padding:4px 8px;border-radius:6px;margin-left:4px"></label>
         <button type="button" id="cumApply" style="background:var(--accent);color:#1a1206;border:0;padding:6px 12px;border-radius:6px;font-weight:700;cursor:pointer">Apply</button>
@@ -204,6 +204,17 @@ function render(data,isSample){
   document.getElementById('ribbon').classList.toggle('hide',!isSample);
   const H=data.history||[], L=data.latest||{};
   HISTORY=H;
+  /* Initialize Custom range pickers with dataset bounds once data lands */
+  try {
+    var _ff = document.getElementById('cumFrom'), _tt = document.getElementById('cumTo');
+    if (_ff && H && H.length) {
+      var _lo = H[0].date, _hi = H[H.length-1].date;
+      if (!_ff.value) _ff.value = _lo;
+      if (!_tt.value) _tt.value = _hi;
+      _ff.min = _lo; _ff.max = _hi;
+      _tt.min = _lo; _tt.max = _hi;
+    }
+  } catch(_){}
   if (data.monthly && data.monthly.length) MONTHLY=data.monthly;
   const fiiNet=L.fii?L.fii.net:(H.length?H[H.length-1].fii.net:0);
   const diiNet=L.dii?L.dii.net:(H.length?H[H.length-1].dii.net:0);
@@ -382,7 +393,7 @@ function renderCumulativeForPeriod(){
   _renderCumNote(processed);
 }
 function renderCumulative(H){
-  const W=760,Ht=260,padL=44,padR=12,padT=16,padB=24, plotW=W-padL-padR, plotH=Ht-padT-padB;
+  const W=760,Ht=260,padL=44,padR=58,padT=16,padB=24, plotW=W-padL-padR, plotH=Ht-padT-padB;
   let cf=0,cd=0; const fp=[],dp=[];
   H.forEach(d=>{cf+=d.fii.net;cd+=d.dii.net;fp.push(cf);dp.push(cd);});
   const all=fp.concat(dp), mn=Math.min(0,...all), mx=Math.max(0,...all), rng=(mx-mn)||1;
@@ -436,8 +447,8 @@ function renderCumulative(H){
     <path d="${path(fp)}" fill="none" stroke="var(--fii)" stroke-width="2"></path>
     <circle cx="${x(n-1).toFixed(1)}" cy="${y(dp[n-1]).toFixed(1)}" r="3" fill="var(--dii)"></circle>
     <circle cx="${x(n-1).toFixed(1)}" cy="${y(fp[n-1]).toFixed(1)}" r="3" fill="var(--fii)"></circle>
-    <text x="${(x(n-1)-4).toFixed(1)}" y="${(dp[n-1] < 0 ? y(dp[n-1])+14 : y(dp[n-1])-7).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--dii)">DII ${(cd/1000).toFixed(0)}k</text>
-    <text x="${(x(n-1)-4).toFixed(1)}" y="${(fp[n-1] < 0 ? y(fp[n-1])-7 : y(fp[n-1])+14).toFixed(1)}" text-anchor="end" font-size="10" font-weight="700" fill="var(--fii)">FII ${(cf/1000).toFixed(0)}k</text>
+    <text x="${(x(n-1)+6).toFixed(1)}" y="${(y(dp[n-1])+4).toFixed(1)}" text-anchor="start" font-size="10" font-weight="700" fill="var(--dii)" stroke="var(--bg)" stroke-width="3" paint-order="stroke">DII ${(cd/1000).toFixed(0)}k</text>
+    <text x="${(x(n-1)+6).toFixed(1)}" y="${(y(fp[n-1])+4).toFixed(1)}" text-anchor="start" font-size="10" font-weight="700" fill="var(--fii)" stroke="var(--bg)" stroke-width="3" paint-order="stroke">FII ${(cf/1000).toFixed(0)}k</text>
     <g id="cumCross" style="display:none">
       <line id="cumCrossLine" y1="${padT}" y2="${(padT+plotH).toFixed(1)}" stroke="var(--muted)" stroke-dasharray="3 3" stroke-opacity="0.6"></line>
       <circle id="cumDotD" r="4" fill="var(--dii)" stroke="var(--bg-2)" stroke-width="2"></circle>
@@ -495,8 +506,7 @@ render(SAMPLE,true);
     seg.querySelectorAll('button[data-cp]').forEach(function(x){
       var on = (x===b); x.classList.toggle('active', on); x.setAttribute('aria-selected', on?'true':'false');
     });
-    var cust = document.getElementById('cumCustom');
-    if (cust) cust.style.display = (CUM_PERIOD==='custom') ? 'flex' : 'none';
+    /* cumCustom is now permanently visible — its values only take effect when 'Custom range' is the active period */
     /* set default from/to to dataset bounds when first opening custom */
     if (CUM_PERIOD==='custom' && HISTORY && HISTORY.length) {
       var ff = document.getElementById('cumFrom'), tt = document.getElementById('cumTo');
