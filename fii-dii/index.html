@@ -404,17 +404,41 @@ document.getElementById('periodSeg').addEventListener('click',function(e){
   drawBars();
 });
 (function(){
-  /* 1) OUR own committed dataset first — independent of any live feed */
+  /* 1) OUR own committed dataset first — full ~548 days back to 2024-01 */
+  let _baseData = null;
   fetch('history.json?nc='+Date.now())
     .then(r=>r.ok?r.json():Promise.reject())
-    .then(d=>{ if(d&&d.history&&d.history.length) render(d,false); })
+    .then(d=>{
+      if(d&&d.history&&d.history.length){
+        _baseData = d;
+        render(d,false);
+      }
+    })
     .catch(()=>{})
     .finally(()=>{
-      /* 2) then overlay today's freshest from the live API if reachable */
+      /* 2) overlay /api/fii-dii ONLY to refresh 'latest' + append newer days; do NOT overwrite the long history */
       const ctl=new AbortController(); const t=setTimeout(()=>ctl.abort(),8000);
       fetch('/api/fii-dii?nc='+Date.now(),{signal:ctl.signal})
         .then(r=>r.ok?r.json():Promise.reject())
-        .then(d=>{ if(d&&d.history&&d.history.length) render(d,false); })
+        .then(live=>{
+          if(!live) return;
+          if(!_baseData){
+            /* fallback: history.json failed but live API succeeded — use whatever it has */
+            if(live.history&&live.history.length) render(live,false);
+            return;
+          }
+          /* merge: keep full base history, append any newer dated records, refresh latest */
+          const merged = Object.assign({}, _baseData);
+          if(live.lastUpdated) merged.lastUpdated = live.lastUpdated;
+          if(live.latest) merged.latest = live.latest;
+          if(live.history && live.history.length){
+            const lastBaseDate = _baseData.history[_baseData.history.length-1].date;
+            const newer = live.history.filter(r=>r.date > lastBaseDate);
+            if(newer.length) merged.history = _baseData.history.concat(newer);
+          }
+          if(live.fpi) merged.fpi = live.fpi;
+          render(merged,false);
+        })
         .catch(()=>{}).finally(()=>clearTimeout(t));
     });
 })();
