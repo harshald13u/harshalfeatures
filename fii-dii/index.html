@@ -398,9 +398,37 @@ function renderCumulative(H){
   for(let i=0;i<n;i++){ xs.push(x(i)); dys.push(y(dp[i])); fys.push(y(fp[i]));
     const hx=Math.max(padL, x(i)-step/2);
     hits+=`<rect class="cum-hit" x="${hx.toFixed(1)}" y="${padT}" width="${Math.min(step, W-padR-hx).toFixed(1)}" height="${plotH.toFixed(1)}" fill="transparent" data-i="${i}"></rect>`; }
+  /* X-axis tick labels (B-cum: month labels under the chart) */
+  function _fmtXTick(d, period){
+    var dt = new Date(d+'T00:00:00');
+    var mo = dt.toLocaleString('en-IN',{month:'short'});
+    var yr = String(dt.getFullYear()).slice(-2);
+    if (period==='monthly' || period==='custom') return mo + ' ' + yr;
+    if (period==='weekly') return dt.getDate() + ' ' + mo;
+    return dt.getDate() + ' ' + mo; /* daily */
+  }
+  var _period = (typeof CUM_PERIOD === 'string') ? CUM_PERIOD : 'daily';
+  var _targetTicks = Math.min(n, 8);
+  var _tickIdx = [];
+  for (var ti = 0; ti < _targetTicks; ti++) {
+    _tickIdx.push(Math.round(ti * (n-1) / Math.max(1, _targetTicks-1)));
+  }
+  /* dedupe consecutive (small datasets) */
+  _tickIdx = _tickIdx.filter(function(v,i,a){ return a.indexOf(v) === i; });
+  var xTicks = '';
+  _tickIdx.forEach(function(i){
+    var lbl = _fmtXTick(H[i].date, _period);
+    xTicks += '<text x="' + x(i).toFixed(1) + '" y="' + (padT + plotH + 14).toFixed(1) + '" text-anchor="middle" font-size="9" fill="var(--faint)">' + lbl + '</text>';
+  });
+  /* small tick marks at the baseline */
+  var xTickMarks = '';
+  _tickIdx.forEach(function(i){
+    xTickMarks += '<line x1="' + x(i).toFixed(1) + '" x2="' + x(i).toFixed(1) + '" y1="' + (padT + plotH).toFixed(1) + '" y2="' + (padT + plotH + 3).toFixed(1) + '" stroke="var(--rule)"></line>';
+  });
   document.getElementById('cumChart').innerHTML=`<svg viewBox="0 0 ${W} ${Ht}" role="img" aria-label="Cumulative FII and DII flows">
     ${yl(mx*0.66)}${yl(0)}${mn<0?yl(mn*0.66):''}
     <line x1="${padL}" x2="${W-padR}" y1="${zero.toFixed(1)}" y2="${zero.toFixed(1)}" stroke="var(--rule)"></line>
+    ${xTickMarks}${xTicks}
     <path d="${area(dp)}" fill="var(--dii-dim)"></path><path d="${area(fp)}" fill="var(--fii-dim)"></path>
     <path d="${path(dp)}" fill="none" stroke="var(--dii)" stroke-width="2"></path>
     <path d="${path(fp)}" fill="none" stroke="var(--fii)" stroke-width="2"></path>
