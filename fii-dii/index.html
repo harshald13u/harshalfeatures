@@ -383,6 +383,10 @@ function _renderCumNote(H){
 function renderCumulativeForPeriod(){
   var H = HISTORY||[]; if (!H.length) return;
   var processed = _cumAggregate(H, CUM_PERIOD);
+  /* B-cum window cap: matches the bar chart so each view shows cumulative WITHIN the window
+     (starts from 0 at the window start). Daily=last 30 days, Weekly=last 26 weeks, Monthly=last 24 months. */
+  var cap = ({daily:30, weekly:26, monthly:24})[CUM_PERIOD];
+  if (cap && processed.length > cap) processed = processed.slice(-cap);
   processed = _cumFilter(processed);
   if (!processed.length) {
     document.getElementById('cumChart').innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--muted);font-size:14px">No data in this range.</div>';
