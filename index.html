@@ -559,17 +559,15 @@ html[data-theme="light"] .hero-tags a {
  content: '';
  position: absolute; inset: 0;
  pointer-events: none; z-index: 2;
- box-shadow:
- inset 0 0 80px 18px var(--bg),
- inset 0 0 30px 4px var(--bg);
+ box-shadow: none;          /* no edge fade — clean photo in both themes */
  border-radius: inherit;
 }
 .hero-photo::after {
  content: '';
  position: absolute; inset: -40px;
  pointer-events: none; z-index: -1;
- background: radial-gradient(ellipse 70% 80% at 50% 50%, transparent 35%, var(--bg) 85%);
- filter: blur(28px);
+ background: none;          /* no blurred halo */
+ filter: none;
 }
 .hero-photo img {
  width: 100%; height: 100%;
