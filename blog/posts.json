@@ -21,6 +21,16 @@
       "publishAt": "2026-08-17T14:00:00+05:30"
     },
     {
+      "slug": "nvidia-journey-in-numbers",
+      "title": "NVIDIA’s journey, in numbers",
+      "topic": "stock-market",
+      "date": "2026-08-11",
+      "excerpt": "From three engineers at a Denny’s to a five-trillion-dollar company, how NVIDIA’s most ridiculed bet became the most valuable software platform in the world.",
+      "image": "https://harshaldasani.pages.dev/blog/posts/nvidia-journey-in-numbers/cover.jpg",
+      "url": "https://harshaldasani.pages.dev/blog/posts/nvidia-journey-in-numbers/",
+      "publishAt": "2026-08-11T09:15:00+05:30"
+    },
+    {
       "slug": "astra-microwave-journey-in-numbers",
       "title": "Astra Microwave Products’ journey, in numbers",
       "topic": "stock-market",
@@ -564,16 +574,6 @@
       "excerpt": "John Jacob Astor, John D. Rockefeller, Elon Musk, three men who each built the infrastructure of their age, and the one pattern that links a fur trader, an oil refiner and a rocket builder.",
       "image": "https://harshaldasani.pages.dev/blog/posts/first-millionaire-billionaire-trillionaire/cover.jpg",
       "url": "https://harshaldasani.pages.dev/blog/posts/first-millionaire-billionaire-trillionaire/"
-    },
-    {
-      "slug": "nvidia-journey-in-numbers",
-      "title": "NVIDIA’s journey, in numbers",
-      "topic": "stock-market",
-      "date": "2026-08-11",
-      "excerpt": "From three engineers at a Denny’s to a five-trillion-dollar company, how NVIDIA’s most ridiculed bet became the most valuable software platform in the world.",
-      "image": "https://harshaldasani.pages.dev/blog/posts/nvidia-journey-in-numbers/cover.jpg",
-      "url": "https://harshaldasani.pages.dev/blog/posts/nvidia-journey-in-numbers/",
-      "publishAt": "2026-08-11T09:15:00+05:30"
     },
     {
       "slug": "rupee-usd-inr-2026-why-falling-where-it-stops",

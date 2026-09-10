@@ -9,9 +9,23 @@
 - [Markets with Harshal - Blog](https://harshaldasani.pages.dev/blog/): long-form notes on stock markets, commodities, macros and geopolitics.
 - [Tools](https://harshaldasani.pages.dev/tools/): free calculators - SIP, returns / CAGR / XIRR, capital-gains tax, and an oil-to-India impact estimator.
 
-## Blog posts
+## Blog posts (newest first; full list at https://harshaldasani.pages.dev/blog/posts.json and the RSS feed https://harshaldasani.pages.dev/blog/feed.xml)
 
-- [The RBI's June 2026 pause that ends the easing cycle](https://harshaldasani.pages.dev/blog/posts/rbi-mpc-june-2026-rate-pause/)
-- [The Oil Shock and India: crude, the rupee and inflation](https://harshaldasani.pages.dev/blog/posts/crude-oil-india-markets-rupee-inflation/)
-- [Indian IT Stocks: what is actually breaking](https://harshaldasani.pages.dev/blog/posts/indian-it-stocks-whats-breaking/)
-- [The 2026 Iran war explained](https://harshaldasani.pages.dev/blog/posts/iran-israel-us-war-2026-explained/)
+- [Eight superstar portfolios, 227 holdings, ₹29,878 crore: what the sheet actually shows](https://harshaldasani.pages.dev/blog/posts/superstar-investor-portfolios-decoded/)
+- [Gold and silver just flipped their trend. Here are the levels that matter](https://harshaldasani.pages.dev/blog/posts/gold-and-silver-just-flipped-their-trend/)
+- [NVIDIA’s journey, in numbers](https://harshaldasani.pages.dev/blog/posts/nvidia-journey-in-numbers/)
+- [Astra Microwave Products’ journey, in numbers](https://harshaldasani.pages.dev/blog/posts/astra-microwave-journey-in-numbers/)
+- [Sai Life Sciences’ journey, in numbers](https://harshaldasani.pages.dev/blog/posts/sai-life-sciences-journey-in-numbers/)
+- [Shriram Pistons and Rings’ journey, in numbers](https://harshaldasani.pages.dev/blog/posts/shriram-pistons-journey-in-numbers/)
+- [Aditya Birla Sun Life AMC’s journey, in numbers](https://harshaldasani.pages.dev/blog/posts/aditya-birla-sun-life-amc-journey-in-numbers/)
+- [Nippon Life India Asset Management’s journey, in numbers](https://harshaldasani.pages.dev/blog/posts/nippon-life-india-amc-journey-in-numbers/)
+- [Craftsman Automation’s journey, in numbers](https://harshaldasani.pages.dev/blog/posts/craftsman-automation-journey-in-numbers/)
+- [Laurus Labs’ journey, in numbers](https://harshaldasani.pages.dev/blog/posts/laurus-labs-journey-in-numbers/)
+- [Federal Bank’s journey, in numbers](https://harshaldasani.pages.dev/blog/posts/federal-bank-journey-in-numbers/)
+- [Reliance Industries’ journey, in numbers](https://harshaldasani.pages.dev/blog/posts/reliance-industries-journey-in-numbers/)
+
+## Data feeds
+
+- [Tracker rows JSON](https://harshaldasani.pages.dev/tracker-rows.json): every tracked media feature (date, headline, language, publication, link, topic, journalist).
+- [Tracker summary](https://harshaldasani.pages.dev/api/tracker-summary): live count and latest features.
+- [Special features](https://harshaldasani.pages.dev/special-features.json): curated highlights.

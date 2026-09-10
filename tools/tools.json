@@ -2,7 +2,7 @@
   "tools": [
     {
       "title": "Oil-to-India Impact Estimator",
-      "description": "Move the Brent price and see what it does to India's oil import bill, inflation and the market regime, on Harshal's published framework.",
+      "description": "Move the Brent price and see what it does to India's oil import bill, inflation and the market regime, using published rules of thumb.",
       "url": "oil-impact-estimator/",
       "tag": "Market tool",
       "logoDark": "assets/logos/oil-impact-estimator-dark.png",
